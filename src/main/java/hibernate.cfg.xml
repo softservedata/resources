@@ -13,7 +13,7 @@
 
    <!-- Assume students is the database name -->
    <property name="hibernate.connection.url">
-      jdbc:mysql://localhost/registrator
+      jdbc:mysql://localhost/registrator_db
    </property>
    <property name="hibernate.connection.username">root</property>
    <property name="hibernate.connection.password">root</property>
