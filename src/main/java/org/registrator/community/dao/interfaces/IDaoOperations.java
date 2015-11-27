@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IDaoOperations <T> {
 	
-public Integer add(T entity);
+public void add(T entity);
 
 public void update(T entity);
 

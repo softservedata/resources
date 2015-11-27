@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.registrator.community.dao.interfaces.IDaoOperations;
 import org.registrator.community.dao.utils.HibernateUtil;
 
@@ -17,14 +18,16 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 	}
 
 	@Override
-	public Integer add(T entity) {
+	public void add(T entity) {
 		Session session = null;
+
 		Integer id = null;
 		try {
 
 			session = HibernateUtil.getSessionFactory().openSession();
+			Transaction transaction = session.beginTransaction();
 			id = (Integer) session.save(entity);
-			session.close();
+			transaction.commit();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -35,7 +38,7 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 				session.close();
 			}
 		}
-		return id;
+	
 	}
 
 	@Override
@@ -45,8 +48,9 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 		try {
 
 			session = HibernateUtil.getSessionFactory().openSession();
-
+			Transaction transaction = session.beginTransaction();
 			session.update(entity);
+			transaction.commit();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -65,7 +69,7 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 	public T findById(Long entityId) {
 
 		Session session = null;
-		T element = null;
+		T element=null;
 		try {
 
 			session = HibernateUtil.getSessionFactory().openSession();
@@ -90,7 +94,9 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 		try {
 
 			session = HibernateUtil.getSessionFactory().openSession();
+			Transaction transaction = session.beginTransaction();
 			session.delete(entity);
+			transaction.commit();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -107,12 +113,12 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> getAll() {
-		Session session = null;
-		List<T> elements = new ArrayList<T>();
-
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			elements = session.createCriteria(elementClass).list();
+		Session session=null;
+		List<T> elements=new ArrayList<T>();
+		
+		try{
+			session=HibernateUtil.getSessionFactory().openSession();
+			elements=session.createCriteria(elementClass).list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -122,14 +128,14 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 				session.close();
 			}
 		}
-
+		
 		return elements;
 	}
 
 	@Override
 	public void deleteAll() {
-		List<T> elements = getAll();
-		for (T t : elements) {
+		List<T> elements=getAll();
+		for(T t : elements){
 			delete(t);
 		}
 

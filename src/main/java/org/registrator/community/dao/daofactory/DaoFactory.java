@@ -14,6 +14,7 @@ import org.registrator.community.dao.StoreOfDiscreteValuesDao;
 import org.registrator.community.dao.StoreOfLineSizesDao;
 import org.registrator.community.dao.TomeDao;
 import org.registrator.community.dao.UserDao;
+import org.registrator.community.dao.sdsd;
 
 public final class DaoFactory {
 

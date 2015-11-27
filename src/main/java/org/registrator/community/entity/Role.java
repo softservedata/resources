@@ -14,7 +14,7 @@ public class Role implements Serializable {
     private Integer roleId;
 
     @Column(name = "name", nullable = false, columnDefinition = "ENUM('USER','REGISTRATOR','ADMIN')")
-	@Enumerated 
+	@Enumerated(EnumType.STRING) 
 	private Name name;
     
     @Column(name = "description", nullable = false)
@@ -23,25 +23,11 @@ public class Role implements Serializable {
     public Role(){
     }
     
+
     public Role(String name, String description) {
-		this.name = checkName(name);
+		this.name = Name.valueOf(name.toUpperCase());
 		this.description = description;
 	}
-
-    private Name checkName(String name){
-		Name roleName = null;
-		if (name.equalsIgnoreCase(Name.USER.toString())){
-			roleName = Name.USER;
-		}
-		else if(name.equalsIgnoreCase(Name.ADMIN.toString())){
-			roleName = Name.ADMIN;
-		}
-		else if(name.equalsIgnoreCase(Name.REGISTRATOR.toString())){
-			roleName = Name.REGISTRATOR;
-		}		
-		return roleName;		
-	}
-
 
 	public Integer getRoleId() {
 		return roleId;
@@ -69,20 +55,4 @@ public class Role implements Serializable {
     
 }
 
-/*enum Name{
-	USER("����������"),
-	REGISTRATOR("���������"),
-	ADMIN("�����������");
-	
-	private final String text;
-	
-	private Name(final String text) {
-		this.text = text;
-	}
-	
-	@Override
-	public String toString() {
-		return text;
-	}
-*/
-enum Name{USER, REGISTRATOR,ADMIN}
+

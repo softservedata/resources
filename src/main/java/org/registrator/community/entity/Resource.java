@@ -29,7 +29,7 @@ public class Resource implements Serializable {
     private Date date;
 
     @Column(name = "status", nullable = false, columnDefinition = "ENUM('ACTIVE', 'UNCHECKED', 'DENIDED', 'OBSOLETE')")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private ResourceStatus status;
 
     @ManyToOne
@@ -43,6 +43,23 @@ public class Resource implements Serializable {
     public Resource() {
     	
     }
+    
+
+
+
+	public Resource(ResourceType type, String identifier, User user, Date date, String status, Tome tome,
+			String reasonInclusion) {
+		super();
+		this.type = type;
+		this.identifier = identifier;
+		this.user = user;
+		this.date = date;
+		this.status = ResourceStatus.valueOf(status.toUpperCase());
+		this.tome = tome;
+		this.reasonInclusion = reasonInclusion;
+	}
+
+
 
 
 	public Integer getResourcesId() {
@@ -126,4 +143,4 @@ public class Resource implements Serializable {
 
 }
 
-enum ResourceStatus{ ACTIVE, UNCHECKED, DENIDED, OBSOLETE}
+

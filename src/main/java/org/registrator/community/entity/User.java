@@ -36,7 +36,7 @@ public class User implements Serializable {
 	private String email;
 	
 	@Column(name = "status", nullable = false, columnDefinition = "ENUM('BLOCK','UNBLOCK','INACTIVE')")
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 	
 	public User() {
@@ -53,25 +53,12 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.middleName = middleName;
 		this.email = email;		
-		this.status = checkStatus(status);
+		this.status = UserStatus.valueOf(status.toUpperCase());
 	}
 
 
 
-	private UserStatus checkStatus(String status){
-		UserStatus userStatus = null;
-		if (status.equalsIgnoreCase(UserStatus.BLOCK.toString())){
-			userStatus = UserStatus.BLOCK;
-		}
-		else if(status.equalsIgnoreCase(UserStatus.UNBLOCK.toString())){
-			userStatus = UserStatus.UNBLOCK;
-		}
-		else if(status.equalsIgnoreCase(UserStatus.INACTIVE.toString())){
-			userStatus = UserStatus.INACTIVE;
-		}
-		return userStatus;
-		
-	}
+
 	public Integer getUserId() {
 		return userId;
 	}
@@ -145,5 +132,3 @@ public class User implements Serializable {
 	}
 	
 }
-
-enum UserStatus {BLOCK, UNBLOCK,INACTIVE};
