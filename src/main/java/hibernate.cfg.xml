@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+   <session-factory>
+   <property name="hibernate.dialect">
+      org.hibernate.dialect.MySQLDialect
+   </property>
+   <property name="hibernate.connection.driver_class">
+      com.mysql.jdbc.Driver
+   </property>
+
+   <!-- Assume students is the database name -->
+   <property name="hibernate.connection.url">
+      jdbc:mysql://localhost/registrator
+   </property>
+   <property name="hibernate.connection.username">root</property>
+   <property name="hibernate.connection.password">root</property>
+   
+   <property name="hbm2ddl.auto">create</property>
+   <property name="hbm2ddl.auto">update</property>
+   
+   	<!-- mapping files -->
+	<mapping class="org.registrator.community.entity.User"/>
+	<mapping class="org.registrator.community.entity.Role"/> 
+	<mapping class="org.registrator.community.entity.Address"/> 
+	<mapping class="org.registrator.community.entity.PassportInfo"/> 
+	<mapping class="org.registrator.community.entity.ResourceType"/>
+	<mapping class="org.registrator.community.entity.Resource"/> 
+	<mapping class="org.registrator.community.entity.DiscreteValue"/>
+	<mapping class="org.registrator.community.entity.LineSize"/>
+	<mapping class="org.registrator.community.entity.ResourceParameters"/>
+	<mapping class="org.registrator.community.entity.Area"/>
+	<mapping class="org.registrator.community.entity.StoreOfLineSizes"/>
+	<mapping class="org.registrator.community.entity.StoreOfDiscreteValues"/>
+	<mapping class="org.registrator.community.entity.Tome"/>
+	<mapping class="org.registrator.community.entity.Inquiry"/>
+		
+</session-factory>
+</hibernate-configuration>
