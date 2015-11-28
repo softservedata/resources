@@ -45,11 +45,8 @@ public class Resource implements Serializable {
     }
     
 
-
-
 	public Resource(ResourceType type, String identifier, User user, Date date, String status, Tome tome,
 			String reasonInclusion) {
-		super();
 		this.type = type;
 		this.identifier = identifier;
 		this.user = user;

@@ -1,8 +1,10 @@
 package org.registrator.community.service.interfaces;
 
+import org.registrator.community.dto.ResourceTypeDTO;
+
 public interface RegistratorService {
 	
-	//public void addResourseType(ResourceTypeDTO);
+	void addResourseType(ResourceTypeDTO resourceTypeDTO);
 	
 	// add new resource type
 	
