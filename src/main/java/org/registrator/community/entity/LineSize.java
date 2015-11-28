@@ -21,6 +21,9 @@ public class LineSize implements Serializable {
 	@Column(name = "description", nullable = false)
 	private String description;
 	
+	@Column(name = "unit_name", nullable = false)
+	private String unitName ;
+	
 	public LineSize() {
 		
 	}
@@ -47,6 +50,14 @@ public class LineSize implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String getUnitName() {
+		return unitName;
+	}
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
 
 }

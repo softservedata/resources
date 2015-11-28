@@ -22,9 +22,6 @@ public class StoreOfLineSizes {
 	@Column(name = "maximal_value", nullable = false)
 	private Double maxValue;
 	
-	@Column(name = "unit_name", nullable = false)
-	private String unitName ;
-	
 	@ManyToOne
 	@JoinColumn(name = "lines_size_id", nullable = false)
 	private LineSize lineSize;
@@ -63,14 +60,6 @@ public class StoreOfLineSizes {
 
 	public void setMaxValue(Double maxValue) {
 		this.maxValue = maxValue;
-	}
-	
-	public String getUnitName() {
-		return unitName;
-	}
-
-	public void setUnitName(String unitName) {
-		this.unitName = unitName;
 	}
 
 	public LineSize getLineSize() {
