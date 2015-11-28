@@ -6,13 +6,15 @@ import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dao.utils.HibernateUtil;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
+import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
+import org.registrator.community.service.interfaces.SearchService;
 import org.registrator.community.service.interfaces.UserService;
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, SearchService {
 
 	@Override
 	public void addUser(UserDTO user) {
@@ -42,5 +44,11 @@ public class UserServiceImpl implements UserService {
 		session.close();
 
 		
+	}
+
+	@Override
+	public ResourceDTO searchResourcesbyId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
