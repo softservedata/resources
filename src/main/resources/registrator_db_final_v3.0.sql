@@ -10,7 +10,8 @@
 --
 -- Описание для базы данных registrator_db
 --
-CREATE DATABASE IF NOT EXISTS registrator_db
+DROP DATABASE IF EXISTS registrator_db;
+CREATE DATABASE registrator_db
 CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
@@ -22,7 +23,7 @@ USE registrator_db;
 --
 -- Описание для таблицы resource_types
 --
-CREATE TABLE IF NOT EXISTS resource_types (
+CREATE TABLE resource_types (
   resource_type_id int(11) NOT NULL AUTO_INCREMENT,
   type_name varchar(255) NOT NULL,
   PRIMARY KEY (resource_type_id)
@@ -36,7 +37,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы roles
 --
-CREATE TABLE IF NOT EXISTS roles (
+CREATE TABLE roles (
   role_id int(11) NOT NULL AUTO_INCREMENT,
   description varchar(255) NOT NULL,
   name enum ('USER', 'REGISTRATOR', 'ADMIN') NOT NULL,
@@ -50,10 +51,11 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы discrete_values
 --
-CREATE TABLE IF NOT EXISTS discrete_values (
+CREATE TABLE discrete_values (
   discrete_values_id int(11) NOT NULL AUTO_INCREMENT,
   description varchar(255) NOT NULL,
   resource_type_id int(11) NOT NULL,
+  unit_name varchar(255) NOT NULL,
   PRIMARY KEY (discrete_values_id),
   CONSTRAINT FK_l6o6xiui7mpn52s6laoacahjc FOREIGN KEY (resource_type_id)
   REFERENCES resource_types (resource_type_id) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -66,10 +68,11 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы lines_size
 --
-CREATE TABLE IF NOT EXISTS lines_size (
+CREATE TABLE lines_size (
   lines_size_id int(11) NOT NULL AUTO_INCREMENT,
   description varchar(255) NOT NULL,
   resource_type_id int(11) NOT NULL,
+  unit_name varchar(255) NOT NULL,
   PRIMARY KEY (lines_size_id),
   CONSTRAINT FK_jtxprxsxb34pr1ucids6gl9rs FOREIGN KEY (resource_type_id)
   REFERENCES resource_types (resource_type_id) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -82,7 +85,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы users
 --
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
   user_id int(11) NOT NULL AUTO_INCREMENT,
   email varchar(255) NOT NULL,
   first_name varchar(255) NOT NULL,
@@ -106,7 +109,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы address
 --
-CREATE TABLE IF NOT EXISTS address (
+CREATE TABLE address (
   address_id int(11) NOT NULL AUTO_INCREMENT,
   building varchar(255) NOT NULL,
   city varchar(255) NOT NULL,
@@ -128,7 +131,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы passport_data
 --
-CREATE TABLE IF NOT EXISTS passport_data (
+CREATE TABLE passport_data (
   passport_data_id int(11) NOT NULL AUTO_INCREMENT,
   number int(11) NOT NULL,
   published_by_data varchar(255) NOT NULL,
@@ -146,7 +149,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы resource_parameters
 --
-CREATE TABLE IF NOT EXISTS resource_parameters (
+CREATE TABLE resource_parameters (
   resource_parameters_id int(11) NOT NULL AUTO_INCREMENT,
   parameter_id int(11) NOT NULL,
   resource_type_id int(11) NOT NULL,
@@ -166,7 +169,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы tomes
 --
-CREATE TABLE IF NOT EXISTS tomes (
+CREATE TABLE tomes (
   tome_id int(11) NOT NULL AUTO_INCREMENT,
   identifier varchar(255) NOT NULL,
   name varchar(255) NOT NULL,
@@ -183,7 +186,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы list_of_resouces
 --
-CREATE TABLE IF NOT EXISTS list_of_resouces (
+CREATE TABLE list_of_resouces (
   resources_id int(11) NOT NULL AUTO_INCREMENT,
   date datetime NOT NULL,
   identifier varchar(255) NOT NULL,
@@ -208,7 +211,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы area
 --
-CREATE TABLE IF NOT EXISTS area (
+CREATE TABLE area (
   area_id int(11) NOT NULL AUTO_INCREMENT,
   latitude double NOT NULL,
   longitude double NOT NULL,
@@ -226,7 +229,7 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы inquiry_list
 --
-CREATE TABLE IF NOT EXISTS inquiry_list (
+CREATE TABLE inquiry_list (
   inquiry_list_id int(11) NOT NULL AUTO_INCREMENT,
   date datetime NOT NULL,
   inquiry_type varchar(255) NOT NULL,
@@ -249,9 +252,8 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы store_of_discrete_values
 --
-CREATE TABLE IF NOT EXISTS store_of_discrete_values (
+CREATE TABLE store_of_discrete_values (
   store_of_discrete_values_id int(11) NOT NULL AUTO_INCREMENT,
-  unit_name varchar(255) NOT NULL,
   value double NOT NULL,
   discrete_values_id int(11) NOT NULL,
   resource_id int(11) NOT NULL,
@@ -269,11 +271,10 @@ COLLATE latin1_swedish_ci;
 --
 -- Описание для таблицы store_of_line_sizes
 --
-CREATE TABLE IF NOT EXISTS store_of_line_sizes (
+CREATE TABLE store_of_line_sizes (
   store_of_line_sizes_id int(11) NOT NULL AUTO_INCREMENT,
   maximal_value double NOT NULL,
   minimal_value double NOT NULL,
-  unit_name varchar(255) NOT NULL,
   lines_size_id int(11) NOT NULL,
   resource_id int(11) NOT NULL,
   PRIMARY KEY (store_of_line_sizes_id),

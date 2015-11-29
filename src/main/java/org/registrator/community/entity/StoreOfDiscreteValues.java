@@ -21,9 +21,6 @@ public class StoreOfDiscreteValues {
 	@Column(name = "value", nullable = false)
 	private Double value;
 	
-	@Column(name = "unit_name", nullable = false)
-	private String unitName ;
-	
 	@ManyToOne
 	@JoinColumn(name = "discrete_values_id", nullable = false)
 	private DiscreteValue discreteValue;	
@@ -54,14 +51,6 @@ public class StoreOfDiscreteValues {
 
 	public void setValue(Double value) {
 		this.value = value;
-	}
-	
-	public String getUnitName() {
-		return unitName;
-	}
-
-	public void setUnitName(String unitName) {
-		this.unitName = unitName;
 	}
 
 	public DiscreteValue getDiscreteValue() {

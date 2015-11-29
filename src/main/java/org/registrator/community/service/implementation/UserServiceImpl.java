@@ -46,9 +46,5 @@ public class UserServiceImpl implements UserService, SearchService {
 		
 	}
 
-	@Override
-	public ResourceDTO searchResourcesbyId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }
