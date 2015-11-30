@@ -80,12 +80,13 @@ public class AdminServiceImpl implements AdminService, SearchService {
 
 	@Override
 	public UserDTO blockUser(UserDTO userDto) {
-		
-		User user = DaoFactory.get().getUserDao().findByLogin(userDto.getLogin());
-		
+
+		User user = DaoFactory.get().getUserDao()
+				.findByLogin(userDto.getLogin());
+
 		user.setStatus(UserStatus.BLOCK);
 		userDto.setStatus("block");
-		
+
 		return userDto;
 	}
 

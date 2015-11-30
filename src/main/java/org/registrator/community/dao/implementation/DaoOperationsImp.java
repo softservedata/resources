@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.registrator.community.dao.interfaces.IDaoOperations;
@@ -149,7 +150,10 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 		try {
 
 			session = HibernateUtil.getSessionFactory().openSession();
-			element = (T) session.get(elementClass, entityLogin);
+			String query = "from User u where u.login=:entityLogin1";
+			Query que = session.createQuery(query);
+			que.setParameter("entityLogin1", entityLogin);
+			element = (T) que.uniqueResult();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
