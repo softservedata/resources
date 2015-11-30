@@ -79,6 +79,36 @@ public class UserServiceImpl implements UserService, SearchService {
 			}
 		}		
 	}
+	
+	@Override
+    public void addUser(UserDTO user) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        User userEntity = new User(user.getLogin(),user.getPassword(),user.getRole(),
+                user.getFirstName(),user.getLastName(),user.getMiddleName(),user.getEmail(),user.getStatus());
+
+        DaoFactory.get().getUserDao().add(userEntity);    
+        
+//        Integer id = DaoFactory.get().getUserDao().add(userEntity);
+//        userEntity.setUserId(id);
+        
+        PassportDTO passDTO = user.getPassport().get(user.getPassport().size()-1); 
+        AddressDTO addressDTO = user.getAddress().get(user.getAddress().size()-1); 
+        
+        PassportInfo pass = new PassportInfo(userEntity, passDTO.getSeria(), 
+                passDTO.getNumber(), passDTO.getPublished_by_data());
+        DaoFactory.get().getPassportInfoDao().add(pass);
+        
+        Address address = new Address(userEntity, addressDTO.getPostcode(), addressDTO.getRegion(), addressDTO.getDistrict(),
+                addressDTO.getCity(), addressDTO.getStreet(), addressDTO.getBuilding(), addressDTO.getFlat());
+        
+        DaoFactory.get().getAddressDao().add(address);
+        
+        transaction.commit();
+        session.close();
+
+        
+    }
 
 
 }

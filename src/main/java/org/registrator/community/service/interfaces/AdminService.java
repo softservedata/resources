@@ -2,13 +2,14 @@ package org.registrator.community.service.interfaces;
 
 import java.util.List;
 
+import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.User;
 
 public interface AdminService {
 	
 	
 		
-		public List<User> getAllUsers();
+		public List<UserDTO> getAllUsers();
 		
 		public List<User> getUserByRoleName(String role);
 		

@@ -35,5 +35,9 @@ public class PassportDTO implements Serializable {
 	public void setPublished_by_data(String published_by_data) {
 		this.published_by_data = published_by_data;
 	}	
-
+	
+	@Override
+	public String toString() {
+		return "Seria "+seria+" Number "+number+" Published by data "+published_by_data;
+	}
 }
