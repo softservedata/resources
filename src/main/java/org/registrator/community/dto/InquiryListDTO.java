@@ -14,7 +14,7 @@ public class InquiryListDTO implements Serializable {
 	private Date date;
 	private Integer fromUserId;
 	private Integer toUserId;
-	private Integer resourceId;
+	private Integer resourceId;      // == null if (inquiryType == "INPUT")
 	private ResourceDTO resource;	 // == null if (inquiryType == "OUTPUT")
 	
 	public InquiryListDTO() {
