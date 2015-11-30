@@ -35,8 +35,7 @@ public class UserServiceImpl implements UserService, SearchService {
 			
 			Inquiry inquiryEntity = new Inquiry();
 			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
-			inquiryEntity.setDate(inquiryListDTO.getDate());
-			//inquiryEntity.setUser(inquiryListDTO.getFromUserId());
+			inquiryEntity.setDate(inquiryListDTO.getDate());			
 			Integer userId = inquiryListDTO.getFromUserId();
 			User user = DaoFactory.get().getUserDao().findById(userId);
 			inquiryEntity.setUser(user);
