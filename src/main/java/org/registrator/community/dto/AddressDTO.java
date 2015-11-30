@@ -3,6 +3,8 @@ package org.registrator.community.dto;
 import java.io.Serializable;
 
 public class AddressDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String postcode;
 	private String region;
 	private String district;
@@ -10,9 +12,9 @@ public class AddressDTO implements Serializable {
 	private String street;
 	private String building;
 	private String flat;
-	
+
 	public AddressDTO() {
-		
+
 	}
 
 	public String getPostcode() {
@@ -70,6 +72,11 @@ public class AddressDTO implements Serializable {
 	public void setFlat(String flat) {
 		this.flat = flat;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Postcode " + postcode + " Region " + region + " District "
+				+ district + " City " + city + " Street " + street + " Building "
+				+ building + " Flat " + flat;
+	}
 }

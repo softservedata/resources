@@ -94,7 +94,7 @@ public class App {
 		
 		
 		// Save new Resource in Database******
-//
+
 //		Tome tome = new Tome();
 //		tome.setIdentifier("12345");
 //		tome.setName("name??");
@@ -176,10 +176,22 @@ public class App {
 //		RegistratorService registratorService = new RegistratorServiceImpl();
 //		registratorService.addResource(resourceDTO);
 		
-		Role role = new Role("USER","description4");
-		RoleDao  roleDao = DaoFactory.get().getRoleDao();
-		roleDao.add(role);
-		
+		Role role = new Role("USER","description2");
+//		RoleDao  roleDao = DaoFactory.get().getRoleDao();
+//		roleDao.add(role);
+//		
+//		UserDao userDao = DaoFactory.get().getUserDao();
+//		User user2 = new User();
+//		user2.setEmail("AnyaNovos2@gmail.com");
+//		user2.setFirstName("Ann1");
+//		user2.setLastName("lastName4");
+//		user2.setLogin("login2");
+//		user2.setMiddleName("middleName4");
+//		user2.setPassword("password4");
+//		user2.setRole(role);
+//		user2.setStatus(UserStatus.valueOf("UNBLOCK"));
+//		userDao.add(user2);
+
 		UserDao userDao = DaoFactory.get().getUserDao();
 		User user2 = new User();
 		user2.setEmail("AnyaNovotrts4@gmail.com");
@@ -191,6 +203,7 @@ public class App {
 		user2.setRole(role);
 		user2.setStatus(UserStatus.valueOf("BLOCK"));
 		userDao.add(user2);
+
 		
 		transaction.commit();
 		session.close();
