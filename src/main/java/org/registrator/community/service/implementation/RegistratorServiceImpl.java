@@ -1,6 +1,7 @@
 package org.registrator.community.service.implementation;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,6 +10,8 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
+import org.registrator.community.dao.ResourceDao;
+import org.registrator.community.dao.ResourceTypeDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dao.utils.HibernateUtil;
 import org.registrator.community.dto.DiscreteParameterDTO;
@@ -175,6 +178,33 @@ public class RegistratorServiceImpl implements RegistratorService{
 			
 		transaction.commit();
 		session.close();		
+	}
+// there will be changed
+	@Override
+	public List<ResourceTypeDao> showAllTypeOfResources() {
+
+		
+		List<ResourceTypeDao> listResType = new ArrayList<ResourceTypeDao>();
+		RegistratorService rs = new RegistratorServiceImpl();
+		listResType = rs.showAllTypeOfResources();
+
+		
+		
+		return listResType;	
+	}
+
+// // there will be changed
+	@Override
+	public List<ResourceDao> showAllResources() {
+		
+		List <ResourceDao> listRes = new ArrayList<ResourceDao>();
+		RegistratorService rs = new RegistratorServiceImpl();
+		listRes = rs.showAllResources();
+		
+		
+		
+		return listRes;
+		
 	}
 
 }

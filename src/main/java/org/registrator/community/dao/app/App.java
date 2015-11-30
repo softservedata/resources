@@ -182,12 +182,12 @@ public class App {
 		
 		UserDao userDao = DaoFactory.get().getUserDao();
 		User user2 = new User();
-		user2.setEmail("AnyaNovos4@gmail.com");
-		user2.setFirstName("Ann4");
-		user2.setLastName("lastName4");
-		user2.setLogin("login4");
-		user2.setMiddleName("middleName4");
-		user2.setPassword("password4");
+		user2.setEmail("AnyaNovotrts4@gmail.com");
+		user2.setFirstName("Antrtn4");
+		user2.setLastName("lasttrtName4");
+		user2.setLogin("logtrtin4");
+		user2.setMiddleName("middtrtleName4");
+		user2.setPassword("passwrttord4");
 		user2.setRole(role);
 		user2.setStatus(UserStatus.valueOf("BLOCK"));
 		userDao.add(user2);
