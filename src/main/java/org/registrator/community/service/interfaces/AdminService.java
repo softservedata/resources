@@ -11,7 +11,9 @@ public interface AdminService {
 		
 		public List<UserDTO> getAllUsers();
 		
-		public UserDTO blockUser(UserDTO userDTO);
+		public UserDTO blockUser(UserDTO userDto);
+		
+		public UserDTO changeRole(UserDTO userDto) ;
 		
 //		public List<User> getUserByRoleName(String role);
 //		

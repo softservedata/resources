@@ -63,22 +63,19 @@ public class App1 {
 		// userDTO.setRole(role);
 		//
 		// user.addUser(userDTO);
-		 List<UserDTO> userList = new ArrayList<UserDTO>();
-		 AdminService admin= new AdminServiceImpl();
-		 userList=admin.getAllUsers();
-		
-		 for (UserDTO user1 : userList) {
-			 UserDTO user2 = new UserDTO();
-			 user2 = admin.blockUser(user1);
-			 System.out.println(user1);
-		 }
-		 
-		 
+		List<UserDTO> userList = new ArrayList<UserDTO>();
+		AdminService admin = new AdminServiceImpl();
+		userList = admin.getAllUsers();
+
+		for (UserDTO user1 : userList) {
+			UserDTO user2 = new UserDTO();
+			user2 = admin.blockUser(user1);
+			System.out.println(user1);
+		}
+
 		//
 		// transaction.commit();
 		// session.close();
-		
-		 
-		
+
 	}
 }

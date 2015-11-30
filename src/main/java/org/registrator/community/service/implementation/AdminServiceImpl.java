@@ -85,9 +85,20 @@ public class AdminServiceImpl implements AdminService, SearchService {
 				.findByLogin(userDto.getLogin());
 
 		user.setStatus(UserStatus.BLOCK);
+		DaoFactory.get().getUserDao()
+				.update(user);
 		userDto.setStatus("block");
 
 		return userDto;
+	}
+
+	@Override
+	public UserDTO changeRole(UserDTO userDto) {
+		User user = DaoFactory.get().getUserDao()
+				.findByLogin(userDto.getLogin());
+		
+		
+		return null;
 	}
 
 }
