@@ -4,8 +4,11 @@ public class LinearParameterDTO {
 	private String description;
 	private String unitName;
 	
+	public LinearParameterDTO() {
+
+	}
+	
 	public LinearParameterDTO(String description, String unitName) {
-		super();
 		this.description = description;
 		this.unitName = unitName;
 	}

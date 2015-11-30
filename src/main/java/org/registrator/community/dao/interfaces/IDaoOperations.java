@@ -8,7 +8,7 @@ public void add(T entity);
 
 public void update(T entity);
 
-public T findById(Long entityId);
+public T findById(Integer entityId);
 
 public void delete(T entity);
 

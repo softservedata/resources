@@ -4,6 +4,13 @@ public class SegmentLinearDTO {
 	private double begin;
 	private double end;
 	
+	public SegmentLinearDTO() {
+	}
+	
+	public SegmentLinearDTO(double begin, double end) {
+		this.begin = begin;
+		this.end = end;
+	}
 	public double getBegin() {
 		return begin;
 	}

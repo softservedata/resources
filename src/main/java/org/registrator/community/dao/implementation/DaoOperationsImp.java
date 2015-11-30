@@ -66,7 +66,7 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T findById(Long entityId) {
+	public T findById(Integer entityId) {
 
 		Session session = null;
 		T element=null;

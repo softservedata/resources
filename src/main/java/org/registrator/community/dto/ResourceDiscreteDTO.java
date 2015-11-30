@@ -3,6 +3,7 @@ package org.registrator.community.dto;
 import java.util.List;
 
 public class ResourceDiscreteDTO {
+	private DiscreteParameterDTO discreteParameterDTO;
 	private List<Double> values;
 
 	public ResourceDiscreteDTO() {
@@ -16,5 +17,16 @@ public class ResourceDiscreteDTO {
 	public void setValues(List<Double> values) {
 		this.values = values;
 	}
+
+	public DiscreteParameterDTO getDiscreteParameterDTO() {
+		return discreteParameterDTO;
+	}
+
+	public void setDiscreteParameterDTO(DiscreteParameterDTO discreteParameterDTO) {
+		this.discreteParameterDTO = discreteParameterDTO;
+	}
+
+		
+	
 	
 }

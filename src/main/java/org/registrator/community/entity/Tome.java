@@ -28,11 +28,11 @@ public class Tome implements Serializable {
 		
 	}
 
-	public Integer getTome_id() {
+	public Integer getTomeId() {
 		return tomeId;
 	}
 
-	public void setTome_id(Integer tome_id) {
+	public void setTomeId(Integer tome_id) {
 		this.tomeId = tome_id;
 	}
 

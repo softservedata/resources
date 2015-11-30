@@ -5,6 +5,10 @@ public class DiscreteParameterDTO {
 	private String description;
 	private String unitName;
 	
+	public DiscreteParameterDTO() {
+		
+	}
+	
 	public DiscreteParameterDTO(String description, String unitName) {
 		super();
 		this.description = description;

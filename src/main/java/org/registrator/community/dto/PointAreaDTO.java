@@ -9,6 +9,23 @@ public class PointAreaDTO {
 	private int longitudeDegrees;
 	private int longitudeMinutes;
 	private double longitudeSeconds;
+	
+	public PointAreaDTO() {
+		
+	}
+	
+	public PointAreaDTO(int orderNumber, int latitudeDegrees,
+			int latitudeMinutes, double latitudeSeconds, int longitudeDegrees,
+			int longitudeMinutes, double longitudeSeconds) {
+		this.orderNumber = orderNumber;
+		this.latitudeDegrees = latitudeDegrees;
+		this.latitudeMinutes = latitudeMinutes;
+		this.latitudeSeconds = latitudeSeconds;
+		this.longitudeDegrees = longitudeDegrees;
+		this.longitudeMinutes = longitudeMinutes;
+		this.longitudeSeconds = longitudeSeconds;
+	}
+	
 	public int getOrderNumber() {
 		return orderNumber;
 	}

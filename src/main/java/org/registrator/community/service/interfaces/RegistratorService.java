@@ -1,12 +1,13 @@
 package org.registrator.community.service.interfaces;
 
+import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 
 public interface RegistratorService {
 	
 	void addResourseType(ResourceTypeDTO resourceTypeDTO);
 	
-	// add new resource type
+	void addResource(ResourceDTO resourceDTO);
 	
 	// generate doc for info/output request
 	
