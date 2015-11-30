@@ -14,7 +14,7 @@ public class Inquiry implements Serializable {
 	@GeneratedValue
 	private Integer inquiry_list_id;
 
-	@Column(name = "inquiry_type", nullable = false)
+	@Column(name = "inquiry_type", nullable = false, columnDefinition = "ENUM('INPUT','OUTPUT')")
 	@Enumerated(EnumType.STRING) 
 	private InquiryType inquiryType;
 	
@@ -49,8 +49,8 @@ public class Inquiry implements Serializable {
 		return inquiryType;
 	}
 
-	public void setInquiryType(InquiryType inquiryType) {
-		this.inquiryType = inquiryType;
+	public void setInquiryType(String inquiryType) {
+		this.inquiryType = InquiryType.valueOf(inquiryType.toUpperCase());
 	}
 
 	public Date getDate() {
@@ -86,4 +86,4 @@ public class Inquiry implements Serializable {
 	}
 }
 
-enum InquiryType {INPUT, OUTPUT};
+//enum InquiryType {INPUT, OUTPUT};
