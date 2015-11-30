@@ -3,14 +3,18 @@ package org.registrator.community.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.registrator.community.dao.UserDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
+import org.registrator.community.dao.utils.HibernateUtil;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
+import org.registrator.community.entity.UserStatus;
 import org.registrator.community.service.interfaces.AdminService;
 import org.registrator.community.service.interfaces.SearchService;
 
@@ -75,14 +79,14 @@ public class AdminServiceImpl implements AdminService, SearchService {
 	}
 
 	@Override
-	public List<User> getUserByRoleName(String role) {
-
-		return null;
-	}
-
-	@Override
-	public List<User> getUserByPortion(int from, int quantity) {
-		return userDao.getUsersListByPortions(from, quantity);
+	public UserDTO blockUser(UserDTO userDto) {
+		
+		User user = DaoFactory.get().getUserDao().findByLogin(userDto.getLogin());
+		
+		user.setStatus(UserStatus.BLOCK);
+		userDto.setStatus("block");
+		
+		return userDto;
 	}
 
 }

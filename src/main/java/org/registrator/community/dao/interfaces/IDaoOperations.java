@@ -10,6 +10,8 @@ public void update(T entity);
 
 public T findById(Integer entityId);
 
+public T findByLogin(String entityLogin);
+
 public void delete(T entity);
 
 public List<T> getAll();
