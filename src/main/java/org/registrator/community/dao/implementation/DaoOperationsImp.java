@@ -167,5 +167,32 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 		return element;
 	}
 
+<<<<<<< HEAD
+=======
+	@SuppressWarnings("unchecked")
+	@Override
+	public T findByIdentifier(String entityIdentifier) {
+		Session session = null;
+		T element = null;
+		try {
+
+			session = HibernateUtil.getSessionFactory().openSession();
+			String query = "from Resource r where r.identifier=:identifier1";
+			Query que = session.createQuery(query);
+			que.setParameter("identifier1", entityIdentifier);
+			element = (T) que.uniqueResult();
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+		return element;
+	}
+>>>>>>> ab408ff564090a4dba045f09813d5d99026e3dac
 
 }

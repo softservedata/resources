@@ -16,9 +16,11 @@ public interface RegistratorService {
 	// generate doc for info/output request
 	
 	// generate doc for input request
-	List<ResourceTypeDao> showAllTypeOfResources();
+	List<ResourceTypeDTO> showAllTypeOfResources();
 	
-	List<ResourceDao> showAllResources();
+	List<ResourceDTO> showAllResources();
+	
+	ResourceDTO showResourceByIdentifier(String identifier);
 	
 
 }

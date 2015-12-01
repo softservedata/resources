@@ -6,12 +6,12 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.registrator.community.dao.RoleDao;
-import org.registrator.community.dao.UserDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dao.utils.HibernateUtil;
+import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.DiscreteParameterDTO;
 import org.registrator.community.dto.LinearParameterDTO;
+import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
@@ -22,12 +22,11 @@ import org.registrator.community.dto.ResourceLinearDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
 import org.registrator.community.dto.UserDTO;
-import org.registrator.community.entity.Role;
 import org.registrator.community.entity.Tome;
-import org.registrator.community.entity.User;
-import org.registrator.community.entity.UserStatus;
 import org.registrator.community.service.implementation.RegistratorServiceImpl;
+import org.registrator.community.service.implementation.UserServiceImpl;
 import org.registrator.community.service.interfaces.RegistratorService;
+import org.registrator.community.service.interfaces.UserService;
 
 public class App {
 	public static void main(String[] args) {
@@ -76,7 +75,7 @@ public class App {
 		userDTO.setPassport(passportList);
 		userDTO.setRole(role);
 		
-		user.addUser(userDTO);*/
+		user.addUser(userDTO);
 		
 		// Save new ResourceType in Database******
 		
@@ -94,6 +93,7 @@ public class App {
 		
 		
 		// Save new Resource in Database******
+
 
 //		Tome tome = new Tome();
 //		tome.setIdentifier("12345");
@@ -175,8 +175,9 @@ public class App {
 //			
 //		RegistratorService registratorService = new RegistratorServiceImpl();
 //		registratorService.addResource(resourceDTO);
+
 		
-		Role role = new Role("USER","description2");
+//		Role role = new Role("USER","description2");
 //		RoleDao  roleDao = DaoFactory.get().getRoleDao();
 //		roleDao.add(role);
 //		
@@ -192,7 +193,8 @@ public class App {
 //		user2.setStatus(UserStatus.valueOf("UNBLOCK"));
 //		userDao.add(user2);
 
-		UserDao userDao = DaoFactory.get().getUserDao();
+
+		/*UserDao userDao = DaoFactory.get().getUserDao();
 		User user2 = new User();
 		user2.setEmail("AnyaNovotrts4@gmail.com");
 		user2.setFirstName("Antrtn4");
@@ -202,7 +204,8 @@ public class App {
 		user2.setPassword("passwrttord4");
 		user2.setRole(role);
 		user2.setStatus(UserStatus.valueOf("BLOCK"));
-		userDao.add(user2);
+		userDao.add(user2);*/
+
 
 		
 		transaction.commit();
