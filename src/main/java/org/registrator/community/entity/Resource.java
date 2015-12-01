@@ -9,12 +9,7 @@ import javax.persistence.*;
 @Table(name = "list_of_resouces")
 public class Resource implements Serializable {
 	
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Id
+    @Id
     @Column(name = "resources_id")
     @GeneratedValue
     private Integer resourcesId;
@@ -25,6 +20,9 @@ public class Resource implements Serializable {
 
     @Column(name = "identifier", nullable = false)
     private String identifier;
+    
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @ManyToOne
 	@JoinColumn(name = "registrator_id", nullable = false)
@@ -49,20 +47,17 @@ public class Resource implements Serializable {
     	
     }
     
-
-	public Resource(ResourceType type, String identifier, User user, Date date, String status, Tome tome,
-			String reasonInclusion) {
+	public Resource(ResourceType type, String identifier, String description, User user, Date date,
+			String status, Tome tome, String reasonInclusion) {
 		this.type = type;
 		this.identifier = identifier;
+		this.description = description;
 		this.user = user;
 		this.date = date;
 		this.status = ResourceStatus.valueOf(status.toUpperCase());
 		this.tome = tome;
 		this.reasonInclusion = reasonInclusion;
 	}
-
-
-
 
 	public Integer getResourcesId() {
 		return resourcesId;
@@ -142,6 +137,18 @@ public class Resource implements Serializable {
 	public void setReasonInclusion(String reasonInclusion) {
 		this.reasonInclusion = reasonInclusion;
 	}
+
+
+	public String getDesctiption() {
+		return description;
+	}
+
+
+	public void setDesctiption(String desctiption) {
+		this.description = desctiption;
+	}
+	
+	
 
 }
 

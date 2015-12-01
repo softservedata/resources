@@ -2,6 +2,7 @@ package org.registrator.community.service.implementation;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -32,6 +33,7 @@ import org.registrator.community.entity.DiscreteValue;
 import org.registrator.community.entity.LineSize;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceStatus;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.StoreOfDiscreteValues;
 import org.registrator.community.entity.StoreOfLineSizes;
@@ -109,8 +111,12 @@ public class RegistratorServiceImpl implements RegistratorService{
 		Tome tome = (Tome) session.createCriteria(Tome.class)
                 .add(Restrictions.eq("identifier", resourceDTO.getTomeIdentifier())).uniqueResult();
 		
-		Resource resourceEntity = new Resource(resourceType, resourceDTO.getIdentifier(), registrator, 
-				resourceDTO.getDate(), resourceDTO.getStatus().toString(),tome, resourceDTO.getReasonInclusion());
+		Resource resourceEntity = new Resource(resourceType, resourceDTO.getIdentifier(),
+				resourceDTO.getDescription(), registrator, resourceDTO.getDate(), 
+				resourceDTO.getStatus().toString(),tome, resourceDTO.getReasonInclusion());
+
+
+
 		DaoFactory.get().getResourceDao().add(resourceEntity);
 		
 			
@@ -229,7 +235,7 @@ public class RegistratorServiceImpl implements RegistratorService{
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		ResourceDTO resourceDTO = new ResourceDTO(null, identifier, identifier, null, null, identifier, identifier, null, null, null);
+		ResourceDTO resourceDTO = new ResourceDTO(null, identifier, identifier, identifier, null, null, identifier, identifier, null, null, null);
 		Resource resource = (Resource) session.createCriteria(Resource.class)
                 .add(Restrictions.eq("identifier", identifier)).uniqueResult();
 	//	Area area = (Area) session.createCriteria(Area.class)

@@ -9,7 +9,7 @@ public class ResourceDTO {
 	
 	private ResourceTypeDTO resourceType;
 	private String identifier;
-	
+	private String description;
 	private String registratorName;
 	//private UserDTO registrator;
 	private Date date;
@@ -17,6 +17,7 @@ public class ResourceDTO {
 	private String reasonInclusion;
 	//private Integer tomeIdentifier;
 	private String tomeIdentifier;
+	
 	
 	private ResourceAreaDTO resourceArea;
 //	private ResourceLinearDTO resourceLinear;
@@ -26,11 +27,15 @@ public class ResourceDTO {
 	
 	
 	
-	public ResourceDTO(ResourceTypeDTO resourceType, String identifier, String registratorName, Date date,
+	public ResourceDTO() {
+	
+	}
+	public ResourceDTO(ResourceTypeDTO resourceType, String identifier, String description, String registratorName, Date date,
 			ResourceStatus status, String reasonInclusion, String tomeIdentifier, ResourceAreaDTO resourceArea,
 			List<ResourceLinearDTO> resourceLinear, List<ResourceDiscreteDTO> resourceDiscrete) {
 		this.resourceType = resourceType;
 		this.identifier = identifier;
+		this.description = description;
 		this.registratorName = registratorName;
 		this.date = date;
 		this.status = status;
@@ -39,6 +44,7 @@ public class ResourceDTO {
 		this.resourceArea = resourceArea;
 		this.resourceLinear = resourceLinear;
 		this.resourceDiscrete = resourceDiscrete;
+		
 	}
 	public ResourceTypeDTO getResourceType() {
 		return resourceType;
@@ -86,6 +92,8 @@ public class ResourceDTO {
 		this.reasonInclusion = reasonInclusion;
 	}
 	
+	
+	
 /*	public Integer getTomeIdentifier() {
 		return tomeIdentifier;
 	}
@@ -93,6 +101,12 @@ public class ResourceDTO {
 		this.tomeIdentifier = tomeIdentifier;
 	}*/
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public ResourceAreaDTO getResourceArea() {
 		return resourceArea;
 	}
