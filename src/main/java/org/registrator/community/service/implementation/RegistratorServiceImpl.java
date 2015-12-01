@@ -14,8 +14,10 @@ import org.registrator.community.dao.ResourceDao;
 import org.registrator.community.dao.ResourceTypeDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dao.utils.HibernateUtil;
+import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.DiscreteParameterDTO;
 import org.registrator.community.dto.LinearParameterDTO;
+import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
@@ -23,9 +25,12 @@ import org.registrator.community.dto.ResourceDiscreteDTO;
 import org.registrator.community.dto.ResourceLinearDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
+import org.registrator.community.dto.UserDTO;
+import org.registrator.community.entity.Address;
 import org.registrator.community.entity.Area;
 import org.registrator.community.entity.DiscreteValue;
 import org.registrator.community.entity.LineSize;
+import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.StoreOfDiscreteValues;
@@ -179,32 +184,79 @@ public class RegistratorServiceImpl implements RegistratorService{
 		transaction.commit();
 		session.close();		
 	}
-// there will be changed
+//
 	@Override
-	public List<ResourceTypeDao> showAllTypeOfResources() {
+	public List<ResourceTypeDTO> showAllTypeOfResources() {
+		List<ResourceTypeDTO> resourceTypeDTO = new ArrayList<ResourceTypeDTO>();
+		
+		List<ResourceType> resourceType = DaoFactory.get().getResourceTypeDao().getAll();
+		List<LineSize> lineSizeList = DaoFactory.get().getLineSizeDao().getAll();
+		List<LinearParameterDTO> linearParameterDTOList = new ArrayList<LinearParameterDTO>();
+		List<DiscreteParameterDTO> discreteParameterDTOList = new ArrayList<DiscreteParameterDTO>();
+		List<DiscreteValue> discreteValueList = DaoFactory.get().getDiscreteValueDao().getAll();
 
+		// Add linear parameters to DTO class
+		for (LineSize ls: lineSizeList) {
+			LinearParameterDTO lpDTO = new LinearParameterDTO();
+			lpDTO.setDescription(ls.getDescription());
+			lpDTO.setUnitName(ls.getUnitName());
+			linearParameterDTOList.add(lpDTO);
+		}
 		
-		List<ResourceTypeDao> listResType = new ArrayList<ResourceTypeDao>();
-		RegistratorService rs = new RegistratorServiceImpl();
-		listResType = rs.showAllTypeOfResources();
+		// Add discrete parameters to DTO class
+		for (DiscreteValue dv: discreteValueList) {
+			DiscreteParameterDTO dpDTO = new DiscreteParameterDTO();
+			dpDTO.setDescription(dv.getDescription());
+			dpDTO.setUnitName(dv.getUnitName());
+			discreteParameterDTOList.add(dpDTO);
+		}
+		// Add ResourceType to DTO class
+		for (ResourceType rt : resourceType) {
+			ResourceTypeDTO rtDTO = new ResourceTypeDTO();
+			rtDTO.setDiscreteParameters(discreteParameterDTOList);
+			rtDTO.setLinearParameters(linearParameterDTOList);
+			rtDTO.setTypeName(rt.getTypeName());
+			resourceTypeDTO.add(rtDTO);
+		}
 
-		
-		
-		return listResType;	
+		return resourceTypeDTO;
 	}
 
-// // there will be changed
+//
+    // the implementation of this method is not finished yet. Anyone of us can make changes here
 	@Override
-	public List<ResourceDao> showAllResources() {
+	public ResourceDTO showResourceByIdentifier(String identifier){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
 		
-		List <ResourceDao> listRes = new ArrayList<ResourceDao>();
-		RegistratorService rs = new RegistratorServiceImpl();
-		listRes = rs.showAllResources();
+		ResourceDTO resourceDTO = new ResourceDTO(null, identifier, identifier, null, null, identifier, identifier, null, null, null);
+		Resource resource = (Resource) session.createCriteria(Resource.class)
+                .add(Restrictions.eq("identifier", identifier)).uniqueResult();
+	//	Area area = (Area) session.createCriteria(Area.class)
+	
 		
-		
-		
-		return listRes;
-		
+		transaction.commit();
+		session.close();
+		return null;
 	}
+
+	
+	// the implementation of this method is not finished yet. Anyone of us can make changes here
+	@Override
+	public List<ResourceDTO> showAllResources() {
+	
+		
+		
+		
+	List <ResourceDTO> listRes = new ArrayList<ResourceDTO>();
+	RegistratorService rs = new RegistratorServiceImpl();
+	listRes = rs.showAllResources();
+
+	
+	
+	
+	return listRes;
+	}
+	
 
 }

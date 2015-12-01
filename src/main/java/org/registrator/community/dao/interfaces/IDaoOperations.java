@@ -17,6 +17,7 @@ public void delete(T entity);
 public List<T> getAll();
 
 public void deleteAll();
-	
-		
+
+public T findByIdentifier(String entityIdentifier);		
+
 }

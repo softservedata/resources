@@ -24,6 +24,22 @@ public class ResourceDTO {
 	private List<ResourceLinearDTO> resourceLinear;
 	private List<ResourceDiscreteDTO> resourceDiscrete;
 	
+	
+	
+	public ResourceDTO(ResourceTypeDTO resourceType, String identifier, String registratorName, Date date,
+			ResourceStatus status, String reasonInclusion, String tomeIdentifier, ResourceAreaDTO resourceArea,
+			List<ResourceLinearDTO> resourceLinear, List<ResourceDiscreteDTO> resourceDiscrete) {
+		this.resourceType = resourceType;
+		this.identifier = identifier;
+		this.registratorName = registratorName;
+		this.date = date;
+		this.status = status;
+		this.reasonInclusion = reasonInclusion;
+		this.tomeIdentifier = tomeIdentifier;
+		this.resourceArea = resourceArea;
+		this.resourceLinear = resourceLinear;
+		this.resourceDiscrete = resourceDiscrete;
+	}
 	public ResourceTypeDTO getResourceType() {
 		return resourceType;
 	}
