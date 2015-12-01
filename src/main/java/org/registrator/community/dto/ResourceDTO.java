@@ -1,11 +1,11 @@
 package org.registrator.community.dto;
 
+import org.registrator.community.entity.ResourceStatus;
+
 import java.util.Date;
 import java.util.List;
 
 public class ResourceDTO {
-	
-	public enum ResourceStatus {ACTIVE, UNCHECKED, DENIED, OBSOLETE}
 	
 	private ResourceTypeDTO resourceType;
 	private String identifier;

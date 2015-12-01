@@ -2,19 +2,23 @@ package org.registrator.community.dao.interfaces;
 
 import java.util.List;
 
-public interface IDaoOperations <T> {
-	
-public void add(T entity);
+public interface IDaoOperations<T> {
 
-public void update(T entity);
+    public void add(T entity);
 
-public T findById(Integer entityId);
+    public void update(T entity);
 
-public void delete(T entity);
+    public T findById(Integer entityId);
 
-public List<T> getAll();
+    public void delete(T entity);
 
-public void deleteAll();
-	
-		
+    public List<T> getAll();
+
+    public List<T> getAllByResourceId(Integer resourceId);
+
+    public List<T> getAllByResourceTypeId(Integer resourceTypeId);
+
+    public void deleteAll();
+
+
 }
