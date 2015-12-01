@@ -24,16 +24,36 @@ public class AdminServiceImpl implements AdminService, SearchService {
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
 		List<User> userList = DaoFactory.get().getUserDao().getAll();
 
+		List<PassportDTO> passportDtoList = getPassportDto();
+		List<AddressDTO> addressDtoList = getAddressDto();
+
+		int i=0;
+		for (User userEntity : userList) {
+			UserDTO userDto = new UserDTO();
+			userDto.setAddress(addressDtoList.get(i));
+			userDto.setEmail(userEntity.getEmail());
+			userDto.setFirstName(userEntity.getFirstName());
+			userDto.setLastName(userEntity.getLastName());
+			userDto.setLogin(userEntity.getLogin());
+			userDto.setMiddleName(userEntity.getMiddleName());
+			userDto.setPassport(passportDtoList.get(i));
+			userDto.setPassword(userEntity.getPassword());
+			userDto.setRole(userEntity.getRole());
+			userDto.setStatus(userEntity.getStatus().toString());
+			userDtoList.add(userDto);
+			i++;
+
+		}
+
+		return userDtoList;
+	}
+
+	// Method for receive passport information from data base
+	public List<PassportDTO> getPassportDto() {
 		List<PassportInfo> passportInfoList = DaoFactory.get()
 				.getPassportInfoDao().getAll();
 		List<PassportDTO> passportDtoList = new ArrayList<PassportDTO>();
 
-		List<AddressDTO> addressDtoList = new ArrayList<AddressDTO>();
-		List<Address> addressList = DaoFactory.get().getAddressDao().getAll();
-
-		// Role role = new Role("Admin");
-
-		// Add passport info to DTO class
 		for (PassportInfo passportEntity : passportInfoList) {
 			PassportDTO passportDto = new PassportDTO();
 			passportDto.setNumber(passportEntity.getNumber());
@@ -42,7 +62,16 @@ public class AdminServiceImpl implements AdminService, SearchService {
 			passportDto.setSeria(passportEntity.getSeria());
 			passportDtoList.add(passportDto);
 		}
-		// Add address info to DTO class
+
+		return passportDtoList;
+
+	}
+
+	// Method for receive address information from data base
+	public List<AddressDTO> getAddressDto() {
+		List<AddressDTO> addressDtoList = new ArrayList<AddressDTO>();
+		List<Address> addressList = DaoFactory.get().getAddressDao().getAll();
+
 		for (Address addressEntity : addressList) {
 			AddressDTO addressDto = new AddressDTO();
 			addressDto.setBuilding(addressEntity.getBuilding());
@@ -54,24 +83,9 @@ public class AdminServiceImpl implements AdminService, SearchService {
 			addressDto.setStreet(addressEntity.getStreet());
 			addressDtoList.add(addressDto);
 		}
-		// Add User Iinfo to DTO class
-		for (User userEntity : userList) {
-			UserDTO userDto = new UserDTO();
-			userDto.setAddress(addressDtoList);
-			userDto.setEmail(userEntity.getEmail());
-			userDto.setFirstName(userEntity.getFirstName());
-			userDto.setLastName(userEntity.getLastName());
-			userDto.setLogin(userEntity.getLogin());
-			userDto.setMiddleName(userEntity.getMiddleName());
-			userDto.setPassport(passportDtoList);
-			userDto.setPassword(userEntity.getPassword());
-			userDto.setRole(userEntity.getRole());
-			userDto.setStatus(userEntity.getStatus().toString());
-			userDtoList.add(userDto);
 
-		}
+		return addressDtoList;
 
-		return userDtoList;
 	}
 
 	@Override
@@ -98,8 +112,7 @@ public class AdminServiceImpl implements AdminService, SearchService {
 		User user = DaoFactory.get().getUserDao()
 				.findByLogin(userDto.getLogin());
 		List<Role> roleList = DaoFactory.getDaoFactory().getRoleDao().getAll();
-		
-		
+
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter key");

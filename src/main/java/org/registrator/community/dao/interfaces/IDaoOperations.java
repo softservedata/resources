@@ -18,11 +18,6 @@ public interface IDaoOperations<T> {
 
 	public void deleteAll();
 
-<<<<<<< HEAD
-=======
-public void deleteAll();
+	public T findByIdentifier(String entityIdentifier);
 
-public T findByIdentifier(String entityIdentifier);		
-
->>>>>>> ab408ff564090a4dba045f09813d5d99026e3dac
 }

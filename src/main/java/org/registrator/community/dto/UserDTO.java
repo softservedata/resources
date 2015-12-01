@@ -7,9 +7,6 @@ import org.registrator.community.entity.Role;
 
 public class UserDTO implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String firstName;
 	private String lastName;
@@ -19,8 +16,8 @@ public class UserDTO implements Serializable {
 	private String password;
 	private String email;
 	private String status;
-	private List<AddressDTO> address;
-	private List<PassportDTO> passport;
+	private AddressDTO address;
+	private PassportDTO passport;
 
 	public String getFirstName() {
 		return firstName;
@@ -86,19 +83,19 @@ public class UserDTO implements Serializable {
 		this.status = status;
 	}
 
-	public List<AddressDTO> getAddress() {
+	public AddressDTO getAddress() {
 		return address;
 	}
 
-	public void setAddress(List<AddressDTO> address) {
+	public void setAddress(AddressDTO address) {
 		this.address = address;
 	}
 
-	public List<PassportDTO> getPassport() {
+	public PassportDTO getPassport() {
 		return passport;
 	}
 
-	public void setPassport(List<PassportDTO> passport) {
+	public void setPassport(PassportDTO passport) {
 		this.passport = passport;
 	}
 

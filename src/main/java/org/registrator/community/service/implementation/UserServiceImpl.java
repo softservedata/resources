@@ -109,8 +109,8 @@ public class UserServiceImpl implements UserService, SearchService {
 //        Integer id = DaoFactory.get().getUserDao().add(userEntity);
 //        userEntity.setUserId(id);
         
-        PassportDTO passDTO = user.getPassport().get(user.getPassport().size()-1); 
-        AddressDTO addressDTO = user.getAddress().get(user.getAddress().size()-1); 
+        PassportDTO passDTO = user.getPassport(); 
+        AddressDTO addressDTO = user.getAddress(); 
         
         PassportInfo pass = new PassportInfo(userEntity, passDTO.getSeria(), 
                 passDTO.getNumber(), passDTO.getPublished_by_data());

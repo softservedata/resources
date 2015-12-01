@@ -167,8 +167,7 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 		return element;
 	}
 
-<<<<<<< HEAD
-=======
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public T findByIdentifier(String entityIdentifier) {
@@ -193,6 +192,6 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 		}
 		return element;
 	}
->>>>>>> ab408ff564090a4dba045f09813d5d99026e3dac
+
 
 }

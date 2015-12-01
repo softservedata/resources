@@ -30,10 +30,6 @@ public interface AdminService {
 		
 		// find by last name
 		
-		// change role
-		
-		// change status
-		
 		// register new user
 		
 		// register new tom
