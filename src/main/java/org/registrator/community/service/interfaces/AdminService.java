@@ -3,7 +3,7 @@ package org.registrator.community.service.interfaces;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
-import org.registrator.community.entity.User;
+
 
 public interface AdminService {
 	
@@ -11,10 +11,11 @@ public interface AdminService {
 		
 		public List<UserDTO> getAllUsers();
 		
-		public UserDTO blockUser(UserDTO userDto);
+		public UserDTO changeUserStatus(UserDTO userDto);
 		
 		public UserDTO changeRole(UserDTO userDto) ;
-		
+
+
 //		public List<User> getUserByRoleName(String role);
 //		
 //		public List<User> getUserByPortion(int from, int quantity);
