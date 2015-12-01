@@ -11,9 +11,13 @@ public interface AdminService {
 		
 		public List<UserDTO> getAllUsers();
 		
-		public List<User> getUserByRoleName(String role);
+		public UserDTO blockUser(UserDTO userDto);
 		
-		public List<User> getUserByPortion(int from, int quantity);
+		public UserDTO changeRole(UserDTO userDto) ;
+		
+//		public List<User> getUserByRoleName(String role);
+//		
+//		public List<User> getUserByPortion(int from, int quantity);
 		
 		// show all (users+registers+admin?)
 		

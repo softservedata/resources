@@ -176,7 +176,7 @@ public class App {
 //		RegistratorService registratorService = new RegistratorServiceImpl();
 //		registratorService.addResource(resourceDTO);
 		
-//		Role role = new Role("USER","description2");
+		Role role = new Role("USER","description2");
 //		RoleDao  roleDao = DaoFactory.get().getRoleDao();
 //		roleDao.add(role);
 //		
@@ -191,8 +191,19 @@ public class App {
 //		user2.setRole(role);
 //		user2.setStatus(UserStatus.valueOf("UNBLOCK"));
 //		userDao.add(user2);
-		
-		//InquiryListDTO
+
+		UserDao userDao = DaoFactory.get().getUserDao();
+		User user2 = new User();
+		user2.setEmail("AnyaNovotrts4@gmail.com");
+		user2.setFirstName("Antrtn4");
+		user2.setLastName("lasttrtName4");
+		user2.setLogin("logtrtin4");
+		user2.setMiddleName("middtrtleName4");
+		user2.setPassword("passwrttord4");
+		user2.setRole(role);
+		user2.setStatus(UserStatus.valueOf("BLOCK"));
+		userDao.add(user2);
+
 		
 		transaction.commit();
 		session.close();

@@ -13,7 +13,8 @@ public class Role implements Serializable {
     @GeneratedValue
     private Integer roleId;
 
-    @Column(name = "name", nullable = false, columnDefinition = "ENUM('USER','REGISTRATOR','ADMIN')")
+	
+    @Column(name = "name", unique = true, nullable = false, columnDefinition = "ENUM('USER','REGISTRATOR','ADMIN')")
 	@Enumerated(EnumType.STRING) 
 	private Name name;
     

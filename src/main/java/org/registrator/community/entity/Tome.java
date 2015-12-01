@@ -9,6 +9,11 @@ import javax.persistence.*;
 @Table(name = "tomes")
 public class Tome implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "tome_id")
 	@GeneratedValue
@@ -17,9 +22,6 @@ public class Tome implements Serializable {
 	@Column(name = "identifier", nullable = false)
 	private String identifier;
 
-	@Column(name = "name", nullable = false)
-	private String name;
-	
 	@ManyToOne
 	@JoinColumn(name = "registrator_id", nullable = false)
 	private User user;
@@ -42,14 +44,6 @@ public class Tome implements Serializable {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public User getUser() {
