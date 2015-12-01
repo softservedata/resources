@@ -11,6 +11,7 @@ import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.User;
 import org.registrator.community.service.implementation.AdminServiceImpl;
 import org.registrator.community.service.implementation.UserServiceImpl;
 import org.registrator.community.service.interfaces.AdminService;
@@ -19,6 +20,50 @@ import org.registrator.community.service.interfaces.UserService;
 public class App1 {
 
 	public static void main(String[] args) {
+
+
+	/*	Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		//
+		// // Save new User in Database
+		// List<AddressDTO> addressList = new ArrayList<AddressDTO>();
+		// AddressDTO address = new AddressDTO();
+		// List<PassportDTO> passportList = new ArrayList<PassportDTO>();
+		// PassportDTO passport = new PassportDTO();
+		// //User userEntity= new User();
+		// List<Role> roleList = DaoFactory.get().getRoleDao().getAll();
+		//
+		//
+		// address.setBuilding("35");
+		// address.setCity("Lviv");
+		// address.setDistrict("District");
+		// address.setFlat("44");
+		// address.setPostcode("79026");
+		// address.setRegion("Lviv");
+		// address.setStreet("Street");
+		//
+		// addressList.add(address);
+		//
+		// passport.setPublished_by_data("Publisaasdasdsdasdhed_aasdaby_data");
+		// passport.setSeria("Serasasdsdasdasdadasdia");
+		// passport.setNumber(2222234);
+		// passportList.add(passport);
+		//
+		// UserService user = new UserServiceImpl();
+		// UserDTO userDTO = new UserDTO();
+		// userDTO.setFirstName("FirsadsasdasasdasddaaasdasdsdasdsdasddstName");
+		// userDTO.setLastName("LastasdasaasdasdsdasdasdasddasdasdName");
+		// userDTO.setMiddleName("asdasdasd");
+		// userDTO.setLogin("loginasasasdasdasdasdaasddasddasd");
+		// userDTO.setPassword("asdasdaasd");
+		// userDTO.setStatus("block");
+		// userDTO.setEmail("emaiaasdaasdaasasdasdadasddsdsdasdl.com");
+		// userDTO.setAddress(addressList);
+		// userDTO.setPassport(passportList);
+		// userDTO.setRole(roleList.get(2));
+		//
+		// user.addUser(userDTO);
+
 
 		 
 		
@@ -61,20 +106,45 @@ public class App1 {
 		 userDTO.setPassport(passportList);
 		 userDTO.setRole(role);
 		
+
 		user.addUser(userDTO);
+
+		user.addUser(userDTO);
+
+
+
 		List<UserDTO> userList = new ArrayList<UserDTO>();
 		AdminService admin = new AdminServiceImpl();
 		userList = admin.getAllUsers();
 
 		for (UserDTO user1 : userList) {
 			UserDTO user2 = new UserDTO();
+
 //			user2 = admin.blockUser(user1);
 			System.out.println(user1);
+
+			user2 = admin.changeUserStatus(user1);
+			user2 = admin.changeRole(user1);
+			System.out.println(user2);
+
 		}
 
+		// List<Role> roleList = null;
+		// roleList = DaoFactory.get().getRoleDao().getAll();
+		// if (DaoFactory.get().getRoleDao().isEmpty(roleList) == true) {
+		// roleList.add(new Role("USER", "do something"));
+		// roleList.add(new Role("REGISTRATOR", "do something"));
+		// roleList.add(new Role("ADMIN", "do something"));
+		// DaoFactory.get().getRoleDao().add(new Role("USER", "do something"));
+		// DaoFactory.get().getRoleDao()
+		// .add(new Role("REGISTRATOR", "do something"));
+		// DaoFactory.get().getRoleDao()
+		// .add(new Role("ADMIN", "do something"));
+		// }
+
 		//
-		// transaction.commit();
-		// session.close();
+		transaction.commit();
+		session.close();*/
 
 	}
 }

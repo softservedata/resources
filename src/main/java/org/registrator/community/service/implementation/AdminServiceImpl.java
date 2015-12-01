@@ -2,25 +2,21 @@ package org.registrator.community.service.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.registrator.community.dao.UserDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
-import org.registrator.community.dao.utils.HibernateUtil;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
+import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.entity.UserStatus;
 import org.registrator.community.service.interfaces.AdminService;
 import org.registrator.community.service.interfaces.SearchService;
 
 public class AdminServiceImpl implements AdminService, SearchService {
-
-	private UserDao userDao = DaoFactory.get().getUserDao();
 
 	@Override
 	public List<UserDTO> getAllUsers() {
@@ -79,15 +75,20 @@ public class AdminServiceImpl implements AdminService, SearchService {
 	}
 
 	@Override
-	public UserDTO blockUser(UserDTO userDto) {
+	public UserDTO changeUserStatus(UserDTO userDto) {
 
 		User user = DaoFactory.get().getUserDao()
 				.findByLogin(userDto.getLogin());
 
-		user.setStatus(UserStatus.BLOCK);
-		DaoFactory.get().getUserDao()
-				.update(user);
-		userDto.setStatus("block");
+		if (userDto.getStatus() == UserStatus.UNBLOCK.toString()) {
+			user.setStatus(UserStatus.BLOCK);
+			DaoFactory.get().getUserDao().update(user);
+			userDto.setStatus("block");
+		} else {
+			user.setStatus(UserStatus.UNBLOCK);
+			DaoFactory.get().getUserDao().update(user);
+			userDto.setStatus("unblock");
+		}
 
 		return userDto;
 	}
@@ -96,9 +97,64 @@ public class AdminServiceImpl implements AdminService, SearchService {
 	public UserDTO changeRole(UserDTO userDto) {
 		User user = DaoFactory.get().getUserDao()
 				.findByLogin(userDto.getLogin());
+		List<Role> roleList = DaoFactory.getDaoFactory().getRoleDao().getAll();
 		
 		
-		return null;
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter key");
+		int key = sc.nextInt();
+
+		if (userDto.getRole().getName().toString() == "USER") {
+			if (key == 1) {
+				user.setRole(roleList.get(1));
+				DaoFactory.get().getUserDao().update(user);
+				userDto.setRole(roleList.get(1));
+				key = 0;
+			} else {
+				if (key == 2) {
+					user.setRole(roleList.get(2));
+					DaoFactory.get().getUserDao().update(user);
+					userDto.setRole(roleList.get(2));
+					key = 0;
+				}
+			}
+
+		}
+
+		if (userDto.getRole().getName().toString() == "REGISTRATOR") {
+			if (key == 1) {
+				user.setRole(roleList.get(0));
+				DaoFactory.get().getUserDao().update(user);
+				userDto.setRole(roleList.get(0));
+				key = 0;
+			} else {
+				if (key == 2) {
+					user.setRole(roleList.get(2));
+					DaoFactory.get().getUserDao().update(user);
+					userDto.setRole(roleList.get(2));
+					key = 0;
+				}
+			}
+		}
+
+		if (userDto.getRole().getName().toString() == "ADMIN") {
+			if (key == 1) {
+				user.setRole(roleList.get(0));
+				DaoFactory.get().getUserDao().update(user);
+				userDto.setRole(roleList.get(0));
+				key = 0;
+			} else {
+				if (key == 2) {
+					user.setRole(roleList.get(1));
+					DaoFactory.get().getUserDao().update(user);
+					userDto.setRole(roleList.get(1));
+					key = 0;
+				}
+			}
+		}
+
+		return userDto;
 	}
 
 }
