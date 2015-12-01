@@ -74,15 +74,6 @@ public class AdminServiceImpl implements AdminService, SearchService {
 		return userDtoList;
 	}
 
-	@Override
-	public List<User> getUserByRoleName(String role) {
 
-		return null;
-	}
-
-	@Override
-	public List<User> getUserByPortion(int from, int quantity) {
-		return userDao.getUsersListByPortions(from, quantity);
-	}
 
 }
