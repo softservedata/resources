@@ -42,9 +42,11 @@ public class UserServiceImpl implements UserService, SearchService {
 			Integer registratorId = inquiryListDTO.getToUserId();
 			User registrator = DaoFactory.get().getUserDao().findById(registratorId);
 			inquiryEntity.setRegistrator(registrator);
+			
 			Integer resourceId = inquiryListDTO.getResourceId();
 			Resource resource = DaoFactory.get().getResourceDao().findById(resourceId);
 			inquiryEntity.setResource(resource);
+			DaoFactory.get().getInquiryDao().add(inquiryEntity);
 			tr.commit();
 			
 		} catch(HibernateException he){
@@ -66,7 +68,22 @@ public class UserServiceImpl implements UserService, SearchService {
 		Transaction tr = null;
 		
 		try{
+			Inquiry inquiryEntity = new Inquiry();
+			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
+			inquiryEntity.setDate(inquiryListDTO.getDate());			
+			Integer userId = inquiryListDTO.getFromUserId();
+			User user = DaoFactory.get().getUserDao().findById(userId);
+			inquiryEntity.setUser(user);
+			Integer registratorId = inquiryListDTO.getToUserId();
+			User registrator = DaoFactory.get().getUserDao().findById(registratorId);
+			inquiryEntity.setRegistrator(registrator);
 			
+			ResourceDTO resourceDTO = inquiryListDTO.getResource();
+			Resource resource = new RegistratorServiceImpl().addResourceNoTransaction(resourceDTO);
+			inquiryEntity.setResource(resource);
+			
+			DaoFactory.get().getInquiryDao().add(inquiryEntity);
+			tr.commit();
 			
 			
 		} catch(HibernateException he){
