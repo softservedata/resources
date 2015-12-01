@@ -25,6 +25,10 @@ public class ResourceTypeDTO {
 	public void setDiscreteParameters(List<DiscreteParameterDTO> discreteParameters) {
 		this.discreteParameters = discreteParameters;
 	}
-	
+	public String toString(){
+		return "\n\n\n" + "**************************************" + "\n" + "Тип ресурсу:" + typeName + "\n"+ "Всі лінійні параметри: " 
+	+ linearParameters + "\n"+ "Всі дискретні параметри" + discreteParameters;
+		
+	}
 	
 }
