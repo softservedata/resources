@@ -145,4 +145,14 @@ public class ResourceDTO {
 		this.resourceDiscrete = resourceDiscrete;
 	}	
 	
+	public String toString(){
+		return "\n\n\n" + "**************************************" + "\n" +
+	"Ідентифікатор ресурсу: " + identifier + "\n"+
+	"Опис ресурсу: " + description + "\n" + 
+	"Причина внесення в базу:  " + reasonInclusion + "\n" +
+	"Ім'я та прізвище реєстратора   " + registratorName + "\n"+
+	"Номер тому: " + tomeIdentifier;
+		
+	}
+	
 }

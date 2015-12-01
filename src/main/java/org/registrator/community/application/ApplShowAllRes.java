@@ -15,9 +15,6 @@ public class ApplShowAllRes {
 
 	public static void main(String[] args) {
 		
-		/*Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();*/
-		
 		List<ResourceDTO> listRes = new ArrayList<ResourceDTO>();
 		RegistratorService rs = new RegistratorServiceImpl();
 		listRes = rs.showAllResources();
@@ -31,9 +28,7 @@ public class ApplShowAllRes {
 		/*listRes
 		.stream()
 		.sorted()
-	    .forEach(System.out::println);
-		transaction.commit();
-		session.close();*/
+	    .forEach(System.out::println);*/
 	}
 
 }
