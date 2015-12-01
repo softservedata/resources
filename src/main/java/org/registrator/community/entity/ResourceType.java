@@ -11,7 +11,7 @@ public class ResourceType {
 	@GeneratedValue
 	private Integer typeId;
 
-	@Column(name = "type_name", nullable = false)
+	@Column(name = "type_name", unique = true, nullable = false)
 	private String typeName;
 
 	public ResourceType() {
