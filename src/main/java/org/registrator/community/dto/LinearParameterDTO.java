@@ -28,5 +28,6 @@ public class LinearParameterDTO {
 		return "Опис дискретних параметрів " + description + "\n" +"Одиниці виміру: " + unitName + "\n";
 		
 	}
+
 	
 }

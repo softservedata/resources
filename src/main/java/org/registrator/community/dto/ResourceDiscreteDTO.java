@@ -26,6 +26,14 @@ public class ResourceDiscreteDTO {
 		this.discreteParameterDTO = discreteParameterDTO;
 	}
 
+	public String toString() {
+		discreteParameterDTO.toString();
+		for (int i = 0, valuesSize = values.size(); i < valuesSize; i++) {
+			Double value = values.get(i);
+			System.out.println("Value " + i + ": " + value);
+		}
+		return null;
+	}
 		
 	
 	

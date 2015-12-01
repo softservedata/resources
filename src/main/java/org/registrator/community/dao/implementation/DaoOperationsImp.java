@@ -139,12 +139,12 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 	@Override
 	public List<T> getAllByResourceId(Integer resourceId) {
 		Session session=null;
-		List<T> elements=new ArrayList<T>();
+		List<T> elements=new ArrayList<>();
 
 		try{
 			session=HibernateUtil.getSessionFactory().openSession();
 			Criteria cr = session.createCriteria(elementClass);
-			cr.add(Restrictions.eq("resource_id",resourceId));
+			cr.add(Restrictions.eq("resource.id",resourceId));
 			elements = cr.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -163,12 +163,12 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 	@Override
 	public List<T> getAllByResourceTypeId(Integer resourceTypeId) {
 		Session session=null;
-		List<T> elements=new ArrayList<T>();
+		List<T> elements=new ArrayList<>();
 
 		try{
 			session=HibernateUtil.getSessionFactory().openSession();
 			Criteria cr = session.createCriteria(elementClass);
-			cr.add(Restrictions.eq("resource_type_id",resourceTypeId));
+			cr.add(Restrictions.eq("resource.type.id",resourceTypeId));
 			elements = cr.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();

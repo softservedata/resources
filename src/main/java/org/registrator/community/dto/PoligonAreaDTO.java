@@ -16,4 +16,13 @@ public class PoligonAreaDTO {
 	public void setPoints(List<PointAreaDTO> points) {
 		this.points = points;
 	}
+
+	public String toString() {
+        System.out.println("PoligonAreaDTO");
+        for (PointAreaDTO point : points) {
+			point.toString();
+		}
+		System.out.println();
+		return null;
+	}
 }

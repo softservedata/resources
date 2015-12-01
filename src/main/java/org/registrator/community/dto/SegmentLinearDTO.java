@@ -24,5 +24,10 @@ public class SegmentLinearDTO {
 		this.end = end;
 	}
 	
-	
+	public String toString() {
+        System.out.print("SegmentLinearDTO: ");
+        System.out.println(" begin: " + begin + " end: " + end);
+
+        return null;
+    }
 }
