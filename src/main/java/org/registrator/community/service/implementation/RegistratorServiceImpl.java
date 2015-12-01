@@ -297,6 +297,7 @@ public class RegistratorServiceImpl implements RegistratorService{
 		List<ResourceTypeDTO> resourceTypeDTO = new ArrayList<ResourceTypeDTO>();
 		
 		List<ResourceType> resourceType = DaoFactory.get().getResourceTypeDao().getAll();
+		
 		List<LineSize> lineSizeList = DaoFactory.get().getLineSizeDao().getAll();
 		List<LinearParameterDTO> linearParameterDTOList = new ArrayList<LinearParameterDTO>();
 		List<DiscreteParameterDTO> discreteParameterDTOList = new ArrayList<DiscreteParameterDTO>();
@@ -351,18 +352,29 @@ public class RegistratorServiceImpl implements RegistratorService{
 	// the implementation of this method is not finished yet. Anyone of us can make changes here
 	@Override
 	public List<ResourceDTO> showAllResources() {
-	
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
 		
+List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
 		
+		List<Resource> resource = DaoFactory.get().getResourceDao().getAll();
 		
-	List <ResourceDTO> listRes = new ArrayList<ResourceDTO>();
-	RegistratorService rs = new RegistratorServiceImpl();
-	listRes = rs.showAllResources();
+		for (Resource rs : resource) {
+			ResourceDTO rDTO = new ResourceDTO();
+			rDTO.setDate(rs.getDate());
+			rDTO.setDescription(rs.getDesctiption());
+			rDTO.setIdentifier(rs.getIdentifier());
+			rDTO.setReasonInclusion(rs.getReasonInclusion());
+			rDTO.setRegistratorName(rs.getUser().getFirstName()+ "   " + rs.getUser().getLastName());
+			rDTO.setTomeIdentifier(rs.getTome().getIdentifier());
+			resourceDTO.add(rDTO);
+		}
 
+		transaction.commit();
+		session.close();		
 	
 	
-	
-	return listRes;
+	return resourceDTO;
 	}
 	
 
