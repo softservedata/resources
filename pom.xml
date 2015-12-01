@@ -4,7 +4,7 @@
 	<groupId>org.registrator.community</groupId>
 	<artifactId>resources</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<name>resources</name>
 	<url>http://maven.apache.org</url>
@@ -28,6 +28,7 @@
 		<!-- - - - - - - - - - - -->
 		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
 		<bytecode.javassist.version>3.12.1.GA</bytecode.javassist.version>
+		<jackson-version>2.4.4</jackson-version>
 		<!-- - - - - - - - - - - -->
 		<testng.reports.directory>./target/surefire-reports/test-output</testng.reports.directory>
 		<maven.resources.plugin.version>2.7</maven.resources.plugin.version>
@@ -84,6 +85,13 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${org.hibernate.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${org.hibernate.version}</version>
+		</dependency>
+
 		<!-- - - - Web - - - -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -143,6 +151,15 @@
 			<artifactId>javassist</artifactId>
 			<version>${bytecode.javassist.version}</version>
 		</dependency>
+		<!-- Jackson JSON Processor -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-version}</version>
+		</dependency>
+
+
+
 	</dependencies>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<build>
