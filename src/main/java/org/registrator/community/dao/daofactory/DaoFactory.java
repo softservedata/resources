@@ -33,7 +33,7 @@ public final class DaoFactory {
 	private TomeDao tomeDao;
 	private UserDao userDao;
 
-	private static DaoFactory daoFactory;
+	private static DaoFactory daoFactory = null;
 
 	private DaoFactory() {
 		addressDao = new AddressDao();

@@ -30,17 +30,18 @@ public class UserServiceImpl implements UserService, SearchService {
 			
 			Inquiry inquiryEntity = new Inquiry();
 			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
-			inquiryEntity.setDate(inquiryListDTO.getDate());
-			//inquiryEntity.setUser(inquiryListDTO.getFromUserId());
+			inquiryEntity.setDate(inquiryListDTO.getDate());			
 			Integer userId = inquiryListDTO.getFromUserId();
 			User user = DaoFactory.get().getUserDao().findById(userId);
 			inquiryEntity.setUser(user);
 			Integer registratorId = inquiryListDTO.getToUserId();
 			User registrator = DaoFactory.get().getUserDao().findById(registratorId);
 			inquiryEntity.setRegistrator(registrator);
+			
 			Integer resourceId = inquiryListDTO.getResourceId();
 			Resource resource = DaoFactory.get().getResourceDao().findById(resourceId);
 			inquiryEntity.setResource(resource);
+			DaoFactory.get().getInquiryDao().add(inquiryEntity);
 			tr.commit();
 			
 		} catch(HibernateException he){
@@ -62,7 +63,22 @@ public class UserServiceImpl implements UserService, SearchService {
 		Transaction tr = null;
 		
 		try{
+			Inquiry inquiryEntity = new Inquiry();
+			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
+			inquiryEntity.setDate(inquiryListDTO.getDate());			
+			Integer userId = inquiryListDTO.getFromUserId();
+			User user = DaoFactory.get().getUserDao().findById(userId);
+			inquiryEntity.setUser(user);
+			Integer registratorId = inquiryListDTO.getToUserId();
+			User registrator = DaoFactory.get().getUserDao().findById(registratorId);
+			inquiryEntity.setRegistrator(registrator);
 			
+			ResourceDTO resourceDTO = inquiryListDTO.getResource();
+			Resource resource = new RegistratorServiceImpl().addResourceNoTransaction(resourceDTO);
+			inquiryEntity.setResource(resource);
+			
+			DaoFactory.get().getInquiryDao().add(inquiryEntity);
+			tr.commit();
 			
 			
 		} catch(HibernateException he){
@@ -75,6 +91,36 @@ public class UserServiceImpl implements UserService, SearchService {
 			}
 		}		
 	}
+	
+	@Override
+    public void addUser(UserDTO user) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        User userEntity = new User(user.getLogin(),user.getPassword(),user.getRole(),
+                user.getFirstName(),user.getLastName(),user.getMiddleName(),user.getEmail(),user.getStatus());
+
+        DaoFactory.get().getUserDao().add(userEntity);    
+        
+//        Integer id = DaoFactory.get().getUserDao().add(userEntity);
+//        userEntity.setUserId(id);
+        
+        PassportDTO passDTO = user.getPassport(); 
+        AddressDTO addressDTO = user.getAddress(); 
+        
+        PassportInfo pass = new PassportInfo(userEntity, passDTO.getSeria(), 
+                passDTO.getNumber(), passDTO.getPublished_by_data());
+        DaoFactory.get().getPassportInfoDao().add(pass);
+        
+        Address address = new Address(userEntity, addressDTO.getPostcode(), addressDTO.getRegion(), addressDTO.getDistrict(),
+                addressDTO.getCity(), addressDTO.getStreet(), addressDTO.getBuilding(), addressDTO.getFlat());
+        
+        DaoFactory.get().getAddressDao().add(address);
+        
+        transaction.commit();
+        session.close();
+
+        
+    }
 
 
 	@Override

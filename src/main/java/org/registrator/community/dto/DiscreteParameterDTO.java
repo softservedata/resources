@@ -27,4 +27,9 @@ public class DiscreteParameterDTO {
 		this.unitName = unitName;
 	}
 	
+	public String toString(){
+		return "Опис дискретних параметрів: " + description + "\n"+ "Одиниці виміру: " + unitName + "\n";
+		
+	}
+	
 }

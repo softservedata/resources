@@ -12,5 +12,6 @@ public interface UserService {
     // get information about resource from DB;
 	ResourceDTO getResource(Integer resourceId);
 
+	public void addUser(UserDTO user);
 		
 }

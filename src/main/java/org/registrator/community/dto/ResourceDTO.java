@@ -9,7 +9,7 @@ public class ResourceDTO {
 	
 	private ResourceTypeDTO resourceType;
 	private String identifier;
-	
+	private String description;
 	private String registratorName;
 	//private UserDTO registrator;
 	private Date date;
@@ -18,12 +18,34 @@ public class ResourceDTO {
 	//private Integer tomeIdentifier;
 	private String tomeIdentifier;
 	
+	
 	private ResourceAreaDTO resourceArea;
 //	private ResourceLinearDTO resourceLinear;
 //	private ResourceDiscreteDTO resourceDiscrete;
 	private List<ResourceLinearDTO> resourceLinear;
 	private List<ResourceDiscreteDTO> resourceDiscrete;
 	
+	
+	
+	public ResourceDTO() {
+	
+	}
+	public ResourceDTO(ResourceTypeDTO resourceType, String identifier, String description, String registratorName, Date date,
+			ResourceStatus status, String reasonInclusion, String tomeIdentifier, ResourceAreaDTO resourceArea,
+			List<ResourceLinearDTO> resourceLinear, List<ResourceDiscreteDTO> resourceDiscrete) {
+		this.resourceType = resourceType;
+		this.identifier = identifier;
+		this.description = description;
+		this.registratorName = registratorName;
+		this.date = date;
+		this.status = status;
+		this.reasonInclusion = reasonInclusion;
+		this.tomeIdentifier = tomeIdentifier;
+		this.resourceArea = resourceArea;
+		this.resourceLinear = resourceLinear;
+		this.resourceDiscrete = resourceDiscrete;
+		
+	}
 	public ResourceTypeDTO getResourceType() {
 		return resourceType;
 	}
@@ -70,6 +92,8 @@ public class ResourceDTO {
 		this.reasonInclusion = reasonInclusion;
 	}
 	
+	
+	
 /*	public Integer getTomeIdentifier() {
 		return tomeIdentifier;
 	}
@@ -77,6 +101,12 @@ public class ResourceDTO {
 		this.tomeIdentifier = tomeIdentifier;
 	}*/
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public ResourceAreaDTO getResourceArea() {
 		return resourceArea;
 	}
@@ -114,5 +144,15 @@ public class ResourceDTO {
 	public void setResourceDiscrete(List<ResourceDiscreteDTO> resourceDiscrete) {
 		this.resourceDiscrete = resourceDiscrete;
 	}	
+	
+	public String toString(){
+		return "\n\n\n" + "**************************************" + "\n" +
+	"Ідентифікатор ресурсу: " + identifier + "\n"+
+	"Опис ресурсу: " + description + "\n" + 
+	"Причина внесення в базу:  " + reasonInclusion + "\n" +
+	"Ім'я та прізвище реєстратора   " + registratorName + "\n"+
+	"Номер тому: " + tomeIdentifier;
+		
+	}
 	
 }

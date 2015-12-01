@@ -4,21 +4,24 @@ import java.util.List;
 
 public interface IDaoOperations<T> {
 
-    public void add(T entity);
+	public void add(T entity);
 
-    public void update(T entity);
+	public void update(T entity);
 
-    public T findById(Integer entityId);
+	public T findById(Integer entityId);
 
-    public void delete(T entity);
+	public T findByLogin(String entityLogin);
 
-    public List<T> getAll();
+	public void delete(T entity);
+
+	public List<T> getAll();
+
+	public void deleteAll();
+
+	public T findByIdentifier(String entityIdentifier);
 
     public List<T> getAllByResourceId(Integer resourceId);
 
     public List<T> getAllByResourceTypeId(Integer resourceTypeId);
-
-    public void deleteAll();
-
 
 }

@@ -26,12 +26,12 @@ public class UserDao extends DaoOperationsImp<User> implements IUserDao {
 		try {
 
 			session = HibernateUtil.getSessionFactory().openSession();
+			@SuppressWarnings("unused")
 			Transaction transaction = session.beginTransaction();
 			Query query = session.createQuery("from User");
 			query.setFetchSize(from);
 			query.setMaxResults(quantity);
 			return query.list();
-			
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -44,7 +44,5 @@ public class UserDao extends DaoOperationsImp<User> implements IUserDao {
 		}
 		return null;
 	}
-	
-	
 
 }
