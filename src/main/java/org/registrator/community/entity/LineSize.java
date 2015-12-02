@@ -27,6 +27,18 @@ public class LineSize implements Serializable {
 	public LineSize() {
 		
 	}
+	
+	
+
+	public LineSize(ResourceType resourceType, String description,
+			String unitName) {
+		super();
+		this.resourceType = resourceType;
+		this.description = description;
+		this.unitName = unitName;
+	}
+
+
 
 	public Integer getLinesSizeId() {
 		return linesSizeId;
