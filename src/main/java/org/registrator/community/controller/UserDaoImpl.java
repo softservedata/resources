@@ -38,3 +38,4 @@ public class UserDaoImpl implements UserDaoTest {
         return entityManager.merge(user);
     }
 }
+

@@ -169,4 +169,14 @@ public class AdminServiceImpl implements AdminService, SearchService {
 
 		return userDto;
 	}
+
+	@Override
+	public void showAllUsers(List<UserDTO> userDtoList){
+	
+		for (UserDTO userDto : userDtoList) {
+			System.out.println(userDto);
+			System.out.println();
+		}
+		
+	}
 }

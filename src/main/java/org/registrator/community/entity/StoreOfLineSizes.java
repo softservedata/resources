@@ -29,6 +29,18 @@ public class StoreOfLineSizes {
 	public StoreOfLineSizes() {
 		
 	}
+	
+	
+
+	public StoreOfLineSizes(Resource resource, LineSize lineSize, Double minValue,
+			Double maxValue) {
+		this.resource = resource;
+		this.lineSize = lineSize;
+		this.minValue = minValue;
+		this.maxValue = maxValue;
+	}
+
+
 
 	public Integer getStoreOfLineSizesId() {
 		return StoreOfLineSizesId;

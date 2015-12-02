@@ -15,6 +15,13 @@ public class MainPageController {
 	@Autowired
 	private UserTestService testService;
 
+	//private TestService testService;
+	
+	@RequestMapping(value="/aaa",method=RequestMethod.GET)
+	public String getOtherPage(){
+		return "index";
+	}
+
 	@RequestMapping(value="/",method=RequestMethod.GET)
 	public String getMainPage(){
 		return "index";
@@ -23,3 +30,4 @@ public class MainPageController {
 
 
 }
+

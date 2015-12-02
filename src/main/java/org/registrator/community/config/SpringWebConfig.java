@@ -14,6 +14,8 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan({"org.registrator.community.controller"})
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	
+	
+	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resource/**")
@@ -31,3 +33,4 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	}
 
 }
+

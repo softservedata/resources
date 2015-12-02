@@ -29,6 +29,13 @@ public class Tome implements Serializable {
 	public Tome() {
 		
 	}
+	
+	public Tome(User user, String identifier) {
+		this.identifier = identifier;
+		this.user = user;
+	}
+
+
 
 	public Integer getTomeId() {
 		return tomeId;

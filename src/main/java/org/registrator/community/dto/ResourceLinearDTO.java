@@ -27,6 +27,14 @@ public class ResourceLinearDTO {
 		this.linearParameterDTO = linearParameterDTO;
 	}
 	
-	
+	public String toString() {
+        StringBuilder result = new StringBuilder();
+		result.append("---- Лінійні параметри -----\n");
+		result.append("Лінійний параметр: " + linearParameterDTO.toString() + "\n");
+		for (SegmentLinearDTO segment : segments) {
+			result.append(segment.toString());
+		}
+		return result.toString();
+	}
 	
 }

@@ -16,5 +16,15 @@ public class ResourceAreaDTO {
 	public void setPoligons(List<PoligonAreaDTO> poligons) {
 		this.poligons = poligons;
 	}
+
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("----- Площі одного ресурсу ----- \n");
+		for (PoligonAreaDTO poligon : poligons) {
+			result.append(poligon.toString());
+		}
+
+		return result.toString();
+	}
 	
 }

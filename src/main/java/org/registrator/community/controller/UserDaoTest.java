@@ -16,3 +16,4 @@ public interface UserDaoTest {
 
     public User update(User user);
 }
+
