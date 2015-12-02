@@ -125,6 +125,12 @@ public class UserServiceImpl implements UserService, SearchService {
 
     }
 
+    /**
+     * Method collect all the information about resource from data base
+     * and create object of the resourceDTO class
+     * @param resourceId - unique id of the resource
+     * @return object of the resourceDTO class
+     */
     @Override
     public ResourceDTO getResource(Integer resourceId) {
         Session session = null;
@@ -136,6 +142,7 @@ public class UserServiceImpl implements UserService, SearchService {
             session = HibernateUtil.getSessionFactory().openSession();
             tr = session.beginTransaction();
 
+            // Creating of all Lists and objects of ResourceDTO
             ResourceTypeDTO resourceTypeDTO = new ResourceTypeDTO();
 
             LinearParameterDTO linearParameterDTO = new LinearParameterDTO();
