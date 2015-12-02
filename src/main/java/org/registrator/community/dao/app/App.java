@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.registrator.community.dao.RoleDao;
+import org.registrator.community.dao.UserDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dao.utils.HibernateUtil;
 import org.registrator.community.dto.AddressDTO;
@@ -22,7 +24,10 @@ import org.registrator.community.dto.ResourceLinearDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.entity.Role;
 import org.registrator.community.entity.Tome;
+import org.registrator.community.entity.User;
+import org.registrator.community.entity.UserStatus;
 import org.registrator.community.service.implementation.RegistratorServiceImpl;
 import org.registrator.community.service.implementation.UserServiceImpl;
 import org.registrator.community.service.interfaces.RegistratorService;
@@ -177,21 +182,21 @@ public class App {
 //		registratorService.addResource(resourceDTO);
 
 		
-//		Role role = new Role("USER","description2");
-//		RoleDao  roleDao = DaoFactory.get().getRoleDao();
-//		roleDao.add(role);
-//		
-//		UserDao userDao = DaoFactory.get().getUserDao();
-//		User user2 = new User();
-//		user2.setEmail("AnyaNovos2@gmail.com");
-//		user2.setFirstName("Ann1");
-//		user2.setLastName("lastName4");
-//		user2.setLogin("login2");
-//		user2.setMiddleName("middleName4");
-//		user2.setPassword("password4");
-//		user2.setRole(role);
-//		user2.setStatus(UserStatus.valueOf("UNBLOCK"));
-//		userDao.add(user2);
+		Role role = new Role("USER","description2");
+		RoleDao  roleDao = DaoFactory.get().getRoleDao();
+		roleDao.add(role);
+		
+		UserDao userDao = DaoFactory.get().getUserDao();
+		User user2 = new User();
+		user2.setEmail("AnyaNovos2@gmail.com");
+		user2.setFirstName("Ann1");
+		user2.setLastName("lastName4");
+		user2.setLogin("login2");
+		user2.setMiddleName("middleName4");
+		user2.setPassword("password4");
+		user2.setRole(role);
+		user2.setStatus(UserStatus.valueOf("UNBLOCK"));
+		userDao.add(user2);
 
 
 		/*UserDao userDao = DaoFactory.get().getUserDao();
