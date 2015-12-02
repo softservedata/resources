@@ -4,17 +4,34 @@ import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.UserStatus;
 
 public interface AdminService {
 
-	public List<UserDTO> getAllUsers();
+		public List<UserDTO> getAllUsers();
 
-	public String changeUserStatus(String login);
+		public String changeUserStatus(String login);
+		
+		public Role changeRole(String login);
+		
+		public void showAllUsers(List<UserDTO> userDtoList);
 
-	public Role changeRole(String login);
+//		public List<User> getUserByRoleName(String role);
+//		
+//		public List<User> getUserByPortion(int from, int quantity);
 
-	public void showAllUsers(List<UserDTO> userDtoList);
+		// show inactive users???
 
-	// register new tom
+		// show all registers
+
+		// find by last name
+
+		// register new user
+
+		// register new tom
+
+
 
 }
+
+

@@ -473,7 +473,7 @@ public class RegistratorServiceImpl implements RegistratorService {
 		
 		// adding all information in ResourceDTO object
 		ResourceDTO resourceDTO = new ResourceDTO();
-		resourceDTO.setResourceType(new ResourceTypeDTO());
+		resourceDTO.setResourceType(resTypeDTO);
         resourceDTO.setIdentifier(resource.getIdentifier());
         resourceDTO.setDescription(resource.getDesctiption());
         resourceDTO.setDate(resource.getDate());
