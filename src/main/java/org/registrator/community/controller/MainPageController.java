@@ -1,4 +1,3 @@
-
 package org.registrator.community.controller;
 
 
@@ -11,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-public class TestController {
+public class MainPageController {
 	
 	@Autowired
+	private UserTestService testService;
+
 	//private TestService testService;
 	
 	@RequestMapping(value="/aaa",method=RequestMethod.GET)
