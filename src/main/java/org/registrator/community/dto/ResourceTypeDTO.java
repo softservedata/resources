@@ -27,7 +27,7 @@ public class ResourceTypeDTO {
 	}
 	public String toString(){
 		return "\n\n\n" + "**************************************" + "\n"
-				+ "Тип ресурсу:" + typeName + "\n"
+				+ "Тип ресурсу:" + getTypeName() + "\n"
 				+ "Всі лінійні параметри: " + linearParameters + "\n"
 				+ "Всі дискретні параметри" + discreteParameters;
 		

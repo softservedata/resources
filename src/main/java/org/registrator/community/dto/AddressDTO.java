@@ -75,8 +75,9 @@ public class AddressDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Postcode " + postcode + " Region " + region + " District "
-				+ district + " City " + city + " Street " + street + " Building "
-				+ building + " Flat " + flat;
+		return "\n" + "Postcode " + postcode + "\n" + "Region " + region
+				+ "\n" + "District " + district + "\n" + "City " + city
+				+ "\n" + "Street " + street + "\n" + "Building " + building
+				+ "\n" + "Flat " + flat + "\n";
 	}
 }

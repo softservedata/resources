@@ -206,29 +206,6 @@ public class App {
 		userDao.add(user2);*/
 
 
-
-		// Checking of the getResource method
-
-		UserServiceImpl userServiceImpl = new UserServiceImpl();
-		ResourceDTO resourceDTO = userServiceImpl.getResource(1);
-
-        System.out.println(resourceDTO.toString());
-
-//        ResourceType resourceType = DaoFactory.get().getResourceTypeDao().findById(2);
-//        List<LineSize> lineSizes = DaoFactory.get().getLineSizeDao().getAllByResourceTypeId(resourceType);
-//        for (LineSize lineSize : lineSizes) {
-//            lineSize.toString();
-//        }
-
-//        Resource resource = DaoFactory.get().getResourceDao().findById(1);
-////        ResourceType type = resource.getType();
-//        Integer id = resource.getResourcesId();
-//        System.out.println(id);
-//        RegistratorService regService = new RegistratorServiceImpl();
-//		ResourceDTO resourceDTO = new ResourceDTO();
-//		resourceDTO = regService.showResourceByIdentifier("123555");
-//		System.out.println(resourceDTO);
-
 //        transaction.commit();
 //		session.close();
 	}

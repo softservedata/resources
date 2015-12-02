@@ -16,8 +16,14 @@ import org.registrator.community.entity.UserStatus;
 import org.registrator.community.service.interfaces.AdminService;
 import org.registrator.community.service.interfaces.SearchService;
 
+/*
+ * This class is defined in order to describe the bacis 
+ * operation that can perfom administrator of our web site
+ */
+
 public class AdminServiceImpl implements AdminService, SearchService {
 
+	// Method for receive all Users from data base
 	@Override
 	public List<UserDTO> getAllUsers() {
 

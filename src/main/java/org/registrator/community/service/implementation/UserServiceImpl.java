@@ -1,6 +1,5 @@
 package org.registrator.community.service.implementation;
 
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -16,150 +15,151 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService, SearchService {
 
-	/**
-	 * A method for registered user to make inquiry for getting sertificate 
-	 * about the resource with known resource id in the database.
-	 */
-	public void InquiryGetSertificate(InquiryListDTO inquiryListDTO){
-		Session session = null;
-		Transaction tr = null;
-		
-		try{
-			session = HibernateUtil.getSessionFactory().openSession();
-			tr = session.beginTransaction();
-			
-			Inquiry inquiryEntity = new Inquiry();
-			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
-			inquiryEntity.setDate(inquiryListDTO.getDate());
-			String userLogin = inquiryListDTO.getUserLogin();
-			User user = DaoFactory.get().getUserDao().findByLogin(userLogin);
-			inquiryEntity.setUser(user);
-			String registratorLogin = inquiryListDTO.getRegistratorLogin();
-			User registrator = DaoFactory.get().getUserDao().findByLogin(registratorLogin);
-			inquiryEntity.setRegistrator(registrator);
-			String identifier = inquiryListDTO.getResource().getIdentifier();			
-			Resource resource = DaoFactory.get().getResourceDao().findByIdentifier(identifier);
-			inquiryEntity.setResource(resource);
-			DaoFactory.get().getInquiryDao().add(inquiryEntity);
-			tr.commit();
-			
-		} catch(HibernateException he){
-			if (tr != null){
-				tr.rollback();
-			}
-		} finally {
-			if ((session != null) && (session.isOpen())){
-				session.close();
-			}
-		}		
-	}
-	
-	
-	
-	
-	public void InquiryInputResource(InquiryListDTO inquiryListDTO){
-		Session session = null;
-		Transaction tr = null;
-		
-		try{
-			session = HibernateUtil.getSessionFactory().openSession();
-			tr = session.beginTransaction();
-			
-			Inquiry inquiryEntity = new Inquiry();
-			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
-			inquiryEntity.setDate(inquiryListDTO.getDate());			
-			String userLogin = inquiryListDTO.getUserLogin();
-			User user = DaoFactory.get().getUserDao().findByLogin(userLogin);
-			inquiryEntity.setUser(user);
-			String registratorLogin = inquiryListDTO.getRegistratorLogin();
-			User registrator = DaoFactory.get().getUserDao().findByLogin(registratorLogin);
-			inquiryEntity.setRegistrator(registrator);
-			
-			ResourceDTO resourceDTO = inquiryListDTO.getResource();
-			Resource resource = new RegistratorServiceImpl().addResourceNoTransaction(resourceDTO);
-			inquiryEntity.setResource(resource);
-			
-			DaoFactory.get().getInquiryDao().add(inquiryEntity);
-			tr.commit();
-			
-			
-		} catch(HibernateException he){
-			if (tr != null){
-				tr.rollback();
-			}
-		} finally {
-			if ((session != null) && (session.isOpen())){
-				session.close();
-			}
-		}		
-	}
-	
-	@Override
+    /**
+     * A method for registered user to make inquiry for getting sertificate
+     * about the resource with known resource id in the database.
+     */
+    public void InquiryGetSertificate(InquiryListDTO inquiryListDTO) {
+        Session session = null;
+        Transaction tr = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tr = session.beginTransaction();
+
+            Inquiry inquiryEntity = new Inquiry();
+            inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
+            inquiryEntity.setDate(inquiryListDTO.getDate());
+            String userLogin = inquiryListDTO.getUserLogin();
+            User user = DaoFactory.get().getUserDao().findByLogin(userLogin);
+            inquiryEntity.setUser(user);
+            String registratorLogin = inquiryListDTO.getRegistratorLogin();
+            User registrator = DaoFactory.get().getUserDao()
+                    .findByLogin(registratorLogin);
+            inquiryEntity.setRegistrator(registrator);
+            String identifier = inquiryListDTO.getResource().getIdentifier();
+            Resource resource = DaoFactory.get().getResourceDao()
+                    .findByIdentifier(identifier);
+            inquiryEntity.setResource(resource);
+            DaoFactory.get().getInquiryDao().add(inquiryEntity);
+            tr.commit();
+
+        } catch (HibernateException he) {
+            if (tr != null) {
+                tr.rollback();
+            }
+        } finally {
+            if ((session != null) && (session.isOpen())) {
+                session.close();
+            }
+        }
+    }
+
+    public void InquiryInputResource(InquiryListDTO inquiryListDTO) {
+        Session session = null;
+        Transaction tr = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tr = session.beginTransaction();
+
+            Inquiry inquiryEntity = new Inquiry();
+            inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
+            inquiryEntity.setDate(inquiryListDTO.getDate());
+            String userLogin = inquiryListDTO.getUserLogin();
+            User user = DaoFactory.get().getUserDao().findByLogin(userLogin);
+            inquiryEntity.setUser(user);
+            String registratorLogin = inquiryListDTO.getRegistratorLogin();
+            User registrator = DaoFactory.get().getUserDao()
+                    .findByLogin(registratorLogin);
+            inquiryEntity.setRegistrator(registrator);
+
+            ResourceDTO resourceDTO = inquiryListDTO.getResource();
+            Resource resource = new RegistratorServiceImpl()
+                    .addResourceNoTransaction(resourceDTO);
+            inquiryEntity.setResource(resource);
+
+            DaoFactory.get().getInquiryDao().add(inquiryEntity);
+            tr.commit();
+
+        } catch (HibernateException he) {
+            if (tr != null) {
+                tr.rollback();
+            }
+        } finally {
+            if ((session != null) && (session.isOpen())) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
     public void addUser(UserDTO user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        User userEntity = new User(user.getLogin(),user.getPassword(),user.getRole(),
-                user.getFirstName(),user.getLastName(),user.getMiddleName(),user.getEmail(),user.getStatus());
+        User userEntity = new User(user.getLogin(), user.getPassword(),
+                user.getRole(), user.getFirstName(), user.getLastName(),
+                user.getMiddleName(), user.getEmail(), user.getStatus());
 
-        DaoFactory.get().getUserDao().add(userEntity);    
-        
-//        Integer id = DaoFactory.get().getUserDao().add(userEntity);
-//        userEntity.setUserId(id);
-        
-        PassportDTO passDTO = user.getPassport(); 
-        AddressDTO addressDTO = user.getAddress(); 
-        
-        PassportInfo pass = new PassportInfo(userEntity, passDTO.getSeria(), 
+        DaoFactory.get().getUserDao().add(userEntity);
+
+        // Integer id = DaoFactory.get().getUserDao().add(userEntity);
+        // userEntity.setUserId(id);
+
+        PassportDTO passDTO = user.getPassport();
+        AddressDTO addressDTO = user.getAddress();
+
+        PassportInfo pass = new PassportInfo(userEntity, passDTO.getSeria(),
                 passDTO.getNumber(), passDTO.getPublished_by_data());
         DaoFactory.get().getPassportInfoDao().add(pass);
-        
-        Address address = new Address(userEntity, addressDTO.getPostcode(), addressDTO.getRegion(), addressDTO.getDistrict(),
-                addressDTO.getCity(), addressDTO.getStreet(), addressDTO.getBuilding(), addressDTO.getFlat());
-        
+
+        Address address = new Address(userEntity, addressDTO.getPostcode(),
+                addressDTO.getRegion(), addressDTO.getDistrict(),
+                addressDTO.getCity(), addressDTO.getStreet(),
+                addressDTO.getBuilding(), addressDTO.getFlat());
+
         DaoFactory.get().getAddressDao().add(address);
-        
+
         transaction.commit();
         session.close();
 
-        
     }
 
-
-	@Override
-	public ResourceDTO getResource(Integer resourceId) {
-		Session session = null;
-		Transaction tr = null;
+    @Override
+    public ResourceDTO getResource(Integer resourceId) {
+        Session session = null;
+        Transaction tr = null;
 
         ResourceDTO resourceDTO = new ResourceDTO();
 
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			tr = session.beginTransaction();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tr = session.beginTransaction();
 
-			ResourceTypeDTO resourceTypeDTO = new ResourceTypeDTO();
+            ResourceTypeDTO resourceTypeDTO = new ResourceTypeDTO();
 
-			LinearParameterDTO linearParameterDTO = new LinearParameterDTO();
+            LinearParameterDTO linearParameterDTO = new LinearParameterDTO();
             List<LinearParameterDTO> listLinearParameterDTO = new ArrayList<>();
 
-			DiscreteParameterDTO discreteParameterDTO = new DiscreteParameterDTO();
+            DiscreteParameterDTO discreteParameterDTO = new DiscreteParameterDTO();
             List<DiscreteParameterDTO> listDiscreteParameterDTO = new ArrayList<>();
 
-			ResourceLinearDTO resourceLinearDTO = new ResourceLinearDTO();
+            ResourceLinearDTO resourceLinearDTO = new ResourceLinearDTO();
             List<ResourceLinearDTO> listResourceLinearDTO = new ArrayList<>();
             SegmentLinearDTO segmentLinearDTO = new SegmentLinearDTO();
             List<SegmentLinearDTO> listSegmentLinearDTO = new ArrayList<>();
 
-			ResourceDiscreteDTO resourceDiscreteDTO = new ResourceDiscreteDTO();
+            ResourceDiscreteDTO resourceDiscreteDTO = new ResourceDiscreteDTO();
             List<ResourceDiscreteDTO> listResourceDiscreteDTO = new ArrayList<>();
             List<Double> listDiscreteValues = new ArrayList<>();
 
             PointAreaDTO pointAreaDTO = new PointAreaDTO();
-			List<PointAreaDTO> listPointAreaDTO = new ArrayList<>();
-			PoligonAreaDTO poligonAreaDTO = new PoligonAreaDTO();
+            List<PointAreaDTO> listPointAreaDTO = new ArrayList<>();
+            PoligonAreaDTO poligonAreaDTO = new PoligonAreaDTO();
             List<PoligonAreaDTO> listPoligonAreaDTO = new ArrayList<>();
-			ResourceAreaDTO resourceAreaDTO = new ResourceAreaDTO();
+            ResourceAreaDTO resourceAreaDTO = new ResourceAreaDTO();
 
-			Resource resource = DaoFactory.get().getResourceDao().findById(resourceId);
+            Resource resource = DaoFactory.get().getResourceDao().findById(resourceId);
 
             //Creating of the ResourceTypeDTO
             Integer resourceTypeId = resource.getType().getTypeId();
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService, SearchService {
 
             //Creating of the ResourceAreaDTO object
 
-			List<Area> areas = DaoFactory.get().getAreaDao().getAllByResourceId(resource);
+            List<Area> areas = DaoFactory.get().getAreaDao().getAllByResourceId(resource);
             boolean firstIteration = true;
             for (Area area : areas) {
                 int pointNumber = area.getNumberOfPoint();
@@ -225,7 +225,7 @@ public class UserServiceImpl implements UserService, SearchService {
                 *  знову рівний 1, ми записуємо ліст точок в полігон
                 *  і цей полігон додаємо в ліст полігонів.
                 * */
-                if ((pointNumber == 1)&&(!firstIteration)) {
+                if ((pointNumber == 1) && (!firstIteration)) {
                     poligonAreaDTO.setPoints(listPointAreaDTO);
                     listPoligonAreaDTO.add(poligonAreaDTO);
                     listPointAreaDTO.clear();
@@ -249,18 +249,18 @@ public class UserServiceImpl implements UserService, SearchService {
             resourceDTO.setTomeIdentifier(resource.getTome().getIdentifier());
             resourceDTO.setReasonInclusion(resource.getReasonInclusion());
             resourceDTO.setStatus(resource.getStatus());
-		}
-        catch(HibernateException he){
-            if (tr != null){
+        } catch (HibernateException he) {
+            if (tr != null) {
                 tr.rollback();
             }
         } finally {
-            if ((session != null) && (session.isOpen())){
+            if ((session != null) && (session.isOpen())) {
                 session.close();
             }
+
         }
 
-		return resourceDTO;
-	}
+        return resourceDTO;
+    }
 
 }
