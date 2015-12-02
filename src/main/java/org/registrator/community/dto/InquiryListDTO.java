@@ -12,23 +12,21 @@ import java.util.Date;
 public class InquiryListDTO implements Serializable {
 	private String inquiryType;
 	private Date date;
-	private Integer fromUserId;
-	private Integer toUserId;
-	private Integer resourceId;      // == null if (inquiryType == "INPUT")
-	private ResourceDTO resource;	 // == null if (inquiryType == "OUTPUT")
+	private String userLogin;
+	private String registratorLogin;
+	private ResourceDTO resource;	 
 	
 	public InquiryListDTO() {
 		super();
 	}
 
-	public InquiryListDTO(String inquiryType, Date date, Integer fromUserId,
-			Integer toUserId, Integer resourceId, ResourceDTO resource) {
+	public InquiryListDTO(String inquiryType, Date date, String userLogin, String registratorLogin,
+			ResourceDTO resource) {
 		super();
 		this.inquiryType = inquiryType;
 		this.date = date;
-		this.fromUserId = fromUserId;
-		this.toUserId = toUserId;
-		this.resourceId = resourceId;
+		this.userLogin = userLogin;
+		this.registratorLogin = registratorLogin;
 		this.resource = resource;
 	}
 
@@ -48,28 +46,20 @@ public class InquiryListDTO implements Serializable {
 		this.date = date;
 	}
 
-	public Integer getFromUserId() {
-		return fromUserId;
+	public String getUserLogin() {
+		return userLogin;
 	}
 
-	public void setFromUserId(Integer fromUserId) {
-		this.fromUserId = fromUserId;
+	public void setUserLogin(String userLogin) {
+		this.userLogin = userLogin;
 	}
 
-	public Integer getToUserId() {
-		return toUserId;
+	public String getRegistratorLogin() {
+		return registratorLogin;
 	}
 
-	public void setToUserId(Integer toUserId) {
-		this.toUserId = toUserId;
-	}
-
-	public Integer getResourceId() {
-		return resourceId;
-	}
-
-	public void setResourceId(Integer resourceId) {
-		this.resourceId = resourceId;
+	public void setRegistratorLogin(String registratorLogin) {
+		this.registratorLogin = registratorLogin;
 	}
 
 	public ResourceDTO getResource() {
@@ -78,7 +68,9 @@ public class InquiryListDTO implements Serializable {
 
 	public void setResource(ResourceDTO resource) {
 		this.resource = resource;
-	}  
+	}
+
 	
+
 		
 }

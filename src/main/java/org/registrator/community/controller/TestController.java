@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class TestController {
 	
-	@Autowired
-	private TestService testService;
+//	@Autowired
+//	private TestService testService;
 	
 	@RequestMapping(value="/aaa",method=RequestMethod.GET)
 	public String getOtherPage(){
