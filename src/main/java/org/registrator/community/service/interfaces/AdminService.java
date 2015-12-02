@@ -10,7 +10,9 @@ public interface AdminService {
 
 		public UserDTO changeUserStatus(UserDTO userDto);
 		
-		public UserDTO changeRole(UserDTO userDto) ;
+		public UserDTO changeRole(UserDTO userDto);
+		
+		public void showAllUsers(List<UserDTO> userDtoList);
 
 
 //		public List<User> getUserByRoleName(String role);

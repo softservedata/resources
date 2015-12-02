@@ -53,8 +53,20 @@ public class Address implements Serializable {
 		this.building = building;
 		this.flat = flat;
 	}
+    
+    
 
 
+
+	public Address(User user, String postCode, String region, String city,
+			String street, String building) {
+		this.user = user;
+		this.postCode = postCode;
+		this.region = region;
+		this.city = city;
+		this.street = street;
+		this.building = building;
+	}
 
 	public Integer getAddressId() {
 		return addressId;

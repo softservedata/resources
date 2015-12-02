@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.registrator.community.dao.RoleDao;
-import org.registrator.community.dao.UserDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dao.utils.HibernateUtil;
 import org.registrator.community.dto.AddressDTO;
@@ -179,34 +176,34 @@ public class App {
 //		registratorService.addResource(resourceDTO);
 
 		
-		Role role = new Role("REGISTRATOR","description2");
-		RoleDao  roleDao = DaoFactory.get().getRoleDao();
-		roleDao.add(role);
-		
+//		Role role = new Role("USER","description2");
+//		RoleDao  roleDao = DaoFactory.get().getRoleDao();
+//		roleDao.add(role);
+//		
+//		UserDao userDao = DaoFactory.get().getUserDao();
+//		User user2 = new User();
+//		user2.setEmail("AnyaNovos2@gmail.com");
+//		user2.setFirstName("Ann1");
+//		user2.setLastName("lastName4");
+//		user2.setLogin("login2");
+//		user2.setMiddleName("middleName4");
+//		user2.setPassword("password4");
+//		user2.setRole(role);
+//		user2.setStatus(UserStatus.valueOf("UNBLOCK"));
+//		userDao.add(user2);
+
+
 		/*UserDao userDao = DaoFactory.get().getUserDao();
 		User user2 = new User();
-		user2.setEmail("AnyaNovos5@gmail.com");
-		user2.setFirstName("Ann1");
-		user2.setLastName("lastName4");
-		user2.setLogin("login5");
-		user2.setMiddleName("middleName4");
-		user2.setPassword("password4");
+		user2.setEmail("AnyaNovotrts4@gmail.com");
+		user2.setFirstName("Antrtn4");
+		user2.setLastName("lasttrtName4");
+		user2.setLogin("logtrtin4");
+		user2.setMiddleName("middtrtleName4");
+		user2.setPassword("passwrttord4");
 		user2.setRole(role);
-		user2.setStatus(UserStatus.valueOf("UNBLOCK"));
-		userDao.add(user2);
-
-
-	
-		User user3 = new User();
-		user3.setEmail("AnyaNovotrts6@gmail.com");
-		user3.setFirstName("Antrtn4");
-		user3.setLastName("lasttrtName4");
-		user3.setLogin("logtrtin6");
-		user3.setMiddleName("middtrtleName4");
-		user3.setPassword("passwrttord4");
-		user3.setRole(role);
-		user3.setStatus(UserStatus.valueOf("BLOCK"));
-		userDao.add(user3);*/
+		user2.setStatus(UserStatus.valueOf("BLOCK"));
+		userDao.add(user2);*/
 
 
 
@@ -217,9 +214,9 @@ public class App {
 //
 //		resourceDTO.toString();
 
-//        Resource resource = DaoFactory.get().getResourceDao().findById(1);
+        Resource resource = DaoFactory.get().getResourceDao().findById(1);
 //        ResourceType type = resource.getType();
-//        Integer id = resource.getResourcesId();
+        Integer id = resource.getResourcesId();
 
 
         transaction.commit();
@@ -227,3 +224,4 @@ public class App {
 		
 	}
 }
+

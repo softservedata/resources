@@ -28,6 +28,17 @@ public class StoreOfDiscreteValues {
 	public StoreOfDiscreteValues() {
 		
 	}
+	
+	
+
+	public StoreOfDiscreteValues(Resource resource, DiscreteValue discreteValue,
+			Double value) {
+		this.resource = resource;
+		this.discreteValue = discreteValue;
+		this.value = value;
+	}
+
+
 
 	public Integer getStoreOfDiscreteValuesId() {
 		return StoreOfDiscreteValuesId;
