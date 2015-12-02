@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class TestController {
 	
 	@Autowired
-	private TestService testService;
+	//private TestService testService;
 	
 	@RequestMapping(value="/aaa",method=RequestMethod.GET)
 	public String getOtherPage(){

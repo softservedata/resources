@@ -26,6 +26,17 @@ public class DiscreteValue implements Serializable {
     public DiscreteValue() {
     	
     }
+    
+    
+
+	public DiscreteValue(ResourceType resourceType, String description,
+			String unitName) {
+		this.resourceType = resourceType;
+		this.description = description;
+		this.unitName = unitName;
+	}
+
+
 
 	public Integer getDiscreteValueId() {
 		return discreteValueId;
