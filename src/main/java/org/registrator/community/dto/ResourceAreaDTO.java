@@ -18,12 +18,13 @@ public class ResourceAreaDTO {
 	}
 
 	public String toString() {
-		System.out.println("ResourceAreaDTO");
+		StringBuilder result = new StringBuilder();
+		result.append("----- Площі одного ресурсу ----- \n");
 		for (PoligonAreaDTO poligon : poligons) {
-			poligon.toString();
+			result.append(poligon.toString());
 		}
-		System.out.println();
-		return null;
+
+		return result.toString();
 	}
 	
 }

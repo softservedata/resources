@@ -25,9 +25,9 @@ public class SegmentLinearDTO {
 	}
 	
 	public String toString() {
-        System.out.print("SegmentLinearDTO: ");
-        System.out.println(" begin: " + begin + " end: " + end);
+        String result;
+        result = String.valueOf("Сегмент:  початок: " + begin + " кінець: " + end + "\n");
 
-        return null;
+        return result;
     }
 }

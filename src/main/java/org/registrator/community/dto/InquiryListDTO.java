@@ -70,7 +70,16 @@ public class InquiryListDTO implements Serializable {
 		this.resource = resource;
 	}
 
-	
+	public String toString(){
+		String result;
+		result = String.format("Тип запиту: " + inquiryType + "\n"
+                + "Запит внесено: " + date + "\n"
+                + "Запит вніс: " + userLogin + "\n"
+                + "Запит відправлено на: " + registratorLogin + "\n"
+                + "Ідентифікатор ресурсу: " + resource.getIdentifier() + "\n");
+
+		return result;
+	}
 
 		
 }
