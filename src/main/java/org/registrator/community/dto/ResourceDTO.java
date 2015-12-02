@@ -145,7 +145,7 @@ public class ResourceDTO {
 		this.resourceDiscrete = resourceDiscrete;
 	}	
 	
-	public String toString(){
+/*	public String toString(){
 		return "\n\n\n" + "**************************************" + "\n" +
 	"Ідентифікатор ресурсу: " + identifier + "\n"+
 	"Тип ресурсу: " + resourceType.toString() + "\n"+
@@ -160,6 +160,12 @@ public class ResourceDTO {
 	"Лінійні параметри: " + resourceLinear.toString() + "\n" +
  	"Дискретні параметри: "	+ resourceDiscrete.toString();
 		
+	}*/
+	
+	public String toString(){
+		return "\n\n\n" + "**************************************" + "\n" +
+	"Ідентифікатор ресурсу: " + identifier + "\n" +
+	"Лінійні параметри: " + resourceLinear;	
 	}
 	
 }
