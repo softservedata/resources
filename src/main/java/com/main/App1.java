@@ -25,8 +25,8 @@ public class App1 {
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
 		userDtoList = adminService.getAllUsers();
 		adminService.showAllUsers(userDtoList);
-		userDtoList.get(0).setStatus(adminService.changeUserStatus("login"));
-		userDtoList.get(0).setRole(adminService.changeRole("login"));
+//		userDtoList.get(0).setStatus(adminService.changeUserStatus("login"));
+//		userDtoList.get(0).setRole(adminService.changeRole("login"));
 		adminService.showAllUsers(userDtoList);
 	}
 }
