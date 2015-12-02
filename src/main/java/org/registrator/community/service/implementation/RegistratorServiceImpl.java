@@ -337,12 +337,14 @@ public class RegistratorServiceImpl implements RegistratorService{
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		Resource resource = DaoFactory.get().getResourceDao().findByIdentifier(identifier);
-
+		ResourceTypeDTO rrr = new ResourceTypeDTO();
+		rrr.setTypeName(resource.getType().getTypeName());
 		
 		ResourceDTO red = new ResourceDTO();
 		red.setDate(resource.getDate());
 		red.setDescription(resource.getDesctiption());
 		red.setReasonInclusion(resource.getReasonInclusion());
+		red.setResourceType(rrr);
 		
 		
 		
@@ -365,7 +367,7 @@ List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
 		for (Resource rs : resource) {
 			
 			ResourceTypeDTO rtDTO = new ResourceTypeDTO();
-		     rtDTO.setTypeName(rs.getType().getTypeName());
+		    rtDTO.setTypeName(rs.getType().getTypeName());
 		   
 			
 			ResourceDTO rDTO = new ResourceDTO();

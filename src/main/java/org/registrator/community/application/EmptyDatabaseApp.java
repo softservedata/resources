@@ -93,10 +93,16 @@ public class EmptyDatabaseApp {
 		
 		ResourceType radiofrequency = new ResourceType("радіочастотний");
 		DaoFactory.get().getResourceTypeDao().add(radiofrequency);
-		LineSize bandwidth = new LineSize(radiofrequency,"cмуга радіочастот", "МГц");
+		LineSize bandwidth1 = new LineSize(radiofrequency,"cмуга радіочастот", "МГц");
+		LineSize bandwidth2 = new LineSize(radiofrequency,"широта діапазону", "кГц");
+		LineSize bandwidth3 = new LineSize(radiofrequency,"радіус дії", "км");
+		
+		
+		
 		DiscreteValue power = new DiscreteValue(radiofrequency,"потужність", "мВт");
 		DiscreteValue tension = new DiscreteValue(radiofrequency,"напруженість", "мВт");
-		DaoFactory.get().getLineSizeDao().add(bandwidth);
+		DaoFactory.get().getLineSizeDao().add(bandwidth1);
+		DaoFactory.get().getLineSizeDao().add(bandwidth2);
 		DaoFactory.get().getDiscreteValueDao().add(power);
 		DaoFactory.get().getDiscreteValueDao().add(tension);
 		
@@ -122,15 +128,39 @@ public class EmptyDatabaseApp {
 		DaoFactory.get().getAreaDao().add(new Area(radiofreq, 2, 63.55, 33.76));		
 		DaoFactory.get().getAreaDao().add(new Area(radiofreq, 3, 49.3552, 43.54));	
 		DaoFactory.get().getAreaDao().add(new Area(radiofreq, 4, 50.345, 24.07699));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth, 2400d, 2483.5));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth, 5150d, 5350d));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth, 2500d ,2700d));
-
+		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth1, 2400d, 2483.5));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth2, 5150d, 5350d));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth1, 2500d ,2700d));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth3, 1100d, 2483.5));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth2, 1110d, 5350d));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth1, 9999d ,2100d));
+		
 		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, power, 100d));		
 		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, power, 500.55));		
 		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, power, 23.54));		
 		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, tension, 200d));
 
+		Resource radiofreq2 =  new Resource(radiofrequency, "111111", "суперрадіочастоти", registrator,
+				new Date(), "ACTIVE", tome, "Посвідчення водія ...");
+				DaoFactory.get().getResourceDao().add(radiofreq);
+			
+				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 1, 53.876, 30.01));		
+				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 2, 63.55, 33.76));		
+				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 3, 49.3552, 43.54));	
+				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 4, 50.345, 24.07699));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth1, 20d, 55.5));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth2, 11d, 55d));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth3, 99d ,55d));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth1, 1212d, 5483.5));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth2, 1000d, 5550d));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth1, 1111d ,200d));
+				
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, power, 91d));		
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, power, 51.55));		
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, power, 230.54));		
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, tension, 1d));
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, tension, 1000d));
+		
 	}	
 	
 }

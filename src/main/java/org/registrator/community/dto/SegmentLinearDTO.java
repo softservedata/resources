@@ -24,10 +24,18 @@ public class SegmentLinearDTO {
 		this.end = end;
 	}
 	
-	public String toString() {
+
+	public String toString(){
+		return "\n" +
+	"ВІД: " + begin +
+	"ДО: " + end;
+	}
+
+	/*public String toString() {
         String result;
         result = String.valueOf("Сегмент:  початок: " + begin + " кінець: " + end + "\n");
 
         return result;
-    }
+    }*/
+
 }
