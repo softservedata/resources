@@ -1,6 +1,5 @@
 package org.registrator.community.service.implementation;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,7 @@ import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
 import org.registrator.community.service.interfaces.RegistratorService;
 
-public class RegistratorServiceImpl implements RegistratorService{
+public class RegistratorServiceImpl implements RegistratorService {
 
 	@Override
 	public void addResourseType(ResourceTypeDTO resourceTypeDTO) {
@@ -50,10 +49,11 @@ public class RegistratorServiceImpl implements RegistratorService{
 		ResourceType resourceEntity = new ResourceType();
 		resourceEntity.setTypeName(resourceTypeDTO.getTypeName());
 		DaoFactory.get().getResourceTypeDao().add(resourceEntity);
-		
-		List<LinearParameterDTO> linearParameters = resourceTypeDTO.getLinearParameters();
-		List<DiscreteParameterDTO> discreteParameters = resourceTypeDTO.getDiscreteParameters();
-		
+
+		List<LinearParameterDTO> linearParameters = resourceTypeDTO
+				.getLinearParameters();
+		List<DiscreteParameterDTO> discreteParameters = resourceTypeDTO
+				.getDiscreteParameters();
 
 		for (int i = 0; i < linearParameters.size(); i++) {
 			LineSize lineSizeEntyty = new LineSize();
@@ -61,258 +61,290 @@ public class RegistratorServiceImpl implements RegistratorService{
 			lineSizeEntyty.setResourceType(resourceEntity);
 			lineSizeEntyty.setDescription(linearParameterDTO.getDescription());
 			lineSizeEntyty.setUnitName(linearParameterDTO.getUnitName());
-			DaoFactory.get().getLineSizeDao().add(lineSizeEntyty);			
+			DaoFactory.get().getLineSizeDao().add(lineSizeEntyty);
 		}
-		
+
 		for (int i = 0; i < discreteParameters.size(); i++) {
 			DiscreteValue discreteValueEntity = new DiscreteValue();
-			DiscreteParameterDTO discreteParameterDTO = discreteParameters.get(i);
+			DiscreteParameterDTO discreteParameterDTO = discreteParameters
+					.get(i);
 			discreteValueEntity.setResourceType(resourceEntity);
-			discreteValueEntity.setDescription(discreteParameterDTO.getDescription());
+			discreteValueEntity.setDescription(discreteParameterDTO
+					.getDescription());
 			discreteValueEntity.setUnitName(discreteParameterDTO.getUnitName());
-			DaoFactory.get().getDiscreteValueDao().add(discreteValueEntity);			
+			DaoFactory.get().getDiscreteValueDao().add(discreteValueEntity);
 		}
- 
-		/*	for (String linearParameterDTO : linearParameters) {
-			LineSize lineSizeEntyty = new LineSize();
-			lineSizeEntyty.setResourceType(resourceEntity);
-			lineSizeEntyty.setDescription(linearParameterDTO.getDescription());
-			DaoFactory.get().getLineSizeDao().add(lineSizeEntyty);	
-			
-		}*/
-				
+
+		/*
+		 * for (String linearParameterDTO : linearParameters) { LineSize
+		 * lineSizeEntyty = new LineSize();
+		 * lineSizeEntyty.setResourceType(resourceEntity);
+		 * lineSizeEntyty.setDescription(linearParameterDTO.getDescription());
+		 * DaoFactory.get().getLineSizeDao().add(lineSizeEntyty);
+		 * 
+		 * }
+		 */
+
 		transaction.commit();
 		session.close();
-				
+
 	}
 
 	@Override
 	public void addResource(ResourceDTO resourceDTO) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		//Ann addResourceNoTransaction(resourceDTO);
-		
+		// Ann addResourceNoTransaction(resourceDTO);
+
 		// list for table area
-		List<PoligonAreaDTO> poligonAreaDTOs = resourceDTO.getResourceArea().getPoligons();
-		
+		List<PoligonAreaDTO> poligonAreaDTOs = resourceDTO.getResourceArea()
+				.getPoligons();
+
 		// list for table store of line sizes
-		List<ResourceLinearDTO> resourceLinearDTOs = resourceDTO.getResourceLinear();
-		
+		List<ResourceLinearDTO> resourceLinearDTOs = resourceDTO
+				.getResourceLinear();
+
 		// list for table store of discrete values
-		List<ResourceDiscreteDTO> resourceDiscreteDTOs = resourceDTO.getResourceDiscrete();
-		
+		List<ResourceDiscreteDTO> resourceDiscreteDTOs = resourceDTO
+				.getResourceDiscrete();
 
 		// filling table list_of_resources
-		ResourceType resourceType = (ResourceType) session.createCriteria(ResourceType.class)
-                .add(Restrictions.eq("typeName", resourceDTO.getResourceType().getTypeName())).uniqueResult();
-		
-		User registrator = (User) session.createCriteria(User.class)
-                .add(Restrictions.eq("firstName", resourceDTO.getRegistratorName())).uniqueResult();
-		
-		Tome tome = (Tome) session.createCriteria(Tome.class)
-                .add(Restrictions.eq("identifier", resourceDTO.getTomeIdentifier())).uniqueResult();
-		
-		Resource resourceEntity = new Resource(resourceType, resourceDTO.getIdentifier(),
-				resourceDTO.getDescription(), registrator, resourceDTO.getDate(), 
-				resourceDTO.getStatus().toString(),tome, resourceDTO.getReasonInclusion());
+		ResourceType resourceType = (ResourceType) session
+				.createCriteria(ResourceType.class)
+				.add(Restrictions.eq("typeName", resourceDTO.getResourceType()
+						.getTypeName())).uniqueResult();
 
+		User registrator = (User) session
+				.createCriteria(User.class)
+				.add(Restrictions.eq("firstName",
+						resourceDTO.getRegistratorName())).uniqueResult();
 
+		Tome tome = (Tome) session
+				.createCriteria(Tome.class)
+				.add(Restrictions.eq("identifier",
+						resourceDTO.getTomeIdentifier())).uniqueResult();
+
+		Resource resourceEntity = new Resource(resourceType,
+				resourceDTO.getIdentifier(), resourceDTO.getDescription(),
+				registrator, resourceDTO.getDate(), resourceDTO.getStatus()
+						.toString(), tome, resourceDTO.getReasonInclusion());
 
 		DaoFactory.get().getResourceDao().add(resourceEntity);
-		
-			
+
 		// filling table area
 		for (int i = 0; i < poligonAreaDTOs.size(); i++) {
-			PoligonAreaDTO poligonAreaDTO =  poligonAreaDTOs.get(i);
+			PoligonAreaDTO poligonAreaDTO = poligonAreaDTOs.get(i);
 			List<PointAreaDTO> pointAreaDTOs = poligonAreaDTO.getPoints();
 			for (int j = 0; j < pointAreaDTOs.size(); j++) {
 				Area area = new Area();
 				PointAreaDTO point = pointAreaDTOs.get(j);
-				Double latitude = point.getLatitudeDegrees() + point.getLatitudeMinutes()/60d +
-						point.getLatitudeSeconds()/3600d;
-				Double longitude = point.getLongitudeDegrees() + point.getLongitudeMinutes()/60d +
-						point.getLongitudeSeconds()/3600d;
+				Double latitude = point.getLatitudeDegrees()
+						+ point.getLatitudeMinutes() / 60d
+						+ point.getLatitudeSeconds() / 3600d;
+				Double longitude = point.getLongitudeDegrees()
+						+ point.getLongitudeMinutes() / 60d
+						+ point.getLongitudeSeconds() / 3600d;
 				area.setResource(resourceEntity);
 				area.setNumberOfPoint(point.getOrderNumber());
 				area.setLatitude(latitude);
-				area.setLongitude(longitude);	
+				area.setLongitude(longitude);
 				DaoFactory.get().getAreaDao().add(area);
 			}
-		}	
-		
+		}
+
 		// filling table store of line sizes
 		for (int i = 0; i < resourceLinearDTOs.size(); i++) {
-			ResourceLinearDTO resourceLinearDTO =  resourceLinearDTOs.get(i);
-			LinearParameterDTO linearParameterDTO =  resourceLinearDTO.getLinearParameterDTO();
-			
+			ResourceLinearDTO resourceLinearDTO = resourceLinearDTOs.get(i);
+			LinearParameterDTO linearParameterDTO = resourceLinearDTO
+					.getLinearParameterDTO();
+
 			Criteria cr = session.createCriteria(LineSize.class);
 			Criterion resource = Restrictions.eq("resourceType", resourceType);
-			Criterion name = Restrictions.eq("description",linearParameterDTO.getDescription());
+			Criterion name = Restrictions.eq("description",
+					linearParameterDTO.getDescription());
 			LogicalExpression andExp = Restrictions.and(resource, name);
-			cr.add( andExp );
+			cr.add(andExp);
 			LineSize lineSize = (LineSize) cr.uniqueResult();
 			List<SegmentLinearDTO> segments = resourceLinearDTO.getSegments();
-			
+
 			for (int j = 0; j < segments.size(); j++) {
 				StoreOfLineSizes storeOfLineSizes = new StoreOfLineSizes();
-				SegmentLinearDTO segment = segments.get(j);		
+				SegmentLinearDTO segment = segments.get(j);
 				storeOfLineSizes.setResource(resourceEntity);
 				storeOfLineSizes.setLineSize(lineSize);
 				storeOfLineSizes.setMinValue(segment.getBegin());
 				storeOfLineSizes.setMaxValue(segment.getEnd());
 				DaoFactory.get().getStoreOfLineSizesDao().add(storeOfLineSizes);
-				}
 			}
-		
-		
+		}
+
 		// filling table store of discrete values
 		for (int i = 0; i < resourceDiscreteDTOs.size(); i++) {
-			ResourceDiscreteDTO resourceDiscreteDTO =  resourceDiscreteDTOs.get(i);
-			DiscreteParameterDTO discreteParameterDTO =  resourceDiscreteDTO.getDiscreteParameterDTO();
-			
+			ResourceDiscreteDTO resourceDiscreteDTO = resourceDiscreteDTOs
+					.get(i);
+			DiscreteParameterDTO discreteParameterDTO = resourceDiscreteDTO
+					.getDiscreteParameterDTO();
+
 			Criteria cr = session.createCriteria(DiscreteValue.class);
 			Criterion resource = Restrictions.eq("resourceType", resourceType);
-			Criterion name = Restrictions.eq("description",discreteParameterDTO.getDescription());
+			Criterion name = Restrictions.eq("description",
+					discreteParameterDTO.getDescription());
 			LogicalExpression andExp = Restrictions.and(resource, name);
-			cr.add( andExp );
+			cr.add(andExp);
 			DiscreteValue discreteValue = (DiscreteValue) cr.uniqueResult();
-	
+
 			List<Double> values = resourceDiscreteDTO.getValues();
-			for (int j = 0; j < values.size(); j++) {	
+			for (int j = 0; j < values.size(); j++) {
 				StoreOfDiscreteValues storeOfDiscreteValues = new StoreOfDiscreteValues();
 				storeOfDiscreteValues.setResource(resourceEntity);
 				storeOfDiscreteValues.setDiscreteValue(discreteValue);
-				storeOfDiscreteValues.setValue(values.get(j));		
-				DaoFactory.get().getStoreOfDiscreteValuesDao().add(storeOfDiscreteValues);
-				}
+				storeOfDiscreteValues.setValue(values.get(j));
+				DaoFactory.get().getStoreOfDiscreteValuesDao()
+						.add(storeOfDiscreteValues);
 			}
-			
-			
+		}
+
 		transaction.commit();
-		session.close();		
+		session.close();
 	}
-	
-	public Resource addResourceNoTransaction(ResourceDTO resourceDTO){
+
+	public Resource addResourceNoTransaction(ResourceDTO resourceDTO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		// list for table area
-		List<PoligonAreaDTO> poligonAreaDTOs = resourceDTO.getResourceArea().getPoligons();
-		
+		List<PoligonAreaDTO> poligonAreaDTOs = resourceDTO.getResourceArea()
+				.getPoligons();
+
 		// list for table store of line sizes
-		List<ResourceLinearDTO> resourceLinearDTOs = resourceDTO.getResourceLinear();
-		
+		List<ResourceLinearDTO> resourceLinearDTOs = resourceDTO
+				.getResourceLinear();
+
 		// list for table store of discrete values
-		List<ResourceDiscreteDTO> resourceDiscreteDTOs = resourceDTO.getResourceDiscrete();
-		
+		List<ResourceDiscreteDTO> resourceDiscreteDTOs = resourceDTO
+				.getResourceDiscrete();
 
 		// filling table list_of_resources
-		ResourceType resourceType = (ResourceType) session.createCriteria(ResourceType.class)
-                .add(Restrictions.eq("typeName", resourceDTO.getResourceType().getTypeName())).uniqueResult();
-		
-		User registrator = (User) session.createCriteria(User.class)
-                .add(Restrictions.eq("firstName", resourceDTO.getRegistratorName())).uniqueResult();
-		
-		Tome tome = (Tome) session.createCriteria(Tome.class)
-                .add(Restrictions.eq("identifier", resourceDTO.getTomeIdentifier())).uniqueResult();
-		
-		Resource resourceEntity = new Resource(resourceType, resourceDTO.getIdentifier(),
-				resourceDTO.getDescription(), registrator, resourceDTO.getDate(), 
-				resourceDTO.getStatus().toString(),tome, resourceDTO.getReasonInclusion());
+		ResourceType resourceType = (ResourceType) session
+				.createCriteria(ResourceType.class)
+				.add(Restrictions.eq("typeName", resourceDTO.getResourceType()
+						.getTypeName())).uniqueResult();
 
+		User registrator = (User) session
+				.createCriteria(User.class)
+				.add(Restrictions.eq("firstName",
+						resourceDTO.getRegistratorName())).uniqueResult();
 
+		Tome tome = (Tome) session
+				.createCriteria(Tome.class)
+				.add(Restrictions.eq("identifier",
+						resourceDTO.getTomeIdentifier())).uniqueResult();
+
+		Resource resourceEntity = new Resource(resourceType,
+				resourceDTO.getIdentifier(), resourceDTO.getDescription(),
+				registrator, resourceDTO.getDate(), resourceDTO.getStatus()
+						.toString(), tome, resourceDTO.getReasonInclusion());
 
 		DaoFactory.get().getResourceDao().add(resourceEntity);
-		
-			
+
 		// filling table area
 		for (int i = 0; i < poligonAreaDTOs.size(); i++) {
-			PoligonAreaDTO poligonAreaDTO =  poligonAreaDTOs.get(i);
+			PoligonAreaDTO poligonAreaDTO = poligonAreaDTOs.get(i);
 			List<PointAreaDTO> pointAreaDTOs = poligonAreaDTO.getPoints();
 			for (int j = 0; j < pointAreaDTOs.size(); j++) {
 				Area area = new Area();
 				PointAreaDTO point = pointAreaDTOs.get(j);
-				Double latitude = point.getLatitudeDegrees() + point.getLatitudeMinutes()/60d +
-						point.getLatitudeSeconds()/3600d;
-				Double longitude = point.getLongitudeDegrees() + point.getLongitudeMinutes()/60d +
-						point.getLongitudeSeconds()/3600d;
+				Double latitude = point.getLatitudeDegrees()
+						+ point.getLatitudeMinutes() / 60d
+						+ point.getLatitudeSeconds() / 3600d;
+				Double longitude = point.getLongitudeDegrees()
+						+ point.getLongitudeMinutes() / 60d
+						+ point.getLongitudeSeconds() / 3600d;
 				area.setResource(resourceEntity);
 				area.setNumberOfPoint(point.getOrderNumber());
 				area.setLatitude(latitude);
-				area.setLongitude(longitude);	
+				area.setLongitude(longitude);
 				DaoFactory.get().getAreaDao().add(area);
 			}
-		}	
-		
+		}
+
 		// filling table store of line sizes
 		for (int i = 0; i < resourceLinearDTOs.size(); i++) {
-			ResourceLinearDTO resourceLinearDTO =  resourceLinearDTOs.get(i);
-			LinearParameterDTO linearParameterDTO =  resourceLinearDTO.getLinearParameterDTO();
-			
+			ResourceLinearDTO resourceLinearDTO = resourceLinearDTOs.get(i);
+			LinearParameterDTO linearParameterDTO = resourceLinearDTO
+					.getLinearParameterDTO();
+
 			Criteria cr = session.createCriteria(LineSize.class);
 			Criterion resource = Restrictions.eq("resourceType", resourceType);
-			Criterion name = Restrictions.eq("description",linearParameterDTO.getDescription());
+			Criterion name = Restrictions.eq("description",
+					linearParameterDTO.getDescription());
 			LogicalExpression andExp = Restrictions.and(resource, name);
-			cr.add( andExp );
+			cr.add(andExp);
 			LineSize lineSize = (LineSize) cr.uniqueResult();
 			List<SegmentLinearDTO> segments = resourceLinearDTO.getSegments();
-			
+
 			for (int j = 0; j < segments.size(); j++) {
 				StoreOfLineSizes storeOfLineSizes = new StoreOfLineSizes();
-				SegmentLinearDTO segment = segments.get(j);		
+				SegmentLinearDTO segment = segments.get(j);
 				storeOfLineSizes.setResource(resourceEntity);
 				storeOfLineSizes.setLineSize(lineSize);
 				storeOfLineSizes.setMinValue(segment.getBegin());
 				storeOfLineSizes.setMaxValue(segment.getEnd());
 				DaoFactory.get().getStoreOfLineSizesDao().add(storeOfLineSizes);
-				}
 			}
-		
-		
+		}
+
 		// filling table store of discrete values
 		for (int i = 0; i < resourceDiscreteDTOs.size(); i++) {
-			ResourceDiscreteDTO resourceDiscreteDTO =  resourceDiscreteDTOs.get(i);
-			DiscreteParameterDTO discreteParameterDTO =  resourceDiscreteDTO.getDiscreteParameterDTO();
-			
+			ResourceDiscreteDTO resourceDiscreteDTO = resourceDiscreteDTOs
+					.get(i);
+			DiscreteParameterDTO discreteParameterDTO = resourceDiscreteDTO
+					.getDiscreteParameterDTO();
+
 			Criteria cr = session.createCriteria(DiscreteValue.class);
 			Criterion resource = Restrictions.eq("resourceType", resourceType);
-			Criterion name = Restrictions.eq("description",discreteParameterDTO.getDescription());
+			Criterion name = Restrictions.eq("description",
+					discreteParameterDTO.getDescription());
 			LogicalExpression andExp = Restrictions.and(resource, name);
-			cr.add( andExp );
+			cr.add(andExp);
 			DiscreteValue discreteValue = (DiscreteValue) cr.uniqueResult();
-	
+
 			List<Double> values = resourceDiscreteDTO.getValues();
-			for (int j = 0; j < values.size(); j++) {	
+			for (int j = 0; j < values.size(); j++) {
 				StoreOfDiscreteValues storeOfDiscreteValues = new StoreOfDiscreteValues();
 				storeOfDiscreteValues.setResource(resourceEntity);
 				storeOfDiscreteValues.setDiscreteValue(discreteValue);
-				storeOfDiscreteValues.setValue(values.get(j));		
-				DaoFactory.get().getStoreOfDiscreteValuesDao().add(storeOfDiscreteValues);
-				}
+				storeOfDiscreteValues.setValue(values.get(j));
+				DaoFactory.get().getStoreOfDiscreteValuesDao()
+						.add(storeOfDiscreteValues);
 			}
+		}
 		return resourceEntity;
 	}
-	
-//
+
+	//
 	@Override
 	public List<ResourceTypeDTO> showAllTypeOfResources() {
 		List<ResourceTypeDTO> resourceTypeDTO = new ArrayList<ResourceTypeDTO>();
-		
-		List<ResourceType> resourceType = DaoFactory.get().getResourceTypeDao().getAll();
-		
-		List<LineSize> lineSizeList = DaoFactory.get().getLineSizeDao().getAll();
+
+		List<ResourceType> resourceType = DaoFactory.get().getResourceTypeDao()
+				.getAll();
+
+		List<LineSize> lineSizeList = DaoFactory.get().getLineSizeDao()
+				.getAll();
 		List<LinearParameterDTO> linearParameterDTOList = new ArrayList<LinearParameterDTO>();
 		List<DiscreteParameterDTO> discreteParameterDTOList = new ArrayList<DiscreteParameterDTO>();
-		List<DiscreteValue> discreteValueList = DaoFactory.get().getDiscreteValueDao().getAll();
+		List<DiscreteValue> discreteValueList = DaoFactory.get()
+				.getDiscreteValueDao().getAll();
 
 		// Add linear parameters to DTO class
-		for (LineSize ls: lineSizeList) {
+		for (LineSize ls : lineSizeList) {
 			LinearParameterDTO lpDTO = new LinearParameterDTO();
 			lpDTO.setDescription(ls.getDescription());
 			lpDTO.setUnitName(ls.getUnitName());
 			linearParameterDTOList.add(lpDTO);
 		}
-		
+
 		// Add discrete parameters to DTO class
-		for (DiscreteValue dv: discreteValueList) {
+		for (DiscreteValue dv : discreteValueList) {
 			DiscreteParameterDTO dpDTO = new DiscreteParameterDTO();
 			dpDTO.setDescription(dv.getDescription());
 			dpDTO.setUnitName(dv.getUnitName());
@@ -330,63 +362,60 @@ public class RegistratorServiceImpl implements RegistratorService{
 		return resourceTypeDTO;
 	}
 
-//
+	//
 	@Override
-	public ResourceDTO showResourceByIdentifier(String identifier){
-		
+	public ResourceDTO showResourceByIdentifier(String identifier) {
+
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		Resource resource = DaoFactory.get().getResourceDao().findByIdentifier(identifier);
+		Resource resource = DaoFactory.get().getResourceDao()
+				.findByIdentifier(identifier);
 		ResourceTypeDTO rrr = new ResourceTypeDTO();
 		rrr.setTypeName(resource.getType().getTypeName());
-		
+
 		ResourceDTO red = new ResourceDTO();
 		red.setDate(resource.getDate());
 		red.setDescription(resource.getDesctiption());
 		red.setReasonInclusion(resource.getReasonInclusion());
 		red.setResourceType(rrr);
-		
-		
-		
+
 		transaction.commit();
 		session.close();
 		return red;
 	}
 
-	
-	// the implementation of this method is not finished yet. Anyone of us can make changes here
+	// the implementation of this method is not finished yet. Anyone of us can
+	// make changes here
 	@Override
 	public List<ResourceDTO> showAllResources() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		
-List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
-		
+
+		List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
+
 		List<Resource> resource = DaoFactory.get().getResourceDao().getAll();
-		
+
 		for (Resource rs : resource) {
-			
+
 			ResourceTypeDTO rtDTO = new ResourceTypeDTO();
-		    rtDTO.setTypeName(rs.getType().getTypeName());
-		   
-			
+			rtDTO.setTypeName(rs.getType().getTypeName());
+
 			ResourceDTO rDTO = new ResourceDTO();
 			rDTO.setDate(rs.getDate());
 			rDTO.setDescription(rs.getDesctiption());
 			rDTO.setIdentifier(rs.getIdentifier());
 			rDTO.setReasonInclusion(rs.getReasonInclusion());
-			rDTO.setRegistratorName(rs.getUser().getFirstName()+ "   " + rs.getUser().getLastName());
+			rDTO.setRegistratorName(rs.getUser().getFirstName() + "   "
+					+ rs.getUser().getLastName());
 			rDTO.setTomeIdentifier(rs.getTome().getIdentifier());
 			rDTO.setResourceType(rtDTO);
 			resourceDTO.add(rDTO);
 		}
 
 		transaction.commit();
-		session.close();		
-	
-	
-	return resourceDTO;
+		session.close();
+
+		return resourceDTO;
 	}
-	
 
 }

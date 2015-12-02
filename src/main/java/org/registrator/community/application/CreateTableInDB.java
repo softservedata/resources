@@ -77,7 +77,7 @@ public class CreateTableInDB {
 				.getPassportInfoDao()
 				.add(new PassportInfo(registrator, "КК", 123456,
 						"Хмельницьким МВ УМВС України в Хмельницький області 01 січня 1997 року"));
-		
+
 		// adding the tome for registrator
 		Tome tome = new Tome(registrator, "12345");
 		DaoFactory.get().getTomeDao().add(tome);
@@ -165,6 +165,59 @@ public class CreateTableInDB {
 				.add(new StoreOfDiscreteValues(radiofreq, power, 23.54));
 		DaoFactory.get().getStoreOfDiscreteValuesDao()
 				.add(new StoreOfDiscreteValues(radiofreq, tension, 200d));
+
+	}
+
+	public void addSeveralUsers() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		@SuppressWarnings("unused")
+		Transaction transaction = session.beginTransaction();
+
+		// creating three User (with adress and passrort_data) with different
+		// roles
+		Role role = (Role) session.createCriteria(Role.class)
+				.add(Restrictions.eq("name", Name.ADMIN)).uniqueResult();
+		User admin = new User("achyp14", "password", role, "Андрій", "Чипурко",
+				"Андрійович", "achyp14@gmail.com", "UNBLOCK");
+		DaoFactory.get().getUserDao().add(admin);
+		DaoFactory
+				.get()
+				.getAddressDao()
+				.add(new Address(admin, "29000", "Львівська область", "Личаківський район",
+						"Львівська область", "вул. Некрасова", "57", "75"));
+		DaoFactory.get().getPassportInfoDao()
+				.add(new PassportInfo(admin, "КС", 1111, "Видано кимось"));
+
+		role = (Role) session.createCriteria(Role.class)
+				.add(Restrictions.eq("name", Name.REGISTRATOR)).uniqueResult();
+		User registrator = new User("roman", "password1", role, "Роман",
+				"Дмитренко", "Юрійович", "roman.@gmail.com", "UNBLOCK");
+		DaoFactory.get().getUserDao().add(registrator);
+		DaoFactory
+				.get()
+				.getAddressDao()
+				.add(new Address(admin, "29756", "Львівська область", "Франківський район",
+						"Львівська область", "вул. Тарнавського", "112", "21"));
+		DaoFactory
+				.get()
+				.getPassportInfoDao()
+				.add(new PassportInfo(registrator, "КК", 2222, "Видано кимось"));
+		// adding the tome for registrator
+		Tome tome = new Tome(registrator, "12345");
+		DaoFactory.get().getTomeDao().add(tome);
+
+		role = (Role) session.createCriteria(Role.class)
+				.add(Restrictions.eq("name", Name.USER)).uniqueResult();
+		User user = new User("yura", "password2", role, "Юрій", "Убийвовк",
+				"Степанович", "yura.@gmail.com", "UNBLOCK");
+		DaoFactory.get().getUserDao().add(user);
+		DaoFactory
+				.get()
+				.getAddressDao()
+				.add(new Address(user, "291231", "Львівська область", "Залізничний район",
+						"Львівська область", "вул. Залізнична", "43", "54"));
+		DaoFactory.get().getPassportInfoDao()
+				.add(new PassportInfo(user, "КК", 3333, "Видано кимось"));
 
 	}
 }
