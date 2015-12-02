@@ -38,6 +38,10 @@ public class PassportDTO implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Seria "+seria+" Number "+number+" Published by data "+published_by_data;
+		String result;
+		result = String.valueOf("Серія паспорту: " + seria + "\n"
+				+ "Номер паспорту: " + number + "\n"
+				+ "Виданий: " + published_by_data + "\n");
+		return result;
 	}
 }

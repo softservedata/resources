@@ -1,11 +1,11 @@
 package org.registrator.community.dto;
 
+import org.registrator.community.entity.ResourceStatus;
+
 import java.util.Date;
 import java.util.List;
 
 public class ResourceDTO {
-	
-	public enum ResourceStatus {ACTIVE, UNCHECKED, DENIED, OBSOLETE}
 	
 	private ResourceTypeDTO resourceType;
 	private String identifier;
@@ -148,10 +148,17 @@ public class ResourceDTO {
 	public String toString(){
 		return "\n\n\n" + "**************************************" + "\n" +
 	"Ідентифікатор ресурсу: " + identifier + "\n"+
+	"Тип ресурсу: " + resourceType.toString() + "\n"+
 	"Опис ресурсу: " + description + "\n" + 
 	"Причина внесення в базу:  " + reasonInclusion + "\n" +
 	"Ім'я та прізвище реєстратора   " + registratorName + "\n"+
-	"Номер тому: " + tomeIdentifier;
+	"Номер тому: " + tomeIdentifier + "\n"+
+	"Дата внесення: " + date + "\n"+
+	"Статус: " + status.toString() + "\n"+
+	"Том: " + tomeIdentifier + "\n" +
+	"Територія: " + resourceArea + "\n" +
+	"Лінійні параметри: " + resourceLinear.toString() + "\n" +
+ 	"Дискретні параметри: "	+ resourceDiscrete.toString();
 		
 	}
 	

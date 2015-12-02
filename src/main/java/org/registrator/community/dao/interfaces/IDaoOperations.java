@@ -20,4 +20,9 @@ public interface IDaoOperations<T> {
 
 	public T findByIdentifier(String entityIdentifier);
 
+    public List<T> getAllByResourceId(Integer resourceId);
+
+    public List<T> getAllByResourceTypeId(Integer resourceTypeId);
+
+    public int isEmpty();
 }

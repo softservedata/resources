@@ -25,8 +25,12 @@ public class LinearParameterDTO {
 		this.unitName = unitName;
 	}
 	public String toString(){
-		return "Опис дискретних параметрів " + description + "\n" +"Одиниці виміру: " + unitName + "\n";
+        String result;
+        result = String.valueOf("Опис дискретних параметрів " + description + "\n"
+                +"Одиниці виміру: " + unitName + "\n");
+		return result;
 		
 	}
+
 	
 }

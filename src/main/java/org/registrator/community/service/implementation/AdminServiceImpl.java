@@ -27,7 +27,7 @@ public class AdminServiceImpl implements AdminService, SearchService {
 		List<PassportDTO> passportDtoList = getPassportDto();
 		List<AddressDTO> addressDtoList = getAddressDto();
 
-		int i=0;
+		int i = 0;
 		for (User userEntity : userList) {
 			UserDTO userDto = new UserDTO();
 			userDto.setAddress(addressDtoList.get(i));
@@ -88,86 +88,95 @@ public class AdminServiceImpl implements AdminService, SearchService {
 
 	}
 
+	// Method for change user status
 	@Override
-	public UserDTO changeUserStatus(UserDTO userDto) {
+	public String changeUserStatus(String login) {
 
-		User user = DaoFactory.get().getUserDao()
-				.findByLogin(userDto.getLogin());
+		User user = DaoFactory.get().getUserDao().findByLogin(login);
 
-		if (userDto.getStatus() == UserStatus.UNBLOCK.toString()) {
+		if (user.getStatus() == UserStatus.UNBLOCK) {
 			user.setStatus(UserStatus.BLOCK);
 			DaoFactory.get().getUserDao().update(user);
-			userDto.setStatus("block");
+			return UserStatus.BLOCK.toString();
 		} else {
 			user.setStatus(UserStatus.UNBLOCK);
 			DaoFactory.get().getUserDao().update(user);
-			userDto.setStatus("unblock");
+			return UserStatus.UNBLOCK.toString();
 		}
-
-		return userDto;
 	}
 
+	// Method for change role
+	@SuppressWarnings("resource")
 	@Override
-	public UserDTO changeRole(UserDTO userDto) {
-		User user = DaoFactory.get().getUserDao()
-				.findByLogin(userDto.getLogin());
+	public Role changeRole(String login) {
+		User user = DaoFactory.get().getUserDao().findByLogin(login);
+		Scanner sc = new Scanner(System.in);
 		List<Role> roleList = DaoFactory.getDaoFactory().getRoleDao().getAll();
 
-		@SuppressWarnings("resource")
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter key");
-		int key = sc.nextInt();
+		String roleName = user.getRole().getName().toString();
+		int key = 0;
 
-		if (userDto.getRole().getName().toString() == "USER") {
+		System.out.println("User role " + roleName);
+
+		if (roleName == "USER") {
+			System.out
+					.println("Press 1 for changing USER to REGISTRATOR or Press 2 for changing USER to ADMIN");
+			key = sc.nextInt();
 			if (key == 1) {
 				user.setRole(roleList.get(1));
 				DaoFactory.get().getUserDao().update(user);
-				userDto.setRole(roleList.get(1));
-				key = 0;
+				return roleList.get(1);
 			} else {
 				if (key == 2) {
+					user.setRole(roleList.get(0));
+					DaoFactory.get().getUserDao().update(user);
+					return roleList.get(0);
+				}
+			}
+		} else {
+			if (roleName == "REGISTRATOR") {
+				System.out
+						.println("Press 1 for changing REGISTRATOR to USER or Press 2 for changing REGISTRATOR to ADMIN");
+				key = sc.nextInt();
+				if (key == 1) {
 					user.setRole(roleList.get(2));
 					DaoFactory.get().getUserDao().update(user);
-					userDto.setRole(roleList.get(2));
-					key = 0;
+					return roleList.get(2);
+				} else {
+					if (key == 2) {
+						user.setRole(roleList.get(0));
+						DaoFactory.get().getUserDao().update(user);
+						return roleList.get(0);
+					}
 				}
-			}
-
-		}
-
-		if (userDto.getRole().getName().toString() == "REGISTRATOR") {
-			if (key == 1) {
-				user.setRole(roleList.get(0));
-				DaoFactory.get().getUserDao().update(user);
-				userDto.setRole(roleList.get(0));
-				key = 0;
 			} else {
-				if (key == 2) {
-					user.setRole(roleList.get(2));
-					DaoFactory.get().getUserDao().update(user);
-					userDto.setRole(roleList.get(2));
-					key = 0;
+				if (roleName == "ADMIN") {
+					System.out
+							.println("Press 1 for changing ADMIN to USER or Press 2 for changing ADMIN to REGISTRAROR");
+					key = sc.nextInt();
+					if (key == 1) {
+						user.setRole(roleList.get(2));
+						DaoFactory.get().getUserDao().update(user);
+						return roleList.get(2);
+					} else {
+						if (key == 2) {
+							user.setRole(roleList.get(1));
+							DaoFactory.get().getUserDao().update(user);
+							return roleList.get(1);
+						}
+					}
 				}
 			}
 		}
-
-		if (userDto.getRole().getName().toString() == "ADMIN") {
-			if (key == 1) {
-				user.setRole(roleList.get(0));
-				DaoFactory.get().getUserDao().update(user);
-				userDto.setRole(roleList.get(0));
-				key = 0;
-			} else {
-				if (key == 2) {
-					user.setRole(roleList.get(1));
-					DaoFactory.get().getUserDao().update(user);
-					userDto.setRole(roleList.get(1));
-					key = 0;
-				}
-			}
-		}
-
-		return userDto;
+		return null;
 	}
 
+	@Override
+	public void showAllUsers(List<UserDTO> userDtoList) {
+
+		for (UserDTO userDto : userDtoList) {
+			System.out.println(userDto);
+			System.out.println();
+		}
+	}
 }

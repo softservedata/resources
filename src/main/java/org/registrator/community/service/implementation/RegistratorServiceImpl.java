@@ -331,21 +331,26 @@ public class RegistratorServiceImpl implements RegistratorService{
 	}
 
 //
-    // the implementation of this method is not finished yet. Anyone of us can make changes here
 	@Override
 	public ResourceDTO showResourceByIdentifier(String identifier){
+		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
+		Resource resource = DaoFactory.get().getResourceDao().findByIdentifier(identifier);
+		ResourceTypeDTO rrr = new ResourceTypeDTO();
+		rrr.setTypeName(resource.getType().getTypeName());
 		
-		ResourceDTO resourceDTO = new ResourceDTO(null, identifier, identifier, identifier, null, null, identifier, identifier, null, null, null);
-		Resource resource = (Resource) session.createCriteria(Resource.class)
-                .add(Restrictions.eq("identifier", identifier)).uniqueResult();
-	//	Area area = (Area) session.createCriteria(Area.class)
-	
+		ResourceDTO red = new ResourceDTO();
+		red.setDate(resource.getDate());
+		red.setDescription(resource.getDesctiption());
+		red.setReasonInclusion(resource.getReasonInclusion());
+		red.setResourceType(rrr);
+		
+		
 		
 		transaction.commit();
 		session.close();
-		return null;
+		return red;
 	}
 
 	
@@ -360,6 +365,11 @@ List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
 		List<Resource> resource = DaoFactory.get().getResourceDao().getAll();
 		
 		for (Resource rs : resource) {
+			
+			ResourceTypeDTO rtDTO = new ResourceTypeDTO();
+		    rtDTO.setTypeName(rs.getType().getTypeName());
+		   
+			
 			ResourceDTO rDTO = new ResourceDTO();
 			rDTO.setDate(rs.getDate());
 			rDTO.setDescription(rs.getDesctiption());
@@ -367,6 +377,7 @@ List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
 			rDTO.setReasonInclusion(rs.getReasonInclusion());
 			rDTO.setRegistratorName(rs.getUser().getFirstName()+ "   " + rs.getUser().getLastName());
 			rDTO.setTomeIdentifier(rs.getTome().getIdentifier());
+			rDTO.setResourceType(rtDTO);
 			resourceDTO.add(rDTO);
 		}
 

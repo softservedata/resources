@@ -13,7 +13,7 @@ import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDTO.ResourceStatus;
+import org.registrator.community.entity.ResourceStatus;
 import org.registrator.community.dto.ResourceDiscreteDTO;
 import org.registrator.community.dto.ResourceLinearDTO;
 import org.registrator.community.dto.ResourceTypeDTO;

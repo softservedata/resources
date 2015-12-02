@@ -68,6 +68,35 @@ public class PointAreaDTO {
 	public void setLongitudeSeconds(double longitudeSeconds) {
 		this.longitudeSeconds = longitudeSeconds;
 	}
-	
+
+    public void setLatitudeValues(Double latitude) {
+		this.latitudeDegrees = (int) Math.floor(latitude);
+		this.latitudeMinutes = (int) Math.floor((latitude - latitudeDegrees)*60);
+		this.latitudeSeconds = ((latitude-latitudeDegrees)*60 - latitudeMinutes)*60;
+	}
+    public void setLongitudeValues (Double longitude) {
+        this.longitudeDegrees = (int) Math.floor(longitude);
+        this.longitudeMinutes = (int) Math.floor((longitude - longitudeDegrees)*60);
+        this.longitudeSeconds = ((longitude-longitudeDegrees)*60 - longitudeMinutes)*60;
+    }
+
+    @Override
+    public String toString() {
+
+    	return "\n" + "Номер точки полігону"+orderNumber+
+    			"Номер точки полігону: широта:"+"градуси: " + latitudeDegrees+
+    	"мн"+ latitudeMinutes+
+    	"сек " + latitudeSeconds+ "\n " + "*****"+
+    	"град " + longitudeDegrees+
+    	"мн "+longitudeMinutes+
+    	"сек "+longitudeSeconds;
+
+ /*       String result;
+        result = String.valueOf("Точка номер: " + orderNumber + "\n"
+                + "Широта: " + latitudeDegrees + " " + latitudeMinutes + " " + latitudeSeconds + "\n"
+                + "Довгота: " + longitudeDegrees + " " + longitudeMinutes + " " + latitudeSeconds + "\n");
+        return result;*/
+
+    }
 	
 }
