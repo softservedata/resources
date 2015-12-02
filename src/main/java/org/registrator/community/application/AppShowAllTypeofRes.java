@@ -21,7 +21,7 @@ public static void main(String[] args) {
 	/*for(ResourceTypeDTO rtd: listResType){
 		System.out.println(rtd);
 	}*/
-	//listResType.forEach(rtype -> System.out.println(rtype));
+	listResType.forEach(rtype -> System.out.println(rtype));
 	
 	/*listResType
 	.stream()
