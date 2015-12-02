@@ -218,10 +218,14 @@ public class App {
 //        ResourceType type = resource.getType();
         Integer id = resource.getResourcesId();
 
+//        RegistratorService regService = new RegistratorServiceImpl();
+//		ResourceDTO resourceDTO = new ResourceDTO();
+//		resourceDTO = regService.showResourceByIdentifier("123555");
+//		System.out.println(resourceDTO);
 
         transaction.commit();
 		session.close();
-		
 	}
+		
 }
 
