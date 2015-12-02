@@ -82,6 +82,7 @@ public class PointAreaDTO {
 
     @Override
     public String toString() {
+
     	return "\n" + "Номер точки полігону"+orderNumber+
     			"Номер точки полігону: широта:"+"градуси: " + latitudeDegrees+
     	"мн"+ latitudeMinutes+
@@ -89,6 +90,13 @@ public class PointAreaDTO {
     	"град " + longitudeDegrees+
     	"мн "+longitudeMinutes+
     	"сек "+longitudeSeconds;
+
+ /*       String result;
+        result = String.valueOf("Точка номер: " + orderNumber + "\n"
+                + "Широта: " + latitudeDegrees + " " + latitudeMinutes + " " + latitudeSeconds + "\n"
+                + "Довгота: " + longitudeDegrees + " " + longitudeMinutes + " " + latitudeSeconds + "\n");
+        return result;*/
+
     }
 	
 }

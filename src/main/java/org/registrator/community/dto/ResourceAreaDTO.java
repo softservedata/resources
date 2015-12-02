@@ -18,7 +18,17 @@ public class ResourceAreaDTO {
 	}
 
 	public String toString() {
+
 		return "Список всіх полігонів " + "\n" + poligons.toString();
+
+	/*	StringBuilder result = new StringBuilder();
+		result.append("----- Площі одного ресурсу ----- \n");
+		for (PoligonAreaDTO poligon : poligons) {
+			result.append(poligon.toString());
+		}
+
+		return result.toString();*/
+
 	}
 	
 }
