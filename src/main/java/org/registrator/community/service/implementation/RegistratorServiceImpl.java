@@ -333,9 +333,9 @@ public class RegistratorServiceImpl implements RegistratorService{
 	}
 
 //
-    // the implementation of this method is not finished yet. Anyone of us can make changes here
 	@Override
 	public ResourceDTO showResourceByIdentifier(String identifier){
+		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		// getting resource from database with identifier
@@ -447,6 +447,11 @@ List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
 		List<Resource> resource = DaoFactory.get().getResourceDao().getAll();
 		
 		for (Resource rs : resource) {
+			
+			ResourceTypeDTO rtDTO = new ResourceTypeDTO();
+		    rtDTO.setTypeName(rs.getType().getTypeName());
+		   
+			
 			ResourceDTO rDTO = new ResourceDTO();
 			rDTO.setDate(rs.getDate());
 			rDTO.setDescription(rs.getDesctiption());
@@ -454,6 +459,7 @@ List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
 			rDTO.setReasonInclusion(rs.getReasonInclusion());
 			rDTO.setRegistratorName(rs.getUser().getFirstName()+ "   " + rs.getUser().getLastName());
 			rDTO.setTomeIdentifier(rs.getTome().getIdentifier());
+			rDTO.setResourceType(rtDTO);
 			resourceDTO.add(rDTO);
 		}
 

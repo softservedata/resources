@@ -29,9 +29,21 @@ public class ResourceLinearDTO {
 	
 	/*public String toString() {
 		System.out.println("ResourceLinearDTO: ");
-		System.out.println("LinearParameterDTO: " + linearParameterDTO.toString());
+		System.out.println("LinearParameterDTO: " + linearParameterDTO.toString());*/
+
+
+	public String toString(){
+		return "\n\n\n" + "**************************************" + "\n" +
+	"Лінійні параметри ресурсу: " + linearParameterDTO.toString() +
+	"Лінійна величина параметру: " + segments.toString();
+		
+
+	/*public String toString() {
+        StringBuilder result = new StringBuilder();
+		result.append("---- Лінійні параметри -----\n");
+		result.append("Лінійний параметр: " + linearParameterDTO.toString() + "\n");
 		for (SegmentLinearDTO segment : segments) {
-			segment.toString();
+			result.append(segment.toString());
 		}
 		return null;
 	}*/
@@ -44,5 +56,8 @@ public class ResourceLinearDTO {
 		}
 		return ;
 	}*/
+
+	}
+
 	
 }

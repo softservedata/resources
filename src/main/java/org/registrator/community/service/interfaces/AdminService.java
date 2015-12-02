@@ -3,33 +3,28 @@ package org.registrator.community.service.interfaces;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.entity.Role;
+import org.registrator.community.entity.UserStatus;
 
 public interface AdminService {
 
 		public List<UserDTO> getAllUsers();
 
-		public UserDTO changeUserStatus(UserDTO userDto);
+		public String changeUserStatus(String login);
 		
-		public UserDTO changeRole(UserDTO userDto) ;
-
+		public Role changeRole(String login);
+		
+		public void showAllUsers(List<UserDTO> userDtoList);
 
 //		public List<User> getUserByRoleName(String role);
 //		
 //		public List<User> getUserByPortion(int from, int quantity);
-
-		// show all (users+registers+admin?)
-
-		// show all users
 
 		// show inactive users???
 
 		// show all registers
 
 		// find by last name
-
-		// change role
-
-		// change status
 
 		// register new user
 

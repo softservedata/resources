@@ -243,5 +243,31 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 		return element;
 	}
 
+	@Override
+	public int isEmpty() {
+		Session session = null;
+		Integer element = null;
+		try {
+
+			session = HibernateUtil.getSessionFactory().openSession();
+			String query = "select count(*) from User";
+			Query que = session.createQuery(query);
+			//que.setParameter("entityLogin1");
+			element = ((Long) que.uniqueResult()).intValue();
+			
+
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+		
+		return element;
+	}
+
 
 }

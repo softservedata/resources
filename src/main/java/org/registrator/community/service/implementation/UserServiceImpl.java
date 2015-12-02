@@ -30,16 +30,15 @@ public class UserServiceImpl implements UserService, SearchService {
 			
 			Inquiry inquiryEntity = new Inquiry();
 			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
-			inquiryEntity.setDate(inquiryListDTO.getDate());			
-			Integer userId = inquiryListDTO.getFromUserId();
-			User user = DaoFactory.get().getUserDao().findById(userId);
+			inquiryEntity.setDate(inquiryListDTO.getDate());
+			String userLogin = inquiryListDTO.getUserLogin();
+			User user = DaoFactory.get().getUserDao().findByLogin(userLogin);
 			inquiryEntity.setUser(user);
-			Integer registratorId = inquiryListDTO.getToUserId();
-			User registrator = DaoFactory.get().getUserDao().findById(registratorId);
+			String registratorLogin = inquiryListDTO.getRegistratorLogin();
+			User registrator = DaoFactory.get().getUserDao().findByLogin(registratorLogin);
 			inquiryEntity.setRegistrator(registrator);
-			
-			Integer resourceId = inquiryListDTO.getResourceId();
-			Resource resource = DaoFactory.get().getResourceDao().findById(resourceId);
+			String identifier = inquiryListDTO.getResource().getIdentifier();			
+			Resource resource = DaoFactory.get().getResourceDao().findByIdentifier(identifier);
 			inquiryEntity.setResource(resource);
 			DaoFactory.get().getInquiryDao().add(inquiryEntity);
 			tr.commit();
@@ -63,14 +62,17 @@ public class UserServiceImpl implements UserService, SearchService {
 		Transaction tr = null;
 		
 		try{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tr = session.beginTransaction();
+			
 			Inquiry inquiryEntity = new Inquiry();
 			inquiryEntity.setInquiryType(inquiryListDTO.getInquiryType());
 			inquiryEntity.setDate(inquiryListDTO.getDate());			
-			Integer userId = inquiryListDTO.getFromUserId();
-			User user = DaoFactory.get().getUserDao().findById(userId);
+			String userLogin = inquiryListDTO.getUserLogin();
+			User user = DaoFactory.get().getUserDao().findByLogin(userLogin);
 			inquiryEntity.setUser(user);
-			Integer registratorId = inquiryListDTO.getToUserId();
-			User registrator = DaoFactory.get().getUserDao().findById(registratorId);
+			String registratorLogin = inquiryListDTO.getRegistratorLogin();
+			User registrator = DaoFactory.get().getUserDao().findByLogin(registratorLogin);
 			inquiryEntity.setRegistrator(registrator);
 			
 			ResourceDTO resourceDTO = inquiryListDTO.getResource();
@@ -160,7 +162,7 @@ public class UserServiceImpl implements UserService, SearchService {
 			Resource resource = DaoFactory.get().getResourceDao().findById(resourceId);
 
             //Creating of the ResourceTypeDTO
-            Integer resourceTypeId = 2; // resource.getType().getTypeId();
+            Integer resourceTypeId = resource.getType().getTypeId();
 
             List<LineSize> lineSizes = DaoFactory.get().getLineSizeDao().getAllByResourceTypeId(resourceTypeId);
             for (LineSize lineSize : lineSizes) {

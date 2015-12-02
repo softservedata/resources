@@ -24,4 +24,5 @@ public interface IDaoOperations<T> {
 
     public List<T> getAllByResourceTypeId(Integer resourceTypeId);
 
+    public int isEmpty();
 }

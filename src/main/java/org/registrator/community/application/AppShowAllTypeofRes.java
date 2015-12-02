@@ -18,21 +18,7 @@ public static void main(String[] args) {
 	List<ResourceTypeDTO> listResType = new ArrayList<ResourceTypeDTO>();
 	RegistratorService rs = new RegistratorServiceImpl();
 	listResType = rs.showAllTypeOfResources();
-	/*for(ResourceTypeDTO rtd: listResType){
-		System.out.println(rtd);
-	}*/
 	listResType.forEach(rtype -> System.out.println(rtype));
-	
-	/*listResType
-	.stream()
-	.sorted()
-    .forEach(System.out::println);*/
-	
-	/*transaction.commit();
-	session.close();*/
+	}
 }
-
-}
-
-
 
