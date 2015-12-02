@@ -19,6 +19,6 @@ public static void main(String[] args) {
 	RegistratorService rs = new RegistratorServiceImpl();
 	listResType = rs.showAllTypeOfResources();
 	listResType.forEach(rtype -> System.out.println(rtype));
-}
+	}
 }
 

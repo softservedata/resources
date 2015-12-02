@@ -13,16 +13,18 @@ public class ApplShowAllRes {
 		List<ResourceDTO> listRes = new ArrayList<ResourceDTO>();
 		RegistratorService rs = new RegistratorServiceImpl();
 		listRes = rs.showAllResources();
-		for(ResourceDTO r: listRes){
-		System.out.println("\n\n\n" + "**************************************" + "\n" +
-					"Ідентифікатор ресурсу: " + r.getIdentifier() + "\n"+
+		System.out.println("\n\n\n" + "**************************************" + "\n"+""
+				+ "        СПИСОК ВСІХ РЕСУРСІВ" + "\n");
+		
+		listRes.forEach((r)-> System.out.println("Ідентифікатор ресурсу: " + r.getIdentifier() + "\n"+
 					"Тип ресурсу: " + r.getResourceType().getTypeName().toString() + "\n" +
 					"Опис ресурсу: " + r.getDescription() + "\n" + 
 					"Причина внесення в базу:  " + r.getReasonInclusion() + "\n" +
 					"Ім'я та прізвище реєстратора   " + r.getRegistratorName()  + "\n"+
 					"Номер тому: " + r.getTomeIdentifier() + "\n"+
-					"Дата внесення ресурсу: " + r.getDate() + "\n");
-		}
+					"Дата внесення ресурсу: " + r.getDate() + "\n"+
+					"Поточний статус ресурсу: " + r.getStatus() + "\n"+
+					"Том" + r.getTomeIdentifier() + "\n>>>>>>>>>>>>>>>>>>>>\n"));	
 }
 }
 

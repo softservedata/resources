@@ -8,9 +8,12 @@ import java.util.List;
 
 public interface UserDaoTest {
 
+    public List<User> getPortionOfUser(int from,int quantity);
 
-
-    List<User> getAllEntity();
+    public List<User> getAllEntity();
 
     public User getEntityById(int id);
+
+    public User update(User user);
 }
+
