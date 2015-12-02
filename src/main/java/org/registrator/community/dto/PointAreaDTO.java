@@ -68,6 +68,24 @@ public class PointAreaDTO {
 	public void setLongitudeSeconds(double longitudeSeconds) {
 		this.longitudeSeconds = longitudeSeconds;
 	}
-	
+
+    public void setLatitudeValues(Double latitude) {
+		this.latitudeDegrees = (int) Math.floor(latitude);
+		this.latitudeMinutes = (int) Math.floor((latitude - latitudeDegrees)*60);
+		this.latitudeSeconds = ((latitude-latitudeDegrees)*60 - latitudeMinutes)*60;
+	}
+    public void setLongitudeValues (Double longitude) {
+        this.longitudeDegrees = (int) Math.floor(longitude);
+        this.longitudeMinutes = (int) Math.floor((longitude - longitudeDegrees)*60);
+        this.longitudeSeconds = ((longitude-longitudeDegrees)*60 - longitudeMinutes)*60;
+    }
+
+    @Override
+    public String toString() {
+        System.out.println("Point " + orderNumber
+                + ": Latitude: " + latitudeDegrees + " " + latitudeMinutes + " " + latitudeSeconds
+                + "; Longitude: " + longitudeDegrees + " " + longitudeMinutes + " " + latitudeSeconds);
+        return null;
+    }
 	
 }

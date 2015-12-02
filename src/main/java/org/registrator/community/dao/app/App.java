@@ -16,13 +16,12 @@ import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDTO.ResourceStatus;
+import org.registrator.community.entity.*;
 import org.registrator.community.dto.ResourceDiscreteDTO;
 import org.registrator.community.dto.ResourceLinearDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
 import org.registrator.community.dto.UserDTO;
-import org.registrator.community.entity.Tome;
 import org.registrator.community.service.implementation.RegistratorServiceImpl;
 import org.registrator.community.service.implementation.UserServiceImpl;
 import org.registrator.community.service.interfaces.RegistratorService;
@@ -35,8 +34,8 @@ public class App {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		// Save new User in Database
-		/*Role role = new Role("Registrator","description");
+		/*// Save new User in Database
+		Role role = new Role("Registrator","description");
 		DaoFactory.get().getRoleDao().add(role);
 		//session.save(role);
 		System.out.println(role.getRoleId());
@@ -71,8 +70,8 @@ public class App {
 		userDTO.setPassword("password");
 		userDTO.setStatus("block");
 		userDTO.setEmail("email.com");
-		userDTO.setAddress(addressList);
-		userDTO.setPassport(passportList);
+//		userDTO.setAddress(addressList);
+//		userDTO.setPassport(passportList);
 		userDTO.setRole(role);
 		
 		user.addUser(userDTO);
@@ -207,8 +206,20 @@ public class App {
 		userDao.add(user2);*/
 
 
-		
-		transaction.commit();
+
+		// Checking of the getResource method
+
+//		UserServiceImpl userServiceImpl = new UserServiceImpl();
+//		ResourceDTO resourceDTO = userServiceImpl.getResource(1);
+//
+//		resourceDTO.toString();
+
+        Resource resource = DaoFactory.get().getResourceDao().findById(1);
+//        ResourceType type = resource.getType();
+        Integer id = resource.getResourcesId();
+
+
+        transaction.commit();
 		session.close();
 		
 	}

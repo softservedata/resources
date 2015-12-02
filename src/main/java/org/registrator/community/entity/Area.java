@@ -29,6 +29,17 @@ public class Area implements Serializable {
 	public Area() {
 		
 	}
+	
+	
+
+	public Area(Resource resource, Integer numberOfPoint, Double latitude, Double longitude) {
+		this.resource = resource;
+		this.numberOfPoint = numberOfPoint;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
+
 
 	public Integer getArea_id() {
 		return area_id;

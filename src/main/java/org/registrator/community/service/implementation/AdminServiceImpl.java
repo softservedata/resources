@@ -169,5 +169,4 @@ public class AdminServiceImpl implements AdminService, SearchService {
 
 		return userDto;
 	}
-
 }
