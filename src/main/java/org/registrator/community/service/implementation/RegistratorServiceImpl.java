@@ -378,6 +378,7 @@ List<ResourceDTO> resourceDTO = new ArrayList<ResourceDTO>();
 			rDTO.setRegistratorName(rs.getUser().getFirstName()+ "   " + rs.getUser().getLastName());
 			rDTO.setTomeIdentifier(rs.getTome().getIdentifier());
 			rDTO.setResourceType(rtDTO);
+			rDTO.setStatus(rs.getStatus());
 			resourceDTO.add(rDTO);
 		}
 
