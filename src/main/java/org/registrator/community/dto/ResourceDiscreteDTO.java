@@ -27,12 +27,8 @@ public class ResourceDiscreteDTO {
 	}
 
 	public String toString() {
-		discreteParameterDTO.toString();
-		for (int i = 0, valuesSize = values.size(); i < valuesSize; i++) {
-			Double value = values.get(i);
-			System.out.println("Value " + i + ": " + value);
-		}
-		return null;
+		return "\n" + "Дискретні параметри: " + discreteParameterDTO + "\n"+
+				"Значення: " + values.toString();
 	}
 		
 	

@@ -18,12 +18,7 @@ public class ResourceAreaDTO {
 	}
 
 	public String toString() {
-		System.out.println("ResourceAreaDTO");
-		for (PoligonAreaDTO poligon : poligons) {
-			poligon.toString();
-		}
-		System.out.println();
-		return null;
+		return "Список всіх полігонів " + "\n" + poligons.toString();
 	}
 	
 }

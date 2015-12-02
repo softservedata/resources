@@ -82,10 +82,13 @@ public class PointAreaDTO {
 
     @Override
     public String toString() {
-        System.out.println("Point " + orderNumber
-                + ": Latitude: " + latitudeDegrees + " " + latitudeMinutes + " " + latitudeSeconds
-                + "; Longitude: " + longitudeDegrees + " " + longitudeMinutes + " " + latitudeSeconds);
-        return null;
+    	return "\n" + "Номер точки полігону"+orderNumber+
+    			"Номер точки полігону: широта:"+"градуси: " + latitudeDegrees+
+    	"мн"+ latitudeMinutes+
+    	"сек " + latitudeSeconds+ "\n " + "*****"+
+    	"град " + longitudeDegrees+
+    	"мн "+longitudeMinutes+
+    	"сек "+longitudeSeconds;
     }
 	
 }

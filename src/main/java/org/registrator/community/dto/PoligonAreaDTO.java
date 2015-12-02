@@ -18,11 +18,7 @@ public class PoligonAreaDTO {
 	}
 
 	public String toString() {
-        System.out.println("PoligonAreaDTO");
-        for (PointAreaDTO point : points) {
-			point.toString();
-		}
-		System.out.println();
-		return null;
+       return "Список всіх точок полігону: " + "\n" +
+	points.toString();
 	}
 }
