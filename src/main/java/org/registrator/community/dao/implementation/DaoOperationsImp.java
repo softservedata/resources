@@ -11,6 +11,8 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.registrator.community.dao.interfaces.IDaoOperations;
 import org.registrator.community.dao.utils.HibernateUtil;
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceType;
 
 public class DaoOperationsImp<T> implements IDaoOperations<T> {
 
@@ -137,14 +139,14 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> getAllByResourceId(Integer resourceId) {
+	public List<T> getAllByResourceId(Resource resource) {
 		Session session=null;
 		List<T> elements=new ArrayList<>();
 
 		try{
 			session=HibernateUtil.getSessionFactory().openSession();
 			Criteria cr = session.createCriteria(elementClass);
-			cr.add(Restrictions.eq("resource.id",resourceId));
+			cr.add(Restrictions.eq("resource", resource));
 			elements = cr.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -161,14 +163,14 @@ public class DaoOperationsImp<T> implements IDaoOperations<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> getAllByResourceTypeId(Integer resourceTypeId) {
+	public List<T> getAllByResourceTypeId(ResourceType resourceType) {
 		Session session=null;
 		List<T> elements=new ArrayList<>();
 
 		try{
 			session=HibernateUtil.getSessionFactory().openSession();
 			Criteria cr = session.createCriteria(elementClass);
-			cr.add(Restrictions.eq("resource.type.id",resourceTypeId));
+			cr.add(Restrictions.eq("resourceType",resourceType));
 			elements = cr.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();

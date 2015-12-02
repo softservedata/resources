@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.registrator.community.dao.implementation.DaoOperationsImp;
 import org.registrator.community.dao.utils.HibernateUtil;
+import org.registrator.community.entity.DiscreteValue;
 import org.registrator.community.entity.StoreOfDiscreteValues;
 
 import java.util.ArrayList;
@@ -17,14 +18,14 @@ public class StoreOfDiscreteValuesDao extends DaoOperationsImp<StoreOfDiscreteVa
 		super(StoreOfDiscreteValues.class);
 	}
 
-	public List<StoreOfDiscreteValues> getAllBydiscreteValuesId(Integer discreteValuesId) {
+	public List<StoreOfDiscreteValues> getAllBydiscreteValuesId(DiscreteValue discreteValue) {
 		Session session=null;
 		List<StoreOfDiscreteValues> elements=new ArrayList<>();
 
 		try{
 			session= HibernateUtil.getSessionFactory().openSession();
 			Criteria cr = session.createCriteria(StoreOfDiscreteValues.class);
-			cr.add(Restrictions.eq("discrete_values_id", discreteValuesId));
+			cr.add(Restrictions.eq("discreteValue", discreteValue));
 			elements = cr.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();

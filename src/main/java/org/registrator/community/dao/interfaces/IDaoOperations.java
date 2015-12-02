@@ -1,5 +1,8 @@
 package org.registrator.community.dao.interfaces;
 
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceType;
+
 import java.util.List;
 
 public interface IDaoOperations<T> {
@@ -20,9 +23,9 @@ public interface IDaoOperations<T> {
 
 	public T findByIdentifier(String entityIdentifier);
 
-    public List<T> getAllByResourceId(Integer resourceId);
+    public List<T> getAllByResourceId(Resource resource);
 
-    public List<T> getAllByResourceTypeId(Integer resourceTypeId);
+    public List<T> getAllByResourceTypeId(ResourceType resourceType);
 
     public int isEmpty();
 }

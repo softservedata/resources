@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService, SearchService {
             //Creating of the ResourceTypeDTO
             Integer resourceTypeId = resource.getType().getTypeId();
 
-            List<LineSize> lineSizes = DaoFactory.get().getLineSizeDao().getAllByResourceTypeId(resourceTypeId);
+            List<LineSize> lineSizes = DaoFactory.get().getLineSizeDao().getAllByResourceTypeId(resource.getType());
             for (LineSize lineSize : lineSizes) {
                 linearParameterDTO.setDescription(lineSize.getDescription());
                 linearParameterDTO.setUnitName(lineSize.getUnitName());
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService, SearchService {
 
                 // Creating of the list of the ResourceLinearDTO
 
-                List<StoreOfLineSizes> storeOfLineSizes = DaoFactory.get().getStoreOfLineSizesDao().getAllbyLineSizeId(lineSize.getLinesSizeId());
+                List<StoreOfLineSizes> storeOfLineSizes = DaoFactory.get().getStoreOfLineSizesDao().getAllbyLineSizeId(lineSize);
                 for (StoreOfLineSizes storeOfLineSize : storeOfLineSizes) {
                     segmentLinearDTO.setBegin(storeOfLineSize.getMinValue());
                     segmentLinearDTO.setEnd(storeOfLineSize.getMaxValue());
@@ -186,7 +186,7 @@ public class UserServiceImpl implements UserService, SearchService {
                 listResourceLinearDTO.add(resourceLinearDTO);
             }
 
-            List<DiscreteValue> discreteValues = DaoFactory.get().getDiscreteValueDao().getAllByResourceTypeId(resourceTypeId);
+            List<DiscreteValue> discreteValues = DaoFactory.get().getDiscreteValueDao().getAllByResourceTypeId(resource.getType());
             for (DiscreteValue discreteValue : discreteValues) {
                 discreteParameterDTO.setDescription(discreteValue.getDescription());
                 discreteParameterDTO.setUnitName(discreteValue.getUnitName());
@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService, SearchService {
 
                 // Creating of the list of the ResourceDiscreteDTO
 
-                List<StoreOfDiscreteValues> storeOfDiscreteValues = DaoFactory.get().getStoreOfDiscreteValuesDao().getAllBydiscreteValuesId(discreteValue.getDiscreteValueId());
+                List<StoreOfDiscreteValues> storeOfDiscreteValues = DaoFactory.get().getStoreOfDiscreteValuesDao().getAllBydiscreteValuesId(discreteValue);
                 for (StoreOfDiscreteValues storeOfDiscreteValue : storeOfDiscreteValues) {
                     listDiscreteValues.add(storeOfDiscreteValue.getValue());
                 }
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService, SearchService {
 
             //Creating of the ResourceAreaDTO object
 
-			List<Area> areas = DaoFactory.get().getAreaDao().getAllByResourceId(resourceId);
+			List<Area> areas = DaoFactory.get().getAreaDao().getAllByResourceId(resource);
             boolean firstIteration = true;
             for (Area area : areas) {
                 int pointNumber = area.getNumberOfPoint();
