@@ -29,7 +29,7 @@ public class EmptyDatabaseApp {
 		Transaction transaction = session.beginTransaction();
 		
 		// Check if table roles is empty (database is empty)
-		if( ((Long)session.createQuery("select count(*) from User").uniqueResult()).intValue() == 0){
+		if (DaoFactory.get().getRoleDao().isEmpty()==0) {
 			DaoFactory.get().getRoleDao().add(new Role("Admin","description"));
 			DaoFactory.get().getRoleDao().add(new Role("Registrator","description"));
 			DaoFactory.get().getRoleDao().add(new Role("User","description"));		

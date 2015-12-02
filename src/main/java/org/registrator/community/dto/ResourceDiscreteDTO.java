@@ -27,12 +27,13 @@ public class ResourceDiscreteDTO {
 	}
 
 	public String toString() {
-		discreteParameterDTO.toString();
+		StringBuilder result = new StringBuilder();
+		result.append(discreteParameterDTO.toString());
 		for (int i = 0, valuesSize = values.size(); i < valuesSize; i++) {
 			Double value = values.get(i);
-			System.out.println("Value " + i + ": " + value);
+			result.append("Значення " + i + ": " + value + "\n");
 		}
-		return null;
+		return result.toString();
 	}
 		
 	

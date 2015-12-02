@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService, SearchService {
 			Resource resource = DaoFactory.get().getResourceDao().findById(resourceId);
 
             //Creating of the ResourceTypeDTO
-            Integer resourceTypeId = 2; // resource.getType().getTypeId();
+            Integer resourceTypeId = resource.getType().getTypeId();
 
             List<LineSize> lineSizes = DaoFactory.get().getLineSizeDao().getAllByResourceTypeId(resourceTypeId);
             for (LineSize lineSize : lineSizes) {

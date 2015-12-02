@@ -101,10 +101,15 @@ public class UserDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Name" + firstName + " Last Name " + lastName + " Middle name "
-				+ middleName + " Role " + getRole().getName() + "" + " Login "
-				+ login + " Password " + password + " Email " + email
-				+ " Status " + status + " Passport " + passport.toString()
-				+ " Address " + address.toString();
+		String result;
+        result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n"
+                + "Роль:  " + getRole().getName() + "\n"
+                + "Логін: " + login + "\n"
+                + "Пароль: " + password + "\n"
+                + "Пошта: " + email + "\n"
+                + "Статус: " + status + "\n"
+                + "Паспортні дані:" + passport.toString() + "\n"
+                + "Адреса: " + address.toString() + "\n");
+		return result;
 	}
 }
