@@ -17,7 +17,7 @@ public interface AdminService {
 //		
 //		public List<User> getUserByPortion(int from, int quantity);
 
-		// show all (users+registers+admin?)
+		// show all (users+registers+administrator?)
 
 		// show all users
 

@@ -22,5 +22,12 @@ public class UserTestService {
 		return userDao.getEntityById(id);
 	}
 
+	public List<User> getPortionOfUser(int from,int quantity){
+		return userDao.getPortionOfUser(from, quantity);
+	}
+
+	public User updateUser(User user){
+		return userDao.update(user);
+	}
 
 }
