@@ -12,7 +12,7 @@ public class Appl05 {
 public static void main(String[] args) {
 	ResourceDTO res = new ResourceDTO();
 	RegistratorService rs = new RegistratorServiceImpl();
-	rs.showResourceByIdentifier("1111");
+	rs.showResourceByIdentifier("79000/001");
 	System.out.println("\n\n\n" + "**************************************" + "\n" +
 			"Ідентифікатор ресурсу: " + res.getIdentifier() + "\n"+
 			"Тип ресурсу: " + res.getResourceType().getTypeName().toString() + "\n" +

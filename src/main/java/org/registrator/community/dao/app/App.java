@@ -33,7 +33,7 @@ public class App {
 		//DaoFactory.get().getResourceTypeDao().add(new ResourceType("�����"));
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		
+
 		/*// Save new User in Database
 		Role role = new Role("Registrator","description");
 		DaoFactory.get().getRoleDao().add(role);
