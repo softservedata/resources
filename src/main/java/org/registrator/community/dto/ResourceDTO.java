@@ -155,17 +155,9 @@ public class ResourceDTO {
 	"Номер тому: " + tomeIdentifier + "\n"+
 	"Дата внесення: " + date + "\n"+
 	"Статус: " + status.toString() + "\n"+
-	"Том: " + tomeIdentifier + "\n" +
 	"Територія: " + resourceArea + "\n" +
 	"Лінійні параметри: " + resourceLinear + "\n" +
  	"Дискретні параметри: "	+ resourceDiscrete;
 		
 	}
-	
-//	public String toString(){
-//		return "\n\n\n" + "**************************************" + "\n" +
-//	"Ідентифікатор ресурсу: " + identifier + "\n" +
-//	"Лінійні параметри: " + resourceLinear;
-//	}
-	
 }
