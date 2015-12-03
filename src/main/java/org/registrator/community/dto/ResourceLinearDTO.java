@@ -27,6 +27,10 @@ public class ResourceLinearDTO {
 		this.linearParameterDTO = linearParameterDTO;
 	}
 	
+	/*public String toString() {
+		System.out.println("ResourceLinearDTO: ");
+		System.out.println("LinearParameterDTO: " + linearParameterDTO.toString());*/
+
 
 	public String toString(){
 		return "\n\n\n" + "**************************************" + "\n" +
@@ -41,8 +45,19 @@ public class ResourceLinearDTO {
 		for (SegmentLinearDTO segment : segments) {
 			result.append(segment.toString());
 		}
-		return result.toString();*/
+		return null;
+	}*/
+	
+	/*public String toString() {
+		System.out.println("ResourceLinearDTO: ");
+		System.out.println("LinearParameterDTO: " + linearParameterDTO.toString());
+		for (SegmentLinearDTO segment : segments) {
+			segment.toString();
+		}
+		return ;
+	}*/
 
 	}
+
 	
 }
