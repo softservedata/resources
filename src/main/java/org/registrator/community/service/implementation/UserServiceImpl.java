@@ -13,11 +13,17 @@ import org.registrator.community.service.interfaces.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that implements service methods for registered user of the database.
+ *
+ */
 public class UserServiceImpl implements UserService, SearchService {
 
     /**
      * A method for registered user to make inquiry for getting sertificate
-     * about the resource with known resource id in the database.
+     * about the resource with known resource identifier in the database.
+     * Fills new line in database.
+     * @param inquiryListDTO - Data Transfer Object for Inquiry.
      */
     public void InquiryGetSertificate(InquiryListDTO inquiryListDTO) {
         Session session = null;
@@ -47,6 +53,7 @@ public class UserServiceImpl implements UserService, SearchService {
         } catch (HibernateException he) {
             if (tr != null) {
                 tr.rollback();
+                System.out.println("Can't save data to the database");
             }
         } finally {
             if ((session != null) && (session.isOpen())) {
@@ -55,6 +62,12 @@ public class UserServiceImpl implements UserService, SearchService {
         }
     }
 
+    /**
+     * A method for registered user to make inquiry for inputting the resource in the database.
+     * All information about the resource is required.
+     * Fills new lines in database. 
+     * @param inquiryListDTO - Data Transfer Object for Inquiry.
+     */
     public void InquiryInputResource(InquiryListDTO inquiryListDTO) {
         Session session = null;
         Transaction tr = null;
@@ -85,6 +98,7 @@ public class UserServiceImpl implements UserService, SearchService {
         } catch (HibernateException he) {
             if (tr != null) {
                 tr.rollback();
+                System.out.println("Can't save data to the database");
             }
         } finally {
             if ((session != null) && (session.isOpen())) {

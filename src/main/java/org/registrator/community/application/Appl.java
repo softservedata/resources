@@ -31,9 +31,9 @@ public class Appl {
 	public static void main(String[] args) {
 		/*Tome tome = new Tome();
 			tome.setIdentifier("12345");
-				tome.setName("name??");
+				tome.setIdentifier("name??");
 				tome.setUser(DaoFactory.get().getUserDao().findById(1));
-				DaoFactory.get().getTomeDao().add(tome);;
+				DaoFactory.get().getTomeDao().add(tome);
 				
 				UserDTO registrator = new UserDTO();
 				registrator.setFirstName("FirstName");
@@ -108,9 +108,9 @@ public class Appl {
 				resourceDTO.setResourceLinear(resourceLinearDTOs);
 					
 				RegistratorService registratorService = new RegistratorServiceImpl();
-				registratorService.addResource(resourceDTO);
+				registratorService.addResource(resourceDTO);*/
 			
 		 	 		
-	*/}
+	}
 
 }

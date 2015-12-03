@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.registrator.community.dao.RoleDao;
 import org.registrator.community.dao.UserDao;
 import org.registrator.community.dao.daofactory.DaoFactory;
@@ -38,6 +39,8 @@ public class Test {
 		Transaction tr = null;
 		
 		try{
+			session = HibernateUtil.getSessionFactory().openSession();
+	        tr = session.beginTransaction();
 			RoleDao  roleDao = DaoFactory.get().getRoleDao();
 			Role role = new Role("USER","can do inquiries");			
 			roleDao.add(role);
@@ -64,12 +67,17 @@ public class Test {
 		Transaction tr = null;
 		
 		try{
-			Role role = DaoFactory.get().getRoleDao().findById(3);
-			DaoFactory.get().getUserDao().add(new User("login11", "password11", role, "Taras", "Rogalya", "Ivanovich", "tar@gmail.com", "UNBLOCK"));
+			session = HibernateUtil.getSessionFactory().openSession();
+	        tr = session.beginTransaction();
+	        
+			Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", Name.USER)).uniqueResult();
+			DaoFactory.get().getUserDao()
+			.add(new User("login11", "password11", role, "Taras", "Rogalya", "Ivanovich", "tar@gmail.com", "UNBLOCK"));
 			tr.commit();			
 		} catch(HibernateException he){
 			if (tr != null){
 				tr.rollback();
+				 System.out.println("Can't save data to the database");
 			}
 		} finally {
 			if ((session != null) && (session.isOpen())){
@@ -78,7 +86,7 @@ public class Test {
 		}			
 	}
 	
-		public void addInquiryInpupResouce(){
+		public void addInquiryInputResouce(){
 		
 		ResourceTypeDTO resourceTypeDTO = new RegistratorServiceImpl().showAllTypeOfResources().get(0);
 		PointAreaDTO pointAreaDTO1 = new PointAreaDTO(1, 45, 10, 10, 46, 10, 10);
@@ -112,10 +120,12 @@ public class Test {
 		 resourceDiscreteDTO2.setValues(list);
 		 resourceDiscreteDTO2.setDiscreteParameterDTO(discreteParameterDTO2);
 		 ploshcha.add(resourceDiscreteDTO2);
+		 
+		 List<ResourceLinearDTO> resourceLinear = new ArrayList<>();
 		
 		
 		ResourceDTO resource = new ResourceDTO(resourceTypeDTO, "111111", "land", "Петро",
-				new Date(), ResourceStatus.UNCHECKED, "passport AA65123", "12345", resourceAreaDTO, null, null);
+				new Date(), ResourceStatus.UNCHECKED, "passport AA65123", "12345", resourceAreaDTO, resourceLinear, ploshcha);
 		
 		InquiryListDTO inquiryListDTO = new InquiryListDTO("INPUT", new Date(), "ivan", "petro", resource);
 		new UserServiceImpl().InquiryInputResource(inquiryListDTO);
@@ -129,9 +139,8 @@ public class Test {
 	}
 	public static void main(String[] args) {
 		Test test = new Test();
-		//test.addInquiryGetSertificate();
-		//test.addUser();
-		test.addInquiryInpupResouce();
+		test.addInquiryGetSertificate();
+		//test.addInquiryInputResouce();
 	}
 
 }
