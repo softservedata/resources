@@ -97,6 +97,7 @@ public class Test {
 		resourceAreaDTO.setPoligons(listPoligons);
 		
 		List<ResourceDiscreteDTO> perimiter = new ArrayList<>();
+		
 		List<ResourceDiscreteDTO> ploshcha = new ArrayList<>();
 		
 		ResourceDTO resource = new ResourceDTO(resourceTypeDTO, "111111", "land", "Петро", new Date(), ResourceStatus.UNCHECKED, "passport AA65123", "12345", resourceAreaDTO, null, null);
