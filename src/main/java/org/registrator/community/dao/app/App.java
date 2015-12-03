@@ -31,9 +31,9 @@ public class App {
 	public static void main(String[] args) {
 
 		//DaoFactory.get().getResourceTypeDao().add(new ResourceType("�����"));
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		
+//		Session session = HibernateUtil.getSessionFactory().openSession();
+//		Transaction transaction = session.beginTransaction();
+
 		/*// Save new User in Database
 		Role role = new Role("Registrator","description");
 		DaoFactory.get().getRoleDao().add(role);
@@ -206,25 +206,8 @@ public class App {
 		userDao.add(user2);*/
 
 
-
-		// Checking of the getResource method
-
-		UserServiceImpl userServiceImpl = new UserServiceImpl();
-		ResourceDTO resourceDTO = userServiceImpl.getResource(1);
-
-		resourceDTO.toString();
-
-     /*   Resource resource = DaoFactory.get().getResourceDao().findById(1);
-//        ResourceType type = resource.getType();
-        Integer id = resource.getResourcesId();
-*/
-//        RegistratorService regService = new RegistratorServiceImpl();
-//		ResourceDTO resourceDTO = new ResourceDTO();
-//		resourceDTO = regService.showResourceByIdentifier("123555");
-//		System.out.println(resourceDTO);
-
-        transaction.commit();
-		session.close();
+//        transaction.commit();
+//		session.close();
 	}
 		
 }

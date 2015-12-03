@@ -165,7 +165,7 @@ public class ResourceDTO {
 //	public String toString(){
 //		return "\n\n\n" + "**************************************" + "\n" +
 //	"Ідентифікатор ресурсу: " + identifier + "\n" +
-//	"Лінійні параметри: " + resourceLinear;	
+//	"Лінійні параметри: " + resourceLinear;
 //	}
 	
 }

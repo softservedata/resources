@@ -21,7 +21,7 @@
    <!--property name="hbm2ddl.auto">create</property-->
    <property name="hbm2ddl.auto">update</property>
    <property name="showSql">true</property>
-   
+
    	<!-- mapping files -->
 	<mapping class="org.registrator.community.entity.User"/>
 	<mapping class="org.registrator.community.entity.Role"/> 
