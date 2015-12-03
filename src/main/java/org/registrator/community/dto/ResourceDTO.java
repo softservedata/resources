@@ -148,7 +148,7 @@ public class ResourceDTO {
 	public String toString(){
 		return "\n\n\n" + "**************************************" + "\n" +
 	"Ідентифікатор ресурсу: " + identifier + "\n"+
-	"Тип ресурсу: " + resourceType.toString() + "\n"+
+	"Тип ресурсу: " + resourceType.getTypeName() + "\n"+
 	"Опис ресурсу: " + description + "\n" + 
 	"Причина внесення в базу:  " + reasonInclusion + "\n" +
 	"Ім'я та прізвище реєстратора   " + registratorName + "\n"+
@@ -157,9 +157,15 @@ public class ResourceDTO {
 	"Статус: " + status.toString() + "\n"+
 	"Том: " + tomeIdentifier + "\n" +
 	"Територія: " + resourceArea + "\n" +
-	"Лінійні параметри: " + resourceLinear.toString() + "\n" +
- 	"Дискретні параметри: "	+ resourceDiscrete.toString();
+	"Лінійні параметри: " + resourceLinear + "\n" +
+ 	"Дискретні параметри: "	+ resourceDiscrete;
 		
 	}
+	
+//	public String toString(){
+//		return "\n\n\n" + "**************************************" + "\n" +
+//	"Ідентифікатор ресурсу: " + identifier + "\n" +
+//	"Лінійні параметри: " + resourceLinear;
+//	}
 	
 }

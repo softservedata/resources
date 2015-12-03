@@ -1,7 +1,6 @@
 package org.registrator.community.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.registrator.community.entity.Role;
 

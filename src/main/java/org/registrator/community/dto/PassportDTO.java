@@ -3,13 +3,14 @@ package org.registrator.community.dto;
 import java.io.Serializable;
 
 public class PassportDTO implements Serializable {
-	
+
+	private static final long serialVersionUID = 1L;
 	private String seria;
 	private Integer number;
 	private String published_by_data;
-	
+
 	public PassportDTO() {
-		
+
 	}
 
 	public String getSeria() {
@@ -34,14 +35,13 @@ public class PassportDTO implements Serializable {
 
 	public void setPublished_by_data(String published_by_data) {
 		this.published_by_data = published_by_data;
-	}	
-	
+	}
+
 	@Override
 	public String toString() {
-		String result;
-		result = String.valueOf("Серія паспорту: " + seria + "\n"
-				+ "Номер паспорту: " + number + "\n"
-				+ "Виданий: " + published_by_data + "\n");
-		return result;
+
+		return "Серія паспорту: " + seria + "\n" + "Номер паспорту: " + number
+				+ "\n" + "Виданий: " + published_by_data + "\n";
+
 	}
 }
