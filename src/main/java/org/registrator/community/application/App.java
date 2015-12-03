@@ -2,8 +2,6 @@ package org.registrator.community.application;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.service.implementation.AdminServiceImpl;
 import org.registrator.community.service.interfaces.AdminService;
@@ -19,10 +17,10 @@ public class App {
 		// Some Users wants to be a part of our community
 		// So let`s add them to all
 
-		// CreateTableInDB create = new CreateTableInDB();
-		// create.createTables();
-		// create.addSeveralUsers();
-
+			CreateTableInDB create = new CreateTableInDB();
+			create.Fill();
+			create.addSeveralUsers();
+		
 		AdminService adminService = new AdminServiceImpl();
 
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();

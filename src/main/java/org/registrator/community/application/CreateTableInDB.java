@@ -168,6 +168,7 @@ public class CreateTableInDB {
 
 	}
 
+	// Plaese don't use
 	public void addSeveralUsers() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		@SuppressWarnings("unused")
@@ -220,4 +221,22 @@ public class CreateTableInDB {
 				.add(new PassportInfo(user, "КК", 3333, "Видано кимось"));
 
 	}
+	
+	// For myself
+	public void Fill() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+
+		// Check if table roles is empty (database is empty)
+		if (DaoFactory.get().getRoleDao().isEmpty() == 0) {
+			DaoFactory.get().getRoleDao().add(new Role("Admin", "description"));
+			DaoFactory.get().getRoleDao()
+					.add(new Role("Registrator", "description"));
+			DaoFactory.get().getRoleDao().add(new Role("User", "description"));
+		}
+		transaction.commit();
+		session.close();
+
+	}
+
 }
