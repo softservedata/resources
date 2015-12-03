@@ -18,8 +18,8 @@ public class App {
 		// So let`s add them to all
 
 		CreateTableInDB create = new CreateTableInDB();
-		create.Fill();
-		create.addSeveralUsers();
+	//	create.Fill();
+	//	create.addSeveralUsers();
 
 		AdminService adminService = new AdminServiceImpl();
 

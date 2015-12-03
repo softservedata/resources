@@ -24,7 +24,7 @@ public class ApplShowAllRes {
 					"Номер тому: " + r.getTomeIdentifier() + "\n"+
 					"Дата внесення ресурсу: " + r.getDate() + "\n"+
 					"Поточний статус ресурсу: " + r.getStatus() + "\n"+
-					"Том" + r.getTomeIdentifier() + "\n>>>>>>>>>>>>>>>>>>>>\n"));	
+					"\n>>>>>>>>>>>>>>>>>>>>\n"));	
 }
 }
 
