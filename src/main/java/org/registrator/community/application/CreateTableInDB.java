@@ -102,6 +102,7 @@ public class CreateTableInDB {
 		DiscreteValue tension = new DiscreteValue(radiofrequency,"напруженість", "мВт");
 		DaoFactory.get().getLineSizeDao().add(bandwidth1);
 		DaoFactory.get().getLineSizeDao().add(bandwidth2);
+		DaoFactory.get().getLineSizeDao().add(bandwidth3);
 		DaoFactory.get().getDiscreteValueDao().add(power);
 		DaoFactory.get().getDiscreteValueDao().add(tension);
 		
@@ -141,7 +142,7 @@ public class CreateTableInDB {
 
 		Resource radiofreq2 =  new Resource(radiofrequency, "111111", "суперрадіочастоти", registrator,
 				new Date(), "ACTIVE", tome, "Посвідчення водія ...");
-				DaoFactory.get().getResourceDao().add(radiofreq);
+				DaoFactory.get().getResourceDao().add(radiofreq2);
 			
 				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 1, 53.876, 30.01));		
 				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 2, 63.55, 33.76));		

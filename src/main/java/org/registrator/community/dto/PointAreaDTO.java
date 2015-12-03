@@ -1,5 +1,7 @@
 package org.registrator.community.dto;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+
 public class PointAreaDTO {
 	
 	private int orderNumber;
@@ -79,6 +81,16 @@ public class PointAreaDTO {
         this.longitudeMinutes = (int) Math.floor((longitude - longitudeDegrees)*60);
         this.longitudeSeconds = ((longitude-longitudeDegrees)*60 - longitudeMinutes)*60;
     }
+    
+	public Double getDecimalLatitude(){
+		return this.latitudeDegrees + this.latitudeMinutes /60d
+				+ this.latitudeSeconds /3600d;
+	}
+	
+	public Double getDecimalLongitude(){
+		return this.longitudeDegrees + this.longitudeMinutes / 60d
+				+ this.latitudeSeconds / 3600d;
+	}
 
     @Override
     public String toString() {
