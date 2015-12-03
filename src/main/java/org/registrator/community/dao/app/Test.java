@@ -97,12 +97,28 @@ public class Test {
 		resourceAreaDTO.setPoligons(listPoligons);
 		
 		List<ResourceDiscreteDTO> perimiter = new ArrayList<>();
+		List<Double> list = new ArrayList<>();
+		list.add(156.25);
+		DiscreteParameterDTO discreteParameterDTO = new DiscreteParameterDTO("периметер","м");
+		ResourceDiscreteDTO resourceDiscreteDTO = new ResourceDiscreteDTO();
+		 resourceDiscreteDTO.setValues(list);
+		 resourceDiscreteDTO.setDiscreteParameterDTO(discreteParameterDTO);
+		 perimiter.add(resourceDiscreteDTO);
 		List<ResourceDiscreteDTO> ploshcha = new ArrayList<>();
+		List<Double> list2 = new ArrayList<>();
+		list2.add(3.24);
+		DiscreteParameterDTO discreteParameterDTO2 = new DiscreteParameterDTO("площа","га");
+		ResourceDiscreteDTO resourceDiscreteDTO2 = new ResourceDiscreteDTO();
+		 resourceDiscreteDTO2.setValues(list);
+		 resourceDiscreteDTO2.setDiscreteParameterDTO(discreteParameterDTO2);
+		 ploshcha.add(resourceDiscreteDTO2);
 		
-		ResourceDTO resource = new ResourceDTO(resourceTypeDTO, "111111", "land", "Петро", new Date(), ResourceStatus.UNCHECKED, "passport AA65123", "12345", resourceAreaDTO, null, null);
+		
+		ResourceDTO resource = new ResourceDTO(resourceTypeDTO, "111111", "land", "Петро",
+				new Date(), ResourceStatus.UNCHECKED, "passport AA65123", "12345", resourceAreaDTO, null, null);
 		
 		InquiryListDTO inquiryListDTO = new InquiryListDTO("INPUT", new Date(), "ivan", "petro", resource);
-		new UserServiceImpl().InquiryGetSertificate(inquiryListDTO);
+		new UserServiceImpl().InquiryInputResource(inquiryListDTO);
 	}
 	
 	public void addInquiryGetSertificate(){
@@ -113,9 +129,9 @@ public class Test {
 	}
 	public static void main(String[] args) {
 		Test test = new Test();
-		test.addInquiryGetSertificate();
+		//test.addInquiryGetSertificate();
 		//test.addUser();
-		//test.addInquiryInpupResouce();
+		test.addInquiryInpupResouce();
 	}
 
 }

@@ -28,8 +28,8 @@ import org.registrator.community.service.interfaces.RegistratorService;
 
 public class Appl {
 
-/*	public static void main(String[] args) {
-		Tome tome = new Tome();
+	public static void main(String[] args) {
+		/*Tome tome = new Tome();
 			tome.setIdentifier("12345");
 				tome.setName("name??");
 				tome.setUser(DaoFactory.get().getUserDao().findById(1));
@@ -111,6 +111,6 @@ public class Appl {
 				registratorService.addResource(resourceDTO);
 			
 		 	 		
-	}*/
+	*/}
 
 }
