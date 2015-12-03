@@ -17,10 +17,10 @@ public class App {
 		// Some Users wants to be a part of our community
 		// So let`s add them to all
 
-			CreateTableInDB create = new CreateTableInDB();
-			create.Fill();
-			create.addSeveralUsers();
-		
+		CreateTableInDB create = new CreateTableInDB();
+		create.Fill();
+		create.addSeveralUsers();
+
 		AdminService adminService = new AdminServiceImpl();
 
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
