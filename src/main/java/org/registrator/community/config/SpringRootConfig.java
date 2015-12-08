@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 
 @Configuration
-@ComponentScan({"org.registrator.community.controller"})
+@ComponentScan("org.registrator.community")
 @EnableTransactionManagement
 public class SpringRootConfig {
 
