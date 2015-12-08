@@ -1,10 +1,14 @@
 package org.registrator.community.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "resource_types")
-public class ResourceType {
+public class ResourceType implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "resource_type_id")

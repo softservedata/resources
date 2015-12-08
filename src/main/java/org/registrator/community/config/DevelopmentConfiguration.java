@@ -2,17 +2,20 @@ package org.registrator.community.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Configuration
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages="org.registrator.community.dao")
 public class DevelopmentConfiguration {
 
     @Bean(name = "datasource")
