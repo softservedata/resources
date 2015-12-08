@@ -32,3 +32,8 @@ hs_err_pid*
 
 # ignore all .txt files in the directory doc/
 # doc/**/*.txt
+
+# ignore .doc .pfd .docx
+*.doc
+*.docx
+*.pdf

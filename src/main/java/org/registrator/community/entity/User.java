@@ -3,6 +3,8 @@ package org.registrator.community.entity;
 import java.io.Serializable;
 
 import javax.persistence.*;
+
+import org.registrator.community.enumeration.UserStatus;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -15,8 +17,7 @@ public class User implements Serializable {
     @GeneratedValue
     private Integer userId;
 	
-	@Column(name = "login",unique = true, nullable = false)
-	
+	@Column(name = "login",unique = true, nullable = false)	
 	private String login;
 
 	@Column(name = "password", nullable = false)
@@ -46,7 +47,6 @@ public class User implements Serializable {
 		
 	}
 	
-
 	public User(String login, String password, Role role, String firstName, String lastName, String middleName,
 			String email, String status) {
 		this.login = login;
@@ -58,9 +58,19 @@ public class User implements Serializable {
 		this.email = email;		
 		this.status = UserStatus.valueOf(status.toUpperCase());
 	}
-
-
-
+	
+	
+	/*public User(String firstName, String middleName, String lastName, Role role,
+			String email, String login, String password, String status) {
+		this.login = login;
+		this.password = password;
+		this.role = role;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.middleName = middleName;
+		this.email = email;		
+		this.status = UserStatus.valueOf(status.toUpperCase());
+	}*/
 
 	public Integer getUserId() {
 		return userId;

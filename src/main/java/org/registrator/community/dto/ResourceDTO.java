@@ -1,6 +1,6 @@
 package org.registrator.community.dto;
 
-import org.registrator.community.entity.ResourceStatus;
+import org.registrator.community.enumeration.ResourceStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -22,8 +22,8 @@ public class ResourceDTO {
 	private ResourceAreaDTO resourceArea;
 //	private ResourceLinearDTO resourceLinear;
 //	private ResourceDiscreteDTO resourceDiscrete;
-	private List<ResourceLinearDTO> resourceLinear;
-	private List<ResourceDiscreteDTO> resourceDiscrete;
+	private List<ResourceLinearValueDTO> resourceLinear;
+	private List<ResourceDiscreteValueDTO> resourceDiscrete;
 	
 	
 	
@@ -32,7 +32,7 @@ public class ResourceDTO {
 	}
 	public ResourceDTO(ResourceTypeDTO resourceType, String identifier, String description, String registratorName, Date date,
 			ResourceStatus status, String reasonInclusion, String tomeIdentifier, ResourceAreaDTO resourceArea,
-			List<ResourceLinearDTO> resourceLinear, List<ResourceDiscreteDTO> resourceDiscrete) {
+			List<ResourceLinearValueDTO> resourceLinear, List<ResourceDiscreteValueDTO> resourceDiscrete) {
 		this.resourceType = resourceType;
 		this.identifier = identifier;
 		this.description = description;
@@ -132,16 +132,16 @@ public class ResourceDTO {
 		this.resourceDiscrete = resourceDiscrete;
 	}
 	*/
-	public List<ResourceLinearDTO> getResourceLinear() {
+	public List<ResourceLinearValueDTO> getResourceLinear() {
 		return resourceLinear;
 	}
-	public void setResourceLinear(List<ResourceLinearDTO> resourceLinear) {
+	public void setResourceLinear(List<ResourceLinearValueDTO> resourceLinear) {
 		this.resourceLinear = resourceLinear;
 	}
-	public List<ResourceDiscreteDTO> getResourceDiscrete() {
+	public List<ResourceDiscreteValueDTO> getResourceDiscrete() {
 		return resourceDiscrete;
 	}
-	public void setResourceDiscrete(List<ResourceDiscreteDTO> resourceDiscrete) {
+	public void setResourceDiscrete(List<ResourceDiscreteValueDTO> resourceDiscrete) {
 		this.resourceDiscrete = resourceDiscrete;
 	}	
 	

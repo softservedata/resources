@@ -5,14 +5,16 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "lines_size")
-public class LineSize implements Serializable {
+@Table(name = "linear_parameters")
+public class LinearParameter implements Serializable {
 
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "lines_size_id")
+	@Column(name = "linear_parameter_id")
 	@GeneratedValue
-	private Integer linesSizeId;
+	private Integer linearParameterId;
 	
 	@ManyToOne
 	@JoinColumn(name = "resource_type_id", nullable = false)
@@ -24,13 +26,13 @@ public class LineSize implements Serializable {
 	@Column(name = "unit_name", nullable = false)
 	private String unitName ;
 	
-	public LineSize() {
+	public LinearParameter() {
 		
 	}
 	
 	
 
-	public LineSize(ResourceType resourceType, String description,
+	public LinearParameter(ResourceType resourceType, String description,
 			String unitName) {
 		super();
 		this.resourceType = resourceType;
@@ -38,15 +40,17 @@ public class LineSize implements Serializable {
 		this.unitName = unitName;
 	}
 
-
-
-	public Integer getLinesSizeId() {
-		return linesSizeId;
+	public Integer getLinearParameterId() {
+		return linearParameterId;
 	}
 
-	public void setLinesSizeId(Integer linesSizeId) {
-		this.linesSizeId = linesSizeId;
+
+
+	public void setLinearParameterId(Integer linearParameterId) {
+		this.linearParameterId = linearParameterId;
 	}
+
+
 
 	public ResourceType getResourceType() {
 		return resourceType;

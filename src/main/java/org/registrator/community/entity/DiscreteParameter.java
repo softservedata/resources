@@ -5,13 +5,15 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "discrete_values")
-public class DiscreteValue implements Serializable {
+@Table(name = "discrete_parameters")
+public class DiscreteParameter implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
-    @Column(name = "discrete_values_id")
+    @Column(name = "discrete_parameter_id")
     @GeneratedValue
-    private Integer discreteValueId;
+    private Integer discreteParameterId;
 
 	@ManyToOne
 	@JoinColumn(name = "resource_type_id", nullable = false)
@@ -23,27 +25,23 @@ public class DiscreteValue implements Serializable {
     @Column(name = "unit_name", nullable = false)
 	private String unitName ;
     
-    public DiscreteValue() {
+    public DiscreteParameter() {
     	
     }
     
-    
-
-	public DiscreteValue(ResourceType resourceType, String description,
+	public DiscreteParameter(ResourceType resourceType, String description,
 			String unitName) {
 		this.resourceType = resourceType;
 		this.description = description;
 		this.unitName = unitName;
 	}
 
-
-
-	public Integer getDiscreteValueId() {
-		return discreteValueId;
+	public Integer getDiscreteParameterId() {
+		return discreteParameterId;
 	}
 
-	public void setDiscreteValueId(Integer discreteValueId) {
-		this.discreteValueId = discreteValueId;
+	public void setDiscreteParameterId(Integer discreteParameterId) {
+		this.discreteParameterId = discreteParameterId;
 	}
 
 	public ResourceType getResourceType() {

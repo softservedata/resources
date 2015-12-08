@@ -2,11 +2,11 @@ package org.registrator.community.dto;
 
 import java.util.List;
 
-public class ResourceDiscreteDTO {
+public class ResourceDiscreteValueDTO {
 	private DiscreteParameterDTO discreteParameterDTO;
 	private List<Double> values;
 
-	public ResourceDiscreteDTO() {
+	public ResourceDiscreteValueDTO() {
 		
 	}
 

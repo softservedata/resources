@@ -2,12 +2,12 @@ package org.registrator.community.dto;
 
 import java.util.List;
 
-public class ResourceLinearDTO {
+public class ResourceLinearValueDTO {
 	private LinearParameterDTO linearParameterDTO;
 	private List<SegmentLinearDTO> segments;
 	
 	
-	public ResourceLinearDTO() {
+	public ResourceLinearValueDTO() {
 	
 	}
 

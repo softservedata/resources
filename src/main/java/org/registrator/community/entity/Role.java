@@ -4,19 +4,23 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.registrator.community.enumeration.RoleType;
+
 @Entity
 @Table(name = "roles")
 public class Role implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "role_id")
     @GeneratedValue
     private Integer roleId;
 
 	
-    @Column(name = "name", unique = true, nullable = false, columnDefinition = "ENUM('USER','REGISTRATOR','ADMIN')")
+    @Column(name = "type", unique = true, nullable = false, columnDefinition = "ENUM('USER','REGISTRATOR','ADMIN')")
 	@Enumerated(EnumType.STRING) 
-	private Name name;
+	private RoleType type;
     
     @Column(name = "description", nullable = false)
     private String description;
@@ -24,9 +28,8 @@ public class Role implements Serializable {
     public Role(){
     }
     
-
-    public Role(String name, String description) {
-		this.name = Name.valueOf(name.toUpperCase());
+    public Role(String type, String description) {
+		this.type = RoleType.valueOf(type.toUpperCase());
 		this.description = description;
 	}
 
@@ -38,12 +41,12 @@ public class Role implements Serializable {
 		this.roleId = roleId;
 	}
 
-	public Name getName() {
-		return name;
+	public RoleType getType() {
+		return type;
 	}
 
-	public void setName(Name name) {
-		this.name = name;
+	public void setType(RoleType type) {
+		this.type = type;
 	}
 
 	public String getDescription() {

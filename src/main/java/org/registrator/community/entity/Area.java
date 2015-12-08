@@ -8,6 +8,8 @@ import javax.persistence.*;
 @Table(name = "area")
 public class Area implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "area_id")
 	@GeneratedValue
@@ -23,18 +25,18 @@ public class Area implements Serializable {
 	@Column(name = "longitude", nullable = false)
 	private Double longitude;
 	
-	@Column(name = "number_of_point", nullable = false)
-	private Integer numberOfPoint;
+//	@Column(name = "number_of_point", nullable = false)
+//	private Integer numberOfPoint;
+	@Column(name = "order_number", nullable = false)
+	private Integer orderNumber;
 
 	public Area() {
 		
 	}
 	
-	
-
-	public Area(Resource resource, Integer numberOfPoint, Double latitude, Double longitude) {
+	public Area(Resource resource, Integer orderNumber, Double latitude, Double longitude) {
 		this.resource = resource;
-		this.numberOfPoint = numberOfPoint;
+		this.orderNumber = orderNumber;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
@@ -73,12 +75,11 @@ public class Area implements Serializable {
 		this.longitude = longitude;
 	}
 
-	public Integer getNumberOfPoint() {
-		return numberOfPoint;
+	public Integer getOrderNumber() {
+		return orderNumber;
 	}
 
-	public void setNumberOfPoint(Integer numberOfPoint) {
-		this.numberOfPoint = numberOfPoint;
+	public void setOrderNumber(Integer orderNumber) {
+		this.orderNumber = orderNumber;
 	}
-
 }
