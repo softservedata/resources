@@ -15,5 +15,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRepository userRepository;
+
+	@Override
+	public User getUserByLogin(String login) {
+		return userRepository.findUserByLogin(login);
+	}
+	
+	
 	
 }
