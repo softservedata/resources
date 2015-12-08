@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Role;
-import org.registrator.community.entity.UserStatus;
+import org.registrator.community.enumeration.UserStatus;
 
 public interface AdminService {
 

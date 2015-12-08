@@ -102,7 +102,7 @@ public class UserDTO implements Serializable {
 	public String toString() {
 		String result;
         result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n"
-                + "Роль:  " + getRole().getName() + "\n"
+                + "Роль:  " + getRole().getType() + "\n"
                 + "Логін: " + login + "\n"
                 + "Пароль: " + password + "\n"
                 + "Пошта: " + email + "\n"

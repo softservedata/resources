@@ -10,16 +10,16 @@ import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDiscreteDTO;
-import org.registrator.community.dto.ResourceLinearDTO;
+import org.registrator.community.dto.ResourceDiscreteValueDTO;
+import org.registrator.community.dto.ResourceLinearValueDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
-import org.registrator.community.entity.ResourceStatus;
+import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.implementation.RegistratorServiceImpl;
 import org.registrator.community.service.interfaces.RegistratorService;
 
 public class RegistratorServiceApp {
-	
+    
 	public static void main(String[] args) {
 		RegistratorService registratorService = new RegistratorServiceImpl();
 		
@@ -73,14 +73,14 @@ public class RegistratorServiceApp {
 		resourceAreaDTO.setPoligons(poligonAreaDTOs);
 
 		// creating ResourceLinearDTO  		
-		List<ResourceLinearDTO> resourceLinearDTOs = new ArrayList<ResourceLinearDTO>();
+		List<ResourceLinearValueDTO> resourceLinearDTOs = new ArrayList<ResourceLinearValueDTO>();
 		LinearParameterDTO linearParameterDTO1 = new LinearParameterDTO();
 		linearParameterDTO1.setDescription("глибина");		
 		List<SegmentLinearDTO> segments1 = new ArrayList<SegmentLinearDTO>() {{
 			add(new SegmentLinearDTO(124,183.5));
 			add(new SegmentLinearDTO(54.0,58.));
 		}};
-		ResourceLinearDTO resourceLinearDTO1 = new ResourceLinearDTO();
+		ResourceLinearValueDTO resourceLinearDTO1 = new ResourceLinearValueDTO();
 		resourceLinearDTO1.setLinearParameterDTO(linearParameterDTO1);
 		resourceLinearDTO1.setSegments(segments1);
 		resourceLinearDTOs.add(resourceLinearDTO1);
@@ -90,7 +90,7 @@ public class RegistratorServiceApp {
 		List<SegmentLinearDTO> segments2 = new ArrayList<SegmentLinearDTO>() {{
 		    add(new SegmentLinearDTO(1234,1583.5));
 		}};
-		ResourceLinearDTO resourceLinearDTO2 = new ResourceLinearDTO();
+		ResourceLinearValueDTO resourceLinearDTO2 = new ResourceLinearValueDTO();
 		resourceLinearDTO2.setLinearParameterDTO(linearParameterDTO2);
 		resourceLinearDTO2.setSegments(segments2);
 		resourceLinearDTOs.add(resourceLinearDTO2);
@@ -102,13 +102,13 @@ public class RegistratorServiceApp {
 		discreteParameterDTOs.add(new DiscreteParameterDTO("обєм", "км"));
 
 		// creating ResourceDiscreteDTOs  		
-		List<ResourceDiscreteDTO> resourceDiscreteDTOs = new ArrayList<ResourceDiscreteDTO>();
+		List<ResourceDiscreteValueDTO> resourceDiscreteDTOs = new ArrayList<ResourceDiscreteValueDTO>();
 		DiscreteParameterDTO disDTO1 = new DiscreteParameterDTO();
 		disDTO1.setDescription("площа");
 		List<Double> values1 = new ArrayList<Double>() {{
 		    add(2804d);
 		}};
-		ResourceDiscreteDTO resourceDiscreteDTO1 = new ResourceDiscreteDTO();
+		ResourceDiscreteValueDTO resourceDiscreteDTO1 = new ResourceDiscreteValueDTO();
 		resourceDiscreteDTO1.setDiscreteParameterDTO(disDTO1);
 		resourceDiscreteDTO1.setValues(values1);
 		
@@ -117,7 +117,7 @@ public class RegistratorServiceApp {
 		List<Double> values2 = new ArrayList<Double>() {{
 		    add(1206d);
 		}};
-		ResourceDiscreteDTO resourceDiscreteDTO2 = new ResourceDiscreteDTO();
+		ResourceDiscreteValueDTO resourceDiscreteDTO2 = new ResourceDiscreteValueDTO();
 		resourceDiscreteDTO2.setDiscreteParameterDTO(disDTO2);
 		resourceDiscreteDTO2.setValues(values2);
 		
@@ -126,7 +126,7 @@ public class RegistratorServiceApp {
 		disDTO3.setDescription("обєм");
 		List<Double> values3 = new ArrayList<Double>();
 			values3.add(4536.35);
-		ResourceDiscreteDTO resourceDiscreteDTO3 = new ResourceDiscreteDTO();
+		ResourceDiscreteValueDTO resourceDiscreteDTO3 = new ResourceDiscreteValueDTO();
 		resourceDiscreteDTO3.setDiscreteParameterDTO(disDTO3);
 		resourceDiscreteDTO3.setValues(values3);
 

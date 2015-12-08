@@ -5,11 +5,15 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.registrator.community.enumeration.ResourceStatus;
+
 @Entity
 @Table(name = "list_of_resouces")
 public class Resource implements Serializable {
 	
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "resources_id")
     @GeneratedValue
     private Integer resourcesId;
@@ -18,15 +22,15 @@ public class Resource implements Serializable {
 	@JoinColumn(name = "resource_type_id", nullable = false)
 	private ResourceType type;
 
-    @Column(name = "identifier", nullable = false)
+    @Column(name = "identifier", unique = true, nullable = false)
     private String identifier;
     
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
 	@JoinColumn(name = "registrator_id", nullable = false)
-	private User user;
+	private User registrator;
     
     @Column(name = "date", nullable = false)
     private Date date;
@@ -47,12 +51,12 @@ public class Resource implements Serializable {
     	
     }
     
-	public Resource(ResourceType type, String identifier, String description, User user, Date date,
+	public Resource(ResourceType type, String identifier, String description, User registrator, Date date,
 			String status, Tome tome, String reasonInclusion) {
 		this.type = type;
 		this.identifier = identifier;
 		this.description = description;
-		this.user = user;
+		this.registrator = registrator;
 		this.date = date;
 		this.status = ResourceStatus.valueOf(status.toUpperCase());
 		this.tome = tome;
@@ -88,16 +92,21 @@ public class Resource implements Serializable {
 		this.identifier = identifier;
 	}
 
-
-	public User getUser() {
-		return user;
+	public String getDescription() {
+		return description;
 	}
 
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
+	public User getRegistrator() {
+		return registrator;
+	}
+
+	public void setRegistrator(User registrator) {
+		this.registrator = registrator;
+	}
 
 	public Date getDate() {
 		return date;

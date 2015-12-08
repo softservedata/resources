@@ -29,12 +29,12 @@
 	<mapping class="org.registrator.community.entity.PassportInfo"/> 
 	<mapping class="org.registrator.community.entity.ResourceType"/>
 	<mapping class="org.registrator.community.entity.Resource"/> 
-	<mapping class="org.registrator.community.entity.DiscreteValue"/>
-	<mapping class="org.registrator.community.entity.LineSize"/>
+	<mapping class="org.registrator.community.entity.DiscreteParameter"/>
+	<mapping class="org.registrator.community.entity.LinearParameter"/>
 	<mapping class="org.registrator.community.entity.ResourceParameters"/>
 	<mapping class="org.registrator.community.entity.Area"/>
-	<mapping class="org.registrator.community.entity.StoreOfLineSizes"/>
-	<mapping class="org.registrator.community.entity.StoreOfDiscreteValues"/>
+	<mapping class="org.registrator.community.entity.ResourceLinearValue"/>
+	<mapping class="org.registrator.community.entity.ResourceDiscreteValue"/>
 	<mapping class="org.registrator.community.entity.Tome"/>
 	<mapping class="org.registrator.community.entity.Inquiry"/>
 		

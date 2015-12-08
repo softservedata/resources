@@ -1,12 +1,12 @@
 package org.registrator.community.dao;
 
 import org.registrator.community.dao.implementation.DaoOperationsImp;
-import org.registrator.community.entity.DiscreteValue;
+import org.registrator.community.entity.DiscreteParameter;
 
-public class DiscreteValueDao extends DaoOperationsImp<DiscreteValue> {
+public class DiscreteValueDao extends DaoOperationsImp<DiscreteParameter> {
 
 	public DiscreteValueDao() {
-		super(DiscreteValue.class);
+		super(DiscreteParameter.class);
 
 	}
 

@@ -1,14 +1,18 @@
 package org.registrator.community.entity;
 
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "store_of_line_sizes")
-public class StoreOfLineSizes {
+@Table(name = "resource_linear_values")
+public class ResourceLinearValue implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@Column(name = "store_of_line_sizes_id")
+	@Column(name = "resource_linear_param_id")
 	@GeneratedValue
 	private Integer StoreOfLineSizesId;
 
@@ -23,19 +27,17 @@ public class StoreOfLineSizes {
 	private Double maxValue;
 	
 	@ManyToOne
-	@JoinColumn(name = "lines_size_id", nullable = false)
-	private LineSize lineSize;
+	@JoinColumn(name = "linear_parameter_id", nullable = false)
+	private LinearParameter linearParameter;
 	
-	public StoreOfLineSizes() {
+	public ResourceLinearValue() {
 		
 	}
-	
-	
-
-	public StoreOfLineSizes(Resource resource, LineSize lineSize, Double minValue,
+		
+	public ResourceLinearValue(Resource resource, LinearParameter linearParameter, Double minValue,
 			Double maxValue) {
 		this.resource = resource;
-		this.lineSize = lineSize;
+		this.linearParameter = linearParameter;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 	}
@@ -74,12 +76,16 @@ public class StoreOfLineSizes {
 		this.maxValue = maxValue;
 	}
 
-	public LineSize getLineSize() {
-		return lineSize;
+
+
+	public LinearParameter getLinearParameter() {
+		return linearParameter;
 	}
 
-	public void setLineSize(LineSize lineSize) {
-		this.lineSize = lineSize;
+
+	public void setLinearParameter(LinearParameter linearParameter) {
+		this.linearParameter = linearParameter;
 	}
+
 
 }

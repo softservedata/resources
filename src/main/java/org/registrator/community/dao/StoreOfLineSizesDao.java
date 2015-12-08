@@ -6,26 +6,26 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.registrator.community.dao.implementation.DaoOperationsImp;
 import org.registrator.community.dao.utils.HibernateUtil;
-import org.registrator.community.entity.LineSize;
-import org.registrator.community.entity.StoreOfLineSizes;
+import org.registrator.community.entity.LinearParameter;
+import org.registrator.community.entity.ResourceLinearValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreOfLineSizesDao extends DaoOperationsImp<StoreOfLineSizes>{
+public class StoreOfLineSizesDao extends DaoOperationsImp<ResourceLinearValue>{
 
 	public StoreOfLineSizesDao() {
-		super(StoreOfLineSizes.class);
+		super(ResourceLinearValue.class);
 	
 	}
 
-	public List<StoreOfLineSizes> getAllbyLineSizeId (LineSize lineSize) {
+	public List<ResourceLinearValue> getAllbyLineSizeId (LinearParameter lineSize) {
 		Session session=null;
-		List<StoreOfLineSizes> elements = new ArrayList<>();
+		List<ResourceLinearValue> elements = new ArrayList<>();
 
 		try{
 			session= HibernateUtil.getSessionFactory().openSession();
-			Criteria cr = session.createCriteria(StoreOfLineSizes.class);
+			Criteria cr = session.createCriteria(ResourceLinearValue.class);
 			cr.add(Restrictions.eq("lineSize", lineSize));
 			elements = cr.list();
 		} catch (HibernateException e) {

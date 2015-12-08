@@ -8,7 +8,9 @@ import javax.persistence.*;
 @Table(name = "address")
 public class Address implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "address_id")
     @GeneratedValue
     private Integer addressId;
@@ -54,10 +56,6 @@ public class Address implements Serializable {
 		this.flat = flat;
 	}
     
-    
-
-
-
 	public Address(User user, String postCode, String region, String city,
 			String street, String building) {
 		this.user = user;

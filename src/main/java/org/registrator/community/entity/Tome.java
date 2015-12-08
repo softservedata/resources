@@ -9,9 +9,6 @@ import javax.persistence.*;
 @Table(name = "tomes")
 public class Tome implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -19,23 +16,21 @@ public class Tome implements Serializable {
 	@GeneratedValue
 	private Integer tomeId;
 
-	@Column(name = "identifier", nullable = false)
+	@Column(name = "identifier", unique = true, nullable = false)
 	private String identifier;
 
 	@ManyToOne
 	@JoinColumn(name = "registrator_id", nullable = false)
-	private User user;
+	private User registrator;
 
 	public Tome() {
 		
 	}
 	
-	public Tome(User user, String identifier) {
+	public Tome(User registrator, String identifier) {
 		this.identifier = identifier;
-		this.user = user;
+		this.registrator = registrator;
 	}
-
-
 
 	public Integer getTomeId() {
 		return tomeId;
@@ -53,12 +48,11 @@ public class Tome implements Serializable {
 		this.identifier = identifier;
 	}
 
-	public User getUser() {
-		return user;
+	public User getRegistrator() {
+		return registrator;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setRegistrator(User registrator) {
+		this.registrator = registrator;
 	}
-
 }

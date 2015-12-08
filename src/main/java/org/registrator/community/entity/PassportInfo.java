@@ -7,8 +7,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "passport_data")
 public class PassportInfo implements Serializable{
-	
-    @Id
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "passport_data_id")
     @GeneratedValue
     private Integer passportId;
@@ -24,27 +26,19 @@ public class PassportInfo implements Serializable{
     private Integer number;
     
     @Column(name = "published_by_data", nullable = false)
-    private String published_by_data;
+    private String publishedByData;
     
     public PassportInfo() {
     	
     }
     
-    public PassportInfo(User user, String seria, Integer number, String published_by_data) {
+    public PassportInfo(User user, String seria, Integer number, String publishedByData) {
 		this.user = user;
 		this.seria = seria;
 		this.number = number;
-		this.published_by_data = published_by_data;
+		this.publishedByData = publishedByData;
 	}
     
-/*    public PassportInfo(Integer passportId, User user, String seria, Integer number, String published_by_data) {
-		this.passportId = passportId;
-		this.user = user;
-		this.seria = seria;
-		this.number = number;
-		this.published_by_data = published_by_data;
-	}*/
-
 	public Integer getPassportId() {
 		return passportId;
 	}
@@ -77,12 +71,11 @@ public class PassportInfo implements Serializable{
 		this.number = number;
 	}
 
-	public String getPublished_by_data() {
-		return published_by_data;
+	public String getPublishedByData() {
+		return publishedByData;
 	}
 
-	public void setPublished_by_data(String published_by_data) {
-		this.published_by_data = published_by_data;
-	}
-    
+	public void setPublishedByData(String publishedByData) {
+		this.publishedByData = publishedByData;
+	}   
 }

@@ -22,8 +22,10 @@ import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.entity.*;
-import org.registrator.community.dto.ResourceDiscreteDTO;
-import org.registrator.community.dto.ResourceLinearDTO;
+import org.registrator.community.enumeration.ResourceStatus;
+import org.registrator.community.enumeration.RoleType;
+import org.registrator.community.dto.ResourceDiscreteValueDTO;
+import org.registrator.community.dto.ResourceLinearValueDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
 import org.registrator.community.dto.UserDTO;
@@ -34,7 +36,7 @@ import org.registrator.community.service.interfaces.UserService;
 
 public class Test {
 
-	public void addRole(){
+    public void addRole(){
 		Session session = null;
 		Transaction tr = null;
 		
@@ -70,7 +72,7 @@ public class Test {
 			session = HibernateUtil.getSessionFactory().openSession();
 	        tr = session.beginTransaction();
 	        
-			Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", Name.USER)).uniqueResult();
+			Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", RoleType.USER)).uniqueResult();
 			DaoFactory.get().getUserDao()
 			.add(new User("login11", "password11", role, "Taras", "Rogalya", "Ivanovich", "tar@gmail.com", "UNBLOCK"));
 			tr.commit();			
@@ -104,24 +106,24 @@ public class Test {
 		List<PoligonAreaDTO> listPoligons = new ArrayList<PoligonAreaDTO>();
 		resourceAreaDTO.setPoligons(listPoligons);
 		
-		List<ResourceDiscreteDTO> perimiter = new ArrayList<>();
+		List<ResourceDiscreteValueDTO> perimiter = new ArrayList<>();
 		List<Double> list = new ArrayList<>();
 		list.add(156.25);
 		DiscreteParameterDTO discreteParameterDTO = new DiscreteParameterDTO("периметер","м");
-		ResourceDiscreteDTO resourceDiscreteDTO = new ResourceDiscreteDTO();
+		ResourceDiscreteValueDTO resourceDiscreteDTO = new ResourceDiscreteValueDTO();
 		 resourceDiscreteDTO.setValues(list);
 		 resourceDiscreteDTO.setDiscreteParameterDTO(discreteParameterDTO);
 		 perimiter.add(resourceDiscreteDTO);
-		List<ResourceDiscreteDTO> ploshcha = new ArrayList<>();
+		List<ResourceDiscreteValueDTO> ploshcha = new ArrayList<>();
 		List<Double> list2 = new ArrayList<>();
 		list2.add(3.24);
 		DiscreteParameterDTO discreteParameterDTO2 = new DiscreteParameterDTO("площа","га");
-		ResourceDiscreteDTO resourceDiscreteDTO2 = new ResourceDiscreteDTO();
+		ResourceDiscreteValueDTO resourceDiscreteDTO2 = new ResourceDiscreteValueDTO();
 		 resourceDiscreteDTO2.setValues(list);
 		 resourceDiscreteDTO2.setDiscreteParameterDTO(discreteParameterDTO2);
 		 ploshcha.add(resourceDiscreteDTO2);
 		 
-		 List<ResourceLinearDTO> resourceLinear = new ArrayList<>();
+		 List<ResourceLinearValueDTO> resourceLinear = new ArrayList<>();
 		
 		
 		ResourceDTO resource = new ResourceDTO(resourceTypeDTO, "111111", "land", "Петро",
@@ -142,5 +144,5 @@ public class Test {
 		test.addInquiryGetSertificate();
 		//test.addInquiryInputResouce();
 	}
-
+	
 }

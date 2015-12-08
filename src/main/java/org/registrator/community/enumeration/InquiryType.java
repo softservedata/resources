@@ -1,4 +1,4 @@
-package org.registrator.community.entity;
+package org.registrator.community.enumeration;
 
 public enum InquiryType {
 	INPUT("INPUT"),

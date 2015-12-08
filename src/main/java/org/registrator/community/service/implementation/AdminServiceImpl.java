@@ -20,7 +20,7 @@ import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
-import org.registrator.community.entity.UserStatus;
+import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.interfaces.AdminService;
 import org.registrator.community.service.interfaces.SearchService;
 
@@ -126,7 +126,7 @@ public class AdminServiceImpl implements AdminService, SearchService {
 		for (PassportInfo passportEntity : passportInfoList) {
 			PassportDTO passportDto = new PassportDTO();
 			passportDto.setNumber(passportEntity.getNumber());
-			passportDto.setPublished_by_data(passportEntity.getPublished_by_data());
+			passportDto.setPublished_by_data(passportEntity.getPublishedByData());
 			passportDto.setSeria(passportEntity.getSeria());
 			passportDtoList.add(passportDto);
 		}
@@ -181,7 +181,7 @@ public class AdminServiceImpl implements AdminService, SearchService {
 		Scanner sc = new Scanner(System.in);
 		List<Role> roleList = DaoFactory.getDaoFactory().getRoleDao().getAll();
 
-		String roleName = user.getRole().getName().toString();
+		String roleName = user.getRole().getType().toString();
 		int key = 0;
 
 		System.out.println("User role " + roleName);

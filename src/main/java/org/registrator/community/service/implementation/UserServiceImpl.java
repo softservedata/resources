@@ -165,13 +165,13 @@ public class UserServiceImpl implements UserService, SearchService {
             DiscreteParameterDTO discreteParameterDTO = new DiscreteParameterDTO();
             List<DiscreteParameterDTO> listDiscreteParameterDTO = new ArrayList<>();
 
-            ResourceLinearDTO resourceLinearDTO = new ResourceLinearDTO();
-            List<ResourceLinearDTO> listResourceLinearDTO = new ArrayList<>();
+            ResourceLinearValueDTO resourceLinearDTO = new ResourceLinearValueDTO();
+            List<ResourceLinearValueDTO> listResourceLinearDTO = new ArrayList<>();
             SegmentLinearDTO segmentLinearDTO = new SegmentLinearDTO();
             List<SegmentLinearDTO> listSegmentLinearDTO = new ArrayList<>();
 
-            ResourceDiscreteDTO resourceDiscreteDTO = new ResourceDiscreteDTO();
-            List<ResourceDiscreteDTO> listResourceDiscreteDTO = new ArrayList<>();
+            ResourceDiscreteValueDTO resourceDiscreteDTO = new ResourceDiscreteValueDTO();
+            List<ResourceDiscreteValueDTO> listResourceDiscreteDTO = new ArrayList<>();
             List<Double> listDiscreteValues = new ArrayList<>();
 
             PointAreaDTO pointAreaDTO = new PointAreaDTO();
@@ -185,16 +185,16 @@ public class UserServiceImpl implements UserService, SearchService {
             //Creating of the ResourceTypeDTO
             Integer resourceTypeId = resource.getType().getTypeId();
 
-            List<LineSize> lineSizes = DaoFactory.get().getLineSizeDao().getAllByResourceTypeId(resource.getType());
-            for (LineSize lineSize : lineSizes) {
+            List<LinearParameter> lineSizes = DaoFactory.get().getLineSizeDao().getAllByResourceTypeId(resource.getType());
+            for (LinearParameter lineSize : lineSizes) {
                 linearParameterDTO.setDescription(lineSize.getDescription());
                 linearParameterDTO.setUnitName(lineSize.getUnitName());
                 listLinearParameterDTO.add(linearParameterDTO);
 
                 // Creating of the list of the ResourceLinearDTO
 
-                List<StoreOfLineSizes> storeOfLineSizes = DaoFactory.get().getStoreOfLineSizesDao().getAllbyLineSizeId(lineSize);
-                for (StoreOfLineSizes storeOfLineSize : storeOfLineSizes) {
+                List<ResourceLinearValue> storeOfLineSizes = DaoFactory.get().getStoreOfLineSizesDao().getAllbyLineSizeId(lineSize);
+                for (ResourceLinearValue storeOfLineSize : storeOfLineSizes) {
                     segmentLinearDTO.setBegin(storeOfLineSize.getMinValue());
                     segmentLinearDTO.setEnd(storeOfLineSize.getMaxValue());
 
@@ -207,16 +207,16 @@ public class UserServiceImpl implements UserService, SearchService {
                 listResourceLinearDTO.add(resourceLinearDTO);
             }
 
-            List<DiscreteValue> discreteValues = DaoFactory.get().getDiscreteValueDao().getAllByResourceTypeId(resource.getType());
-            for (DiscreteValue discreteValue : discreteValues) {
+            List<DiscreteParameter> discreteValues = DaoFactory.get().getDiscreteValueDao().getAllByResourceTypeId(resource.getType());
+            for (DiscreteParameter discreteValue : discreteValues) {
                 discreteParameterDTO.setDescription(discreteValue.getDescription());
                 discreteParameterDTO.setUnitName(discreteValue.getUnitName());
                 listDiscreteParameterDTO.add(discreteParameterDTO);
 
                 // Creating of the list of the ResourceDiscreteDTO
 
-                List<StoreOfDiscreteValues> storeOfDiscreteValues = DaoFactory.get().getStoreOfDiscreteValuesDao().getAllBydiscreteValuesId(discreteValue);
-                for (StoreOfDiscreteValues storeOfDiscreteValue : storeOfDiscreteValues) {
+                List<ResourceDiscreteValue> storeOfDiscreteValues = DaoFactory.get().getStoreOfDiscreteValuesDao().getAllBydiscreteValuesId(discreteValue);
+                for (ResourceDiscreteValue storeOfDiscreteValue : storeOfDiscreteValues) {
                     listDiscreteValues.add(storeOfDiscreteValue.getValue());
                 }
                 resourceDiscreteDTO.setDiscreteParameterDTO(discreteParameterDTO);
@@ -234,7 +234,7 @@ public class UserServiceImpl implements UserService, SearchService {
             List<Area> areas = DaoFactory.get().getAreaDao().getAllByResourceId(resource);
             boolean firstIteration = true;
             for (Area area : areas) {
-                int pointNumber = area.getNumberOfPoint();
+                int pointNumber = area.getOrderNumber();
                 pointAreaDTO.setOrderNumber(pointNumber);
                 pointAreaDTO.setLatitudeValues(area.getLatitude());
                 pointAreaDTO.setLongitudeValues(area.getLongitude());
@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService, SearchService {
             resourceDTO.setIdentifier(resource.getIdentifier());
             resourceDTO.setDate(resource.getDate());
             // Потрібно визначитись яку інформацію по реєстратору виводити в інформації про ресурс.
-            String registratorName = resource.getUser().getLastName() + resource.getUser().getFirstName() + resource.getUser().getMiddleName();
+            String registratorName = resource.getRegistrator().getLastName() + resource.getRegistrator().getFirstName() + resource.getRegistrator().getMiddleName();
             resourceDTO.setRegistratorName(registratorName);
             resourceDTO.setResourceArea(resourceAreaDTO);
             resourceDTO.setResourceDiscrete(listResourceDiscreteDTO);

@@ -9,17 +9,17 @@ import org.registrator.community.dao.daofactory.DaoFactory;
 import org.registrator.community.dao.utils.HibernateUtil;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.Area;
-import org.registrator.community.entity.DiscreteValue;
-import org.registrator.community.entity.LineSize;
-import org.registrator.community.entity.Name;
+import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Role;
-import org.registrator.community.entity.StoreOfDiscreteValues;
-import org.registrator.community.entity.StoreOfLineSizes;
+import org.registrator.community.entity.ResourceDiscreteValue;
+import org.registrator.community.entity.ResourceLinearValue;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
+import org.registrator.community.enumeration.RoleType;
 
 public class CreateTableInDB {
 
@@ -46,7 +46,7 @@ public class CreateTableInDB {
 
 		// creating three User (with adress and passrort_data) with different roles
 		Role role = (Role) session.createCriteria(Role.class)
-                .add(Restrictions.eq("name", Name.ADMIN)).uniqueResult();	
+                .add(Restrictions.eq("type", RoleType.ADMIN)).uniqueResult();	
 		User admin = new User("oleks", "pass1", role, "Олександр", 
 				"Архилюк", "Олександрович", "oless.@gmail.com", "UNBLOCK");
 		DaoFactory.get().getUserDao().add(admin);
@@ -56,7 +56,7 @@ public class CreateTableInDB {
 
 	
 		role = (Role) session.createCriteria(Role.class)
-				.add(Restrictions.eq("name", Name.REGISTRATOR)).uniqueResult();
+				.add(Restrictions.eq("type", RoleType.REGISTRATOR)).uniqueResult();
 		User registrator = new User("petro", "pass2", role, "Петро", 
 				"Петренко", "Петрович", "petro.@gmail.com", "UNBLOCK");
 		DaoFactory.get().getUserDao().add(registrator);
@@ -71,7 +71,7 @@ public class CreateTableInDB {
 		
 					  
 		role = (Role) session.createCriteria(Role.class)
-                .add(Restrictions.eq("name", Name.USER)).uniqueResult();
+                .add(Restrictions.eq("type", RoleType.USER)).uniqueResult();
 		User user = new User("ivan", "pass3", role, "Юрій", 
 				"Іванов", "Іванович", "ivan.@gmail.com", "UNBLOCK");
 		DaoFactory.get().getUserDao().add(user);
@@ -85,21 +85,21 @@ public class CreateTableInDB {
 		// adding default resource types: land resource, radiofrequency and parameters
 		ResourceType land = new ResourceType("земельний");
 		DaoFactory.get().getResourceTypeDao().add(land);
-		DiscreteValue perimeter = new DiscreteValue(land,"периметер","м");
-		DiscreteValue square = new DiscreteValue(land,"площа","га");
+		DiscreteParameter perimeter = new DiscreteParameter(land,"периметер","м");
+		DiscreteParameter square = new DiscreteParameter(land,"площа","га");
 		DaoFactory.get().getDiscreteValueDao().add(perimeter);
 		DaoFactory.get().getDiscreteValueDao().add(square);
 		
 		ResourceType radiofrequency = new ResourceType("радіочастотний");
 		DaoFactory.get().getResourceTypeDao().add(radiofrequency);
-		LineSize bandwidth1 = new LineSize(radiofrequency,"cмуга радіочастот", "МГц");
-		LineSize bandwidth2 = new LineSize(radiofrequency,"широта діапазону", "кГц");
-		LineSize bandwidth3 = new LineSize(radiofrequency,"радіус дії", "км");
+		LinearParameter bandwidth1 = new LinearParameter(radiofrequency,"cмуга радіочастот", "МГц");
+		LinearParameter bandwidth2 = new LinearParameter(radiofrequency,"широта діапазону", "кГц");
+		LinearParameter bandwidth3 = new LinearParameter(radiofrequency,"радіус дії", "км");
 		
 		
 		
-		DiscreteValue power = new DiscreteValue(radiofrequency,"потужність", "мВт");
-		DiscreteValue tension = new DiscreteValue(radiofrequency,"напруженість", "мВт");
+		DiscreteParameter power = new DiscreteParameter(radiofrequency,"потужність", "мВт");
+		DiscreteParameter tension = new DiscreteParameter(radiofrequency,"напруженість", "мВт");
 		DaoFactory.get().getLineSizeDao().add(bandwidth1);
 		DaoFactory.get().getLineSizeDao().add(bandwidth2);
 		DaoFactory.get().getLineSizeDao().add(bandwidth3);
@@ -116,8 +116,8 @@ public class CreateTableInDB {
 		DaoFactory.get().getAreaDao().add(new Area(forest, 2, 49.86372, 24.02599));		
 		DaoFactory.get().getAreaDao().add(new Area(forest, 3, 49.86362, 25.02599));	
 		DaoFactory.get().getAreaDao().add(new Area(forest, 4, 50.86362, 24.07699));
-		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(forest, perimeter, 0.0868));		
-		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(forest, square, 127.7));		
+		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(forest, perimeter, 0.0868));		
+		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(forest, square, 127.7));		
 				
 		
 		Resource radiofreq =  new Resource(radiofrequency, "123555", "радіочастоти", registrator,
@@ -128,17 +128,17 @@ public class CreateTableInDB {
 		DaoFactory.get().getAreaDao().add(new Area(radiofreq, 2, 63.55, 33.76));		
 		DaoFactory.get().getAreaDao().add(new Area(radiofreq, 3, 49.3552, 43.54));	
 		DaoFactory.get().getAreaDao().add(new Area(radiofreq, 4, 50.345, 24.07699));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth1, 2400d, 2483.5));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth2, 5150d, 5350d));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth1, 2500d ,2700d));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth3, 1100d, 2483.5));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth2, 1110d, 5350d));
-		DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq, bandwidth1, 9999d ,2100d));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq, bandwidth1, 2400d, 2483.5));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq, bandwidth2, 5150d, 5350d));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq, bandwidth1, 2500d ,2700d));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq, bandwidth3, 1100d, 2483.5));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq, bandwidth2, 1110d, 5350d));
+		DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq, bandwidth1, 9999d ,2100d));
 		
-		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, power, 100d));		
-		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, power, 500.55));		
-		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, power, 23.54));		
-		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq, tension, 200d));
+		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq, power, 100d));		
+		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq, power, 500.55));		
+		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq, power, 23.54));		
+		DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq, tension, 200d));
 
 		Resource radiofreq2 =  new Resource(radiofrequency, "111111", "суперрадіочастоти", registrator,
 				new Date(), "ACTIVE", tome, "Посвідчення водія ...");
@@ -148,18 +148,18 @@ public class CreateTableInDB {
 				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 2, 63.55, 33.76));		
 				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 3, 49.3552, 43.54));	
 				DaoFactory.get().getAreaDao().add(new Area(radiofreq2, 4, 50.345, 24.07699));
-				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth1, 20d, 55.5));
-				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth2, 11d, 55d));
-				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth3, 99d ,55d));
-				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth1, 1212d, 5483.5));
-				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth2, 1000d, 5550d));
-				DaoFactory.get().getStoreOfLineSizesDao().add(new StoreOfLineSizes(radiofreq2, bandwidth1, 1111d ,200d));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq2, bandwidth1, 20d, 55.5));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq2, bandwidth2, 11d, 55d));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq2, bandwidth3, 99d ,55d));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq2, bandwidth1, 1212d, 5483.5));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq2, bandwidth2, 1000d, 5550d));
+				DaoFactory.get().getStoreOfLineSizesDao().add(new ResourceLinearValue(radiofreq2, bandwidth1, 1111d ,200d));
 				
-				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, power, 91d));		
-				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, power, 51.55));		
-				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, power, 230.54));		
-				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, tension, 1d));
-				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new StoreOfDiscreteValues(radiofreq2, tension, 1000d));
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq2, power, 91d));		
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq2, power, 51.55));		
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq2, power, 230.54));		
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq2, tension, 1d));
+				DaoFactory.get().getStoreOfDiscreteValuesDao().add(new ResourceDiscreteValue(radiofreq2, tension, 1000d));
 
 	}
 
@@ -172,7 +172,7 @@ public class CreateTableInDB {
 		// creating three User (with adress and passrort_data) with different
 		// roles
 		Role role = (Role) session.createCriteria(Role.class)
-				.add(Restrictions.eq("name", Name.ADMIN)).uniqueResult();
+				.add(Restrictions.eq("name", RoleType.ADMIN)).uniqueResult();
 		User admin = new User("achyp14", "password", role, "Андрій", "Чипурко",
 				"Андрійович", "achyp14@gmail.com", "UNBLOCK");
 		DaoFactory.get().getUserDao().add(admin);
@@ -186,7 +186,7 @@ public class CreateTableInDB {
 				.add(new PassportInfo(admin, "КС", 1111, "Видано кимось"));
 
 		role = (Role) session.createCriteria(Role.class)
-				.add(Restrictions.eq("name", Name.REGISTRATOR)).uniqueResult();
+				.add(Restrictions.eq("name", RoleType.REGISTRATOR)).uniqueResult();
 		User registrator = new User("roman", "password1", role, "Роман",
 				"Дмитренко", "Юрійович", "roman.@gmail.com", "UNBLOCK");
 		DaoFactory.get().getUserDao().add(registrator);
@@ -205,7 +205,7 @@ public class CreateTableInDB {
 		DaoFactory.get().getTomeDao().add(tome);
 
 		role = (Role) session.createCriteria(Role.class)
-				.add(Restrictions.eq("name", Name.USER)).uniqueResult();
+				.add(Restrictions.eq("name", RoleType.USER)).uniqueResult();
 		User user = new User("yura", "password2", role, "Юрій", "Убийвовк",
 				"Степанович", "yura.@gmail.com", "UNBLOCK");
 		DaoFactory.get().getUserDao().add(user);

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.registrator.community.enumeration.InquiryType;
+
 @Entity
 @Table(name = "inquiry_list")
 public class Inquiry implements Serializable {
