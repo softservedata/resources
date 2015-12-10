@@ -31,6 +31,16 @@ p {
 	background-color: blue;
 	color: yellow;
 }
+.languages {
+	color: white;
+	padding: 10px 10px;
+	
+	border: 1px solid blue;
+}
+.languages a{
+	color: white;
+}
+
 .header h1,
 {
 	color: greenyellow;
