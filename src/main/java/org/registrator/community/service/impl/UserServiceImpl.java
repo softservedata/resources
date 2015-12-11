@@ -20,7 +20,15 @@ public class UserServiceImpl implements UserService {
 	public User getUserByLogin(String login) {
 		return userRepository.findUserByLogin(login);
 	}
-	
-	
+	/*//Ann
+	@Override 
+	public void deleteUserByLogin(String login){
+		userRepository.delete(login);
+	};
+	//Ann
+	@Override 
+	public Integer addUser(User user){
+		return 1;
+	};*/
 	
 }

@@ -11,6 +11,8 @@ import org.registrator.community.enumeration.InquiryType;
 @Table(name = "inquiry_list")
 public class Inquiry implements Serializable {
 	
+	private static final long serialVersionUID = 1L;	
+	
 	@Id
 	@Column(name = "inquiry_list_id")
 	@GeneratedValue
@@ -37,6 +39,14 @@ public class Inquiry implements Serializable {
 
 	public Inquiry() {
 		
+	}
+	
+	public Inquiry(String inquiryType, Date date, User user, User registrator, Resource resource) {
+		this.inquiryType = InquiryType.valueOf(inquiryType.toUpperCase());
+		this.date = date;
+		this.user = user;
+		this.registrator = registrator;
+		this.resource = resource;
 	}
 
 	public Integer getInquiry_list_id() {
