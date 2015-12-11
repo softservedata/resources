@@ -1,3 +1,4 @@
+
 package org.registrator.community.dao;
 
 import org.registrator.community.entity.Resource;
@@ -17,3 +18,4 @@ public interface ResourceRepository extends PagingAndSortingRepository<Resource,
 	
 
 }
+

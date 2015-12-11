@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
+<!-- <html lang="en"> -->
 <head>
 <title>Реєстратор</title>
 <link rel="stylesheet" type="text/css" href="resource/css/normalize.css">
@@ -12,11 +12,21 @@
 <body>
     <header class = "header">
 		<div class="container">
-		<h1>Державний реєстр природних ресурсів</h1>
+		<h1><spring:message code="label.title" /></h1>
 		<h2>
-		<small>Контроль влади</small></h2>
+		<small><spring:message code="label.subtitle" /></small></h2>
+		
+		<div class="languages">
+		<a href="?lang=ua">UA</a>|
+        <a href="?lang=en">ENG</a>|
+        <a href="?lang=ru">RUS</a> 
+     </div>
+     
+     
 		</div> </header>
          <!--     <a  href="www.google.com" role="button">Перейти на нову версію</a>-->
+         
+       
           
            
 	<nav class="page-navigation">
@@ -31,8 +41,8 @@
 
 		<!--LOGIN FORM-->
 		<form action="#" class="login">
-		<input type="text" placeholder="Login" required>
-		<input type="password" placeholder="Password" required>
+		<input type="text" placeholder=<spring:message code="label.login" /> required>
+		<input type="password" placeholder=<spring:message code="label.password" /> required>
 		<input type="submit" value="Sign in">
 		</form>
 		<!-- /LOGIN FORM -->
