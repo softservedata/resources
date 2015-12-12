@@ -8,5 +8,8 @@ public interface UserService {
 	public void changeUserStatus(String login, UserStatus userStatus);
 
 	public Iterable<User> getAllUnregisteredUsers(int page, int size);
+	
+	public User getUserByLogin(String login);
 
 }
+

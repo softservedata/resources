@@ -1,3 +1,4 @@
+
 package org.registrator.community.dao;
 
 import org.registrator.community.entity.User;
@@ -15,6 +16,5 @@ public interface UserRepository extends PagingAndSortingRepository<User,String> 
 			" From User u" +
 			" Where u.login = :login")
 	public User findUserByLogin(@Param("login")String login);
-	
-	
 }
+

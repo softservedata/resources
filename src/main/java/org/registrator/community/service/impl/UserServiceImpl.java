@@ -18,6 +18,11 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 
 	@Override
+	public User getUserByLogin(String login) {
+		return userRepository.findUserByLogin(login);
+	}
+	
+	@Override
 	public void changeUserStatus(String login, UserStatus userStatus) {
 		User user = userRepository.findUserByLogin(login);
 		user.setStatus(userStatus);
