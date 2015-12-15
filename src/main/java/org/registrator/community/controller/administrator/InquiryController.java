@@ -17,8 +17,15 @@ public class InquiryController {
 	InquiryService inquiryService;
 	
 	@ResponseBody
-	@RequestMapping(value ="/{inquiryListDTO}",method = RequestMethod.GET)
+	@RequestMapping(value ="/output/{inquiryListDTO}",method = RequestMethod.GET)
 	public Inquiry testAddOutputInquiry(@PathVariable("inquiryListDTO") String resourceIdentifier){
-		return inquiryService.testAddOutputInquiry(resourceIdentifier);
+		 return inquiryService.testAddOutputInquiry(resourceIdentifier);
 	}
+	
+	@RequestMapping(value="/page/",method=RequestMethod.GET)
+	public String getOutputInquiryPage(){
+		return "inquiryAddOutput";
+	}
+	
+	
 }
