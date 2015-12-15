@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "address")
 public class Address implements Serializable {
@@ -15,7 +17,8 @@ public class Address implements Serializable {
     @GeneratedValue
     private Integer addressId;
     
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JsonBackReference
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user; 
     

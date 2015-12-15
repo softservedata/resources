@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "passport_data")
 public class PassportInfo implements Serializable{
@@ -15,7 +17,8 @@ public class PassportInfo implements Serializable{
     @GeneratedValue
     private Integer passportId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonBackReference
     @JoinColumn(name="user_id", nullable = false)  
     private User user;
 

@@ -1,10 +1,24 @@
 package org.registrator.community.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.registrator.community.enumeration.UserStatus;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -42,6 +56,14 @@ public class User implements Serializable {
 	@Column(name = "status", nullable = false, columnDefinition = "ENUM('BLOCK','UNBLOCK','INACTIVE')")
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
+	
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
+	@JsonManagedReference
+	private List<Address> address = new ArrayList<Address>();
+	
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
+	@JsonManagedReference
+	private List<PassportInfo> passport = new ArrayList<PassportInfo>();
 	
 	public User() {
 		
@@ -142,6 +164,22 @@ public class User implements Serializable {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+	
+	public List<Address> getAddress() {
+		return address;
+	}
+	
+	public void setAddress(List<Address> address) {
+		this.address=address;
+	}
+	
+	public List<PassportInfo> getPassport() {
+		return passport;
+	}
+	
+	public void setPassport(List<PassportInfo> passport) {
+		this.passport=passport;
 	}
 	
 }
