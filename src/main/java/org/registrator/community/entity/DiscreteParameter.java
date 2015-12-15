@@ -4,19 +4,31 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "discrete_parameters")
-public class DiscreteParameter implements Serializable {
-	
+public class DiscreteParameter  implements Serializable{
+
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
+
+
 
 	@Id
     @Column(name = "discrete_parameter_id")
     @GeneratedValue
     private Integer discreteParameterId;
 
-	@ManyToOne
+	
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
 	@JoinColumn(name = "resource_type_id", nullable = false)
+	@JsonBackReference
 	private ResourceType resourceType;
 	
     @Column(name = "description", nullable = false)

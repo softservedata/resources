@@ -1,7 +1,5 @@
 package org.registrator.community.dto;
 
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-
 public class PointAreaDTO {
 	
 	private int orderNumber;

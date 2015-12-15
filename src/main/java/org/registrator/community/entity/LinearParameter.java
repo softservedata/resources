@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "linear_parameters")
 public class LinearParameter implements Serializable {
@@ -16,8 +18,11 @@ public class LinearParameter implements Serializable {
 	@GeneratedValue
 	private Integer linearParameterId;
 	
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
 	@JoinColumn(name = "resource_type_id", nullable = false)
+	@JsonBackReference
 	private ResourceType resourceType;
 
 	@Column(name = "description", nullable = false)
