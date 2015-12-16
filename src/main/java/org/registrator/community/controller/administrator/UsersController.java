@@ -24,5 +24,7 @@ public class UsersController{
 	public User getUserbyLogin(@PathVariable("login") String login){
 		return userService.getUserByLogin(login);
 	}
+	
+
 
 }

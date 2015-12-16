@@ -15,4 +15,7 @@ public interface UserRepository extends PagingAndSortingRepository<User,String> 
 			" From User u" +
 			" Where u.login = :login")
 	public User findUserByLogin(@Param("login")String login);
+	
+	
+	
 }
