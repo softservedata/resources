@@ -20,12 +20,7 @@
            <tr>
                <td>Назва: </td>
                <td><input type="text" name="typeName"></td>
-           </tr>
-          <!--  
-           <tr>
-                  <td>Лінійний параметр типу: </td>
-               <td><input type="text" name="linearParameter"></td>
-           </tr>
+           </tr> 
            <tr>
                <td>Опис лінійного параметру: </td>
                <td><input type="text" name="description"></td>
@@ -36,16 +31,12 @@
            </tr>
             <tr>
                <td>Опис дискретного параметру: </td>
-               <td><input type="text" name="DiscreteParameter"></td>
-           </tr>
-           <tr>
-               <td>Опис дискретного параметру: </td>
                <td><input type="text" name="description"></td>
            </tr>
            <tr>
-               <td>Опис дискретного параметру: </td>
+               <td>Одиниці вимірювання: </td>
                <td><input type="text" name="unitName"></td>
-           </tr> -->
+           </tr> 
                 
        </table>
     <div class="button"> <input type="submit" value="Add"> </div>
