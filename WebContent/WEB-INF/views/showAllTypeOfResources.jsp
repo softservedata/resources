@@ -8,11 +8,6 @@
 <title>ResourcesType</title>
 </head>
 <body>
-
-
-
-<h1>This is list of resource types</h1>
-
 <jsp:useBean id="restype" class="org.registrator.community.entity.ResourceType"/>
 <jsp:setProperty property="typeName" name="restype"/>
 

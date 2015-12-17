@@ -19,4 +19,7 @@
         <put-attribute name="body" type="template" value="/WEB-INF/views/templates/allResourcesTypes.jsp"/>
     </definition>
 
+	<definition name="addResourceType" extends="homepage">
+        <put-attribute name="body" type="template" value="/WEB-INF/views/addResourceType.jsp"/>
+    </definition>
 </tiles-definitions>

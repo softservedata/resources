@@ -20,8 +20,6 @@ public class AddResTypeController {
 
 @RequestMapping(value = "/add-resource-types", method = RequestMethod.GET)
    public String addResourceTypeForm(Model model) {
-       /*resourceTypeService.addResourceType(new ResourceType("SuperResourceTypeOhhh"));*/
-/*model.addAttribute("newRT", new ResourceType());*/
        return "addResourceType";
    }
 	@RequestMapping(value = "/add-resource-types", method = RequestMethod.POST)
@@ -30,7 +28,7 @@ public class AddResTypeController {
 		newRT = resourceTypeService.addResourceType(newRT);
         model.addAttribute("newRT", newRT);
 
-        return "showAllTypeOfResources";
+        return "addResourceType";
     }
 	
 	

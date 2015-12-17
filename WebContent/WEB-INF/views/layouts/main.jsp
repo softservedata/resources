@@ -33,7 +33,7 @@
     <!-- Our JavaScript-->
     <script src="resource/js/scripts.js"></script>
 
-    <base href="/resources">
+    <base href="/resources/">
 </head>
 <body>
 <div class="container">
