@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.registrator.community.dao.UserRepository;
+import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
@@ -60,6 +61,12 @@ public class UserServiceImpl implements UserService {
 		User user = getUserByLogin(login);
 		user.setRole(role);
 		userRepository.save(user);
+	}
+
+	@Transactional
+	@Override
+	public void editUserInformation(UserDTO userDto) {
+		
 	}
 
 }

@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     var deleteLink = $("a:contains('Delete')");
     $(deleteLink).click(function(event) {
