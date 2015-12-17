@@ -32,7 +32,7 @@ public class ResourceTypeController {
 		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
 		model.addAttribute("listOfResourceType", listOfResourceType);
        /* return "addRT";*/
-        return "showAll";
+        return "allResourcesTypes";
     }
 	
 	@Transactional
