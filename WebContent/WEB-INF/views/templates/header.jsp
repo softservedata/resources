@@ -9,9 +9,9 @@
         <div class="col-md-7"> Welcome, %username%</div>
         <div class="col-md-5">
             <ul class="languages">
-                <li><a href="?lang=ua"><img src="resource/img/lang/ua.png"></a></li>
-                <li><a href="?lang=ru"><img src="resource/img/lang/ru.png"></a></li>
-                <li><a href="?lang=en"><img src="resource/img/lang/en.png"></a></li>
+                <li><a href="?lang=ua"><img src="/resource/img/lang/ua.png"></a></li>
+                <li><a href="?lang=ru"><img src="/resource/img/lang/ru.png"></a></li>
+                <li><a href="?lang=en"><img src="/resource/img/lang/en.png"></a></li>
             </ul>
         </div>
     </div>
