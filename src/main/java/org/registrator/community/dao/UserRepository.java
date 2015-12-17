@@ -1,4 +1,3 @@
-
 package org.registrator.community.dao;
 
 import java.util.List;
@@ -22,4 +21,3 @@ public interface UserRepository extends JpaRepository<User,String> {
 	
 	
 }
-

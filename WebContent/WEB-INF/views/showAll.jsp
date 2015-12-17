@@ -6,50 +6,68 @@
 <head>
 <title>Реєстратор</title>
 	<spring:url value="/resource/css/normalize.css" var="normalizeCss" />
-	<spring:url value="/resource/css/1.css" var="regCss" />
-<%-- 	<spring:url value="/resource/js/jquery.1.10.2.min.js" var="jqueryJs" />
-	<spring:url value="/resource/js/2.js" var="2" /> --%>
+	<spring:url value="/resource/css/2.css" var="regCss" /> 
+ 	<spring:url value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" var="jqueryJs" /> 
+	<spring:url value="/resource/js/deleteRS.js" var="delJs" />  
 	
 	<link href="${normalizeCss}" rel="stylesheet" />
-	<link href="${regCss}" rel="stylesheet" />
-  <%--   <script src="${jqueryJs}"></script>
-    <script src="${2}"></script> --%>
-
+    <link href="${regCss}" rel="stylesheet" />
+     <script src="${jqueryJs}"></script>
+     <script src="${delJs}"></script> 
 </head>
 
 <body>
-    <div class="container">
-    <h2>Список всіх типів ресурсів: </h2>
-        <div id = "mytable">
-        <table id="resourceType" border = 1>
-            <tr>
-                <th>Id: </th>
-                <th>Name: </th>
-                <th>DiscreteParameters: </th>
-                <th>LinearParameters: </th>
-            </tr>
-                <c:if test="${not empty listOfResourceType}">
+ <a href="http://localhost:8080/resources/registrator/resourcetypes/add-resource-types" >Щоб додати новий тип ресурсу, натисніть тут</a>
+ <a href="http://localhost:8080/resources/registrator/resourcetypes/add-resource-types" >Редагувати тип ресурсу</a>
+ <a href="http://localhost:8080/resources/registrator/resourcetypes/add-resource-types" >Видалити тип ресурсу</a>
+<br/>
+
+
+  <table class="layout">
+  <caption>Список всіх типів ресурсів</caption>
+  <thead><tr>
+  <th>ID</th>
+  <th>Name</th>
+  <th>Discrete parameters</th>
+  <th>Linear parameters</th>
+<th>Actions</th>
+  </tr></thead>
+  
+  <tbody>
+   <c:if test="${not empty listOfResourceType}">
                     <c:forEach items="${listOfResourceType}" var="restype">
                			<tr>
                        		 <td>${restype.typeId}</td> 
                         	<td>${restype.typeName}</td>
-                       <td><c:forEach items="${restype.discreteParameters}" var="dis_param">
-                            <td>${dis_param.description}</td>
-                             <td>${dis_param.unitName}</td>
-                        </c:forEach> </td>
+                   <td>    <c:forEach items="${restype.discreteParameters}" var="dis_param">
+                          
+                          <div class = "block"> 		
+                        <div>опис: ${dis_param.description} </div>
+                          <div>ОМ: ${dis_param.unitName} </div>
+							</div>							
+						                       			
+                        	</c:forEach> 
+                       </td>
+                       
+                        <td>
                 		
                 		<c:forEach items="${restype.linearParameters}" var="lin_param">
-                             <td>${lin_param.description}</td>
-                             <td>${lin_param.unitName}</td>
+                         <div class = "block"> 
+                          <div> опис: ${lin_param.description} </div>
+                        <div> ОМ: ${lin_param.unitName} </div>
+                         </div>    
+                             
                         </c:forEach>
-                        
-                        
-                		</tr>
+                        </td>
+                       <td><a href="edit/${restype.typeName}">Edit   </a>
+                <a href="delete/${restype.typeName}.json">Delete</a>
+                		</tr> 
                     </c:forEach>
-                </c:if>
-           
-        </table>
-        </div>
-    </div>  
+   </c:if>
+   
+  </tbody>
+ </table>
+ 
+
 </body>
 </html>

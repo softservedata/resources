@@ -44,8 +44,8 @@ public class ResourceTypeServiceImpl implements ResourceTypeService{
 	
 
 	@Override
-	public void delete(Integer id) {
-		resourceTypeRepository.delete(id);
+	public void delete(ResourceType resourceType) {
+		resourceTypeRepository.delete(resourceType);
 	}
 
 	@Override

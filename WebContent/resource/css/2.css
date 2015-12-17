@@ -1,16 +1,32 @@
-/* #resourceType{
-	background-color: yellowgreen;
-	color: greenyellow;
-	padding: 20px 0;
-	margin-top: 30px;
-	position: center;
-} */
-.container{
-	background-color: yellowgreen;
-	color: white;
+table, td {border: 2px solid #ffffff;}
+td {
+padding: 10px;
 
-	position: center;
 }
-table{
- border: 1px solid green;
-}
+  a {
+  
+  display: block;
+ color: white;
+  text-decoration: none;
+  margin-top: 10px;
+  maring-left: 10px;
+  }
+  
+  .layout { width: 100%; padding: 0; }
+   .block {
+  
+   }
+   .block div{
+   display: inline;
+   }
+   .layout {
+   margin-top: 20px;
+   }
+   caption {
+   margin-bottom: 20px;
+  font-weight: bold;
+   }
+   body {
+   background-color: blue;
+   color: white;
+   }

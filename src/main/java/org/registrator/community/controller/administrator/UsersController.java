@@ -2,6 +2,7 @@ package org.registrator.community.controller.administrator;
 
 import java.util.List;
 
+import org.registrator.community.service.ResourceService;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;

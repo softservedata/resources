@@ -10,7 +10,6 @@ public class ResourceTypeDTO {
 	
 	public ResourceTypeDTO(String typeName, List<LinearParameterDTO> linearParameters,
 			List<DiscreteParameterDTO> discreteParameters) {
-		this.typeName = typeName;
 	}
 	public String getTypeName() {
 		return typeName;
