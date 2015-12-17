@@ -1,0 +1,27 @@
+body {
+    background-color: #9d9d9d;
+}
+
+#header {
+    height: 100px;
+}
+
+.languages {
+    list-style: none;
+    display: flex;
+}
+
+#menubar {
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+}
+
+#menubar li {
+    padding-left: 7px;
+}
+
+#footer {
+    padding-top: 10px;
+    border-top: solid 1px black;
+}
