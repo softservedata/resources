@@ -24,18 +24,18 @@ public class UsersController {
 
 	@Autowired
 	RoleService roleService;
-
-	@RequestMapping(value = "/get-all-users/change-status", method = RequestMethod.POST)
-	public String changeStatus(@ModelAttribute("login") String login) {
-		userService.changeUserStatus(login, UserStatus.UNBLOCK);
-		return "getUsers";
-	}
-
-	@RequestMapping(value = "/changeUserRole", method = RequestMethod.POST)
-	public String changeRole(String login, Role role) {
-		userService.changeUserRole(login, role);
-		return "getUsers";
-	}
+//
+//	@RequestMapping(value = "/get-all-users/change-status", method = RequestMethod.POST)
+//	public String changeStatus(@ModelAttribute("login") String login) {
+//		userService.changeUserStatus(login, UserStatus.UNBLOCK);
+//		return "allUsers";
+//	}
+//
+//	@RequestMapping(value = "/changeUserRole", method = RequestMethod.POST)
+//	public String changeRole(String login, Role role) {
+//		userService.changeUserRole(login, role);
+//		return "allUsers";
+//	}
 
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
 	public String getAllUsers(Model model) {
@@ -45,15 +45,15 @@ public class UsersController {
 		model.addAttribute("roleList", roleList);
 		List<UserStatus> userStatusList = userService.fillInUserStatus();
 		model.addAttribute("userStatusList", userStatusList);
-		return "getUsers";
+		return "allUsers";
 
 	}
 
-	@RequestMapping(value = "/get-all-unregistated-users", method = RequestMethod.GET)
-	public String getAllUnregistatedUsers(Model model) {
-		List<User> unregistatedUsers = userService.getAllInACtiveUsers();
-		model.addAttribute("unregistatedUsers", unregistatedUsers);
-		return "getAllInactive";
-	}
+//	@RequestMapping(value = "/get-all-unregistated-users", method = RequestMethod.GET)
+//	public String getAllUnregistatedUsers(Model model) {
+//		List<User> unregistatedUsers = userService.getAllInACtiveUsers();
+//		model.addAttribute("unregistatedUsers", unregistatedUsers);
+//		return "getAllInactive";
+//	}
 
 }
