@@ -21,5 +21,7 @@ public interface UserService {
 	
 	public void editUserInformation(UserDTO userDto);
 	
+	public List<UserStatus> fillInUserStatus();
+	
 }
 
