@@ -2,14 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
-<spring:url value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" var="jqueryJs" />
 <spring:url value="/resource/js/deleteRS.js" var="delJs" />
 
-<script src="${jqueryJs}"></script>
 <script src="${delJs}"></script>
 
-<table class="layout">
-    <caption>Список всіх типів ресурсів</caption>
+<div style="text-align: center;"><h4><spring:message code="label.restype.pagename"/></h4></div>
+
+<table id="datatable" class="table display">
+
     <thead><tr>
         <th>ID</th>
         <th>Name</th>
