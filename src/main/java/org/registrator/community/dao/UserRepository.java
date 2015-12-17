@@ -19,5 +19,4 @@ public interface UserRepository extends JpaRepository<User,String> {
 			" Where u.login = :login")
 	public User findUserByLogin(@Param("login")String login);
 	
-	
 }

@@ -72,5 +72,14 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@Override
+	public List<UserStatus> fillInUserStatus() {
+		List<UserStatus> userStatusList = new ArrayList<UserStatus>();
+		userStatusList.add(UserStatus.INACTIVE);
+		userStatusList.add(UserStatus.BLOCK);
+		userStatusList.add(UserStatus.UNBLOCK);
+		return userStatusList;
+	}
+
 }
 

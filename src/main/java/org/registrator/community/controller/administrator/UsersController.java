@@ -2,11 +2,12 @@ package org.registrator.community.controller.administrator;
 
 import java.util.List;
 
-import org.registrator.community.service.ResourceService;
+import org.registrator.community.service.RoleService;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +22,8 @@ public class UsersController {
 	@Autowired
 	UserService userService;
 
-//	@ResponseBody
-//	@RequestMapping(value = "/{login}", method = RequestMethod.GET)
-//	public User getUserbyLogin(@PathVariable("login") String login) {
-//		return userService.getUserByLogin(login);
-//	}
+	@Autowired
+	RoleService roleService;
 
 	@RequestMapping(value = "/get-all-users/change-status", method = RequestMethod.POST)
 	public String changeStatus(@ModelAttribute("login") String login) {
@@ -34,8 +32,8 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/changeUserRole", method = RequestMethod.POST)
-	public String changeRole(String login) {
-		userService.changeUserRole("qqq", new Role("ADMIN", "do something"));
+	public String changeRole(String login, Role role) {
+		userService.changeUserRole(login, role);
 		return "getUsers";
 	}
 
@@ -43,7 +41,12 @@ public class UsersController {
 	public String getAllUsers(Model model) {
 		List<User> userList = userService.getAllUsers();
 		model.addAttribute("userList", userList);
-		return "allUsers";
+		List<Role> roleList = roleService.getAllRole();
+		model.addAttribute("roleList", roleList);
+		List<UserStatus> userStatusList = userService.fillInUserStatus();
+		model.addAttribute("userStatusList", userStatusList);
+		return "getUsers";
+
 	}
 
 	@RequestMapping(value = "/get-all-unregistated-users", method = RequestMethod.GET)
