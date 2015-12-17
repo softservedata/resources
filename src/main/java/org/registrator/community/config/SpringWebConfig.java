@@ -16,6 +16,8 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 @EnableWebMvc
 @Configuration
@@ -26,7 +28,7 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resource/**").addResourceLocations("/resource/");
 	}
-
+/*
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -35,7 +37,7 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
-
+*/
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -63,4 +65,21 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(localeChangeInterceptor());
 	}
 
+
+	/*Apache Tiles Configuration*/
+
+	@Bean
+	TilesViewResolver viewResolver(){
+		TilesViewResolver viewResolver = new TilesViewResolver();
+		return viewResolver;
+	}
+
+	@Bean
+	TilesConfigurer tilesConfigurer(){
+		TilesConfigurer tilesConfigurer = new TilesConfigurer();
+		tilesConfigurer.setDefinitions(
+				"WEB-INF/views/tiles/tiles.xml");
+		tilesConfigurer.setPreparerFactoryClass(org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory.class);
+		return tilesConfigurer;
+	}
 }

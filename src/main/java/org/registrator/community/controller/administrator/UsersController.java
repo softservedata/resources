@@ -43,7 +43,7 @@ public class UsersController {
 	public String getAllUsers(Model model) {
 		List<User> userList = userService.getAllUsers();
 		model.addAttribute("userList", userList);
-		return "getUsers";
+		return "allUsers";
 	}
 	
 	@RequestMapping(value="/get-all-unregistated-users",method=RequestMethod.GET)
