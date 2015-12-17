@@ -5,6 +5,10 @@
 <html lang="en">
 <head>
 <title>Реєстратор</title>
+
+<spring:url
+	value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+	var="jqueryJs" />
 <link rel="stylesheet" type="text/css" href="resource/css/normalize.css">
 <link rel="stylesheet" type="text/css" href="resource/css/1.css">
 
@@ -18,7 +22,10 @@
 				<th>Last name</th>
 				<th>Email</th>
 				<th>Middle name</th>
+				<th>Role</th>
+				<th>Status</th>
 				<th>Address</th>
+				<th>Change Status</th>
 			</tr>
 
 			<c:if test="${not empty userList}">
@@ -29,9 +36,15 @@
 						<td>${user.email}</td>
 						<td>${user.middleName}</td>
 						<td>${user.role}</td>
-						<c:forEach items="${user.address}" var="add">
-							<td>${add.city}</td>
-						</c:forEach>
+						<td>${user.status}</td>
+						<td><c:forEach items="${user.address}" var="add">
+								<div>${add.city}</div>
+							</c:forEach></td>
+						<td><select>
+								<option value="ADMIN">ADMIN</option>
+								<option value="USER">REGISTRATOR</option>
+								<option value="REGISTRATOR">USER</option>
+						</select></td>
 					</tr>
 				</c:forEach>
 			</c:if>

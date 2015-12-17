@@ -2,6 +2,7 @@ package org.registrator.community.service;
 
 import java.util.List;
 
+import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
@@ -17,5 +18,8 @@ public interface UserService {
 	public List<User> getAllInACtiveUsers();
 	
 	public void changeUserRole(String login, Role role);
+	
+	public void editUserInformation(UserDTO userDto);
+	
 }
 
