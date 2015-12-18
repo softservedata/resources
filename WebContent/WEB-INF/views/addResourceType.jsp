@@ -18,11 +18,7 @@
 <script src="${addJs}"></script>
 </head>
 <body>
-	<div class="languages">
-		<a href="?lang=ua">UA</a>| <a href="?lang=en">ENG</a>| <a
-			href="?lang=ru">RUS</a>
-	</div>
-	<h1>Додати новий тип ресурсу</h1>
+	<h3 style="text-align: center">Додати новий тип ресурсу</h3>
 	<form method="POST" action="add-resource-types" name="newRT">
 		<div class="caption-res-type">
 			Назва: <input type="text" name="typeName"
@@ -39,10 +35,12 @@
 				</select>
 	
 			</div>
+			
 			<div id="mybuttontype">
 				<input type="button" id="btnAdd" value="+" /> <input type="button"
 					id="btnDel" value="-" />
 			</div>
+			<br/>
 				<div class="button">
 			<input type="submit" value="Додати">
 		</div>

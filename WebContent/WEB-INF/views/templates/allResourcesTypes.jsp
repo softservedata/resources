@@ -7,7 +7,7 @@
 <script src="${delJs}"></script>
 
 <div style="text-align: center;"><h4><spring:message code="label.restype.pagename"/></h4></div>
-
+<p><a href="add-resource-types" class="btn btn-primary" role="button">Add new type</a></p>
 <table id="datatable" class="table display">
 
     <thead><tr>
@@ -44,8 +44,8 @@
 
                     </c:forEach>
                 </td>
-                <td><a href="registrator/resourcetypes/edit/${restype.typeName}">Edit   </a>
-                    <a href="registrator/resourcetypes/delete/${restype.typeName}.json">Delete</a>
+                <td><a href="show-one-res-types/${restype.typeName}">Edit   </a>
+                    <a href="delete/${restype.typeName}.json">Delete</a>
             </tr>
         </c:forEach>
     </c:if>

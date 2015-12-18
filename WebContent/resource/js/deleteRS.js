@@ -1,7 +1,8 @@
 $(document).ready(function() {
     var deleteLink = $("a:contains('Delete')");
     $(deleteLink).click(function(event) {
-        var conBox = confirm("Are you sure ?");
+    	alert("Якщо в базі містяться ресурси даного типу, він видалений не буде")
+        var conBox = confirm("Ви впевнені, що хочете видалити цей тип?");
         if(conBox){
         $.ajax({
             url: $(event.target).attr("href"),

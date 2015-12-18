@@ -69,10 +69,10 @@ public class ResourceTypeServiceImpl implements ResourceTypeService{
 		
 		
 		for(TypeParameterDTO tpar: ltp){
-			if(tpar.getParametersType()=="linear"){
+			if(tpar.getParametersType()=="linearParameters"){
 				lp.add(new LinearParameter(rt, tpar.getDescription(), tpar.getUnitName()));
 			}
-			if(tpar.getParametersType()=="discrete"){
+			if(tpar.getParametersType()=="discreteParaters"){
 				dp.add(new DiscreteParameter(rt, tpar.getDescription(), tpar.getUnitName()));
 			}
 			

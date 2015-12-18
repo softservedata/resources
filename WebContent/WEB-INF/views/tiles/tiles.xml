@@ -22,4 +22,10 @@
 	<definition name="addResourceType" extends="homepage">
         <put-attribute name="body" type="template" value="/WEB-INF/views/addResourceType.jsp"/>
     </definition>
+    <definition name="addExample" extends="homepage">
+        <put-attribute name="body" type="template" value="/WEB-INF/views/addExample.jsp"/>
+    </definition>
+        <definition name="findOneResType" extends="homepage">
+        <put-attribute name="body" type="template" value="/WEB-INF/views/findOneResType.jsp"/>
+    </definition>
 </tiles-definitions>

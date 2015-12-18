@@ -1,7 +1,10 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf8"
+pageEncoding="utf8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
 <title>Реєстратор</title>
@@ -18,28 +21,23 @@
 <script src="${addJs}"></script>
 </head>
 <body>
-	<div class="languages">
-		<a href="?lang=ua">UA</a>| <a href="?lang=en">ENG</a>| <a
-			href="?lang=ru">RUS</a>
-	</div>
-	<h1>Додати новий тип ресурсу</h1>
-	<form method="POST"
+	<form:form method="post" action="add" commandName="newRTDTO">
+<%-- 	<form method="POST"
 		action="http://localhost:8080/resources/registrator/resourcetypes/add"
-		name="newRTDTO">
+		name="newRTDTO"> --%>
 		<div class="caption-res-type">
-			Назва: <input type="text" name="typeName"
-				placeholder="Введіть назву тут" required>
+			Назва: <form:input path="typeName" />
 
 		</div>
 
 
 		<div id="input1" class="clonedInput">
-			Опис параметру: <input type="text" name="name1" id="name1" />
-			Oдиниці вимірювання: <input type="text" name="name1" id="name1" /> <select
-				required>
+			Опис параметру:  <form:input path="description" type="text" name="name1" id="name1" />
+			Oдиниці вимірювання:  <form:input path="unitName"  type="text" name="name1" id="name1" /> <select
+				>
 				<option value="" selected>Виберіть тип параметру</option>
-				<option value="лінійний">Лінійний параметр</option>
-				<option value="дискретний">Дискретний параметр</option>
+				<option value="linearParameters.">Лінійний параметр</option>
+				<option value="discreteParameters">Дискретний параметр</option>
 			</select>
 
 		</div>
@@ -55,8 +53,8 @@
 		<div class="button">
 			<input type="submit" value="Додати">
 		</div>
-	</form>
 
+</form:form>
 
 </body>
 </html>

@@ -35,7 +35,15 @@ public class ResourceTypeController {
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		return "allResourcesTypes";
 	}
-
+	@Transactional
+	@RequestMapping(value = "/show-one-res-types/{typeName}", method = RequestMethod.GET)
+	public String showOneResourceType(@PathVariable String typeName, Model model) {
+		ResourceType oneResType = resourceTypeService.findByName(typeName);
+		model.addAttribute("oneResType", oneResType);
+		return "findOneResType";
+	}
+	
+	
 	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/show-all-type", method = RequestMethod.GET)

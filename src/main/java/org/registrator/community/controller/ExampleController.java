@@ -7,6 +7,7 @@ import org.registrator.community.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/registrator/resourcetypes/")
+@RequestMapping(value = "/registrator/res/")
 public class ExampleController {
 
 	@Autowired
 	ResourceTypeService resourceTypeService;
 
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	@RequestMapping(value = "/add")
 	public String addResourceTypeForm(Model model) {
 		/*
 		 * resourceTypeService.addResourceType(new
@@ -31,14 +32,13 @@ public class ExampleController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addResourceType(@ModelAttribute("newRTDTO") ResourceTypeDTO newRTDTO, Model model) {
+	public String addResourceType(@ModelAttribute("newRTDTO") ResourceTypeDTO newRTDTO, Model model, BindingResult result) {
 
 		resourceTypeService.addResourceTypeDTO(newRTDTO);
-
 		newRTDTO = resourceTypeService.addResourceTypeDTO(newRTDTO);
-		model.addAttribute("typeName", newRTDTO);
+        model.addAttribute("newRTDTO", newRTDTO);
 
-		return "redirect:/registrator/resourcetypes1/add/";
+		return "addExample";
 	}
 
 }
