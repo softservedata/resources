@@ -6,5 +6,11 @@ $(document).ready(function () {
         var footer_height = $("#footer").height();
 
         $("#body").height(window_height - header_height - menu_height - footer_height -50);
-    })
+    });
+
+
+    $("#datatable").DataTable({
+
+        }
+    );
 });

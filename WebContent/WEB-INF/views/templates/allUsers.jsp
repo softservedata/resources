@@ -57,6 +57,4 @@
 				</c:forEach>
 			</c:if>
 		</table>
-
-    </table>
 </div>

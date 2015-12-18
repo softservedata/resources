@@ -23,29 +23,40 @@
 			href="?lang=ru">RUS</a>
 	</div>
 	<h1>Додати новий тип ресурсу</h1>
-	<form method="POST" action="add-resource-types" name="newRT">
+	<form method="POST"
+		action="http://localhost:8080/resources/registrator/resourcetypes/add"
+		name="newRTDTO">
 		<div class="caption-res-type">
 			Назва: <input type="text" name="typeName"
 				placeholder="Введіть назву тут" required>
 
 		</div>
+
+
 		<div id="input1" class="clonedInput">
-				Опис параметру: <input type="text" name="name1" id="name1" />
-				Oдиниці вимірювання: <input type="text" name="name1" id="name1" /> <select
-					required>
-					<option value="" selected>Виберіть тип параметру</option>
-					<option value="linear">Лінійний параметр</option>
-					<option value="discrete">Дискретний параметр</option>
-				</select>
-	
-			</div>
-			<div id="mybuttontype">
-				<input type="button" id="btnAdd" value="+" /> <input type="button"
-					id="btnDel" value="-" />
-			</div>
-				<div class="button">
+			Опис параметру: <input type="text" name="name1" id="name1" />
+			Oдиниці вимірювання: <input type="text" name="name1" id="name1" /> <select
+				required>
+				<option value="" selected>Виберіть тип параметру</option>
+				<option value="лінійний">Лінійний параметр</option>
+				<option value="дискретний">Дискретний параметр</option>
+			</select>
+
+		</div>
+
+
+		<div id="mybuttontype">
+			<input type="button" id="btnAdd" value="+" /> <input type="button"
+				id="btnDel" value="-" />
+		</div>
+
+
+
+		<div class="button">
 			<input type="submit" value="Додати">
 		</div>
 	</form>
+
+
 </body>
 </html>
