@@ -8,6 +8,9 @@ public class ResourceTypeDTO {
 	
 	private List<TypeParameterDTO> parameters;
 	
+	public ResourceTypeDTO() {
+	}
+	
 	public ResourceTypeDTO(String typeName, List<LinearParameterDTO> linearParameters,
 			List<DiscreteParameterDTO> discreteParameters) {
 	}

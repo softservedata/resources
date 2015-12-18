@@ -147,18 +147,6 @@ public class Resource implements Serializable {
 		this.reasonInclusion = reasonInclusion;
 	}
 
-
-	public String getDesctiption() {
-		return description;
-	}
-
-
-	public void setDesctiption(String desctiption) {
-		this.description = desctiption;
-	}
-	
-	
-
 }
 
 

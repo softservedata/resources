@@ -3,29 +3,49 @@
         "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-    <definition name="homepage" template="/WEB-INF/views/layouts/main.jsp">
-        <put-attribute name="title" value="Resources" />
-        <put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
-        <put-attribute name="menu" type="template" value="/WEB-INF/views/templates/menu.jsp" />
-        <put-attribute name="body" type="template" value="/WEB-INF/views/templates/body.jsp" />
-        <put-attribute name="footer" type="template" value="/WEB-INF/views/templates/footer.jsp" />
-    </definition>
+	<definition name="homepage" template="/WEB-INF/views/layouts/main.jsp">
+		<put-attribute name="title" value="Resources" />
+		<put-attribute name="header" type="template"
+			value="/WEB-INF/views/templates/header.jsp" />
+		<put-attribute name="menu" type="template"
+			value="/WEB-INF/views/templates/menu.jsp" />
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/body.jsp" />
+		<put-attribute name="footer" type="template"
+			value="/WEB-INF/views/templates/footer.jsp" />
+	</definition>
 
-    <definition name="allUsers" extends="homepage">
-        <put-attribute name="body" type="template" value="/WEB-INF/views/templates/allUsers.jsp"/>
-    </definition>
+	<definition name="allUsers" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/allUsers.jsp" />
+	</definition>
 
-    <definition name="allResourcesTypes" extends="homepage">
-        <put-attribute name="body" type="template" value="/WEB-INF/views/templates/allResourcesTypes.jsp"/>
-    </definition>
+	<definition name="allResourcesTypes" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/allResourcesTypes.jsp" />
+	</definition>
 
 	<definition name="addResourceType" extends="homepage">
-        <put-attribute name="body" type="template" value="/WEB-INF/views/addResourceType.jsp"/>
-    </definition>
-    <definition name="addExample" extends="homepage">
-        <put-attribute name="body" type="template" value="/WEB-INF/views/addExample.jsp"/>
-    </definition>
-        <definition name="findOneResType" extends="homepage">
-        <put-attribute name="body" type="template" value="/WEB-INF/views/findOneResType.jsp"/>
-    </definition>
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/addResourceType.jsp" />
+	</definition>
+	<definition name="addExample" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/addExample.jsp" />
+	</definition>
+	<definition name="findOneResType" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/findOneResType.jsp" />
+	</definition>
+	
+	<definition name="addResource" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/addResource.jsp" />
+	</definition>
+	
+		<definition name="showResource" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/showResource.jsp" />
+	</definition>
+
 </tiles-definitions>
