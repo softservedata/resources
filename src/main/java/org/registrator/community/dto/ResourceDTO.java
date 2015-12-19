@@ -17,7 +17,7 @@ public class ResourceDTO {
 	private String tomeIdentifier;
 	
 	
-//	private ResourceAreaDTO resourceArea;
+	private ResourceAreaDTO resourceArea;
 //	private ResourceLinearDTO resourceLinear;
 //	private ResourceDiscreteDTO resourceDiscrete;
 //	private List<ResourceLinearValueDTO> resourceLinear;
@@ -125,6 +125,16 @@ public class ResourceDTO {
 		this.tomeIdentifier = tomeIdentifier;
 	}
 
+	public ResourceAreaDTO getResourceArea() {
+		return resourceArea;
+	}
+
+	public void setResourceArea(ResourceAreaDTO resourceArea) {
+		this.resourceArea = resourceArea;
+	}
+
+	
+	
 /*	public ResourceLinearDTO getResourceLinear() {
 		return resourceLinear;
 	}
