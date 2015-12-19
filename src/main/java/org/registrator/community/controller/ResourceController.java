@@ -3,7 +3,10 @@ package org.registrator.community.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.dialect.PointbaseDialect;
 import org.registrator.community.dao.TomeRepository;
+import org.registrator.community.dto.PointAreaDTO;
+import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.entity.ResourceType;
@@ -44,7 +47,8 @@ public class ResourceController {
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		List<Tome> tomes = tomeRepository.findAll();
 		model.addAttribute("tomes", tomes);
-		model.addAttribute("newresource", new ResourceDTO());
+		ResourceDTO newresource = new ResourceDTO();
+		model.addAttribute("newresource", newresource);
 		return "addResource";
 	}
 
