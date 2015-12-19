@@ -18,11 +18,8 @@ public class LinearParameter implements Serializable {
 	@GeneratedValue
 	private Integer linearParameterId;
 	
-
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-
+	@ManyToOne
 	@JoinColumn(name = "resource_type_id", nullable = false)
-	@JsonBackReference
 	private ResourceType resourceType;
 
 	@Column(name = "description", nullable = false)
@@ -39,7 +36,7 @@ public class LinearParameter implements Serializable {
 
 	public LinearParameter(ResourceType resourceType, String description,
 			String unitName) {
-		super();
+
 		this.resourceType = resourceType;
 		this.description = description;
 		this.unitName = unitName;

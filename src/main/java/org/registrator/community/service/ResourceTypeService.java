@@ -16,6 +16,6 @@ public interface ResourceTypeService{
 	/*ResourceType editResourceType(String typeName);*/
 	ResourceType editResourceType(Integer typeId, String typeName);
 	ResourceType findById(Integer id);
-	ResourceTypeDTO addResourceTypeDTO(ResourceTypeDTO newRTDTO);
+	ResourceTypeDTO addResourceTypeDTO(ResourceTypeDTO resourceTypeDTO);
 	
 }

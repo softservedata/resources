@@ -47,5 +47,12 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/showResource.jsp" />
 	</definition>
+		<definition name="addResType" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/addResType.jsp" />
+	</definition>
+	
+	
+	
 
 </tiles-definitions>
