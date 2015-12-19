@@ -86,7 +86,7 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<input type="submit" value="Submit" />
+		<input type="submit" value="Додати" class="btn btn-success"/>
 	</form:form>
 </div>
 

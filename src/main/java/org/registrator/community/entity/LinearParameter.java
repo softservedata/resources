@@ -18,7 +18,7 @@ public class LinearParameter implements Serializable {
 	@GeneratedValue
 	private Integer linearParameterId;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "resource_type_id", nullable = false)
 	private ResourceType resourceType;
 

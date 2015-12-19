@@ -64,7 +64,11 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/addResType.jsp" />
 	</definition>
-
+	
+	<definition name="loginForm" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/loginForm.jsp" />
+	</definition>
 
 
 

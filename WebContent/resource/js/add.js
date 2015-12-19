@@ -4,7 +4,9 @@
                 var num     = $('.clonedInput').length;
                 var newNum  = new Number(num + 1);     
                 var newElem = $('#input' + num).clone().attr('id', 'input' + newNum);
-                newElem.children(':first').attr('id', 'name' + newNum).attr('name', 'name' + newNum);
+                newElem.children('#myparam0').attr('name', 'parameters['+(newNum-1)+'].description');
+                newElem.children('#myparam1').attr('name', 'parameters['+(newNum-1)+'].unitName');
+                newElem.children('#myparam2').attr('name', 'parameters['+(newNum-1)+'].parametersType');
                 $('#input' + num).after(newElem);
                 $('#btnDel').attr('disabled','');
  

@@ -68,7 +68,7 @@ public class ResourceTypeController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/delete/{typeName}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/delete/{typeName}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void deleteResourceType(@PathVariable String typeName) {
 		resourceTypeService.delete(resourceTypeService.findByName(typeName));

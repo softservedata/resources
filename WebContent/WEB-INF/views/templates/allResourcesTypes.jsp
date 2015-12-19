@@ -21,21 +21,17 @@
 	</h4>
 </div>
 <p>
-	<a href="${base}registrator/resourcetypes/add-resource-types"
+	<a href="${base}registrator/resourcetypes/addrestype"
 		class="btn btn-success" role="button">Додати новий тип</a>
 </p>
 <table id="datatable" class="table display">
 
 	<thead>
 		<tr>
-			<th>ID</th>
 			<th>Назва типу</th>
 			<th>Опис дискретних параметрів</th>
 			<th>Одиниці вимірювання</th>
 			<th>Опис лінійних параметрів</th>
-
-
-
 			<th>Одиниці вимірювання</th>
 			<th>Дії</th>
 		</tr>
@@ -45,7 +41,7 @@
 		<c:if test="${not empty listOfResourceType}">
 			<c:forEach items="${listOfResourceType}" var="restype">
 				<tr>
-					<td>${restype.typeId}</td>
+
 
 					<td>${restype.typeName}</td>
 					<td><c:forEach items="${restype.discreteParameters}"
@@ -81,8 +77,10 @@
 							</div>
 
 						</c:forEach></td>
-					<td><a href="show-one-res-types/${restype.typeName}" class="btn btn-primary" role="button">Edit
-					</a> <a href="delete/${restype.typeName}.json" class="btn btn-danger" role="button">Delete</a>
+					<td>
+			
+					<a href="show-one-res-types/${restype.typeName}" class="btn btn-primary" role="button">Edit
+					</a><a href="delete/${restype.typeName}" class="btn btn-primary" role="button">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</c:if>

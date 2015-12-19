@@ -8,11 +8,6 @@ $(document).ready(function() {
             url: $(event.target).attr("href"),
             type: "DELETE",
 
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-            },
-
             success: function() {
                 var tr = $(event.target).closest("tr");
                 tr.css("background-color","#000000");

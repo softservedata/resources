@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -36,9 +38,11 @@ public class ResourceType implements Serializable {
     private String typeName;
     
    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+   @Cascade({CascadeType.REMOVE})
     private List<DiscreteParameter> discreteParameters = new ArrayList<DiscreteParameter>();
    
    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+   @Cascade({CascadeType.REMOVE})
     private List<LinearParameter> linearParameters = new ArrayList<LinearParameter>();
     
     public ResourceType() {
