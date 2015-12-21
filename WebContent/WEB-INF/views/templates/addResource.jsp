@@ -2,31 +2,50 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <div>
+
 	<h1>
 		<spring:message code="label.resource.add" />
 	</h1>
-
-
 	<form:form method="POST" action="addresource"
 		modelAttribute="newresource">
 		<table>
 			<tr>
 				<td><spring:message code="label.resource.description" />:</td>
-				<td><form:input path="description" /></td>
+				<td><form:input path="description"/></td>
 			</tr>
 			<tr>
 				<td><spring:message code="label.resource.type" />:</td>
-				<td><select name="resourceTypeEntity">
-						<option value=""><spring:message
-								code="label.resource.selectType" /></option>
-						<c:forEach items="${listOfResourceType}" var="restype">
-							<option value="${restype.typeName}">${restype.typeName}</option>
-						</c:forEach>
-				</select></td>
+				<td><form:input path="resourceType.typeName"
+						value="${resType.typeName}" readonly="true" /></td>
 			</tr>
+			<!-- Showing all discrete parameters for resource type -->
+			<c:forEach items="${resType.discreteParameters}" var="parameter"
+				varStatus="param_i">
+				<tr>
+					<td>${parameter.description},${parameter.unitName}</td>
+					<td><form:input
+							path="resourceDiscrete[${param_i.index}].values" /></td>
+					<td><form:hidden
+							path="resourceDiscrete[${param_i.index}].discreteParameterDescription"
+							value="${parameter.description}" /></td>
+				</tr>
+			</c:forEach>
+			<c:forEach items="${resType.linearParameters}" var="parameter"
+				varStatus="param_i">
+				<tr>
+					<td>${parameter.description},${parameter.unitName}</td>
+					<td><form:input
+							path="resourceLinear[${param_i.index}].segments[0].begin" /></td>
+					<td><form:input
+							path="resourceLinear[${param_i.index}].segments[0].end" /></td>
+					<td><form:hidden
+							path="resourceLinear[${param_i.index}].linearParameterDescription"
+							value="${parameter.description}" /></td>
+				</tr>
+			</c:forEach>
+
 			<tr>
 				<td><spring:message code="label.resource.identifier" />:</td>
 				<td><form:input path="identifier" /></td>
@@ -42,7 +61,7 @@
 			<tr>
 				<td><spring:message code="label.resource.registrator" />(<spring:message
 						code="label.resource.tome" />):</td>
-				<td><select name="tomeIdentifier">
+				<td><form:select path="tomeIdentifier">
 						<option value=""><spring:message
 								code="label.resource.registrator.select" />:
 						</option>
@@ -51,7 +70,7 @@
 								${tome.registrator.middleName}${tome.registrator.firstName}
 								(номер тому: ${tome.identifier})</option>
 						</c:forEach>
-				</select></td>
+					</form:select></td>
 			</tr>
 			<tr>
 				<td><spring:message code="label.resource.coordinates" />:</td>
@@ -86,7 +105,9 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<input type="submit" value="Додати" class="btn btn-success"/>
+		<input type="submit" value="Додати" class="btn btn-success" />
 	</form:form>
 </div>
+
+
 

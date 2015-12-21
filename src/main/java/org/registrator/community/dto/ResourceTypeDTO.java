@@ -11,9 +11,9 @@ public class ResourceTypeDTO {
 	public ResourceTypeDTO() {
 	}
 	
-	public ResourceTypeDTO(String typeName, List<LinearParameterDTO> linearParameters,
+/*	public ResourceTypeDTO(String typeName, List<LinearParameterDTO> linearParameters,
 			List<DiscreteParameterDTO> discreteParameters) {
-	}
+	}*/
 	public String getTypeName() {
 		return typeName;
 	}
