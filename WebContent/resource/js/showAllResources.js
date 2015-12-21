@@ -1,12 +1,15 @@
 $(document).ready(function () {
 
+    var baseUrl = document.location.origin;
+
+
     $("#resourcesTypeSelect").change(function () {
-        table.ajax.reload("/registrator/resource/getResourcesByTypeId");
+        table.ajax.reload(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId");
 
     });
     var table = $("#table").DataTable({
             //"bProcessing": true,
-            "sAjaxSource": "/registrator/resource/getResourcesByTypeId",
+            "sAjaxSource": baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
             "fnServerParams": function (aoData) {
                 aoData.push({"name": "resourceTypeId", "value": $("#resourcesTypeSelect").val()});
             },

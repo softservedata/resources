@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var baseUrl = document.location.origin;
     $(window).load(function () {
         var window_height = $(window).height();
         var body_height = $("#body").height();
@@ -10,7 +11,7 @@ $(document).ready(function () {
         }
 
     //    Count resources in footer
-        $.post("/registrator/resource/countResources", {"count": "true"}, onPostSuccess);
+        $.post(baseUrl.toString() + "/registrator/resource/countResources", {"count": "true"}, onPostSuccess);
         function onPostSuccess (data) {
             if(data.toString().length < 5) {
                 data = "000"+data;

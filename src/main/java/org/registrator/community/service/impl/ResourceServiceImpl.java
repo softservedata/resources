@@ -42,8 +42,7 @@ public class ResourceServiceImpl implements ResourceService {
 		resourceEntity.setDescription(resourceDTO.getDescription());
 		resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
 		resourceEntity.setTome(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()));
-		resourceEntity
-				.setRegistrator(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()).getRegistrator());
+		resourceEntity.setRegistrator(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()).getRegistrator());
 		resourceEntity.setStatus(ResourceStatus.ACTIVE);
 		resourceEntity.setType(resourceTypeRepository.findByName(resourceDTO.getResourceType().getTypeName()));
 		resourceEntity.setDate(resourceDTO.getDate());

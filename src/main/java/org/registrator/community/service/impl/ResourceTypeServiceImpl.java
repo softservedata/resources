@@ -131,8 +131,8 @@ public class ResourceTypeServiceImpl implements ResourceTypeService{
 
 
 		}*/
-	
-	
+
+
 		return resourceTypeDTO;
 		
 	}
