@@ -14,8 +14,7 @@ public interface ResourceTypeService{
 //	public ResourceType editResourceType(ResourceType resourceType);
 	List<ResourceType> findAll();
 	/*ResourceType editResourceType(String typeName);*/
-	ResourceType editResourceType(Integer typeId, String typeName);
+	ResourceTypeDTO editResourceType(ResourceTypeDTO resourceTypeDTO);
 	ResourceType findById(Integer id);
 	ResourceTypeDTO addResourceTypeDTO(ResourceTypeDTO resourceTypeDTO);
-	
 }

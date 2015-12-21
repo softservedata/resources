@@ -24,15 +24,6 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/allResourcesTypes.jsp" />
 	</definition>
-
-	<definition name="addResourceType" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/addResourceType.jsp" />
-	</definition>
-	<definition name="addExample" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/addExample.jsp" />
-	</definition>
 	<definition name="findOneResType" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/findOneResType.jsp" />
@@ -64,12 +55,5 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/addResType.jsp" />
 	</definition>
-	
-	<definition name="loginForm" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/loginForm.jsp" />
-	</definition>
-
-
 
 </tiles-definitions>

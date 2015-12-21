@@ -21,21 +21,14 @@ public class ResourceTypeController {
 	@Autowired
 	ResourceTypeService resourceTypeService;
 
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value ="/{typeName}",method = RequestMethod.GET) public
-	 * ResourceType findByName(@PathVariable("typeName") String typeName){
-	 * return resourceTypeService.findByName(typeName); }
-	 */
-	@Transactional
+
 	@RequestMapping(value = "/show-res-types", method = RequestMethod.GET)
 	public String showResourceType(Model model) {
 		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		return "allResourcesTypes";
 	}
-	@Transactional
+
 	@RequestMapping(value = "/show-one-res-types/{typeName}", method = RequestMethod.GET)
 	public String showOneResourceType(@PathVariable String typeName, Model model) {
 		ResourceType oneResType = resourceTypeService.findByName(typeName);
@@ -49,25 +42,15 @@ public class ResourceTypeController {
 		model.addAttribute("oneResType", oneResType);
 		return "findOneResType";
 	}*/
-	
-	
-	@Transactional
-	@ResponseBody
+
+/*	@ResponseBody
 	@RequestMapping(value = "/show-all-type", method = RequestMethod.GET)
 	public List<ResourceType> findAll() {
 		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
 
 		return listOfResourceType;
-	}
+	}*/
 
-	// Test
-	@RequestMapping(value = "/edit-resource-type/{typeId}/{typeName}", method = RequestMethod.GET)
-	public String editResourceType() {
-		resourceTypeService.editResourceType(3, "ne44wsss");
-		return "showResourceType";
-	}
-
-	@Transactional
 	@RequestMapping(value = "/delete/{typeName}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void deleteResourceType(@PathVariable String typeName) {
