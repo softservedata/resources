@@ -13,8 +13,14 @@ public class AddressDTO implements Serializable {
 	private String building;
 	private String flat;
 
-	public AddressDTO() {
-
+	public AddressDTO(String postcode,String region,String district, String city,String street,String building,String flat) {
+		this.postcode = postcode;
+		this.region = region;
+		this.district = district;
+		this.city = city;
+		this.street = street;
+		this.building = building;
+		this.flat = flat;
 	}
 
 	public String getPostcode() {

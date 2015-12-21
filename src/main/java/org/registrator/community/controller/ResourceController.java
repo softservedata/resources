@@ -6,8 +6,9 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jdk.nashorn.internal.ir.RuntimeNode;
 import org.registrator.community.dao.TomeRepository;
+import org.registrator.community.dto.PointAreaDTO;
+import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.ResourcesJson;
@@ -21,8 +22,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/registrator/resource")
@@ -49,7 +48,8 @@ public class ResourceController {
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		List<Tome> tomes = tomeRepository.findAll();
 		model.addAttribute("tomes", tomes);
-		model.addAttribute("newresource", new ResourceDTO());
+		ResourceDTO newresource = new ResourceDTO();
+		model.addAttribute("newresource", newresource);
 		return "addResource";
 	}
 

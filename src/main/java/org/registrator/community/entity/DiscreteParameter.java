@@ -25,10 +25,8 @@ public class DiscreteParameter  implements Serializable{
 
 	
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "resource_type_id", nullable = false)
-	@JsonBackReference
 	private ResourceType resourceType;
 	
     @Column(name = "description", nullable = false)

@@ -3,6 +3,7 @@
         "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
+
     <definition name="homepage" template="/WEB-INF/views/layouts/main.jsp">
         <put-attribute name="title" value="Resources"/>
         <put-attribute name="header" type="template"
@@ -48,14 +49,25 @@
                        value="/WEB-INF/views/templates/showResource.jsp"/>
     </definition>
 
-    <definition name="showResource" extends="homepage">
-        <put-attribute name="body" type="template"
-                       value="/WEB-INF/views/templates/showResource.jsp"/>
-    </definition>
-
     <definition name="showAllResources" extends="homepage">
         <put-attribute name="body" type="template"
                        value="/WEB-INF/views/showAllResources.jsp"/>
     </definition>
+
+	<definition name="addressWindow" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/addressWindow.jsp" />
+	</definition>
+
+	<definition name="passportWindow" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/passportWindow.jsp" />
+	</definition>
+
+
+	<definition name="addResType" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/addResType.jsp" />
+	</definition>
 
 </tiles-definitions>

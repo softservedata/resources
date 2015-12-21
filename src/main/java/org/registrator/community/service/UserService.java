@@ -23,5 +23,8 @@ public interface UserService {
 	
 	public List<UserStatus> fillInUserStatus();
 	
+	public List<UserDTO> getUserDtoList();
+	
+	public UserDTO getUserDto(String login);	
 }
 

@@ -42,11 +42,26 @@ public class ResourceTypeServiceImpl implements ResourceTypeService{
 	}
 
 	@Override
-	public ResourceType editResourceType(Integer typeId, String typeName) {
-		
-		ResourceType rt = resourceTypeRepository.findByName(typeName);
-		rt.setTypeName(typeName);
-		return resourceTypeRepository.save(rt);
+	public ResourceTypeDTO editResourceType(ResourceTypeDTO resourceTypeDTO) {
+		/*ResourceType rt = resourceTypeRepository.findByName(resourceTypeDTO.getTypeName());
+		rt.setTypeName("newname(edited)");
+		rt.setTypeName(resourceTypeDTO.getTypeName());
+		rt = resourceTypeRepository.saveAndFlush(resourceTypeEntity);
+		List<TypeParameterDTO> ltp = resourceTypeDTO.getParameters();
+		List<LinearParameter> lp = new ArrayList<LinearParameter>();
+		List<DiscreteParameter> dp = new ArrayList<DiscreteParameter>();
+		for(TypeParameterDTO tpar: ltp){		
+			if((tpar.getParametersType()).equals("linearParameters")){
+				lp.add(new LinearParameter(resourceTypeEntity, tpar.getDescription(), tpar.getUnitName()));
+			}
+			if((tpar.getParametersType()).equals("discreteParameters")){
+				dp.add(new DiscreteParameter(resourceTypeEntity, tpar.getDescription(), tpar.getUnitName()));
+			}
+		}		
+		linearParameterRepository.save(lp);
+		discreteParameterRepository.save(dp);
+		resourceTypeRepository.save(rt);*/
+		return resourceTypeDTO;	
 	}
 	@Override
 	public void delete(ResourceType resourceType) {
@@ -60,26 +75,65 @@ public class ResourceTypeServiceImpl implements ResourceTypeService{
 	}
 
 	@Override
-	public ResourceTypeDTO addResourceTypeDTO(ResourceTypeDTO newRTDTO) {
-		ResourceType rt = new ResourceType(newRTDTO.getTypeName());
-		List<TypeParameterDTO> ltp = newRTDTO.getParameters();
+	public ResourceTypeDTO addResourceTypeDTO(ResourceTypeDTO resourceTypeDTO) {
+		ResourceType resourceTypeEntity = new ResourceType();
+		resourceTypeEntity.setTypeName(resourceTypeDTO.getTypeName());
+		resourceTypeEntity = resourceTypeRepository.saveAndFlush(resourceTypeEntity);
+		
+
+		
+		List<TypeParameterDTO> ltp = resourceTypeDTO.getParameters();
+		
 		
 		List<LinearParameter> lp = new ArrayList<LinearParameter>();
 		List<DiscreteParameter> dp = new ArrayList<DiscreteParameter>();
 		
 		
-		for(TypeParameterDTO tpar: ltp){
-			if(tpar.getParametersType()=="linearParameters"){
-				lp.add(new LinearParameter(rt, tpar.getDescription(), tpar.getUnitName()));
+		for(TypeParameterDTO tpar: ltp){		
+			if((tpar.getParametersType()).equals("linearParameters")){
+				lp.add(new LinearParameter(resourceTypeEntity, tpar.getDescription(), tpar.getUnitName()));
 			}
-			if(tpar.getParametersType()=="discreteParaters"){
-				dp.add(new DiscreteParameter(rt, tpar.getDescription(), tpar.getUnitName()));
+			if((tpar.getParametersType()).equals("discreteParameters")){
+				dp.add(new DiscreteParameter(resourceTypeEntity, tpar.getDescription(), tpar.getUnitName()));
 			}
 			
 		}		
-		resourceTypeRepository.save(rt);
+		
 		linearParameterRepository.save(lp);
 		discreteParameterRepository.save(dp);
-		return newRTDTO;
+		
+	/*
+
+			List<LinearParameterDTO> linearParameters = resourceTypeDTO
+					.getLinearParameters();
+			List<DiscreteParameterDTO> discreteParameters = resourceTypeDTO
+					.getDiscreteParameters();
+
+			for (int i = 0; i < linearParameters.size(); i++) {
+				LineSize lineSizeEntyty = new LineSize();
+				LinearParameterDTO linearParameterDTO = linearParameters.get(i);
+				lineSizeEntyty.setResourceType(resourceEntity);
+				lineSizeEntyty.setDescription(linearParameterDTO.getDescription());
+				lineSizeEntyty.setUnitName(linearParameterDTO.getUnitName());
+				DaoFactory.get().getLineSizeDao().add(lineSizeEntyty);
+			}
+
+			for (int i = 0; i < discreteParameters.size(); i++) {
+				DiscreteValue discreteValueEntity = new DiscreteValue();
+				DiscreteParameterDTO discreteParameterDTO = discreteParameters
+						.get(i);
+				discreteValueEntity.setResourceType(resourceEntity);
+				discreteValueEntity.setDescription(discreteParameterDTO
+						.getDescription());
+				discreteValueEntity.setUnitName(discreteParameterDTO.getUnitName());
+				DaoFactory.get().getDiscreteValueDao().add(discreteValueEntity);
+			}
+
+
+		}*/
+	
+	
+		return resourceTypeDTO;
+		
 	}
 }

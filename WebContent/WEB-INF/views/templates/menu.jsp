@@ -11,10 +11,12 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li><a href="${base}" class="glyphicon glyphicon-home"></a></li>
                 <li><a href="${base}registrator/resource/showAllResources"><spring:message code="label.menu.resources" /></a></li>
                 <li><a href="${base}registrator/resourcetypes/show-res-types"><spring:message code="label.menu.resourcesTypes" /></a></li>
                 <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.menu.users" /></a></li>
                 <li><a href="${base}inquiries"><spring:message code="label.menu.inquiries" /></a></li>
+                <li><a href="${base}registrator/resource/addresource"><spring:message code="label.menu.addnewresource"/></a></li>
             </ul>
         </div>
 

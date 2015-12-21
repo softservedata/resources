@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -35,12 +37,12 @@ public class ResourceType implements Serializable {
     @Column(name = "type_name", unique = true, nullable = false)
     private String typeName;
     
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType", cascade = CascadeType.ALL)
-    @JsonManagedReference
+   @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+   @Cascade({CascadeType.REMOVE})
     private List<DiscreteParameter> discreteParameters = new ArrayList<DiscreteParameter>();
    
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType", cascade = CascadeType.ALL)
-    @JsonManagedReference
+   @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+   @Cascade({CascadeType.REMOVE})
     private List<LinearParameter> linearParameters = new ArrayList<LinearParameter>();
     
     public ResourceType() {
@@ -83,32 +85,7 @@ public class ResourceType implements Serializable {
 		this.linearParameters = linearParameters;
 	}
 
-	@Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((typeName == null) ? 0 : typeName.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ResourceType other = (ResourceType) obj;
-        if (typeName == null) {
-            if (other.typeName != null)
-                return false;
-        } else if (!typeName.equals(other.typeName))
-            return false;
-        return true;
-    }
-   
+	
     
     
 

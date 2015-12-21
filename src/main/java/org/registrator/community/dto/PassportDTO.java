@@ -9,8 +9,10 @@ public class PassportDTO implements Serializable {
 	private Integer number;
 	private String published_by_data;
 
-	public PassportDTO() {
-
+	public PassportDTO(String seria,Integer number, String published_by_data) {
+		this.seria=seria;
+		this.number=number;
+		this.published_by_data=published_by_data;
 	}
 
 	public String getSeria() {

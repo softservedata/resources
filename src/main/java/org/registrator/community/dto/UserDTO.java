@@ -18,6 +18,20 @@ public class UserDTO implements Serializable {
 	private AddressDTO address;
 	private PassportDTO passport;
 
+	public UserDTO(String firstName, String lastName, String middleName, Role role, String login, String password,
+			String email, String status, AddressDTO address, PassportDTO passport) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.middleName = middleName;
+		this.role = role;
+		this.login = login;
+		this.password = password;
+		this.email = email;
+		this.status = status;
+		this.address = address;
+		this.passport = passport;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -101,14 +115,10 @@ public class UserDTO implements Serializable {
 	@Override
 	public String toString() {
 		String result;
-        result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n"
-                + "Роль:  " + getRole().getType() + "\n"
-                + "Логін: " + login + "\n"
-                + "Пароль: " + password + "\n"
-                + "Пошта: " + email + "\n"
-                + "Статус: " + status + "\n"
-                + "Паспортні дані:" + passport.toString() + "\n"
-                + "Адреса: " + address.toString() + "\n");
+		result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n" + "Роль:  "
+				+ getRole().getType() + "\n" + "Логін: " + login + "\n" + "Пароль: " + password + "\n" + "Пошта: "
+				+ email + "\n" + "Статус: " + status + "\n" + "Паспортні дані:" + passport.toString() + "\n"
+				+ "Адреса: " + address.toString() + "\n");
 		return result;
 	}
 }

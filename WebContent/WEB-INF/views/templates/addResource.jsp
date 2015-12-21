@@ -53,8 +53,40 @@
 						</c:forEach>
 				</select></td>
 			</tr>
+			<tr>
+				<td><spring:message code="label.resource.coordinates" />:</td>
+			</tr>
 		</table>
-		<input type="submit" value="Submit" />
+		<table>
+			<tr>
+				<th><spring:message code="label.resource.orderPoint" /></th>
+				<th colspan="3"><spring:message code="label.resource.latitude" /></th>
+				<th colspan="3"><spring:message code="label.resource.longitude" /></th>
+			</tr>
+
+			<!-- Area should consist of three point at least -->
+			<!-- TODO dynamic filling of area points/can be more than three -->
+			<c:forEach var="number" begin="0" end="2">
+				<tr>
+					<td><form:input
+							path="resourceArea.poligons[0].points[${number}].orderNumber"
+							value="${number+1}" /></td>
+					<td><form:input
+							path="resourceArea.poligons[0].points[${number}].latitudeDegrees" /></td>
+					<td><form:input
+							path="resourceArea.poligons[0].points[${number}].latitudeMinutes" /></td>
+					<td><form:input
+							path="resourceArea.poligons[0].points[${number}].latitudeSeconds" /></td>
+					<td><form:input
+							path="resourceArea.poligons[0].points[${number}].longitudeDegrees" /></td>
+					<td><form:input
+							path="resourceArea.poligons[0].points[${number}].longitudeMinutes" /></td>
+					<td><form:input
+							path="resourceArea.poligons[0].points[${number}].longitudeSeconds" /></td>
+				</tr>
+			</c:forEach>
+		</table>
+		<input type="submit" value="Додати" class="btn btn-success"/>
 	</form:form>
 </div>
 
