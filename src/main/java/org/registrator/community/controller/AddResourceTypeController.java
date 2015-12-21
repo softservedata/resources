@@ -32,7 +32,6 @@ public class AddResourceTypeController {
 	public String addResource(@ModelAttribute("newrestype") ResourceTypeDTO resourceTypeDTO, Model model) {
 		resourceTypeService.addResourceTypeDTO(resourceTypeDTO);
 		model.addAttribute("resourceType", resourceTypeDTO);
-		System.out.println(resourceTypeDTO.getTypeName());
 		return "redirect:/registrator/resourcetypes/show-res-types";
 	}
 	
