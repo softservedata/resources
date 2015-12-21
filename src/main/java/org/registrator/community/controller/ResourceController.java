@@ -1,11 +1,17 @@
 package org.registrator.community.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceTypeDTO;
+import org.registrator.community.dto.ResourcesJson;
+import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.service.ResourceService;
@@ -14,10 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/registrator/resource")
@@ -66,5 +71,47 @@ public class ResourceController {
 		model.addAttribute("resource", resourceDTO);
 		return "showResource";
 	}
+
+    @RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
+    public String showAllResources (Model model) {
+        List<ResourceType> resourceTypes = resourceTypeService.findAll();
+        model.addAttribute("resourceTypes", resourceTypes);
+        return "showAllResources";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getResourcesByTypeId", method = RequestMethod.POST)
+    public String showAllResourcesByTypeId (@RequestParam("resourceTypeId") Integer i) {
+        ResourceType type = resourceTypeService.findById(i);
+        List<Resource> resources = resourceService.findByType(type);
+
+        List<ResourcesJson> list= new ArrayList<>();
+        ResourcesJson resourceJson = new ResourcesJson();
+
+        for (Resource resource : resources) {
+            resourceJson.setId(resource.getResourcesId());
+            resourceJson.setTypeId(resource.getType().getTypeId());
+            resourceJson.setIdentifier(resource.getIdentifier());
+            resourceJson.setDescription(resource.getDescription());
+            resourceJson.setRegistratorId(resource.getRegistrator().getUserId());
+            resourceJson.setDate(resource.getDate());
+            resourceJson.setStatus(resource.getStatus());
+            resourceJson.setTomeId(resource.getTome().getTomeId());
+            resourceJson.setReasonInclusion(resource.getReasonInclusion());
+
+            list.add(resourceJson);
+        }
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        String json = gson.toJson(list);
+        return json;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/countResources", method = RequestMethod.POST)
+    public Long countResources () {
+        return resourceService.count();
+    }
 
 }
