@@ -26,19 +26,19 @@
 <form:form method="POST" action="addrestype" modelAttribute="newrestype">
 
 	<div class="caption-res-type">
-		Назва:
+	<spring:message code="label.restype.title" />: 
 		<form:input path="typeName" placeholder="Введіть назву тут"
 			required="required" /> 
 	</div><br/>
 	
 
 	<div id="input1" class="clonedInput" style="display:none" >
-		Опис параметру: <input id="myparam0" name="parameters[0].description"
-			type="text" value="" /> Одиниці вимірювання: <input id="myparam1"
+		<spring:message code="label.restype.desc"/>: <input id="myparam0" name="parameters[0].description"
+			type="text" value="" /> <spring:message code="label.restype.unitOfMeasurement"/>: <input id="myparam1"
 			name="parameters[0].unitName" type="text" value="" /> <select
 			id="myparam2" name="parameters[0].parametersType"
 			class="selectpicker">
-			<option value="">Виберіть тип параметру</option>
+			<option value=""><spring:message code="label.restype.option"/></option>
 			<option value="linearParameters">Лінійний параметр</option>
 			<option value="discreteParameters">Дискретний параметр</option>
 		</select>
