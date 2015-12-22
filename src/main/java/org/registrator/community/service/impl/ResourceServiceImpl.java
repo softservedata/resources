@@ -1,5 +1,6 @@
 package org.registrator.community.service.impl;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
+
 	@Autowired
 	ResourceRepository resourceRepository;
 
@@ -63,8 +65,7 @@ public class ResourceServiceImpl implements ResourceService {
 		resourceEntity.setDescription(resourceDTO.getDescription());
 		resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
 		resourceEntity.setTome(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()));
-		resourceEntity
-				.setRegistrator(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()).getRegistrator());
+		resourceEntity.setRegistrator(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()).getRegistrator());
 		resourceEntity.setStatus(ResourceStatus.ACTIVE);
 		ResourceType resourceType = resourceTypeRepository.findByName(resourceDTO.getResourceType().getTypeName());
 		resourceEntity.setType(resourceType);
@@ -192,4 +193,13 @@ public class ResourceServiceImpl implements ResourceService {
 		return resourceDTO;
 	}
 
+    @Override
+    public List<Resource> findByType(ResourceType type) {
+        return resourceRepository.findByType(type);
+    }
+
+    @Override
+    public long count() {
+        return resourceRepository.count();
+    }
 }

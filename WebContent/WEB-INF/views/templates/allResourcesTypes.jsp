@@ -79,8 +79,8 @@
 						</c:forEach></td>
 					<td>
 			
-					<a href="show-one-res-types/${restype.typeName}" class="btn btn-primary" role="button">Edit
-					</a><a href="delete/${restype.typeName}" class="btn btn-primary" role="button">Delete</a></td>
+					<a href="edit/${restype.typeName}" class="btn btn-primary" role="button">Edit
+					</a><a href="delete/${restype.typeName}" class="btn btn-danger" role="button">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</c:if>
