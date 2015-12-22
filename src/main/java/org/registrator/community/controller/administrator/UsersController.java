@@ -5,16 +5,18 @@ import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Role;
-import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @Controller
 @RequestMapping(value = "/administrator/users/")
@@ -26,7 +28,9 @@ public class UsersController {
 	@Autowired
 	RoleService roleService;
 
-//	@RequestMapping(value = "/get-all-users/change-status", method = RequestMethod.POST)
+//	@RequestMapping(value = "/get-all-users/change-status",method=RequestMethod.POST, 
+//            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseBody
 //	public String changeStatus(@ModelAttribute("login") String login) {
 //		userService.changeUserStatus(login, UserStatus.UNBLOCK);
 //		return "allUsers";
