@@ -10,7 +10,7 @@
 	</h1>
 	<form:form method="POST" action="addresource"
 		modelAttribute="newresource">
-		<table>
+		<table id="datatable" class="table display">
 			<tr>
 				<td><spring:message code="label.resource.description" />:</td>
 				<td><form:input path="description"/></td>
@@ -25,8 +25,8 @@
 				varStatus="param_i">
 				<tr>
 					<td>${parameter.description},${parameter.unitName}</td>
-					<td><form:input
-							path="resourceDiscrete[${param_i.index}].values" /></td>
+					<td><form:input type="number"
+							path="resourceDiscrete[${param_i.index}].values" required="required"/></td>
 					<td><form:hidden
 							path="resourceDiscrete[${param_i.index}].discreteParameterDescription"
 							value="${parameter.description}" /></td>
@@ -37,9 +37,9 @@
 				<tr>
 					<td>${parameter.description},${parameter.unitName}</td>
 					<td><form:input
-							path="resourceLinear[${param_i.index}].segments[0].begin" /></td>
+							path="resourceLinear[${param_i.index}].segments[0].begin" required="required"/></td>
 					<td><form:input
-							path="resourceLinear[${param_i.index}].segments[0].end" /></td>
+							path="resourceLinear[${param_i.index}].segments[0].end" required="required"/></td>
 					<td><form:hidden
 							path="resourceLinear[${param_i.index}].linearParameterDescription"
 							value="${parameter.description}" /></td>
@@ -48,20 +48,20 @@
 
 			<tr>
 				<td><spring:message code="label.resource.identifier" />:</td>
-				<td><form:input path="identifier" /></td>
+				<td><form:input path="identifier" required="required"/></td>
 			</tr>
 			<tr>
 				<td><spring:message code="label.resource.reasonInclusion" />:</td>
-				<td><form:input path="reasonInclusion" /></td>
+				<td><form:input path="reasonInclusion" required="required"/></td>
 			</tr>
 			<tr>
 				<td><spring:message code="label.resource.date" />:</td>
-				<td><input type="date" name="inputDate" /></td>
+				<td><input type="date" name="inputDate" required="required"/></td>
 			</tr>
 			<tr>
 				<td><spring:message code="label.resource.registrator" />(<spring:message
 						code="label.resource.tome" />):</td>
-				<td><form:select path="tomeIdentifier">
+				<td><form:select path="tomeIdentifier" required="required">
 						<option value=""><spring:message
 								code="label.resource.registrator.select" />:
 						</option>
@@ -76,7 +76,7 @@
 				<td><spring:message code="label.resource.coordinates" />:</td>
 			</tr>
 		</table>
-		<table>
+		<table id="datatable" class="table display">
 			<tr>
 				<th><spring:message code="label.resource.orderPoint" /></th>
 				<th colspan="3"><spring:message code="label.resource.latitude" /></th>
@@ -105,7 +105,7 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<input type="submit" value="Додати" class="btn btn-success" />
+		<input type="submit" value=<spring:message code="label.save" /> class="btn btn-success" />
 	</form:form>
 </div>
 
