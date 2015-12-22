@@ -147,6 +147,19 @@ public class Resource implements Serializable {
 		this.reasonInclusion = reasonInclusion;
 	}
 
+//    Created for testing
+	@Override
+	public String toString() {
+		return "id: " + getResourcesId()
+                + ",typeId: " + getType().getTypeId()
+				+ ",identifier: " + getIdentifier()
+                + ",description: " + getDescription()
+                + ",registrator: " + getRegistrator().getUserId()
+                + ",date: " + getDate().toString()
+                + ",status: " + getStatus().toString()
+                + ",tome: " + getTome().getTomeId()
+                + ",reason: " + getReasonInclusion();
+	}
 }
 
 

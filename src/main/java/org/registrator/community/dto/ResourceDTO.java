@@ -1,16 +1,20 @@
 package org.registrator.community.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.registrator.community.entity.ResourceType;
 import org.registrator.community.enumeration.ResourceStatus;
+import org.springframework.util.AutoPopulatingList;
 
 public class ResourceDTO {
 	
-	private ResourceTypeDTO resourceType;
+	//private ResourceTypeDTO resourceType;
+	private ResourceType resourceType;
 	private String identifier;
 	private String description;
 	private String registratorName;
-	//private UserDTO registrator;
 	private Date date;
 	private ResourceStatus status;
 	private String reasonInclusion;
@@ -18,10 +22,9 @@ public class ResourceDTO {
 	
 	
 	private ResourceAreaDTO resourceArea;
-//	private ResourceLinearDTO resourceLinear;
-//	private ResourceDiscreteDTO resourceDiscrete;
-//	private List<ResourceLinearValueDTO> resourceLinear;
-//	private List<ResourceDiscreteValueDTO> resourceDiscrete;
+	
+	private List<ResourceLinearValueDTO> resourceLinear = new ArrayList<ResourceLinearValueDTO>();
+	private List<ResourceDiscreteValueDTO> resourceDiscrete = new ArrayList<ResourceDiscreteValueDTO>();;
 	
 	public ResourceDTO() {
 		
@@ -46,20 +49,18 @@ public class ResourceDTO {
 	}
 	*/
 	
-	public ResourceTypeDTO getResourceType() {
+	public ResourceType getResourceType() {
 		return resourceType;
 	}
-
-
-	public void setResourceType(ResourceTypeDTO resourceType) {
+	
+	public void setResourceType(ResourceType resourceType) {
 		this.resourceType = resourceType;
 	}
-
-
+	
+	
 	public String getIdentifier() {
 		return identifier;
 	}
-
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
@@ -133,33 +134,23 @@ public class ResourceDTO {
 		this.resourceArea = resourceArea;
 	}
 
-	
-	
-/*	public ResourceLinearDTO getResourceLinear() {
+	public List<ResourceLinearValueDTO> getResourceLinear() {
 		return resourceLinear;
 	}
-	public void setResourceLinear(ResourceLinearDTO resourceLinear) {
-		this.resourceLinear = resourceLinear;
-	}
-	public ResourceDiscreteDTO getResourceDiscrete() {
-		return resourceDiscrete;
-	}
-	public void setResourceDiscrete(ResourceDiscreteDTO resourceDiscrete) {
-		this.resourceDiscrete = resourceDiscrete;
-	}
-	*/
-/*	public List<ResourceLinearValueDTO> getResourceLinear() {
-		return resourceLinear;
-	}
+
 	public void setResourceLinear(List<ResourceLinearValueDTO> resourceLinear) {
 		this.resourceLinear = resourceLinear;
 	}
+
 	public List<ResourceDiscreteValueDTO> getResourceDiscrete() {
 		return resourceDiscrete;
 	}
+
 	public void setResourceDiscrete(List<ResourceDiscreteValueDTO> resourceDiscrete) {
 		this.resourceDiscrete = resourceDiscrete;
-	}	*/
+	}
+
+
 	
 /*	public String toString(){
 		return "\n\n\n" + "**************************************" + "\n" +

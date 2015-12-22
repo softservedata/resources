@@ -17,21 +17,22 @@
 <script src="${jqueryJs}"></script>
 <script src="${addJs}"></script>
 
-
-<h1>
+	<input type="button" id="clickmeshow" value="Додати параметри" class="btn btn-primary" />
+	<input type="button" id="clickmehide" value="Приховати параметри" class="btn btn-primary" />
+<h3>
 	<spring:message code="label.restype.add" />
-</h1>
+</h3>
 
 <form:form method="POST" action="addrestype" modelAttribute="newrestype">
 
 	<div class="caption-res-type">
 		Назва:
 		<form:input path="typeName" placeholder="Введіть назву тут"
-			required="required" />
+			required="required" /> 
+	</div><br/>
+	
 
-	</div>
-
-	<div id="input1" class="clonedInput">
+	<div id="input1" class="clonedInput" style="display:none" >
 		Опис параметру: <input id="myparam0" name="parameters[0].description"
 			type="text" value="" /> Oдиниці вимірювання: <input id="myparam1"
 			name="parameters[0].unitName" type="text" value="" /> <select
