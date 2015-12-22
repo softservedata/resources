@@ -8,7 +8,8 @@ $(document).ready(function () {
         var header_height = $("#header").height();
         var menu_height = $("#menu").height();
         var footer_height = $("#footer").height();
-        if (body_height < window_height) {
+        alert("window_height: " + window_height + "body_height: "+ body_height);
+        if(body_height < window_height) {
             $("#body").height(window_height - header_height - menu_height - footer_height - 50);
         }
 
