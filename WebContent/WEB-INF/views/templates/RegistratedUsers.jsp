@@ -36,10 +36,10 @@
 				<td>${user.middleName}</td>
 				<td>${user.email}</td>
 				<td><a
-					href="http://localhost:8080/resources/administrator/users/addressWindow/?login=${user.login}"
+					href="${base}addressWindow/?login=${user.login}"
 					rel="0">Адреса</a></td>
 				<td><a
-					href="http://localhost:8080/resources/administrator/users/passportWindow/?login=${user.login}"
+					href="${base}passportWindow/?login=${user.login}"
 					rel="0">Паспорт</a></td>
 				<td><select id="roleId" name="roleName">
 						<c:forEach items="${roleList}" var="role">

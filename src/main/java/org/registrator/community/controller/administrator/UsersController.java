@@ -9,6 +9,7 @@ import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 @Controller
 @RequestMapping(value = "/administrator/users/")
@@ -27,21 +27,23 @@ public class UsersController {
 
 	@Autowired
 	RoleService roleService;
+	//
+	// @RequestMapping(value =
+	// "/get-all-users/change-status",method=RequestMethod.POST,
+	// produces = MediaType.APPLICATION_JSON_VALUE, consumes =
+	// MediaType.APPLICATION_JSON_VALUE)
+	//
+	// public String changeStatus(@ModelAttribute("login") String login) {
+	// userService.changeUserStatus(login, UserStatus.UNBLOCK);
+	// return "allUsers";
+	// }
 
-//	@RequestMapping(value = "/get-all-users/change-status",method=RequestMethod.POST, 
-//            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseBody
-//	public String changeStatus(@ModelAttribute("login") String login) {
-//		userService.changeUserStatus(login, UserStatus.UNBLOCK);
+//	@ResponseBody
+//	@RequestMapping(value = "/get-all-users", method = RequestMethod.POST)
+//	public String changeRole(String login, Role role) {
+//		userService.changeUserRole(login, role);
 //		return "allUsers";
 //	}
-	
-	 
-//	 @RequestMapping(value = "/change-User-Role", method = RequestMethod.POST)
-//	 public String changeRole(String login, Role role) {
-//	 userService.changeUserRole(login, role);
-//	 return "allUsers";
-//	 }
 
 	@RequestMapping(value = "/addressWindow", method = RequestMethod.GET)
 	public String showAddressWindow(@RequestParam("login") String login, Model model) {
