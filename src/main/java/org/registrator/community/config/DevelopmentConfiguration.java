@@ -44,9 +44,9 @@ public class DevelopmentConfiguration {
         jpaProperties.put("hibernate.format_sql", "true");
         jpaProperties.put("hibernate.use_sql_comments", "true");
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-//        jpaProperties.put("hibernate.connection.charset","UTF-8");
-//        jpaProperties.put("hibernate.connection.characterEncoding","utf8");
-//        jpaProperties.put("hibernate.connection.useUnicode","true");
+        jpaProperties.put("hibernate.connection.charset","UTF-8");
+        jpaProperties.put("hibernate.connection.characterEncoding","utf8");
+        jpaProperties.put("hibernate.connection.useUnicode","true");
         entityManagerFactoryBean.setJpaPropertyMap(jpaProperties);
 
         return entityManagerFactoryBean;

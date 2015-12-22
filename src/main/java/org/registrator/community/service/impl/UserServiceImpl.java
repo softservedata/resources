@@ -3,6 +3,7 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.registrator.community.dao.RoleRepository;
 import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	RoleRepository roleRepository;
+
 	@Transactional
 	@Override
 	public User getUserByLogin(String login) {
@@ -39,13 +43,21 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
+	public List<User> getAllRegistratedUsers() {
+		List<User> userList = userRepository.findAll();
+		List<User> registratedUsers = new ArrayList<User>();
+
+		for (User user : userList) {
+			if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
+				registratedUsers.add(user);
+			}
+		}
+		return registratedUsers;
 	}
 
 	@Transactional
 	@Override
-	public List<User> getAllInACtiveUsers() {
+	public List<User> getAllInActiveUsers() {
 		List<User> userList = new ArrayList<User>();
 		List<User> unregistratedUserList = new ArrayList<User>();
 		userList = userRepository.findAll();
@@ -87,24 +99,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDTO> getUserDtoList() {
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		List<User> userList = getAllUsers();
+		List<User> userList = getAllRegistratedUsers();
 		for (User user : userList) {
-			PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1); // Take
-																								// the
-																								// last
-																								// element
-																								// of
-																								// the
-																								// list
+			PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
 			PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
 					passportInfo.getPublishedByData());
-			Address address = user.getAddress().get(user.getAddress().size() - 1); // Take
-																					// the
-																					// last
-																					// element
-																					// of
-																					// the
-																					// list
+			Address address = user.getAddress().get(user.getAddress().size() - 1);
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(), user.getRole(),
@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
 		return userDtoList;
 	}
 
+	@Transactional
 	@Override
 	public UserDTO getUserDto(String login) {
 		User user = userRepository.findUserByLogin(login);
@@ -128,5 +129,16 @@ public class UserServiceImpl implements UserService {
 				user.getLogin(), user.getPassword(), user.getEmail(), user.getStatus().toString(), addressDto,
 				passportDto);
 		return userdto;
+	}
+
+	@Transactional
+	@Override
+	public Role setRoleToUser(String login) {
+		UserDTO userDto = getUserDto(login);
+		if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
+			return roleRepository.findOne("1");
+		} else {
+			return userDto.getRole();
+		}
 	}
 }

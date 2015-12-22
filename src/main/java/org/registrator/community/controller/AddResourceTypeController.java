@@ -34,7 +34,4 @@ public class AddResourceTypeController {
 		model.addAttribute("resourceType", resourceTypeDTO);
 		return "redirect:/registrator/resourcetypes/show-res-types";
 	}
-	
-	
-	
 }

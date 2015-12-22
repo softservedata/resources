@@ -11,11 +11,11 @@ public interface UserService {
 
 	public void changeUserStatus(String login, UserStatus userStatus);
 
-	public List<User> getAllUsers();
+	public List<User> getAllRegistratedUsers();
 	
 	public User getUserByLogin(String login);
 	
-	public List<User> getAllInACtiveUsers();
+	public List<User> getAllInActiveUsers();
 	
 	public void changeUserRole(String login, Role role);
 	
@@ -25,6 +25,8 @@ public interface UserService {
 	
 	public List<UserDTO> getUserDtoList();
 	
-	public UserDTO getUserDto(String login);	
+	public UserDTO getUserDto(String login);
+	
+	public Role setRoleToUser(String login);// set Role of inactive user to "USER"
 }
 

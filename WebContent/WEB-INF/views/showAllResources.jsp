@@ -12,7 +12,7 @@
 <div>
     <c:if test="${not empty resourceTypes}">
         <div style="padding-bottom: 15px;" >
-            <label class="">Оберіть тип ресурсу: </label>
+            <label class="">Оберіть підклас об'єкту: </label>
             <select id="resourcesTypeSelect" class="form-control" style="width:auto; display: inline">
                 <c:forEach items="${resourceTypes}" var="resourceType">
                     <option value="${resourceType.typeId}">${resourceType.typeName}</option>
