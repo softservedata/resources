@@ -15,9 +15,9 @@
 			value="/WEB-INF/views/templates/footer.jsp" />
 	</definition>
 
-	<definition name="allUsers" extends="homepage">
+	<definition name="RegistratedUsers" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/allUsers.jsp" />
+			value="/WEB-INF/views/templates/RegistratedUsers.jsp" />
 	</definition>
 
 	<definition name="allResourcesTypes" extends="homepage">
@@ -68,6 +68,11 @@
 	<definition name="loginForm" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/loginForm.jsp" />
+	</definition>
+	
+	<definition name="UnregistratedUsers" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/UnregistratedUsers.jsp" />
 	</definition>
 
 

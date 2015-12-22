@@ -3,16 +3,15 @@ package org.registrator.community.controller.administrator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.registrator.community.service.RoleService;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
+import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,16 +62,17 @@ public class UsersController {
 		model.addAttribute("roleList", roleList);
 		List<UserStatus> userStatusList = userService.fillInUserStatus();
 		model.addAttribute("userStatusList", userStatusList);
-		return "allUsers";
+		return "RegistratedUsers";
 
 	}
+	
 
-	// @RequestMapping(value = "/get-all-unregistated-users", method =
-	// RequestMethod.GET)
-	// public String getAllUnregistatedUsers(Model model) {
-	// List<User> unregistatedUsers = userService.getAllInACtiveUsers();
-	// model.addAttribute("unregistatedUsers", unregistatedUsers);
-	// return "getAllInactive";
-	// }
+	@RequestMapping(value = "/get-all-unregistrated-users", method = RequestMethod.GET)
+	public String getAllUnregistatedUsers(Model model) {
+		List<User> unregistatedUsers = userService.getAllInActiveUsers();
+		model.addAttribute("unregistatedUsers", unregistatedUsers);
+		
+		return "UnregistratedUsers";
+	}
 
 }
