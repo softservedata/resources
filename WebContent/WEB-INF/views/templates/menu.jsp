@@ -15,7 +15,7 @@
                 <li><a href="${base}resources"><spring:message code="label.menu.resources" /></a></li>
                 <li><a href="${base}registrator/resourcetypes/show-res-types"><spring:message code="label.menu.resourcesTypes" /></a></li>
                 <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.menu.users" /></a></li>
-                <li><a href="${base}inquiries"><spring:message code="label.menu.inquiries" /></a></li>
+                <li><a href="${base}inquiry/add/outputI"><spring:message code="label.menu.inquiries" /></a></li>
                 <li><a href="${base}registrator/resource/addresource"><spring:message code="label.menu.addnewresource"/></a>
             </ul>
         </div>
