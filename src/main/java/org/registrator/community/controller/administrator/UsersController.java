@@ -25,19 +25,19 @@ public class UsersController {
 
 	@Autowired
 	RoleService roleService;
-	//
-	// @RequestMapping(value = "/get-all-users/change-status", method =
-	// RequestMethod.POST)
-	// public String changeStatus(@ModelAttribute("login") String login) {
-	// userService.changeUserStatus(login, UserStatus.UNBLOCK);
-	// return "allUsers";
-	// }
-	//
-	// @RequestMapping(value = "/changeUserRole", method = RequestMethod.POST)
-	// public String changeRole(String login, Role role) {
-	// userService.changeUserRole(login, role);
-	// return "allUsers";
-	// }
+
+//	@RequestMapping(value = "/get-all-users/change-status", method = RequestMethod.POST)
+//	public String changeStatus(@ModelAttribute("login") String login) {
+//		userService.changeUserStatus(login, UserStatus.UNBLOCK);
+//		return "allUsers";
+//	}
+	
+	 
+//	 @RequestMapping(value = "/change-User-Role", method = RequestMethod.POST)
+//	 public String changeRole(String login, Role role) {
+//	 userService.changeUserRole(login, role);
+//	 return "allUsers";
+//	 }
 
 	@RequestMapping(value = "/addressWindow", method = RequestMethod.GET)
 	public String showAddressWindow(@RequestParam("login") String login, Model model) {
@@ -56,23 +56,24 @@ public class UsersController {
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
 	public String getAllUsers(Model model) {
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		userDtoList = userService.getUserDtoList();
+		userDtoList = userService.getAllRegistratedUsers();
 		model.addAttribute("userDtoList", userDtoList);
 		List<Role> roleList = roleService.getAllRole();
 		model.addAttribute("roleList", roleList);
 		List<UserStatus> userStatusList = userService.fillInUserStatus();
 		model.addAttribute("userStatusList", userStatusList);
 		return "RegistratedUsers";
-
 	}
-	
 
-	@RequestMapping(value = "/get-all-unregistrated-users", method = RequestMethod.GET)
-	public String getAllUnregistatedUsers(Model model) {
-		List<User> unregistatedUsers = userService.getAllInActiveUsers();
-		model.addAttribute("unregistatedUsers", unregistatedUsers);
-		
-		return "UnregistratedUsers";
+	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
+	public String getAllInactiveUsers(Model model) {
+		List<UserDTO> inactiveUsers = userService.getAllInactiveUsers();
+		model.addAttribute("unregistatedUsers", inactiveUsers);
+		List<UserStatus> userStatusList = userService.fillInUserStatus();
+		model.addAttribute("userStatusList", userStatusList);
+		List<Role> roleList = roleService.getAllRole();
+		model.addAttribute("roleList", roleList);
+		return "InActiveUsers";
 	}
 
 }

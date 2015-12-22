@@ -65,10 +65,9 @@
 			value="/WEB-INF/views/templates/allTypes.jsp" />
 	</definition>
 
-
-	<definition name="UnregistratedUsers" extends="homepage">
+	<definition name="InActiveUsers" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/UnregistratedUsers.jsp" />
+			value="/WEB-INF/views/templates/InActiveUsers.jsp" />
 	</definition>
 
 

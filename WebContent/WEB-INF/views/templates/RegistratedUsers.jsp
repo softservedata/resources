@@ -3,6 +3,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
+
 <spring:url value="/resource/js/changeStatus.js" var="statusJs" />
 
 <script src="${statusJs}"></script>
@@ -22,8 +24,8 @@
 			<th>Електронна пошта</th>
 			<th>Адреса</th>
 			<th>Паспорт</th>
-			<th>Змінити Статус</th>
-			<th>Змінти Роль</th>
+			<th>Змінити Роль</th>
+			<th>Змінти Статус</th>
 		</tr>
 	</thead>
 	<c:if test="${not empty userDtoList}">
@@ -51,8 +53,7 @@
 							</c:choose>
 						</c:forEach>
 				</select></td>
-				<td><select id="userStatusId" name="userStatusName"
-					class="selectpicker">
+				<td><select id="userStatusId" name="userStatusName">
 						<c:forEach items="${userStatusList}" var="userStatus">
 							<c:choose>
 								<c:when test="${user.status == userStatus}">

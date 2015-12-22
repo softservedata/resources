@@ -43,11 +43,11 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public List<User> getAllRegistratedUsers() {
-		List<User> userList = userRepository.findAll();
-		List<User> registratedUsers = new ArrayList<User>();
+	public List<UserDTO> getAllRegistratedUsers() {
+		List<UserDTO> userList = getUserDtoList();
+		List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
 
-		for (User user : userList) {
+		for (UserDTO user : userList) {
 			if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
 				registratedUsers.add(user);
 			}
@@ -55,21 +55,21 @@ public class UserServiceImpl implements UserService {
 		return registratedUsers;
 	}
 
-	@Transactional
-	@Override
-	public List<User> getAllInActiveUsers() {
-		List<User> userList = new ArrayList<User>();
-		List<User> unregistratedUserList = new ArrayList<User>();
-		userList = userRepository.findAll();
-
-		for (User user : userList) {
-			if (user.getStatus() == UserStatus.INACTIVE) {
-				unregistratedUserList.add(user);
-			}
-		}
-
-		return unregistratedUserList;
-	}
+//	@Transactional
+//	@Override
+//	public List<User> getAllInActiveUsers() {
+//		List<User> userList = new ArrayList<User>();
+//		List<User> unregistratedUserList = new ArrayList<User>();
+//		userList = userRepository.findAll();
+//
+//		for (User user : userList) {
+//			if (user.getStatus() == UserStatus.INACTIVE) {
+//				unregistratedUserList.add(user);
+//			}
+//		}
+//
+//		return unregistratedUserList;
+//	}
 
 	@Transactional
 	@Override
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDTO> getUserDtoList() {
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		List<User> userList = getAllRegistratedUsers();
+		List<User> userList = userRepository.findAll();
 		for (User user : userList) {
 			PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
 			PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public UserDTO getUserDto(String login) {
-		User user = userRepository.findUserByLogin(login);
+		User user = getUserByLogin(login);
 		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
 		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
 				passportInfo.getPublishedByData());
@@ -133,12 +133,15 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public Role setRoleToUser(String login) {
-		UserDTO userDto = getUserDto(login);
-		if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
-			return roleRepository.findOne("1");
-		} else {
-			return userDto.getRole();
+	public List<UserDTO> getAllInactiveUsers() {
+		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+		userDtoList = getUserDtoList();
+		List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
+		for (UserDTO userDto : userDtoList) {
+			if(userDto.getStatus() == UserStatus.INACTIVE.toString()) {
+				inactiveUserDtoList.add(userDto);
+			}
 		}
+		return inactiveUserDtoList;
 	}
 }

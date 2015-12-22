@@ -3,6 +3,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<div style="text-align: center;">
+	<h4>
+		Список усіх неактивних користувачів
+	</h4>
+</div>
 
 <table id="datatable" class="table display">
 	<thead>
@@ -13,8 +18,8 @@
 			<th>Електронна пошта</th>
 			<th>Адреса</th>
 			<th>Паспорт</th>
-			<th>Змінити Статус</th>
-			<th>Змінти Роль</th>
+			<th>Змінити Роль</th>
+			<th>Змінти Статус</th> 
 		</tr>
 	</thead>
 	<c:if test="${not empty unregistatedUsers}">
