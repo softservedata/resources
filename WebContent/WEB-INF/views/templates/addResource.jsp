@@ -25,7 +25,7 @@
 				varStatus="param_i">
 				<tr>
 					<td>${parameter.description},${parameter.unitName}</td>
-					<td><form:input type="number"
+					<td><form:input
 							path="resourceDiscrete[${param_i.index}].values" required="required"/></td>
 					<td><form:hidden
 							path="resourceDiscrete[${param_i.index}].discreteParameterDescription"
