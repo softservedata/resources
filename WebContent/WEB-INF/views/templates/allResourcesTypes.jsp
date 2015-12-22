@@ -22,7 +22,7 @@
 </div>
 <p>
 	<a href="${base}registrator/resourcetypes/addrestype"
-		class="btn btn-success" role="button">Додати новий підклас</a>
+		class="btn btn-success" role="button"><spring:message code="label.restype.add"/></a>
 </p>
 <table id="datatable" class="table display">
 
@@ -46,7 +46,7 @@
 							var="dis_param">
 
 
-							<div>${dis_param.description}</div>
+							<div class="block">${dis_param.description}</div>
 
 
 						</c:forEach></td>
@@ -62,11 +62,9 @@
 						</c:forEach></td>
 					<td><c:forEach items="${restype.linearParameters}"
 							var="lin_param">
-                       
-                           ${lin_param.description} 
-                     
+							<div class="block">${lin_param.description}</div>
 
-                    </c:forEach></td>
+						</c:forEach></td>
 					<td><c:forEach items="${restype.linearParameters}"
 							var="lin_param">
 							<div class="block">
@@ -75,12 +73,15 @@
 							</div>
 
 						</c:forEach></td>
-					<td><a href="edit/${restype.typeId}" class="btn btn-primary"
-						role="button">Edit </a><a href="delete/${restype.typeId}"
-						class="btn btn-danger" role="button">Delete</a></td>
+					<td>
+						<div class="block">
+							<a href="edit/${restype.typeId}" class="btn btn-primary"
+								role="button">Edit </a><a href="delete/${restype.typeId}"
+								class="btn btn-danger" role="button">Delete</a>
+						</div>
+					</td>
 				</tr>
 			</c:forEach>
 		</c:if>
-
 	</tbody>
 </table>
