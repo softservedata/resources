@@ -22,7 +22,7 @@
 </div>
 <p>
 	<a href="${base}registrator/resourcetypes/addrestype"
-		class="btn btn-success" role="button">Додати новий ресурс</a>
+		class="btn btn-success" role="button">Додати новий підклас</a>
 </p>
 <table id="datatable" class="table display">
 
@@ -30,9 +30,9 @@
 		<tr>
 			<th><spring:message code="label.restype.typename" /></th>
 			<th><spring:message code="label.restype.discreteDescription" /></th>
-			<th><spring:message code="label.restype.pagename" /></th>
+			<th><spring:message code="label.restype.unitOfMeasurement" /></th>
 			<th><spring:message code="label.restype.linearDescription" /></th>
-			<th><spring:message code="label.restype.pagename" /></th>
+			<th><spring:message code="label.restype.unitOfMeasurement" /></th>
 			<th><spring:message code="label.restype.actions" /></th>
 		</tr>
 	</thead>
