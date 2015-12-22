@@ -34,7 +34,7 @@
 
 	<div id="input1" class="clonedInput" style="display:none" >
 		Опис параметру: <input id="myparam0" name="parameters[0].description"
-			type="text" value="" /> Назва типу ресурсу: <input id="myparam1"
+			type="text" value="" /> Одиниці вимірювання: <input id="myparam1"
 			name="parameters[0].unitName" type="text" value="" /> <select
 			id="myparam2" name="parameters[0].parametersType"
 			class="selectpicker">
