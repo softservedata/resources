@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.connector.Request;
+
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.TomeDTO;
