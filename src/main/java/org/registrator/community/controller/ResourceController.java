@@ -109,9 +109,10 @@ public class ResourceController {
         List<Resource> resources = resourceService.findByType(type);
 
         List<ResourcesJson> list= new ArrayList<>();
-        ResourcesJson resourceJson = new ResourcesJson();
 
         for (Resource resource : resources) {
+            ResourcesJson resourceJson = new ResourcesJson();
+
             resourceJson.setId(resource.getResourcesId());
             resourceJson.setTypeId(resource.getType().getTypeId());
             resourceJson.setIdentifier(resource.getIdentifier());
@@ -124,10 +125,11 @@ public class ResourceController {
 
             list.add(resourceJson);
         }
+
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
-        String json = gson.toJson(list);
+        String json = gson.toJson(list, ArrayList.class);
         return json;
     }
 
