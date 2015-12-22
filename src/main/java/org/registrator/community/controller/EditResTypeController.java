@@ -1,8 +1,5 @@
 package org.registrator.community.controller;
-
-
 import org.registrator.community.dto.ResourceTypeDTO;
-import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping(value = "/registrator/resourcetypes/")
@@ -35,4 +31,3 @@ public class EditResTypeController {
 		return "findOneResType";
     }
 }
-

@@ -36,6 +36,7 @@
 
     <!-- Our JavaScript-->
     <script src="${base}resource/js/scripts.js"></script>
+    
 
 </head>
 <body>

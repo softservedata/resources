@@ -1,6 +1,6 @@
 $(document).ready(function () {
-
-    var baseUrl = document.location.origin;
+    var getUrl = window.location;
+    var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
 
     $("#resourcesTypeSelect").change(function () {

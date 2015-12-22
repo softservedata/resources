@@ -16,3 +16,4 @@ public interface ResourceTypeService{
 	ResourceType findById(Integer id);
 	ResourceTypeDTO addResourceTypeDTO(ResourceTypeDTO resourceTypeDTO);
 }
+

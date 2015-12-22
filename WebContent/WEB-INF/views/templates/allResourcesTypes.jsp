@@ -75,14 +75,9 @@
 							</div>
 
 						</c:forEach></td>
-					<td style=""width:100%"> 
-		
-					<a href="edit/${restype.typeId}" class="btn btn-primary" role="button">Edit
-					</a><a href="delete/${restype.typeId}" class="btn btn-danger" role="button">Delete</a>
-				
-					
-					
-					</td>
+					<td><a href="edit/${restype.typeId}" class="btn btn-primary"
+						role="button">Edit </a><a href="delete/${restype.typeId}"
+						class="btn btn-danger" role="button">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</c:if>
