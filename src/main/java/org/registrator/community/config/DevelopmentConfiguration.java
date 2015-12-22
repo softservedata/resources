@@ -22,7 +22,7 @@ public class DevelopmentConfiguration {
     public DriverManagerDataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost/registrator_db?useUnicode=yes&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8"); //?useUnicode=yes&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8
+        dataSource.setUrl("jdbc:mysql://localhost/registrator_db"); //?useUnicode=yes&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8
         dataSource.setUsername("root");
         dataSource.setPassword("root");
         return dataSource;
