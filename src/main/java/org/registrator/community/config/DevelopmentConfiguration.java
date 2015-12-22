@@ -22,7 +22,7 @@ public class DevelopmentConfiguration {
     public DriverManagerDataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost/registrator_db");
+        dataSource.setUrl("jdbc:mysql://localhost/registrator_db"); //?useUnicode=yes&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8
         dataSource.setUsername("root");
         dataSource.setPassword("root");
         return dataSource;
@@ -44,6 +44,9 @@ public class DevelopmentConfiguration {
         jpaProperties.put("hibernate.format_sql", "true");
         jpaProperties.put("hibernate.use_sql_comments", "true");
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        jpaProperties.put("hibernate.connection.charset","UTF-8");
+        jpaProperties.put("hibernate.connection.characterEncoding","utf8");
+        jpaProperties.put("hibernate.connection.useUnicode","true");
         entityManagerFactoryBean.setJpaPropertyMap(jpaProperties);
 
         return entityManagerFactoryBean;

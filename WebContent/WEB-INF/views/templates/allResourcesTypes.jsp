@@ -22,18 +22,18 @@
 </div>
 <p>
 	<a href="${base}registrator/resourcetypes/addrestype"
-		class="btn btn-success" role="button">Додати новий тип</a>
+		class="btn btn-success" role="button">Додати новий підклас</a>
 </p>
 <table id="datatable" class="table display">
 
 	<thead>
 		<tr>
-			<th>Назва типу</th>
-			<th>Опис дискретних параметрів</th>
-			<th>Одиниці вимірювання</th>
-			<th>Опис лінійних параметрів</th>
-			<th>Одиниці вимірювання</th>
-			<th>Дії</th>
+			<th><spring:message code="label.restype.typename" /></th>
+			<th><spring:message code="label.restype.discreteDescription" /></th>
+			<th><spring:message code="label.restype.unitOfMeasurement" /></th>
+			<th><spring:message code="label.restype.linearDescription" /></th>
+			<th><spring:message code="label.restype.unitOfMeasurement" /></th>
+			<th><spring:message code="label.restype.actions" /></th>
 		</tr>
 	</thead>
 
@@ -41,8 +41,6 @@
 		<c:if test="${not empty listOfResourceType}">
 			<c:forEach items="${listOfResourceType}" var="restype">
 				<tr>
-
-
 					<td>${restype.typeName}</td>
 					<td><c:forEach items="${restype.discreteParameters}"
 							var="dis_param">
@@ -77,10 +75,9 @@
 							</div>
 
 						</c:forEach></td>
-					<td>
-			
-					<a href="show-one-res-types/${restype.typeName}" class="btn btn-primary" role="button">Edit
-					</a><a href="delete/${restype.typeName}" class="btn btn-primary" role="button">Delete</a></td>
+					<td><a href="edit/${restype.typeId}" class="btn btn-primary"
+						role="button">Edit </a><a href="delete/${restype.typeId}"
+						class="btn btn-danger" role="button">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</c:if>

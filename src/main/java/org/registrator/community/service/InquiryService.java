@@ -14,3 +14,4 @@ public interface InquiryService {
 	public List<TomeDTO> listTomeDTO();
 
 }
+

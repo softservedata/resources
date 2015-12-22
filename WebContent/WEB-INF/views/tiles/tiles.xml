@@ -15,9 +15,9 @@
 			value="/WEB-INF/views/templates/footer.jsp" />
 	</definition>
 
-	<definition name="allUsers" extends="homepage">
+	<definition name="RegistratedUsers" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/allUsers.jsp" />
+			value="/WEB-INF/views/templates/RegistratedUsers.jsp" />
 	</definition>
 
 	<definition name="allResourcesTypes" extends="homepage">
@@ -25,14 +25,6 @@
 			value="/WEB-INF/views/templates/allResourcesTypes.jsp" />
 	</definition>
 
-	<definition name="addResourceType" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/addResourceType.jsp" />
-	</definition>
-	<definition name="addExample" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/addExample.jsp" />
-	</definition>
 	<definition name="findOneResType" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/findOneResType.jsp" />
@@ -48,6 +40,10 @@
 			value="/WEB-INF/views/templates/showResource.jsp" />
 	</definition>
 
+	<definition name="showAllResources" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/showAllResources.jsp" />
+	</definition>
 
 	<definition name="addressWindow" extends="homepage">
 		<put-attribute name="body" type="template"
@@ -59,15 +55,19 @@
 			value="/WEB-INF/views/templates/passportWindow.jsp" />
 	</definition>
 
-
 	<definition name="addResType" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/addResType.jsp" />
 	</definition>
-	
-	<definition name="loginForm" extends="homepage">
+
+	<definition name="allTypes" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/loginForm.jsp" />
+			value="/WEB-INF/views/templates/allTypes.jsp" />
+	</definition>
+
+	<definition name="InActiveUsers" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/InActiveUsers.jsp" />
 	</definition>
 	
 	<definition name="inquiryAddOut" extends="homepage">
@@ -79,6 +79,5 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/confimAddOutputI.jsp" />
 	</definition>
-
 
 </tiles-definitions>
