@@ -8,8 +8,10 @@ $(document).ready(function () {
         var header_height = $("#header").height();
         var menu_height = $("#menu").height();
         var footer_height = $("#footer").height();
-        if (body_height < window_height) {
-            $("#body").height(window_height - header_height - menu_height - footer_height - 50);
+        var new_height = window_height - header_height - menu_height - footer_height - 50;
+        //alert("window_height: " + window_height + "body_height: "+ body_height);
+        if(body_height < new_height) {
+            $("#body").height(new_height);
         }
 
     //    Count resources in footer
