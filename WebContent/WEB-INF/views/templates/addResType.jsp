@@ -17,8 +17,8 @@
 <script src="${jqueryJs}"></script>
 <script src="${addJs}"></script>
 
-	<input type="button" id="clickmeshow" value="Додати параметри" class="btn btn-primary" />
-	<input type="button" id="clickmehide" value="Приховати параметри" class="btn btn-primary" />
+	<button type="button" id="clickmeshow" class="btn btn-primary"><spring:message code="label.restype.addparameter"/></button>
+	<button type="button" id="clickmehide" class="btn btn-primary"><spring:message code="label.restype.hideparameter"/></button>
 <h3>
 	<spring:message code="label.restype.add" />
 </h3>
@@ -28,27 +28,29 @@
 	<div class="caption-res-type">
 	<spring:message code="label.restype.title" />: 
 		<form:input path="typeName" placeholder="Введіть назву тут"
-			required="required" /> 
-	</div><br/>
-	
-
+			required="required" /> 		
+	</div>
+	<br/>
 	<div id="input1" class="clonedInput" style="display:none" >
-		<spring:message code="label.restype.desc"/>: <input id="myparam0" name="parameters[0].description"
-			type="text" value="" /> <spring:message code="label.restype.unitOfMeasurement"/>: <input id="myparam1"
-			name="parameters[0].unitName" type="text" value="" /> <select
+		<spring:message code="label.restype.desc"/>: 
+		<input id="myparam0" name="parameters[0].description"
+			type="text" value="" /> 
+		<spring:message code="label.restype.unitOfMeasurement"/>: 
+		<input id="myparam1" name="parameters[0].unitName" type="text" value="" /> 
+			<select
 			id="myparam2" name="parameters[0].parametersType"
 			class="selectpicker">
 			<option value=""><spring:message code="label.restype.option"/></option>
-			<option value="linearParameters">Лінійний параметр</option>
-			<option value="discreteParameters">Дискретний параметр</option>
+			<option value="linearParameters"><spring:message code="label.restype.linpar"/></option>
+			<option value="discreteParameters"><spring:message code="label.restype.dispar"/></option>
 		</select>
-	</div>
+	</div><br/>
 	<div id="mybuttontype">
 		<input type="button" id="btnAdd" value="+" class="btn btn-primary" />
 		<input type="button" id="btnDel" value="-" class="btn btn-primary" />
 	</div>
 	<br />
 	<div class="button">
-		<input type="submit" value="Додати" class="btn btn-success">
+		<input type="submit" value=<spring:message code="label.save"/> class="btn btn-success">
 	</div>
 </form:form>
