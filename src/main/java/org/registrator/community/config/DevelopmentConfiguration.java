@@ -1,7 +1,11 @@
 package org.registrator.community.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,15 +20,20 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages="org.registrator.community.dao")
+@ComponentScan("org.registrator.community")
+@PropertySource(value = "classpath:database.properties")
 public class DevelopmentConfiguration {
+    @Autowired
+    private Environment env;
 
     @Bean(name = "datasource")
     public DriverManagerDataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost/registrator_db"); //?useUnicode=yes&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setDriverClassName(env.getProperty("db.driverClassName"));
+        dataSource.setUrl(env.getProperty("db.url"));
+        dataSource.setUsername(env.getProperty("db.username"));
+        dataSource.setPassword(env.getProperty("db.password"));
+//        dataSource.setConnectionProperties(env.getProperty("db.connectionProperties"));
         return dataSource;
     }
 
@@ -39,14 +48,14 @@ public class DevelopmentConfiguration {
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Map<String, Object> jpaProperties = new HashMap<String, Object>();
-        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
-        jpaProperties.put("hibernate.show_sql", "true");
-        jpaProperties.put("hibernate.format_sql", "true");
-        jpaProperties.put("hibernate.use_sql_comments", "true");
-        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        jpaProperties.put("hibernate.connection.charset","UTF-8");
-        jpaProperties.put("hibernate.connection.characterEncoding","utf8");
-        jpaProperties.put("hibernate.connection.useUnicode","true");
+        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hb.hbm2ddl.auto"));
+        jpaProperties.put("hibernate.show_sql", env.getProperty("hb.showSql"));
+        jpaProperties.put("hibernate.format_sql", env.getProperty("hb.formatSql"));
+        jpaProperties.put("hibernate.use_sql_comments", env.getProperty("hb.sqlComments"));
+        jpaProperties.put("hibernate.dialect", env.getProperty("hb.dialect"));
+        jpaProperties.put("hibernate.connection.charset",env.getProperty("hb.connection.charset"));
+        jpaProperties.put("hibernate.connection.characterEncoding",env.getProperty("hb.connection.characterEncoding"));
+        jpaProperties.put("hibernate.connection.useUnicode",env.getProperty("hb.connection.useUnicode"));
         entityManagerFactoryBean.setJpaPropertyMap(jpaProperties);
 
         return entityManagerFactoryBean;
