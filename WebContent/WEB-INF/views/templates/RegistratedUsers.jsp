@@ -11,21 +11,22 @@
 
 <div style="text-align: center;">
 	<h4>
-		Список усіх зареєстрованих користувачів
+		<spring:message code="label.registrated.pagename"/>
 	</h4>
 </div>
 
 <table id="datatable" class="table display">
 	<thead>
 		<tr>
-			<th>Прізвище</th>
-			<th>Ім'я</th>
-			<th>По-батькові</th>
-			<th>Електронна пошта</th>
-			<th>Адреса</th>
-			<th>Паспорт</th>
-			<th>Змінити Роль</th>
-			<th>Змінти Статус</th>
+			<th><spring:message code="label.user.secondname"/></th>
+			<th><spring:message code="label.user.firstname"/></th>
+			<th><spring:message code="label.user.middlename"/></th>
+			<th><spring:message code="label.user.email"/></th>
+			<th><spring:message code="label.user.address"/></th>
+			<th><spring:message code="label.user.passport"/></th>
+			<th><spring:message code="label.restype.actions"/></th>
+			<!-- <th>Змінити Роль</th>
+			<th>Змінти Статус</th> -->
 		</tr>
 	</thead>
 	<c:if test="${not empty userDtoList}">
@@ -35,7 +36,10 @@
 				<td>${user.firstName}</td>
 				<td>${user.middleName}</td>
 				<td>${user.email}</td>
-				<td><a
+				<td>${user.address.city},${user.address.street}, ${user.address.building}, ${user.address.flat}</td>
+				<td>${user.passport.seria}, ${user.passport.number}, ${user.passport.published_by_data}</td>
+				<td><a href=# class="btn btn-primary" role="button"><spring:message code="label.restype.edit"/></a></td>
+				<%-- <td><a
 					href="${base}addressWindow/?login=${user.login}"
 					rel="0">Адреса</a></td>
 				<td><a
@@ -64,7 +68,7 @@
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-				</select></td>
+				</select></td> --%>
 			</tr>
 		</c:forEach>
 	</c:if>
