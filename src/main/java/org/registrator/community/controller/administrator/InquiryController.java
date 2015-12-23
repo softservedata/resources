@@ -14,6 +14,8 @@ import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.service.InquiryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 @Controller
 @RequestMapping(value ="/inquiry/add/")
 public class InquiryController {
+	public static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
 	
 	@Autowired
 	InquiryService inquiryService;
@@ -36,18 +40,22 @@ public class InquiryController {
 	
 	@RequestMapping(value = "/outputI", method = RequestMethod.GET)
 	public String showOutputInquiry(Model model) {
+		logger.info("begin showOutputInquiry");
 		List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
 		model.addAttribute("tomes", listTomeDTO);
 		Iterable<Resource> resources = resourceRepository.findAll();
 		model.addAttribute("resources", resources);
+		logger.info("end showOutputInquiry");
 		return "inquiryAddOut";
 	}
 	
 	@RequestMapping(value = "/addOutputI", method = RequestMethod.POST)
 	public String addOutputInquiry(InquiryDTO inquiryDTO) {  			//(InquiryDTO inquiryDTO, HttpSession session)
+		logger.info("begin showOutputInquiry");
 		String userLogin = "ivan";
 		//String userLogin =(String) session.getAttribute("login");	
 		inquiryService.addOutputInquiry(inquiryDTO, userLogin);
+		logger.info("end showOutputInquiry");
 		return  "confimAddOutputI";	
 	}
 	
