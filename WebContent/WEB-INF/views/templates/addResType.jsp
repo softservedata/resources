@@ -17,8 +17,8 @@
 <script src="${jqueryJs}"></script>
 <script src="${addJs}"></script>
 
-	<button type="button" id="clickmeshow" class="btn btn-primary"><spring:message code="label.restype.addparameter"/></button>
-	<button type="button" id="clickmehide" class="btn btn-primary"><spring:message code="label.restype.hideparameter"/></button>
+	<button type="button" id="clickmeshow" class="btn btn-primary btn-sm"><spring:message code="label.restype.addparameter"/></button>
+	<button type="button" id="clickmehide" class="btn btn-primary btn-sm"><spring:message code="label.restype.hideparameter"/></button>
 <h3>
 	<spring:message code="label.restype.add" />
 </h3>
@@ -52,5 +52,6 @@
 	<br />
 	<div class="button">
 		<input type="submit" value=<spring:message code="label.save"/> class="btn btn-success">
+		<button type="reset" class="btn btn-default"><spring:message code="label.clearall"/></button>
 	</div>
 </form:form>
