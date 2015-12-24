@@ -45,15 +45,15 @@
 			value="/WEB-INF/views/showAllResources.jsp" />
 	</definition>
 
-	<definition name="addressWindow" extends="homepage">
+	<definition name="editWindow" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/addressWindow.jsp" />
+			value="/WEB-INF/views/templates/editWindow.jsp" />
 	</definition>
 
-	<definition name="passportWindow" extends="homepage">
+	<!-- <definition name="passportWindow" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/passportWindow.jsp" />
-	</definition>
+	</definition> -->
 
 	<definition name="addResType" extends="homepage">
 		<put-attribute name="body" type="template"

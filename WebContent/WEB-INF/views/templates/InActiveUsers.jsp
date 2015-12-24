@@ -4,68 +4,67 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div style="text-align: center;">
-	<h4><spring:message code="label.inactive.pagename"/></h4>
+	<h4>
+		<spring:message code="label.inactive.pagename" />
+	</h4>
 </div>
+<form:form id="editWinodow" modelAttribute="userDTO" method="post"
+	action="get-all-inactive-users">
+	<table id="datatable" class="table display">
 
-<table id="datatable" class="table display">
-	<thead>
-		<tr>
-			<th><spring:message code="label.user.secondname" /></th>
-			<th><spring:message code="label.user.firstname" /></th>
-			<th><spring:message code="label.user.middlename" /></th>
-			<th><spring:message code="label.user.email" /></th>
-			<th><spring:message code="label.user.address" /></th>
-			<th><spring:message code="label.user.passport" /></th>
-			<th><spring:message code="label.restype.actions" /></th>
-			<!-- <th>Змінити Роль</th>
-			<th>Змінти Статус</th> -->
-		</tr>
-	</thead>
-	<c:if test="${not empty unregistatedUsers}">
-		<c:forEach items="${unregistatedUsers}" var="user">
+
+		<thead>
 			<tr>
-				<td>${user.lastName}</td>
-				<td>${user.firstName}</td>
-				<td>${user.middleName}</td>
-				<td>${user.email}</td>
-				<td>${user.address.city},${user.address.street},
-					${user.address.building}, ${user.address.flat}</td>
-				<td>${user.passport.seria},${user.passport.number},
-					${user.passport.published_by_data}</td>
-				<td><a href=# class="btn btn-primary" role="button"><spring:message
-							code="label.restype.edit" /></a></td>
-				<%-- <td><a
-					href="${base}addressWindow/?login=${user.login}"
-					rel="0">Адреса</a></td>
-				<td><a
-					href="${base}passportWindow/?login=${user.login}"
-					rel="0">Паспорт</a></td>
-				<td><select id="roleId" name="roleName">
-						<c:forEach items="${roleList}" var="role">
-							<c:choose>
-								<c:when test="${user.role.type == role.type}">
-									<option selected value="${role.type}">${role.type}</option>
-								</c:when>
-								<c:otherwise>
-									<option value="${role.type}">${role.type}</option>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-				</select></td>
-				<td><select id="userStatusId" name="userStatusName"
-					class="selectpicker">
-						<c:forEach items="${userStatusList}" var="userStatus">
-							<c:choose>
-								<c:when test="${user.status == userStatus}">
-									<option selected value="${userStatus}">${userStatus}</option>
-								</c:when>
-								<c:otherwise>
-									<option value="${userStatus}">${userStatus}</option>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-				</select></td> --%>
+				<th><spring:message code="label.user.secondname" /></th>
+				<th><spring:message code="label.user.firstname" /></th>
+				<th><spring:message code="label.user.middlename" /></th>
+				<th><spring:message code="label.user.email" /></th>
+				<th><spring:message code="label.user.address" /></th>
+				<th><spring:message code="label.user.passport" /></th>
+				<th>Змінити Роль</th>
+				<th>Змінти Статус</th>
 			</tr>
-		</c:forEach>
-	</c:if>
-</table>
+		</thead>
+		<c:if test="${not empty unregistatedUsers}">
+			<c:forEach items="${unregistatedUsers}" var="userDTO">
+				<tr>
+					<td>${userDTO.lastName}</td>
+					<td>${userDTO.firstName}</td>
+					<td>${userDTO.middleName}</td>
+					<td>${userDTO.email}</td>
+					<td>${userDTO.address.city},${user.address.street},
+						${userDTO.address.building}, ${user.address.flat}</td>
+					<td>${userDTO.passport.seria},${user.passport.number},
+						${userDTO.passport.published_by_data}</td>
+					<td><select id="roleId" name="role">
+							<c:forEach items="${roleList}" var="role">
+								<c:choose>
+									<c:when test="${userDto.role == role.type}">
+										<option selected value="${role.type}">${role.type}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${role.type}">${role.type}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+					</select></td>
+					<td><select id="userStatusId" name="status">
+							<c:forEach items="${userStatusList}" var="userStatus">
+								<c:choose>
+									<c:when test="${userDto.status == userStatus}">
+										<option selected value="${userStatus}">${userStatus}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${userStatus}">${userStatus}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+					</select></td>
+				</tr>
+			</c:forEach>
+		</c:if>
+
+	</table>
+	<input type="submit" value="Submit">
+</form:form>
+

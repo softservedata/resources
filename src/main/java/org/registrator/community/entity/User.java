@@ -80,19 +80,6 @@ public class User implements Serializable {
 		this.email = email;		
 		this.status = UserStatus.valueOf(status.toUpperCase());
 	}
-	
-	
-	/*public User(String firstName, String middleName, String lastName, Role role,
-			String email, String login, String password, String status) {
-		this.login = login;
-		this.password = password;
-		this.role = role;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.middleName = middleName;
-		this.email = email;		
-		this.status = UserStatus.valueOf(status.toUpperCase());
-	}*/
 
 	public Integer getUserId() {
 		return userId;

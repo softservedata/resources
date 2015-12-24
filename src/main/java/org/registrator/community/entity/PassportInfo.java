@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "passport_data")
-public class PassportInfo implements Serializable{
+public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,17 +29,17 @@ public class PassportInfo implements Serializable{
     private Integer number;
     
     @Column(name = "published_by_data", nullable = false)
-    private String publishedByData;
+    private String published_by_data;
     
     public PassportInfo() {
     	
     }
     
-    public PassportInfo(User user, String seria, Integer number, String publishedByData) {
+    public PassportInfo(User user, String seria, Integer number, String published_by_data) {
 		this.user = user;
 		this.seria = seria;
 		this.number = number;
-		this.publishedByData = publishedByData;
+		this.published_by_data = published_by_data;
 	}
     
 	public Integer getPassportId() {
@@ -75,10 +75,20 @@ public class PassportInfo implements Serializable{
 	}
 
 	public String getPublishedByData() {
-		return publishedByData;
+		return published_by_data;
 	}
 
-	public void setPublishedByData(String publishedByData) {
-		this.publishedByData = publishedByData;
+	public void setPublishedByData(String published_by_data) {
+		this.published_by_data = published_by_data;
+	}
+
+	@Override
+	public int compareTo(PassportInfo passport) {
+		if(this.seria.equals(passport.seria) && (this.number.equals(passport.number) && (this.published_by_data.equals(passport.published_by_data)))) {
+			return 0;
+		} else {
+			return 1;
+		}
+		
 	}   
 }
