@@ -31,10 +31,10 @@ public class UserSearchServiceImpl implements UserSearchService {
 		List<User> userList;
 		TableSearchResponceDTO<PersonDemoDTO> tableResponse;
 		int draw=searchRequest.getDraw();
+		Pageable page = getPageRequest(searchRequest.getStart(), searchRequest.getLength());
 		
 		List<SearchColumn> columsList = searchRequest.getColumns();
 		if(checkForAllParametersSearch(columsList)==true){
-			Pageable page =getPageRequest(draw-1,searchRequest.getLength());
 			userList=userRepository.findAll(page).getContent();
 			count = userRepository.count();
 		}
@@ -43,7 +43,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 			sb.setColums(columsList);
 			Specification<User> userSpecification=sb.build();
 			count = userRepository.count(userSpecification);
-			userList=userRepository.findAll(userSpecification);		
+			userList=userRepository.findAll(userSpecification,page).getContent();		
 		}
 			
 		tableResponse = fillTableResponceDTO(draw,count,userList);	
@@ -60,8 +60,9 @@ public class UserSearchServiceImpl implements UserSearchService {
 		return true;
 	}
 	
-	private Pageable getPageRequest(int draw,int lenght){
-		return new PageRequest(draw, lenght);
+	private Pageable getPageRequest(int start,int length){
+		int pageNumber = convertStartToPageNumber(start, length);
+		return new PageRequest(pageNumber, length);
 	}
 	
 	private List<PersonDemoDTO> fillResponseDataList(List<User> userList){
@@ -88,6 +89,15 @@ public class UserSearchServiceImpl implements UserSearchService {
 		tableResponse.setData(personList);
 		
 		return tableResponse;
+	}
+	
+	private int convertStartToPageNumber(int start, int length){
+		if(start!=0){
+			return start/length;
+		}
+		else{
+			return 0;
+		}
 	}
 	
 }
