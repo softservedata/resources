@@ -7,9 +7,9 @@ public class TableSearchResponceDTO<T> {
 	
 	private int draw;
 	
-	private int recordsTotal;
+	private long recordsTotal;
 	
-	private int recordsFiltered;
+	private long recordsFiltered;
 	
 	private List<T> data= new ArrayList<T>();
 
@@ -21,16 +21,24 @@ public class TableSearchResponceDTO<T> {
 		this.draw = draw;
 	}
 
-	public int getRecordsTotal() {
+	public long getRecordsTotal() {
 		return recordsTotal;
+	}
+
+	public void setRecordsTotal(long recordsTotal) {
+		this.recordsTotal = recordsTotal;
 	}
 
 	public void setRecordsTotal(int recordsTotal) {
 		this.recordsTotal = recordsTotal;
 	}
 
-	public int getRecordsFiltered() {
+	public long getRecordsFiltered() {
 		return recordsFiltered;
+	}
+
+	public void setRecordsFiltered(long recordsFiltered) {
+		this.recordsFiltered = recordsFiltered;
 	}
 
 	public void setRecordsFiltered(int recordsFiltered) {
