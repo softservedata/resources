@@ -9,6 +9,7 @@ jQuery(document).ready(function($) {
     	
 		"searching": false,
 		"bSort" : false,
+		"bDestroy": true,
     	"oLanguage": {   
             "sEmptyTable": "В таблиці немає даних",
             "sInfo": "_END_ із _TOTAL_",    
@@ -49,7 +50,7 @@ jQuery(document).ready(function($) {
 		                   "sClass" : "center",
 		                   "sClass": "action",
 		                   "bSortable": false,
-		                   	sWidth: "15%",
+		                   	"sWidth": "15%",
 		                   "sDefaultContent" :   '<button class="btn btn-primary">Edit</button> <button class="btn btn-danger">Delete</button>'
 		                }              
                        ],
@@ -73,7 +74,9 @@ jQuery(document).ready(function($) {
     		createTable();
     		createTableStatus=true;
     	}else{
-    		oTable.ajax.reload();
+//    		oTable.fnClearTable();
+//    		oTable.fnDestroy();
+    		oTable.ajax.reload(null, false);
     	}
 	});
     
