@@ -17,7 +17,7 @@ public interface UserService {
 
 	public void changeUserRole(String login, Role role);
 	
-	public void editUserInformation(UserDTO userDto);
+	public UserDTO editUserInformation(UserDTO userDto);
 	
 	public List<UserStatus> fillInUserStatus();
 	
@@ -25,6 +25,7 @@ public interface UserService {
 	
 	public UserDTO getUserDto(String login);
 	
-	public List<UserDTO> getAllInactiveUsers();// set Role of inactive user to "USER"
+	public List<UserDTO> getAllInactiveUsers();
+
 }
 

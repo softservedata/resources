@@ -17,8 +17,7 @@
 <script src="${jqueryJs}"></script>
 <script src="${addJs}"></script>
 
-	<button type="button" id="clickmeshow" class="btn btn-primary btn-sm"><spring:message code="label.restype.addparameter"/></button>
-	<button type="button" id="clickmehide" class="btn btn-primary btn-sm"><spring:message code="label.restype.hideparameter"/></button>
+	
 <h3>
 	<spring:message code="label.restype.add" />
 </h3>
@@ -29,9 +28,11 @@
 	<spring:message code="label.restype.title" />: 
 		<form:input path="typeName" placeholder="Введіть назву тут"
 			required="required" /> 		
-	</div>
+	</div><br/><button type="button" id="clickmeshow" class="btn btn-primary btn-sm"><spring:message code="label.restype.addparameter"/></button>
+	<button type="button" id="clickmehide" class="btn btn-primary btn-sm"><spring:message code="label.restype.hideparameter"/></button>
+	
 	<br/>
-	<div id="input1" class="clonedInput" style="display:none" >
+	<div id="input1" class="clonedInput" style="display:none; margin-top:5px">
 		<spring:message code="label.restype.desc"/>: 
 		<input id="myparam0" name="parameters[0].description"
 			type="text" value="" /> 

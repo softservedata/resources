@@ -9,14 +9,12 @@ import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/administrator/users/")
@@ -27,36 +25,27 @@ public class UsersController {
 
 	@Autowired
 	RoleService roleService;
-	//
-	// @RequestMapping(value =
-	// "/get-all-users/change-status",method=RequestMethod.POST,
-	// produces = MediaType.APPLICATION_JSON_VALUE, consumes =
-	// MediaType.APPLICATION_JSON_VALUE)
-	//
-	// public String changeStatus(@ModelAttribute("login") String login) {
-	// userService.changeUserStatus(login, UserStatus.UNBLOCK);
-	// return "allUsers";
-	// }
 
-//	@ResponseBody
-//	@RequestMapping(value = "/get-all-users", method = RequestMethod.POST)
-//	public String changeRole(String login, Role role) {
-//		userService.changeUserRole(login, role);
-//		return "allUsers";
-//	}
-
-	@RequestMapping(value = "/addressWindow", method = RequestMethod.GET)
-	public String showAddressWindow(@RequestParam("login") String login, Model model) {
+	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
+	public String fillEditWindow(@RequestParam("login") String login, Model model) {
 		UserDTO userDto = userService.getUserDto(login);
 		model.addAttribute("userDto", userDto);
-		return "addressWindow";
+		List<Role> roleList = roleService.getAllRole();
+		model.addAttribute("roleList", roleList);
+		List<UserStatus> userStatusList = userService.fillInUserStatus();
+		model.addAttribute("userStatusList", userStatusList);
+		return "editWindow";
 	}
 
-	@RequestMapping(value = "/passportWindow", method = RequestMethod.GET)
-	public String showPassportWindow(@RequestParam("login") String login, Model model) {
-		UserDTO userDto = userService.getUserDto(login);
-		model.addAttribute("userDto", userDto);
-		return "passportWindow";
+	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.POST)
+	public String editRegistratedUser(@ModelAttribute("userDTO") UserDTO userDto, Model model) {
+		UserDTO editUserDto = userService.editUserInformation(userDto);
+		model.addAttribute("userDto", editUserDto);
+		List<Role> roleList = roleService.getAllRole();
+		model.addAttribute("roleList", roleList);
+		List<UserStatus> userStatusList = userService.fillInUserStatus();
+		model.addAttribute("userStatusList", userStatusList);
+		return "editWindow";
 	}
 
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
@@ -64,10 +53,6 @@ public class UsersController {
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
 		userDtoList = userService.getAllRegistratedUsers();
 		model.addAttribute("userDtoList", userDtoList);
-		List<Role> roleList = roleService.getAllRole();
-		model.addAttribute("roleList", roleList);
-		List<UserStatus> userStatusList = userService.fillInUserStatus();
-		model.addAttribute("userStatusList", userStatusList);
 		return "RegistratedUsers";
 	}
 
@@ -81,5 +66,19 @@ public class UsersController {
 		model.addAttribute("roleList", roleList);
 		return "InActiveUsers";
 	}
+
+	// @RequestMapping(value = "/get-all-inactive-users", method =
+	// RequestMethod.POST)
+	// public String getAllInactiveUsers(@ModelAttribute("UserDTO")
+	// List<UserDTO> userLisDto,Model model) {
+	// System.out.println("hello");
+	//// List<UserDTO> inactiveUsers = userService.getAllInactiveUsers();
+	//// model.addAttribute("unregistatedUsers", inactiveUsers);
+	//// List<UserStatus> userStatusList = userService.fillInUserStatus();
+	//// model.addAttribute("userStatusList", userStatusList);
+	//// List<Role> roleList = roleService.getAllRole();
+	//// model.addAttribute("roleList", roleList);
+	// return "InActiveUsers";
+	// }
 
 }

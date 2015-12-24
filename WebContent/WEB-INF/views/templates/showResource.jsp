@@ -13,7 +13,7 @@
 	</c:if>
 		<c:if test="${!empty resource}">
 		<h1>Ресурс</h1>
-			<table>
+			<table id="datatable" class="table display">
 				<tr>
 					<td><spring:message code="label.resource.description" /> :</td>
 					<td>${resource.description}</td>

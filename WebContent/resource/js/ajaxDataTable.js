@@ -74,8 +74,6 @@ jQuery(document).ready(function($) {
     		createTable();
     		createTableStatus=true;
     	}else{
-//    		oTable.fnClearTable();
-//    		oTable.fnDestroy();
     		oTable.ajax.reload(null, false);
     	}
 	});
@@ -87,5 +85,4 @@ jQuery(document).ready(function($) {
 	        column.search.value = $('#inputIndex'+i).val();
 	    }
 	}
-
 } );

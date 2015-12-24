@@ -1,31 +1,39 @@
 package org.registrator.community.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
 
-import org.hibernate.Session;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.ResourcesJson;
+import org.registrator.community.dto.validator.ResourceDTOValidator;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 @RequestMapping(value = "/registrator/resource")
 public class ResourceController {
+	
+	@Autowired
+	ResourceDTOValidator validator;
 
 	@Autowired
 	ResourceService resourceService;
@@ -60,9 +68,9 @@ public class ResourceController {
 		return "allTypes";
 	}
 
-	@RequestMapping(value = "/add/{typeName}", method = RequestMethod.GET)
-	public String add(@PathVariable String typeName, Model model) {
-		ResourceType resType = resourceTypeService.findByName(typeName);
+	@RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
+	public String add(@PathVariable Integer typeId, Model model) {
+		ResourceType resType = resourceTypeService.findById(typeId);
 		model.addAttribute("resType", resType);
 		List<Tome> tomes = tomeRepository.findAll();
 		model.addAttribute("tomes", tomes);
@@ -74,15 +82,21 @@ public class ResourceController {
 	/**
 	 * Method save the resource in table list_of resources
 	 */
-	// TODO fill the tables: area, linearValues, discreteValues
-	// TODO remove the RequestParameter inputDate
 	@RequestMapping(value = "/add/addresource", method = RequestMethod.POST)
-	public String addResource(@ModelAttribute("newresource") ResourceDTO resourceDTO,
-			@RequestParam("inputDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, Model model) {
-		resourceDTO.setDate(date);
-		resourceService.addNewResource(resourceDTO);
-		model.addAttribute("resource", resourceDTO);
-		return "showResource";
+	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, 
+			BindingResult result, Model model) {
+		
+		validator.validate(resourceDTO, result);
+		if(result.hasErrors()) {
+            return "addResource";
+            }
+		else {
+			
+			//resourceDTO.setDate(date);
+			resourceService.addNewResource(resourceDTO);
+			model.addAttribute("resource", resourceDTO);
+			return "showResource";
+		}
 	}
 	
 	/**
@@ -91,7 +105,7 @@ public class ResourceController {
 	@RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
 	public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
 		System.out.println("here");
-		ResourceDTO resourceDTO = resourceService.getResourceByIdentifier(identifier);
+		ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
 		model.addAttribute("resource", resourceDTO);
 		return "showResource";
 	}

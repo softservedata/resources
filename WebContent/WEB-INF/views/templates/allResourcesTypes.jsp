@@ -25,7 +25,7 @@
 		class="btn btn-success" role="button"><spring:message
 			code="label.restype.add" /></a>
 </p>
-<table id="datatable" class="table display">
+<table id="datatable" class="table table-striped table-bordered table-hover">
 
 	<thead>
 		<tr>

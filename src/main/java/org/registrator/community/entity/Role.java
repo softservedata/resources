@@ -28,7 +28,8 @@ public class Role implements Serializable {
     public Role(){
     }
     
-    public Role(String type, String description) {
+    public Role(String type, String description,Integer roleid) {
+    	this.roleId=roleid;
 		this.type = RoleType.valueOf(type.toUpperCase());
 		this.description = description;
 	}

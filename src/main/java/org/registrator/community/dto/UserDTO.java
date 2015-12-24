@@ -10,7 +10,7 @@ public class UserDTO implements Serializable {
 	private String firstName;
 	private String lastName;
 	private String middleName;
-	private Role role;
+	private String role;
 	private String login;
 	private String password;
 	private String email;
@@ -18,7 +18,7 @@ public class UserDTO implements Serializable {
 	private AddressDTO address;
 	private PassportDTO passport;
 
-	public UserDTO(String firstName, String lastName, String middleName, Role role, String login, String password,
+	public UserDTO(String firstName, String lastName, String middleName,String role, String login, String password,
 			String email, String status, AddressDTO address, PassportDTO passport) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -30,6 +30,9 @@ public class UserDTO implements Serializable {
 		this.status = status;
 		this.address = address;
 		this.passport = passport;
+	}
+	public UserDTO() {
+		
 	}
 
 	public String getFirstName() {
@@ -56,11 +59,11 @@ public class UserDTO implements Serializable {
 		this.middleName = middleName;
 	}
 
-	public Role getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
@@ -116,7 +119,7 @@ public class UserDTO implements Serializable {
 	public String toString() {
 		String result;
 		result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n" + "Роль:  "
-				+ getRole().getType() + "\n" + "Логін: " + login + "\n" + "Пароль: " + password + "\n" + "Пошта: "
+				+ getRole() + "\n" + "Логін: " + login + "\n" + "Пароль: " + password + "\n" + "Пошта: "
 				+ email + "\n" + "Статус: " + status + "\n" + "Паспортні дані:" + passport.toString() + "\n"
 				+ "Адреса: " + address.toString() + "\n");
 		return result;

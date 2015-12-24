@@ -123,8 +123,8 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 
 	@Override
-	public ResourceDTO getResourceByIdentifier(String identifier) {
-		Resource resourceEntity = resourceRepository.findResourceByIdentifier(identifier);
+	public ResourceDTO findByIdentifier(String identifier) {
+		Resource resourceEntity = resourceRepository.findByIdentifier(identifier);
 		List<LinearParameter> linearParameters = linearParameterRepository.
 				findByResourceType(resourceEntity.getType());
 		List<ResourceLinearValue> linearValues = linearValueRepository.

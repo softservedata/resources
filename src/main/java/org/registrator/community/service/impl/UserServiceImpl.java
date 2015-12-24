@@ -3,6 +3,9 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.ss.formula.functions.T;
+import org.registrator.community.dao.AddressRepository;
+import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.RoleRepository;
 import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.AddressDTO;
@@ -12,6 +15,7 @@ import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
+import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	RoleRepository roleRepository;
+
+	@Autowired
+	PassportRepository passportRepository;
+
+	@Autowired
+	AddressRepository addressRepository;
 
 	@Transactional
 	@Override
@@ -55,22 +65,6 @@ public class UserServiceImpl implements UserService {
 		return registratedUsers;
 	}
 
-//	@Transactional
-//	@Override
-//	public List<User> getAllInActiveUsers() {
-//		List<User> userList = new ArrayList<User>();
-//		List<User> unregistratedUserList = new ArrayList<User>();
-//		userList = userRepository.findAll();
-//
-//		for (User user : userList) {
-//			if (user.getStatus() == UserStatus.INACTIVE) {
-//				unregistratedUserList.add(user);
-//			}
-//		}
-//
-//		return unregistratedUserList;
-//	}
-
 	@Transactional
 	@Override
 	public void changeUserRole(String login, Role role) {
@@ -81,8 +75,31 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void editUserInformation(UserDTO userDto) {
+	public UserDTO editUserInformation(UserDTO userDto) {
+		User user = getUserByLogin(userDto.getLogin());
+		user.setFirstName(userDto.getFirstName());
+		user.setLastName(userDto.getLastName());
+		user.setMiddleName(userDto.getMiddleName());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(userDto.getPassword());
+		user.setRole(checkRole(userDto.getRole()));
+		user.setStatus(checkUserStatus(userDto.getStatus()));
+		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
+				userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
+		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
+				userDto.getAddress().getDistrict(), userDto.getAddress().getCity(), userDto.getAddress().getStreet(),
+				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
+		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
+		if (result != 0) {
+			addressRepository.save(address);
+		}
+		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
+		if (result != 0) {
+			passportRepository.save(passport);
+		}
+		userRepository.save(user);
 
+		return userDto;
 	}
 
 	@Transactional
@@ -107,9 +124,9 @@ public class UserServiceImpl implements UserService {
 			Address address = user.getAddress().get(user.getAddress().size() - 1);
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
-			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(), user.getRole(),
-					user.getLogin(), user.getPassword(), user.getEmail(), user.getStatus().toString(), addressDto,
-					passportDto);
+			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+					user.getRole().getType().name(), user.getLogin(), user.getPassword(), user.getEmail(),
+					user.getStatus().toString(), addressDto, passportDto);
 			userDtoList.add(userDto);
 		}
 		return userDtoList;
@@ -125,9 +142,9 @@ public class UserServiceImpl implements UserService {
 		Address address = user.getAddress().get(user.getAddress().size() - 1);
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
-		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(), user.getRole(),
-				user.getLogin(), user.getPassword(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto);
+		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+				user.getRole().getType().name(), user.getLogin(), user.getPassword(), user.getEmail(),
+				user.getStatus().toString(), addressDto, passportDto);
 		return userdto;
 	}
 
@@ -138,10 +155,34 @@ public class UserServiceImpl implements UserService {
 		userDtoList = getUserDtoList();
 		List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
 		for (UserDTO userDto : userDtoList) {
-			if(userDto.getStatus() == UserStatus.INACTIVE.toString()) {
+			if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
+				userDto.setRole("USER");
 				inactiveUserDtoList.add(userDto);
 			}
 		}
 		return inactiveUserDtoList;
+	}
+
+	private Role checkRole(String role) {
+		List<Role> roleList = roleRepository.findAll();
+		if (role.equals(RoleType.USER.name())) {
+			return roleList.get(0);
+		} else {
+			if (role.equals(RoleType.REGISTRATOR.name())) {
+				return roleList.get(1);
+			} else {
+				return roleList.get(2);
+			}
+		}
+	}
+
+	private UserStatus checkUserStatus(String status) {
+		if (status.equals(UserStatus.BLOCK.name())) {
+			return UserStatus.BLOCK;
+		} else if (status.equals(UserStatus.INACTIVE.name())) {
+			return UserStatus.INACTIVE;
+		} else {
+			return UserStatus.UNBLOCK;
+		}
 	}
 }
