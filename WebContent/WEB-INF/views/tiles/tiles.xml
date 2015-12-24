@@ -79,5 +79,10 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/confimAddOutputI.jsp" />
 	</definition>
+	
+	<definition name="userDataTable" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/userDataTable.jsp" />
+	</definition>
 
 </tiles-definitions>
