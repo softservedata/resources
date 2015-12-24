@@ -89,19 +89,11 @@ public class UserServiceImpl implements UserService {
 		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
 				userDto.getAddress().getDistrict(), userDto.getAddress().getCity(), userDto.getAddress().getStreet(),
 				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
-		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);// Check
-																							// if
-																							// address
-																							// is
-																							// changed
+		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
 		if (result != 0) {
 			addressRepository.save(address);
 		}
-		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport); // Check
-																							// if
-																							// passport
-																							// is
-																							// changed
+		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
 		if (result != 0) {
 			passportRepository.save(passport);
 		}

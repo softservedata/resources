@@ -10,24 +10,36 @@ import java.util.Date;
 
 
 public class InquiryListDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	private Integer inquiry_list_id;
 	private String inquiryType;
 	private Date date;
-	private String userLogin;
-	private String registratorLogin;
-	private ResourceDTO resource;	 
+	private String userName;
+	private String registratorName;
+	private String resourceIdentifier;
 	
+		
 	public InquiryListDTO() {
-		super();
 	}
 
-	public InquiryListDTO(String inquiryType, Date date, String userLogin, String registratorLogin,
-			ResourceDTO resource) {
-		super();
+	public InquiryListDTO(Integer inquiry_list_id, String inquiryType, Date date, String userName,
+			String registratorName, String resourceIdentifier) {
+		this.inquiry_list_id = inquiry_list_id;
 		this.inquiryType = inquiryType;
 		this.date = date;
-		this.userLogin = userLogin;
-		this.registratorLogin = registratorLogin;
-		this.resource = resource;
+		this.userName = userName;
+		this.registratorName = registratorName;
+		this.resourceIdentifier = resourceIdentifier;
+	}
+
+	public Integer getInquiry_list_id() {
+		return inquiry_list_id;
+	}
+
+	public void setInquiry_list_id(Integer inquiry_list_id) {
+		this.inquiry_list_id = inquiry_list_id;
 	}
 
 	public String getInquiryType() {
@@ -46,40 +58,28 @@ public class InquiryListDTO implements Serializable {
 		this.date = date;
 	}
 
-	public String getUserLogin() {
-		return userLogin;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUserLogin(String userLogin) {
-		this.userLogin = userLogin;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public String getRegistratorLogin() {
-		return registratorLogin;
+	public String getRegistratorName() {
+		return registratorName;
 	}
 
-	public void setRegistratorLogin(String registratorLogin) {
-		this.registratorLogin = registratorLogin;
+	public void setRegistratorName(String registratorName) {
+		this.registratorName = registratorName;
 	}
 
-	public ResourceDTO getResource() {
-		return resource;
+	public String getResourceIdentifier() {
+		return resourceIdentifier;
 	}
 
-	public void setResource(ResourceDTO resource) {
-		this.resource = resource;
+	public void setResourceIdentifier(String resourceIdentifier) {
+		this.resourceIdentifier = resourceIdentifier;
 	}
-
-	public String toString(){
-		String result;
-		result = String.format("Тип запиту: " + inquiryType + "\n"
-                + "Запит внесено: " + date + "\n"
-                + "Запит вніс: " + userLogin + "\n"
-                + "Запит відправлено на: " + registratorLogin + "\n"
-                + "Ідентифікатор ресурсу: " + resource.getIdentifier() + "\n");
-
-		return result;
-	}
-
-		
+	
 }

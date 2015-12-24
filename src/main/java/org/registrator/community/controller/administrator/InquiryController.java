@@ -2,28 +2,21 @@ package org.registrator.community.controller.administrator;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dto.InquiryDTO;
+import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.TomeDTO;
-import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.Tome;
 import org.registrator.community.service.InquiryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -50,14 +43,27 @@ public class InquiryController {
 	}
 	
 	@RequestMapping(value = "/addOutputI", method = RequestMethod.POST)
-	public String addOutputInquiry(InquiryDTO inquiryDTO) {  			//(InquiryDTO inquiryDTO, HttpSession session)
-		logger.info("begin showOutputInquiry");
-		String userLogin = "ivan";
-		//String userLogin =(String) session.getAttribute("login");	
+	public String addOutputInquiry(InquiryDTO inquiryDTO, HttpSession session) {  			
+		logger.info("begin addOutputInquiry");
+		String userLogin =(String) session.getAttribute("userLogin");	
+		logger.info("userLogin = " + userLogin);
 		inquiryService.addOutputInquiry(inquiryDTO, userLogin);
-		logger.info("end showOutputInquiry");
-		return  "confimAddOutputI";	
+		logger.info("end addOutputInquiry");
+		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
+	
+	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
+	public String listInqUserOut(Model model, HttpSession session) {
+		logger.info("begin listInqUserOut");
+		String userLogin =(String) session.getAttribute("userLogin");
+		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUserOut(userLogin);
+		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
+		logger.info("end listInqUserOut");
+		return "listInqUserOut";
+	}
+	
+	
+	
 	
 	/*
 	@ResponseBody

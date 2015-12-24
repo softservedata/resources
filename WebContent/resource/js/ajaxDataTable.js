@@ -1,15 +1,13 @@
 jQuery(document).ready(function($) {
 	
 	var createTableStatus = false;
-    
-    createSearchLine();
 		
 	var oTable;
 	function createTable() {	    	
 
 		oTable = $('#example').DataTable({
     	
-//      "searching": false,
+		"searching": false,
 		"bSort" : false,
     	"oLanguage": {   
             "sEmptyTable": "В таблиці немає даних",
@@ -56,7 +54,7 @@ jQuery(document).ready(function($) {
 		                }              
                        ],
               "ajax": {
-       		        	"url":"${home}search/getData",
+       		        	"url":"getData",
        		        	"type":"POST",
        		        	dataType: "json",
        		        	contentType: 'application/json; charset=utf-8',
@@ -79,27 +77,10 @@ jQuery(document).ready(function($) {
     	}
 	});
     
-    
-    
-    function createSearchLine() {
-    	var searchInput='';
-	    for (var i = 0; i < 4; i++) {
-// 	    		$('#example tfoot tr').append( '<th><input id="inputIndex'+i+'" type="text" placeholder="Пошук" /></th>' );
-	    		searchInput+='<th><input id="inputIndex'+i+'" type="text" placeholder="Пошук" /></th>';
-	    }
-	    searchInput+='<th><input type="submit" id="bth-search" class="btn btn-primary btn-lg" value="Пошук"/>';
-	    searchInput='<tr>'+searchInput+'</tr>';
-	    console.log(searchInput);
-	    $('#example tfoot').append(searchInput);
-	}
-    
-    function createSearchButton() {	    	
-	    		$('#example tfoot th').append( '<button type="submit" id="bth-search" class="btn btn-primary btn-lg" >Search</button>' );
-	}
-    
     function addSearchValue(data) {
 	    for (var i = 0; i < data.columns.length; i++) {
 	        column = data.columns[i];
+	        column.search.compareSign = "equal";
 	        column.search.value = $('#inputIndex'+i).val();
 	    }
 	}
