@@ -22,6 +22,10 @@ public class AddressDTO implements Serializable {
 		this.building = building;
 		this.flat = flat;
 	}
+	
+	public AddressDTO() {
+		
+	}
 
 	public String getPostcode() {
 		return postcode;

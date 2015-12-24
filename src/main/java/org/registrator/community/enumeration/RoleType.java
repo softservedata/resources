@@ -10,7 +10,7 @@ public enum RoleType{
 	private RoleType(final String name) {
 		this.TYPE = name;
 	}
-	
+		
 	@Override
 	public String toString() {
 		return TYPE;
