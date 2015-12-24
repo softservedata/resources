@@ -22,7 +22,8 @@
 </div>
 <p>
 	<a href="${base}registrator/resourcetypes/addrestype"
-		class="btn btn-success" role="button"><spring:message code="label.restype.add"/></a>
+		class="btn btn-success" role="button"><spring:message
+			code="label.restype.add" /></a>
 </p>
 <table id="datatable" class="table display">
 
@@ -44,21 +45,14 @@
 					<td>${restype.typeName}</td>
 					<td><c:forEach items="${restype.discreteParameters}"
 							var="dis_param">
-
-
 							<div class="block">${dis_param.description}</div>
-
-
 						</c:forEach></td>
-
 					<td><c:forEach items="${restype.discreteParameters}"
 							var="dis_param">
 
 							<div class="block">
 								<div>${dis_param.unitName}</div>
-
 							</div>
-
 						</c:forEach></td>
 					<td><c:forEach items="${restype.linearParameters}"
 							var="lin_param">
@@ -75,9 +69,12 @@
 						</c:forEach></td>
 					<td>
 						<div class="block">
-							<a href="edit/${restype.typeId}" class="btn btn-primary"
-								role="button">Edit </a><a href="delete/${restype.typeId}"
-								class="btn btn-danger" role="button">Delete</a>
+
+							<%-- <a href="edit/${restype.typeId}" class="btn btn-primary"
+								role="button"><spring:message code="label.restype.edit" /></a> --%>
+							<a href="delete/${restype.typeId}" class="btn btn-danger"
+								id="deleterestype" role="button"><spring:message
+									code="label.restype.delete" /></a>
 						</div>
 					</td>
 				</tr>

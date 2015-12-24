@@ -44,7 +44,7 @@ public class InquiryServiceImpl implements InquiryService{
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
 		User registrator =tome.getRegistrator();
 		String resourceIdentifier = inquiryDTO.getResourceIdentifier();
-		Resource resource = resourceRepository.findResourceByIdentifier(resourceIdentifier);		
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
 		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
 		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;
@@ -113,4 +113,5 @@ public class InquiryServiceImpl implements InquiryService{
 	
 	
 }
+
 

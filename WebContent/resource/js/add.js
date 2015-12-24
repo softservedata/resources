@@ -1,14 +1,10 @@
 $(document).ready(
 		function() {
 			$("#clickmeshow").click(function() {
-				$(".clonedInput").show("slow", function() {
-
-				});
+				$(".clonedInput").fadeIn("slow");
 			});
 			$("#clickmehide").click(function() {
-				$(".clonedInput").hide("slow", function() {
-
-				});
+				$(".clonedInput").fadeOut("slow");
 			});
 			$('#btnAdd')
 					.click(

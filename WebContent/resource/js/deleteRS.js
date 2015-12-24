@@ -1,6 +1,5 @@
-$(document).ready(function() {
-    var deleteLink = $("a:contains('Delete')");
-    $(deleteLink).click(function(event) {
+$(function() {
+    $(Document).on("click","#deleterestype",function (event) {
     	alert("Якщо в базі містяться ресурси даного типу, він видалений не буде")
         var conBox = confirm("Ви впевнені, що хочете видалити цей тип?");
         if(conBox){

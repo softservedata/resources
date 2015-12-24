@@ -25,6 +25,7 @@
                 	 </li>
                 <li><a href="${base}inquiry/add/listInqUserOut"><spring:message code="label.menu.inquiries" /></a></li>
                 <li><a href="${base}registrator/resource/addresource"><spring:message code="label.menu.addnewresource"/></a>
+                <li><a href="${base}administrator/users/search"><spring:message code="label.menu.search"/></a>
             </ul>
         </div>
     </div>
