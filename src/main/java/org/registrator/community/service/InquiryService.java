@@ -15,6 +15,8 @@ public interface InquiryService {
 	 List<TomeDTO> listTomeDTO();
 	
 	List<InquiryListDTO> listInquiryUserOut(String userLogin);
+	
+	void removeInquiry (Integer inquiryId);
 
 }
 

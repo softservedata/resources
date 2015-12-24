@@ -51,7 +51,8 @@
 								<td> ${inquiryUserOut.resourceIdentifier}	</td>	
 								<td>
 									<a href="delete/${inquiryUserOut.inquiry_list_id}"
-											class="btn btn-danger" role="button">Delete</a>									
+											class="btn btn-danger" role="button"> 
+											<spring:message code="label.restype.delete" /></a>									
 								</td>							
 							</tr>	
 						</c:forEach>
