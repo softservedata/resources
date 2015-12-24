@@ -5,11 +5,11 @@
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="req" value="${pageContext.request}" />
+<!-- <c:set var="req" value="${pageContext.request}" />
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
-
+-->
 
 <div style="text-align: center;">
 	<h4>
@@ -17,9 +17,9 @@
 	</h4>
 </div>
 
-<!-- <% session.setAttribute("userLogin", "ivan"); %> -->
+ <% session.setAttribute("userLogin", "ivan"); %> 
 
-		<form:form method="POST" action="/inquiry/add/addOutputI" >
+		<form:form method="POST" action="addOutputI" >
 			<table class="table display">
 					<tr>
 						<td><spring:message code="label.resource.registrator" />
@@ -32,7 +32,8 @@
 									<option value="${tome.tomeIdentifier}">${tome.registratorLastName} ${tome.registratorFirstName} 
 										${tome.registratorMiddleName} (номер тому: ${tome.tomeIdentifier})</option>
 								</c:forEach>
-							</select></td>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><spring:message code="label.resource.identifier" />:</td>
@@ -43,8 +44,9 @@
 								<c:forEach items="${resources}" var="resource">
 									<option value="${resource.identifier}">${resource.identifier} </option>
 								</c:forEach>
-							</select></td>
-										   			
+							</select>
+						</td>
+					</tr>										   			
 			</table>				
 			<input type="submit"  value="Надіслати запит" class="btn btn-success"/>
 		
