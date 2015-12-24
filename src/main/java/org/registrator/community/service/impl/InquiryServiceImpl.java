@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.registrator.community.controller.administrator.InquiryController;
 import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
-import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Resource;
@@ -36,6 +34,10 @@ public class InquiryServiceImpl implements InquiryService{
 	@Autowired
 	TomeRepository tomeRepository;
 
+	
+	/**
+	 * Method saves the data in the table inquiry_list.
+	 */
 	@Transactional
 	@Override
 	public Inquiry addOutputInquiry(InquiryDTO inquiryDTO, String userLogin){
@@ -50,6 +52,11 @@ public class InquiryServiceImpl implements InquiryService{
 		return inquiry;
 	}
 	
+	/**
+	 * Method for showing form on UI to input the parameters 
+	 * for inquiry to get the certificate aboute the resource 
+	 * forms List<TomeDTO> to fill inquiryAddOut.jsp.
+	 */	
 	@Override
 	public List<TomeDTO> listTomeDTO(){
 		List<TomeDTO> aListTomeDTO = new ArrayList<>();
@@ -62,7 +69,10 @@ public class InquiryServiceImpl implements InquiryService{
 		return aListTomeDTO;
 	}
 
-	
+	/**
+	 * Method for showing all inquiries from logged user on UI 
+	 * forms List<InquiryListDTO> to fill listInqUserOut.jsp.
+	 */
 	@Transactional
 	@Override
 	public List<InquiryListDTO> listInquiryUserOut(String userLogin){
@@ -83,6 +93,9 @@ public class InquiryServiceImpl implements InquiryService{
 		return listInquiryDTO;
 	}
 	
+	/**
+	 * Method for deleting chosen inquiry by Id.
+	 */
 	@Transactional
 	@Override
 	public void removeInquiry (Integer inquiryId){

@@ -31,7 +31,11 @@ public class InquiryController {
 	@Autowired
 	ResourceRepository resourceRepository;
 	
-	
+	/**
+	 * Method for showing form on UI to input the parameters 
+	 * for inquiry to get the certificate aboute the resource 
+	 * (with existing registrators and resources).
+	 */	
 	@RequestMapping(value = "/outputI", method = RequestMethod.GET)
 	public String showOutputInquiry(Model model) {
 		logger.info("begin showOutputInquiry");
@@ -43,6 +47,9 @@ public class InquiryController {
 		return "inquiryAddOut";
 	}
 	
+	/**
+	 * Method saves the data in the table inquiry_list.
+	 */
 	@RequestMapping(value = "/addOutputI", method = RequestMethod.POST)
 	public String addOutputInquiry(InquiryDTO inquiryDTO, HttpSession session) {  			
 		logger.info("begin addOutputInquiry");
@@ -53,6 +60,9 @@ public class InquiryController {
 		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
 	
+	/**
+	 * Method for showing all inquiries from logged user on UI.
+	 */
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
 	public String listInqUserOut(Model model, HttpSession session) {
 		logger.info("begin listInqUserOut");
@@ -64,13 +74,15 @@ public class InquiryController {
 	}
 	
 	/**
-	 * Method for deleting chosen inquiry by Id
+	 * Method for deleting chosen inquiry by Id.
 	 */
 	@RequestMapping(value = "/delete/{inquiryId}")
 	public String deleteInquiry(@PathVariable Integer inquiryId) {
 		inquiryService.removeInquiry(inquiryId);
 		return "redirect:/inquiry/add/listInqUserOut";
 	}
+	
+	
 	
 	
 	/*
