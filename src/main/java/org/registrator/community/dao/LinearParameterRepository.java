@@ -19,5 +19,7 @@ public interface LinearParameterRepository extends JpaRepository<LinearParameter
 			" From LinearParameter l" +
 			" Where l.resourceType = :resourceType" )
 	List<LinearParameter> findByResourceType(@Param("resourceType")ResourceType resourceType);
+
+	LinearParameter findByLinearParameterId (Integer id);
 	
 }

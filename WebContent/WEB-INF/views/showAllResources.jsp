@@ -11,7 +11,7 @@
 
 <div>
     <c:if test="${not empty resourceTypes}">
-        <div style="padding-bottom: 15px;" >
+        <div style="padding-bottom: 15px;">
             <label class="">Оберіть підклас об'єкту: </label>
             <select id="resourcesTypeSelect" class="form-control" style="width:auto; display: inline">
                 <c:forEach items="${resourceTypes}" var="resourceType">
@@ -19,34 +19,31 @@
                 </c:forEach>
             </select>
         </div>
-        <table id="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Identifier</th>
-                <th>Description</th>
-                <th>Date</th>
-                <th>Status</th>
-                    <%--<th>Status</th>--%>
-                    <%--<th>Status</th>--%>
-                    <%--<th>Status</th>--%>
-                    <%--<th>Status</th>--%>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                    <%--<td></td>--%>
-                    <%--<td></td>--%>
-                    <%--<td></td>--%>
-                    <%--<td></td>--%>
-            </tr>
-            </tbody>
-        </table>
+        <div id="searchParameters" class="container"></div>
+        <br>
+        <br>
+        <div id="table" class="container"></div>
+
+        <%--<table id="table">--%>
+            <%--<thead>--%>
+            <%--<tr>--%>
+                <%--<th>ID</th>--%>
+                <%--<th>Identifier</th>--%>
+                <%--<th>Description</th>--%>
+                <%--<th>Date</th>--%>
+                <%--<th>Status</th>--%>
+            <%--</tr>--%>
+            <%--</thead>--%>
+            <%--<tbody>--%>
+            <%--<tr>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+            <%--</tr>--%>
+            <%--</tbody>--%>
+        <%--</table>--%>
     </c:if>
 
 </div>
