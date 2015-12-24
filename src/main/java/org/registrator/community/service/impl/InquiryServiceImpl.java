@@ -78,13 +78,16 @@ public class InquiryServiceImpl implements InquiryService{
 			User registrator = inquiry.getRegistrator();
 			inquiryListDTO.setRegistratorName(registrator.getLastName()+ " " +registrator.getFirstName()+ " " +registrator.getMiddleName());
 			listInquiryDTO.add(inquiryListDTO);
-			logger.info("insert into listInquiryUserOut");
 		}
 		logger.info("end listInquiryUserOut");
 		return listInquiryDTO;
 	}
 	
-	
+	@Transactional
+	@Override
+	public void removeInquiry (Integer inquiryId){
+		inquiryRepository.delete(inquiryId);
+	}
 	
 	
 	
