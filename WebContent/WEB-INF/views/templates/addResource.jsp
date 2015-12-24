@@ -50,10 +50,10 @@
 					<td>${parameter.description},${parameter.unitName}:</td>
 					<td><input
 						name="resourceLinear[${param_i.index}].segments[0].begin"
-						required="required" /></td>
+						required="required" value="${0.0}" /></td>
 					<td><input
 						name="resourceLinear[${param_i.index}].segments[0].end"
-						required="required" /> <input type="hidden"
+						required="required" value="${0.0}" /> <input type="hidden"
 						name="resourceLinear[${param_i.index}].linearParameterDescription"
 						value="${parameter.description}" /></td>
 				</tr>
@@ -65,7 +65,7 @@
 			</tr>
 			<tr>
 				<td><spring:message code="label.resource.reasonInclusion" />:</td>
-				<td><textarea name="reasonInclusion"
+				<td colspan="3"><textarea name="reasonInclusion"
 						style="width: 500px; height: 200px;">${reasonInclusion} </textarea></td>
 			</tr>
 			<tr>
@@ -82,23 +82,26 @@
 						</option>
 						<c:forEach items="${tomes}" var="tome">
 							<option value="${tome.identifier}">${tome.registrator.lastName}
-								${tome.registrator.middleName}${tome.registrator.firstName}
+								${tome.registrator.middleName} ${tome.registrator.firstName}
 								(номер тому: ${tome.identifier})</option>
 						</c:forEach>
 					</form:select></td>
 			</tr>
-		</table>
-
-		<table id="datatable" class="table display">
 			<tr>
 				<td><spring:message code="label.resource.coordinates" />:</td>
 			</tr>
+		</table>
+
+		<table id="datatable">
 			<tr>
-				<th><spring:message code="label.resource.orderPoint" /></th>
-				<th colspan="3"><spring:message code="label.resource.latitude" /></th>
-				<th colspan="3"><spring:message code="label.resource.longitude" /></th>
+				<th style="width: 300px"><spring:message
+						code="label.resource.orderPoint" /></th>
+				<th align="right" style="width: 550px"><spring:message
+						code="label.resource.latitude" /></th>
+				<th align="center" style="width: 300px"><spring:message
+						code="label.resource.longitude" /></th>
 			</tr>
-		</table>		
+		</table>
 		<div id="input1" class="clonedInput" style="float: left">
 			<input id="myparam0" style="width: 100px"
 				name="resourceArea.poligons[0].points[0].orderNumber" type="text"
@@ -131,6 +134,5 @@
 		</div>
 	</form:form>
 </div>
-
 
 

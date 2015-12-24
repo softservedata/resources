@@ -50,17 +50,6 @@ public class ResourceController {
 	 * Method for loading form for input the parameter of resource (with
 	 * existing resource types and registrator)
 	 */
-/*	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-	public String addResourceForm(Model model) {
-		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-		model.addAttribute("listOfResourceType", listOfResourceType);
-		List<Tome> tomes = tomeRepository.findAll();
-		model.addAttribute("tomes", tomes);
-		ResourceDTO newresource = new ResourceDTO();
-		model.addAttribute("newresource", newresource);
-		return "addResource";
-	}*/
-	
 	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
 	public String addResourceForm(Model model) {
 		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
@@ -70,7 +59,8 @@ public class ResourceController {
 
 	@RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
 	public String add(@PathVariable Integer typeId, Model model) {
-		ResourceType resType = resourceTypeService.findById(typeId);
+		ResourceType resType = resourceTypeService.
+				findByName(resourceTypeService.findById(typeId).getTypeName());
 		model.addAttribute("resType", resType);
 		List<Tome> tomes = tomeRepository.findAll();
 		model.addAttribute("tomes", tomes);
@@ -91,8 +81,6 @@ public class ResourceController {
             return "addResource";
             }
 		else {
-			
-			//resourceDTO.setDate(date);
 			resourceService.addNewResource(resourceDTO);
 			model.addAttribute("resource", resourceDTO);
 			return "showResource";
