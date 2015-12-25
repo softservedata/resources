@@ -4,8 +4,7 @@ import java.util.*;
 
 import javax.validation.Valid;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceDiscreteValueDTO;
@@ -39,7 +38,6 @@ public class ResourceController {
     @Autowired
     ResourceService resourceService;
 
-    // to delete
     @Autowired
     ResourceTypeService resourceTypeService;
 
@@ -54,11 +52,10 @@ public class ResourceController {
     LinearParameterServiceImpl linearParameterService;
 
     @Autowired
-    ResourceLinearValueServiceImpl resourceLinearValueService;
-
-    @Autowired
     ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
 
+    @Autowired
+    ResourceLinearValueServiceImpl resourceLinearValueService;
 
 	/**
 	 * Method for loading form for input the parameter of resource (with
@@ -71,17 +68,17 @@ public class ResourceController {
 		return "allTypes";
 	}
 
-    @RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
-    public String add(@PathVariable Integer typeId, Model model) {
-        ResourceType resType = resourceTypeService.
-                findByName(resourceTypeService.findById(typeId).getTypeName());
-        model.addAttribute("resType", resType);
-        List<Tome> tomes = tomeRepository.findAll();
-        model.addAttribute("tomes", tomes);
-        ResourceDTO newresource = new ResourceDTO();
-        model.addAttribute("newresource", newresource);
-        return "addResource";
-    }
+	@RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
+	public String add(@PathVariable Integer typeId, Model model) {
+		ResourceType resType = resourceTypeService.
+				findByName(resourceTypeService.findById(typeId).getTypeName());
+		model.addAttribute("resType", resType);
+		List<Tome> tomes = tomeRepository.findAll();
+		model.addAttribute("tomes", tomes);
+		ResourceDTO newresource = new ResourceDTO();
+		model.addAttribute("newresource", newresource);
+		return "addResource";
+	}
 
 	/**
 	 * Method save the resource in table list_of resources
@@ -111,7 +108,6 @@ public class ResourceController {
 		model.addAttribute("resource", resourceDTO);
 		return "showResource";
 	}
-    
     @RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
     public String showAllResources(Model model) {
         List<ResourceType> resourceTypes = resourceTypeService.findAll();
@@ -123,14 +119,16 @@ public class ResourceController {
     @RequestMapping(value = "/getResourcesByTypeId", method = RequestMethod.POST)
     public String showAllResourcesByTypeId(@RequestParam("resourceTypeId") Integer i, Model model) {
         ResourceType type = resourceTypeService.findById(i);
+
         List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(type);
         List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(type);
+
         model.addAttribute("discreteParameters", discreteParameters);
         model.addAttribute("linearParameters", linearParameters);
         return "parameters";
     }
 
-    //    @ResponseBody
+
     @RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
     public String resourceSearch(
             @RequestParam("discreteParametersId") List<Integer> discreteParamsIds,
@@ -223,18 +221,19 @@ public class ResourceController {
         }
 
         /*
-        Creating ReaourceDTO
+        Creating ResourceDTO
          */
         
         List<ResourceDTO> resourceDTOs = new ArrayList<>();
 
         for (Resource resource : resultResourceList) {
 
-            ResourceDTO resourceDTO = resourceService.getResourceByIdentifier(resource.getIdentifier());
+            ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
             resourceDTOs.add(resourceDTO);
         }
 
         model.addAttribute("Resources", resourceDTOs);
+
         return "resourceSearch";
     }
 
