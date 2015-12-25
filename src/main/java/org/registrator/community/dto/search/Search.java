@@ -5,6 +5,8 @@ public class Search {
 	private String value;
 	
 	private Boolean regex;
+	
+	private String compareSign;
 
 	public String getValue() {
 		return value;
@@ -20,6 +22,14 @@ public class Search {
 
 	public void setRegex(Boolean regex) {
 		this.regex = regex;
+	}
+
+	public String getCompareSign() {
+		return compareSign;
+	}
+
+	public void setCompareSign(String compareSign) {
+		this.compareSign = compareSign;
 	}
 
 }

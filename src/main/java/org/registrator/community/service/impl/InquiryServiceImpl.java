@@ -10,20 +10,21 @@ import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
-import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
 import org.registrator.community.service.InquiryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InquiryServiceImpl implements InquiryService{
-	
+	public static final Logger logger = LoggerFactory.getLogger(InquiryServiceImpl.class);	
 	@Autowired
 	InquiryRepository inquiryRepository;
 	@Autowired
@@ -33,6 +34,10 @@ public class InquiryServiceImpl implements InquiryService{
 	@Autowired
 	TomeRepository tomeRepository;
 
+	
+	/**
+	 * Method saves the data in the table inquiry_list.
+	 */
 	@Transactional
 	@Override
 	public Inquiry addOutputInquiry(InquiryDTO inquiryDTO, String userLogin){
@@ -41,11 +46,66 @@ public class InquiryServiceImpl implements InquiryService{
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
 		User registrator =tome.getRegistrator();
 		String resourceIdentifier = inquiryDTO.getResourceIdentifier();
-		Resource resource = resourceRepository.findResourceByIdentifier(resourceIdentifier);		
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
 		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
-		inquiryRepository.save(inquiry);	
+		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;
 	}
+	
+	/**
+	 * Method for showing form on UI to input the parameters 
+	 * for inquiry to get the certificate aboute the resource 
+	 * forms List<TomeDTO> to fill inquiryAddOut.jsp.
+	 */	
+	@Override
+	public List<TomeDTO> listTomeDTO(){
+		List<TomeDTO> aListTomeDTO = new ArrayList<>();
+		TomeDTO tomeDTO;
+		List<Tome> tomes = tomeRepository.findAll();
+		for (Tome tome : tomes){
+			tomeDTO = new TomeDTO(tome.getIdentifier(), tome.getRegistrator().getFirstName(), tome.getRegistrator().getLastName(), tome.getRegistrator().getMiddleName());
+			aListTomeDTO.add(tomeDTO);
+		}		
+		return aListTomeDTO;
+	}
+
+	/**
+	 * Method for showing all inquiries from logged user on UI 
+	 * forms List<InquiryListDTO> to fill listInqUserOut.jsp.
+	 */
+	@Transactional
+	@Override
+	public List<InquiryListDTO> listInquiryUserOut(String userLogin){
+		logger.info("begin listInquiryUserOut");
+		List<InquiryListDTO> listInquiryDTO = new ArrayList<InquiryListDTO>();
+		InquiryListDTO inquiryListDTO;
+		User user = userRepository.findUserByLogin(userLogin);
+		List<Inquiry> listInquiry = inquiryRepository.findByUserAndInquiryType(user);
+		for (Inquiry inquiry : listInquiry){
+			inquiryListDTO = new InquiryListDTO(inquiry.getInquiry_list_id(), inquiry.getInquiryType().toString(), 
+						inquiry.getDate(), null, null, inquiry.getResource().getIdentifier());
+			inquiryListDTO.setUserName(user.getLastName()+ " " +user.getFirstName()+ " " +user.getMiddleName());
+			User registrator = inquiry.getRegistrator();
+			inquiryListDTO.setRegistratorName(registrator.getLastName()+ " " +registrator.getFirstName()+ " " +registrator.getMiddleName());
+			listInquiryDTO.add(inquiryListDTO);
+		}
+		logger.info("end listInquiryUserOut");
+		return listInquiryDTO;
+	}
+	
+	/**
+	 * Method for deleting chosen inquiry by Id.
+	 */
+	@Transactional
+	@Override
+	public void removeInquiry (Integer inquiryId){
+		inquiryRepository.delete(inquiryId);
+	}
+	
+	
+	
+	
+	
 	
 /*	@Transactional
 	@Override
@@ -67,17 +127,7 @@ public class InquiryServiceImpl implements InquiryService{
 		return addOutputInquiry(inquiryListDTO);				
 	}*/
 	
-	@Override
-	public List<TomeDTO> listTomeDTO(){
-		List<TomeDTO> aListTomeDTO = new ArrayList<>();
-		TomeDTO tomeDTO;
-		List<Tome> tomes = tomeRepository.findAll();
-		for (Tome tome : tomes){
-			tomeDTO = new TomeDTO(tome.getIdentifier(), tome.getRegistrator().getFirstName(), tome.getRegistrator().getLastName(), tome.getRegistrator().getMiddleName());
-			aListTomeDTO.add(tomeDTO);
-		}		
-		return aListTomeDTO;
-	}
-
+	
 }
+
 

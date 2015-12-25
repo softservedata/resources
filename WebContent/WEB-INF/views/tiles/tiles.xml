@@ -45,15 +45,15 @@
 			value="/WEB-INF/views/showAllResources.jsp" />
 	</definition>
 
-	<definition name="addressWindow" extends="homepage">
+	<definition name="editWindow" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/addressWindow.jsp" />
+			value="/WEB-INF/views/templates/editWindow.jsp" />
 	</definition>
 
-	<definition name="passportWindow" extends="homepage">
+	<!-- <definition name="passportWindow" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/passportWindow.jsp" />
-	</definition>
+	</definition> -->
 
 	<definition name="addResType" extends="homepage">
 		<put-attribute name="body" type="template"
@@ -75,9 +75,14 @@
 			value="/WEB-INF/views/templates/inquiryAddOut.jsp" />
 	</definition>
 	
-	<definition name="confimAddOutputI" extends="homepage">
+	<definition name="listInqUserOut" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/confimAddOutputI.jsp" />
+			value="/WEB-INF/views/templates/listInqUserOut.jsp" />
+	</definition>
+	
+	<definition name="userDataTable" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/userDataTable.jsp" />
 	</definition>
 
     <definition name="parameters" template="/WEB-INF/views/searchParameters.jsp">

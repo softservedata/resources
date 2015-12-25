@@ -13,7 +13,7 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
     @Query("Select r" +
             " From Resource r " +
             "Where r.identifier = :identifier")
-    public Resource findResourceByIdentifier(@Param("identifier") String identifier);
+    public Resource findByIdentifier(@Param("identifier") String identifier);
 
     List<Resource> findByType(ResourceType type);
 

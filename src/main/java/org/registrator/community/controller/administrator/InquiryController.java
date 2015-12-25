@@ -2,30 +2,28 @@ package org.registrator.community.controller.administrator;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dto.InquiryDTO;
+import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.TomeDTO;
-import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.Tome;
 import org.registrator.community.service.InquiryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @Controller
 @RequestMapping(value ="/inquiry/add/")
 public class InquiryController {
+	public static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
 	
 	@Autowired
 	InquiryService inquiryService;
@@ -33,23 +31,59 @@ public class InquiryController {
 	@Autowired
 	ResourceRepository resourceRepository;
 	
-	
+	/**
+	 * Method for showing form on UI to input the parameters 
+	 * for inquiry to get the certificate aboute the resource 
+	 * (with existing registrators and resources).
+	 */	
 	@RequestMapping(value = "/outputI", method = RequestMethod.GET)
 	public String showOutputInquiry(Model model) {
+		logger.info("begin showOutputInquiry");
 		List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
 		model.addAttribute("tomes", listTomeDTO);
 		Iterable<Resource> resources = resourceRepository.findAll();
 		model.addAttribute("resources", resources);
+		logger.info("end showOutputInquiry");
 		return "inquiryAddOut";
 	}
 	
+	/**
+	 * Method saves the data in the table inquiry_list.
+	 */
 	@RequestMapping(value = "/addOutputI", method = RequestMethod.POST)
-	public String addOutputInquiry(InquiryDTO inquiryDTO) {  			//(InquiryDTO inquiryDTO, HttpSession session)
-		String userLogin = "ivan";
-		//String userLogin =(String) session.getAttribute("login");	
+	public String addOutputInquiry(InquiryDTO inquiryDTO, HttpSession session) {  			
+		logger.info("begin addOutputInquiry");
+		String userLogin =(String) session.getAttribute("userLogin");	
+		logger.info("userLogin = " + userLogin);
 		inquiryService.addOutputInquiry(inquiryDTO, userLogin);
-		return  "confimAddOutputI";	
+		logger.info("end addOutputInquiry");
+		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
+	
+	/**
+	 * Method for showing all inquiries from logged user on UI.
+	 */
+	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
+	public String listInqUserOut(Model model, HttpSession session) {
+		logger.info("begin listInqUserOut");
+		String userLogin =(String) session.getAttribute("userLogin");
+		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUserOut(userLogin);
+		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
+		logger.info("end listInqUserOut");
+		return "listInqUserOut";
+	}
+	
+	/**
+	 * Method for deleting chosen inquiry by Id.
+	 */
+	@RequestMapping(value = "/delete/{inquiryId}")
+	public String deleteInquiry(@PathVariable Integer inquiryId) {
+		inquiryService.removeInquiry(inquiryId);
+		return "redirect:/inquiry/add/listInqUserOut";
+	}
+	
+	
+	
 	
 	/*
 	@ResponseBody

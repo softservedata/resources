@@ -2,6 +2,7 @@ package org.registrator.community.controller;
 
 import java.util.*;
 
+import javax.validation.Valid;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +11,7 @@ import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceDiscreteValueDTO;
 import org.registrator.community.dto.ResourceLinearValueDTO;
 import org.registrator.community.entity.*;
+import org.registrator.community.dto.validator.ResourceDTOValidator;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.registrator.community.service.impl.DiscreteParameterServiceImpl;
@@ -17,14 +19,22 @@ import org.registrator.community.service.impl.LinearParameterServiceImpl;
 import org.registrator.community.service.impl.ResourceDiscreteValueServiceImpl;
 import org.registrator.community.service.impl.ResourceLinearValueServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/registrator/resource")
 public class ResourceController {
+	
+	@Autowired
+	ResourceDTOValidator validator;
 
     @Autowired
     ResourceService resourceService;
@@ -49,30 +59,22 @@ public class ResourceController {
     @Autowired
     ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
 
-    /**
-     * Method for loading form for input the parameter of resource (with
-     * existing resource types and registrator)
-     */
-/*	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model) {
+
+	/**
+	 * Method for loading form for input the parameter of resource (with
+	 * existing resource types and registrator)
+	 */
+	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
+	public String addResourceForm(Model model) {
 		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
 		model.addAttribute("listOfResourceType", listOfResourceType);
-		List<Tome> tomes = tomeRepository.findAll();
-		model.addAttribute("tomes", tomes);
-		ResourceDTO newresource = new ResourceDTO();
-		model.addAttribute("newresource", newresource);
-		return "addResource";
-	}*/
-    @RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model) {
-        List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-        model.addAttribute("listOfResourceType", listOfResourceType);
-        return "allTypes";
-    }
+		return "allTypes";
+	}
 
-    @RequestMapping(value = "/add/{typeName}", method = RequestMethod.GET)
-    public String add(@PathVariable String typeName, Model model) {
-        ResourceType resType = resourceTypeService.findByName(typeName);
+    @RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
+    public String add(@PathVariable Integer typeId, Model model) {
+        ResourceType resType = resourceTypeService.
+                findByName(resourceTypeService.findById(typeId).getTypeName());
         model.addAttribute("resType", resType);
         List<Tome> tomes = tomeRepository.findAll();
         model.addAttribute("tomes", tomes);
@@ -81,31 +83,35 @@ public class ResourceController {
         return "addResource";
     }
 
-    /**
-     * Method save the resource in table list_of resources
-     */
-    // TODO fill the tables: area, linearValues, discreteValues
-    // TODO remove the RequestParameter inputDate
-    @RequestMapping(value = "/add/addresource", method = RequestMethod.POST)
-    public String addResource(@ModelAttribute("newresource") ResourceDTO resourceDTO,
-                              @RequestParam("inputDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, Model model) {
-        resourceDTO.setDate(date);
-        resourceService.addNewResource(resourceDTO);
-        model.addAttribute("resource", resourceDTO);
-        return "showResource";
-    }
-
-    /**
-     * Show the information about resource by identifier
-     */
-    @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
-    public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
-        System.out.println("here");
-        ResourceDTO resourceDTO = resourceService.getResourceByIdentifier(identifier);
-        model.addAttribute("resource", resourceDTO);
-        return "showResource";
-    }
-
+	/**
+	 * Method save the resource in table list_of resources
+	 */
+	@RequestMapping(value = "/add/addresource", method = RequestMethod.POST)
+	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, 
+			BindingResult result, Model model) {
+		
+		validator.validate(resourceDTO, result);
+		if(result.hasErrors()) {
+            return "addResource";
+            }
+		else {
+			resourceService.addNewResource(resourceDTO);
+			model.addAttribute("resource", resourceDTO);
+			return "showResource";
+		}
+	}
+	
+	/**
+	 * Show the information about resource by identifier
+	 */
+	@RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
+	public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
+		System.out.println("here");
+		ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
+		model.addAttribute("resource", resourceDTO);
+		return "showResource";
+	}
+    
     @RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
     public String showAllResources(Model model) {
         List<ResourceType> resourceTypes = resourceTypeService.findAll();
@@ -117,43 +123,8 @@ public class ResourceController {
     @RequestMapping(value = "/getResourcesByTypeId", method = RequestMethod.POST)
     public String showAllResourcesByTypeId(@RequestParam("resourceTypeId") Integer i, Model model) {
         ResourceType type = resourceTypeService.findById(i);
-//        List<Resource> resources = resourceService.findByType(type);
-
-//        List<ResourcesJson> list = new ArrayList<>();
-
-//        for (Resource resource : resources) {
-//            ResourcesJson resourceJson = new ResourcesJson();
-//
-//            resourceJson.setId(resource.getResourcesId());
-//            resourceJson.setTypeId(resource.getType().getTypeId());
-//            resourceJson.setIdentifier(resource.getIdentifier());
-//            resourceJson.setDescription(resource.getDescription());
-//            resourceJson.setRegistratorId(resource.getRegistrator().getUserId());
-//            resourceJson.setDate(resource.getDate());
-//            resourceJson.setStatus(resource.getStatus());
-//            resourceJson.setTomeId(resource.getTome().getTomeId());
-//            resourceJson.setReasonInclusion(resource.getReasonInclusion());
-//
-//            list.add(resourceJson);
-//        }
         List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(type);
         List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(type);
-//        List<DiscreteParametersJSON> discreteParametersJSONs = new ArrayList<>();
-//
-//        for (DiscreteParameter discreteParameter : discreteParameters) {
-//            DiscreteParametersJSON discreteParametersJSON = new DiscreteParametersJSON();
-//            discreteParametersJSON.setDiscreteParameterId(discreteParameter.getDiscreteParameterId());
-//            discreteParametersJSON.setDescription(discreteParameter.getDescription());
-//            discreteParametersJSON.setUnitName(discreteParameter.getUnitName());
-//
-//            discreteParametersJSONs.add(discreteParametersJSON);
-//        }
-//
-//        Gson gson = new GsonBuilder()
-//                .setPrettyPrinting()
-//                .create();
-//        String json = gson.toJson(discreteParametersJSONs);
-//        return json;
         model.addAttribute("discreteParameters", discreteParameters);
         model.addAttribute("linearParameters", linearParameters);
         return "parameters";
@@ -254,49 +225,16 @@ public class ResourceController {
         /*
         Creating ReaourceDTO
          */
-
-
+        
         List<ResourceDTO> resourceDTOs = new ArrayList<>();
 
         for (Resource resource : resultResourceList) {
-//            List<ResourceLinearValue> linearValues = resourceLinearValueService.findByResource(resource);
-//            List<ResourceDiscreteValue> discreteValues = resourceDiscreteValueService.findByResource(resource);
-//            List<ResourceLinearValueDTO> resourceLinear = new ArrayList<>();
-//            List<ResourceDiscreteValueDTO> resourceDiscrete = new ArrayList<>();
-//
-//            for (ResourceLinearValue linearValue : linearValues) {
-//                ResourceLinearValueDTO linearValueDTO = new ResourceLinearValueDTO();
-//                linearValueDTO.setLinearParameterDescription(linearValue.getLinearParameter().getDescription());
-//                linearValueDTO.setLinearParameterUnit(linearValue.getLinearParameter().getUnitName());
-//
-//            }
+
             ResourceDTO resourceDTO = resourceService.getResourceByIdentifier(resource.getIdentifier());
             resourceDTOs.add(resourceDTO);
         }
 
         model.addAttribute("Resources", resourceDTOs);
-
-
-//        Gson gson = new GsonBuilder()
-//                .setPrettyPrinting()
-//                .create();
-//        String json = gson.toJson();
-
-//        System.out.println();
-//        System.out.println("---------------------------");
-//        System.out.println("Count: " + countValues);
-//        System.out.println();
-//        for (Resource resource : resourceList) {
-//            System.out.print(" id: " + resource.getResourcesId());
-//        }
-//        System.out.println("---------------------------");
-//        System.out.println();
-//        return "Post Received! DiscreteID:" + discreteParamsIds + "\n"
-//                + "\n Compare: " + discreteParamsCompares
-//                + "\n Value: " + discreteParamsValues
-//                + "\n Linear parameters:"
-//                + "\n Id: " + linearParamsIds
-//                + "\n Value: " + linearParamsValues;
         return "resourceSearch";
     }
 

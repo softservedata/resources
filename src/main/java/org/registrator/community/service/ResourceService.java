@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface ResourceService {
 	ResourceDTO addNewResource(ResourceDTO resourceDTO);
-	ResourceDTO getResourceByIdentifier(String identifier);
+	
+	ResourceDTO findByIdentifier(String identifier);
 
     List<Resource> findByType (ResourceType type);
 

@@ -14,6 +14,9 @@ public class PassportDTO implements Serializable {
 		this.number=number;
 		this.published_by_data=published_by_data;
 	}
+	
+	public PassportDTO() {
+	}
 
 	public String getSeria() {
 		return seria;

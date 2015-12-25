@@ -7,7 +7,7 @@
 <div>
 
 	<c:forEach items="${listOfResourceType}" var="restype">
-	<h3><a href= "add/${restype.typeName}">${restype.typeName}</a></h3>
+	<h3><a href= "add/${restype.typeId}">${restype.typeName}</a></h3>
 	</c:forEach>
 </div>
 

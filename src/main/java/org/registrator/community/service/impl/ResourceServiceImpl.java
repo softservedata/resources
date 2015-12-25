@@ -71,6 +71,8 @@ public class ResourceServiceImpl implements ResourceService {
 		resourceEntity.setType(resourceType);
 		resourceEntity.setDate(resourceDTO.getDate());
 		resourceEntity = resourceRepository.save(resourceEntity);
+		resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() +
+				resourceEntity.getRegistrator().getMiddleName() +resourceEntity.getRegistrator().getLastName());
 		List<Area> areas = new ArrayList<Area>();
 		for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
 			for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
@@ -123,8 +125,8 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 
 	@Override
-	public ResourceDTO getResourceByIdentifier(String identifier) {
-		Resource resourceEntity = resourceRepository.findResourceByIdentifier(identifier);
+	public ResourceDTO findByIdentifier(String identifier) {
+		Resource resourceEntity = resourceRepository.findByIdentifier(identifier);
 		List<LinearParameter> linearParameters = linearParameterRepository.
 				findByResourceType(resourceEntity.getType());
         List<DiscreteParameter> discreteParameters = discreteParameterRepository.

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.enumeration.ResourceStatus;
-import org.springframework.util.AutoPopulatingList;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class ResourceDTO {
 	
@@ -15,6 +15,8 @@ public class ResourceDTO {
 	private String identifier;
 	private String description;
 	private String registratorName;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 	private ResourceStatus status;
 	private String reasonInclusion;

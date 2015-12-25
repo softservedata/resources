@@ -8,11 +8,11 @@ INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_
 INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (4,'vasyl.@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','UNBLOCK',2);
 INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (5,'oleh.@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','INACTIVE',3);
 
-INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (1,'35','Львів',NULL,NULL,'79026','Львівська','Пастернака',1);
-INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (2,'17','Хмельницький',NULL,'17','29000','Хмельницька','Героїв Майдану',2);
+INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (1,'35','Львів','Галицький','20','79026','Львівська','Пастернака',1);
+INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (2,'17','Хмельницький','Семенівський','17','29000','Хмельницька','Героїв Майдану',2);
 INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (3,'30','Стрий','Стрийський','0','353567','Львівська','Героїв Майдану',3);
-INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (4,'45','Львів',NULL,'78','79026','Львівська','Стрийська',4);
-INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (5,'34','Київ',NULL,'90','4456767','Київська','Бандери',5);
+INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (4,'45','Львів','Залізничний','78','79026','Львівська','Стрийська',4);
+INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (5,'34','Київ','Троєщина','90','4456767','Київська','Бандери',5);
 
 INSERT INTO `passport_data` (`passport_data_id`,`number`,`published_by_data`,`seria`,`user_id`) VALUES (1,2234,'Львівський....','КС',1);
 INSERT INTO `passport_data` (`passport_data_id`,`number`,`published_by_data`,`seria`,`user_id`) VALUES (2,123456,'Хмельницьким МВ УМВС України в Хмельницький області 01 січня 1997 року','КК',2);

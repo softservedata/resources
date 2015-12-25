@@ -23,9 +23,12 @@ public class SpecificationsBuilder {
  
         List<Specification<User>> specs = new ArrayList<Specification<User>>();
         for (SearchColumn scolumn : colums) {
-        	UserSpecification userSpecification =new UserSpecification();
-        	userSpecification.setCriteria(scolumn);
-            specs.add(userSpecification);
+        	if(scolumn.getSearch().getValue() != null && scolumn.getSearch().getValue()!="" ){
+        		UserSpecification<User> userSpecification =new UserSpecification<User>();
+            	userSpecification.setCriteria(scolumn);
+                specs.add(userSpecification);
+        	}
+        	
         }
  
         Specification<User> result = specs.get(0);
@@ -44,6 +47,4 @@ public class SpecificationsBuilder {
 		return this;
 	}
 	
-	
-
 }

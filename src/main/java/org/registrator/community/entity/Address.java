@@ -8,47 +8,47 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "address")
-public class Address implements Serializable {
+public class Address implements Serializable, Comparable<Address> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "address_id")
-    @GeneratedValue
-    private Integer addressId;
-    
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JsonBackReference
+	@Column(name = "address_id")
+	@GeneratedValue
+	private Integer addressId;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonBackReference
 	@JoinColumn(name = "user_id", nullable = false)
-	private User user; 
-    
-    @Column(name = "postcode", nullable = false)
-    private String postCode;
-    
-    @Column(name = "region", nullable = false)
-    private String region;
-    
-    @Column(name = "district")
-    private String district;
-    
-    @Column(name = "city", nullable = false)
-    private String city;
+	private User user;
 
-    @Column(name = "street", nullable = false)
-    private String street;
- 
-    @Column(name = "building", nullable = false)
-    private String building;
+	@Column(name = "postcode", nullable = false)
+	private String postCode;
 
-    @Column(name = "flat")
-    private String flat;
-    
-    public Address() {
-    	
-    }
-    
-    public Address(User user, String postCode, String region, String district, String city,
-			String street, String building, String flat) {
+	@Column(name = "region", nullable = false)
+	private String region;
+
+	@Column(name = "district")
+	private String district;
+
+	@Column(name = "city", nullable = false)
+	private String city;
+
+	@Column(name = "street", nullable = false)
+	private String street;
+
+	@Column(name = "building", nullable = false)
+	private String building;
+
+	@Column(name = "flat")
+	private String flat;
+
+	public Address() {
+
+	}
+
+	public Address(User user, String postCode, String region, String district, String city, String street,
+			String building, String flat) {
 		this.user = user;
 		this.postCode = postCode;
 		this.region = region;
@@ -57,16 +57,6 @@ public class Address implements Serializable {
 		this.street = street;
 		this.building = building;
 		this.flat = flat;
-	}
-    
-	public Address(User user, String postCode, String region, String city,
-			String street, String building) {
-		this.user = user;
-		this.postCode = postCode;
-		this.region = region;
-		this.city = city;
-		this.street = street;
-		this.building = building;
 	}
 
 	public Integer getAddressId() {
@@ -100,7 +90,7 @@ public class Address implements Serializable {
 	public void setRegion(String region) {
 		this.region = region;
 	}
-	
+
 	public String getDistrict() {
 		return district;
 	}
@@ -139,6 +129,17 @@ public class Address implements Serializable {
 
 	public void setFlat(String flat) {
 		this.flat = flat;
+	}
+
+	@Override
+	public int compareTo(Address address) {
+		if (this.region.equals(address.region) && this.city.equals(address.city)
+				&& this.district.equals(address.district) && this.street.equals(address.street)
+				&& this.building.equals(address.building) && this.flat.equals(address.flat) && this.postCode.equals(address.postCode)) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }
