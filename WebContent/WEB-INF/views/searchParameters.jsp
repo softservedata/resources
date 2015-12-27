@@ -2,7 +2,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 
 <c:if test="${not empty discreteParameters or not empty linearParameters}">
-    <div><h5><i>Оберіть параметри пошуку:</i></h5></div>
+    <div><h5><i>Оберіть параметри пошуку(Щоб знайти всі ресурси даного підкласу не обирайте нічого):</i></h5></div>
 </c:if>
 <c:if test="${not empty discreteParameters}">
     <div id="discreteParameters" class="container">

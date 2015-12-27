@@ -66,7 +66,8 @@ $(document).ready(function () {
                 "discreteParametersCompare": discreteParamCompare,
                 "discreteParametersValue": discreteParamVal,
                 "linearParametersId": linearParamId,
-                "linearParametersValue": linearParamVal
+                "linearParametersValue": linearParamVal,
+                "resourceTypeId":$("#resourcesTypeSelect").val()
             },
             success: function(data){
                 $("#table").html(data);

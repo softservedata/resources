@@ -3,6 +3,12 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:set var="req" value="${pageContext.request}"/>
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
+
 
 <fmt:formatDate value="${resource.date}" pattern="dd.MM.yyyy" var="Date" />
 
@@ -47,11 +53,17 @@
 				</tr>
 				<c:forEach var="poligon" items="${resource.resourceArea.poligons}">
 					<c:forEach var="point" items="${poligon.points}">
-						<tr>
-							<td>${point.latitudeDegrees}°${point.latitudeMinutes}'
-								${point.latitudeSeconds}"</td>
-							<td>${point.longitudeDegrees}°${point.longitudeMinutes}'
-								${point.longitudeSeconds}"</td>
+						<tr class="coordinates">
+							<td>
+                                <span class="latitudeDegrees">${point.latitudeDegrees}</span>°
+                                <span class="latitudeMinutes">${point.latitudeMinutes}</span>'
+                                <span class="latitudeSeconds">${point.latitudeSeconds}</span>"
+                            </td>
+							<td>
+                                <span class="longitudeDegrees">${point.longitudeDegrees}</span>°
+                                <span class="longitudeMinutes">${point.longitudeMinutes}</span>'
+                                <span class="longitudeSeconds">${point.longitudeSeconds}</span>"
+                            </td>
 						</tr>
 					</c:forEach>
 				</c:forEach>
@@ -74,4 +86,22 @@
 			</table>
 		</c:if>
 	</form:form>
+
+    <%--Connect Google Maps--%>
+
+
+
+    <div id="map_canvas" class="container" style="height: 500px;"
+         centerLat="<c:out value="${
+        resource.resourceArea.poligons[0].points[0].latitudeDegrees +
+        resource.resourceArea.poligons[0].points[0].latitudeMinutes/60 +
+        resource.resourceArea.poligons[0].points[0].latitudeSeconds/3600}"/>"
+         centerLng="<c:out value="${
+        resource.resourceArea.poligons[0].points[0].longitudeDegrees +
+        resource.resourceArea.poligons[0].points[0].longitudeMinutes/60 +
+        resource.resourceArea.poligons[0].points[0].longitudeSeconds/3600}"/>">
+    </div>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="${base}resource/js/showResourceMap.js"></script>
+
 </div>

@@ -31,9 +31,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/registrator/resource")
 public class ResourceController {
-	
-	@Autowired
-	ResourceDTOValidator validator;
+
+    @Autowired
+    ResourceDTOValidator validator;
 
     @Autowired
     ResourceService resourceService;
@@ -57,57 +57,57 @@ public class ResourceController {
     @Autowired
     ResourceLinearValueServiceImpl resourceLinearValueService;
 
-	/**
-	 * Method for loading form for input the parameter of resource (with
-	 * existing resource types and registrator)
-	 */
-	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-	public String addResourceForm(Model model) {
-		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-		model.addAttribute("listOfResourceType", listOfResourceType);
-		return "allTypes";
-	}
+    /**
+     * Method for loading form for input the parameter of resource (with
+     * existing resource types and registrator)
+     */
+    @RequestMapping(value = "/addresource", method = RequestMethod.GET)
+    public String addResourceForm(Model model) {
+        List<ResourceType> listOfResourceType = resourceTypeService.findAll();
+        model.addAttribute("listOfResourceType", listOfResourceType);
+        return "allTypes";
+    }
 
-	@RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
-	public String add(@PathVariable Integer typeId, Model model) {
-		ResourceType resType = resourceTypeService.
-				findByName(resourceTypeService.findById(typeId).getTypeName());
-		model.addAttribute("resType", resType);
-		List<Tome> tomes = tomeRepository.findAll();
-		model.addAttribute("tomes", tomes);
-		ResourceDTO newresource = new ResourceDTO();
-		model.addAttribute("newresource", newresource);
-		return "addResource";
-	}
+    @RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
+    public String add(@PathVariable Integer typeId, Model model) {
+        ResourceType resType = resourceTypeService.
+                findByName(resourceTypeService.findById(typeId).getTypeName());
+        model.addAttribute("resType", resType);
+        List<Tome> tomes = tomeRepository.findAll();
+        model.addAttribute("tomes", tomes);
+        ResourceDTO newresource = new ResourceDTO();
+        model.addAttribute("newresource", newresource);
+        return "addResource";
+    }
 
-	/**
-	 * Method save the resource in table list_of resources
-	 */
-	@RequestMapping(value = "/add/addresource", method = RequestMethod.POST)
-	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, 
-			BindingResult result, Model model) {
-		
-		validator.validate(resourceDTO, result);
-		if(result.hasErrors()) {
+    /**
+     * Method save the resource in table list_of resources
+     */
+    @RequestMapping(value = "/add/addresource", method = RequestMethod.POST)
+    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
+                              BindingResult result, Model model) {
+
+        validator.validate(resourceDTO, result);
+        if (result.hasErrors()) {
             return "addResource";
-            }
-		else {
-			resourceService.addNewResource(resourceDTO);
-			model.addAttribute("resource", resourceDTO);
-			return "showResource";
-		}
-	}
-	
-	/**
-	 * Show the information about resource by identifier
-	 */
-	@RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
-	public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
-		System.out.println("here");
-		ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
-		model.addAttribute("resource", resourceDTO);
-		return "showResource";
-	}
+        } else {
+            resourceService.addNewResource(resourceDTO);
+            model.addAttribute("resource", resourceDTO);
+            return "showResource";
+        }
+    }
+
+    /**
+     * Show the information about resource by identifier
+     */
+    @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
+    public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
+        System.out.println("here");
+        ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
+        model.addAttribute("resource", resourceDTO);
+        return "showResource";
+    }
+
     @RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
     public String showAllResources(Model model) {
         List<ResourceType> resourceTypes = resourceTypeService.findAll();
@@ -136,6 +136,7 @@ public class ResourceController {
             @RequestParam("discreteParametersValue") List<Double> discreteParamsValues,
             @RequestParam("linearParametersId") List<Integer> linearParamsIds,
             @RequestParam("linearParametersValue") List<Double> linearParamsValues,
+            @RequestParam("resourceTypeId") Integer resourceTypeId,
             Model model) {
 
         /*
@@ -160,74 +161,94 @@ public class ResourceController {
             }
         }
 
-        List<Resource> resourceList = new ArrayList<>();
         List<Resource> resultResourceList = new ArrayList<>();
 
-        List<DiscreteParameter> discreteParameters = new ArrayList<>();
-        for (Integer discreteParamsId : discreteParamsIds) {
-            discreteParameters.add(discreteParameterService.findById(discreteParamsId));
-        }
+        if (countValues > 0) {
+            List<Resource> resourceList = new ArrayList<>();
 
-        List<LinearParameter> linearParameters = new ArrayList<>();
-        for (Integer linearParamsId : linearParamsIds) {
-            linearParameters.add(linearParameterService.findById(linearParamsId));
-        }
-
-        List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<>();
-        for (int i = 0; i < discreteParamsValues.size(); i++) {
-            if ("less".equals(discreteParamsCompares.get(i))) {
-                resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllBySmallerValueAndDiscreteParameter(
-                        discreteParamsValues.get(i), discreteParameters.get(i)
-                ));
-            } else if ("greater".equals(discreteParamsCompares.get(i))) {
-                resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByBiggerValueAndDiscreteParameter(
-                        discreteParamsValues.get(i), discreteParameters.get(i)
-                ));
-            } else {
-                resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByValueAndDiscreteParameter(
-                        discreteParamsValues.get(i), discreteParameters.get(i)
-                ));
+            List<DiscreteParameter> discreteParameters = new ArrayList<>();
+            for (Integer discreteParamsId : discreteParamsIds) {
+                discreteParameters.add(discreteParameterService.findById(discreteParamsId));
             }
-        }
 
-        List<ResourceLinearValue> resourceLinearValues = new ArrayList<>();
-        for (int i = 0; i < linearParamsValues.size(); i++) {
-            resourceLinearValues.addAll(resourceLinearValueService.findAllByValueAndLinearParameter(linearParamsValues.get(i), linearParameters.get(i)));
-        }
+            List<LinearParameter> linearParameters = new ArrayList<>();
+            for (Integer linearParamsId : linearParamsIds) {
+                linearParameters.add(linearParameterService.findById(linearParamsId));
+            }
 
-        for (ResourceDiscreteValue resourceDiscreteValue : resourceDiscreteValues) {
-            resourceList.add(resourceDiscreteValue.getResource());
-        }
+            List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<>();
+            for (int i = 0; i < discreteParamsValues.size(); i++) {
+                if ("less".equals(discreteParamsCompares.get(i))) {
+                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllBySmallerValueAndDiscreteParameter(
+                            discreteParamsValues.get(i), discreteParameters.get(i)
+                    ));
+                } else if ("greater".equals(discreteParamsCompares.get(i))) {
+                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByBiggerValueAndDiscreteParameter(
+                            discreteParamsValues.get(i), discreteParameters.get(i)
+                    ));
+                } else {
+                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByValueAndDiscreteParameter(
+                            discreteParamsValues.get(i), discreteParameters.get(i)
+                    ));
+                }
+            }
 
-        for (ResourceLinearValue resourceLinearValue : resourceLinearValues) {
-            resourceList.add(resourceLinearValue.getResource());
-        }
+            List<ResourceLinearValue> resourceLinearValues = new ArrayList<>();
+            for (int i = 0; i < linearParamsValues.size(); i++) {
+                resourceLinearValues.addAll(resourceLinearValueService.findAllByValueAndLinearParameter(linearParamsValues.get(i), linearParameters.get(i)));
+            }
 
-        if(countValues > 1) {
-            for (int i = 0; i < resourceList.size() - 1; i++) {
-                int k = 0;
-                for (int j = i + 1; j < resourceList.size(); j++) {
-                    if (resourceList.get(i).getResourcesId() == resourceList.get(j).getResourcesId()) {
-                        k++;
+            for (ResourceDiscreteValue resourceDiscreteValue : resourceDiscreteValues) {
+                resourceList.add(resourceDiscreteValue.getResource());
+            }
+
+            for (ResourceLinearValue resourceLinearValue : resourceLinearValues) {
+                resourceList.add(resourceLinearValue.getResource());
+            }
+
+        /*
+        Search which Resources are the same for all search parameters
+         */
+            if (countValues > 1) {
+                for (int i = 0; i < resourceList.size() - 1; i++) {
+                    int k = 0;
+                    for (int j = i + 1; j < resourceList.size(); j++) {
+                        if (resourceList.get(i).getResourcesId() == resourceList.get(j).getResourcesId()) {
+                            k++;
+                        }
+                        if (k == (countValues - 1)) {
+                            resultResourceList.add(resourceList.get(i));
+                        }
                     }
-                    if (k == (countValues-1)) {
-                        resultResourceList.add(resourceList.get(i));
+                }
+            } else {
+                resultResourceList.addAll(resourceList);
+            }
+
+        /*
+        Remove duplicates of Resources
+         */
+
+            for (int i = 0; i < resultResourceList.size() - 1; i++) {
+                for (int j = i + 1; j < resultResourceList.size(); j++) {
+                    if (resultResourceList.get(i).getResourcesId() == resultResourceList.get(j).getResourcesId()) {
+                        resultResourceList.remove(j);
+                        j--;
+
                     }
                 }
             }
         }
         else {
-            resultResourceList.addAll(resourceList);
+            ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
+            resultResourceList = resourceService.findByType(resourceType);
         }
-
         /*
-        Creating ResourceDTO
+        Creating List of ResourceDTO
          */
-        
         List<ResourceDTO> resourceDTOs = new ArrayList<>();
 
         for (Resource resource : resultResourceList) {
-
             ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
             resourceDTOs.add(resourceDTO);
         }

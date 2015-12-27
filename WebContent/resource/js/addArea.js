@@ -1,62 +1,74 @@
+var addNewPoint = function(poligonNumber,
+                           latitudeDegrees, latitudeMinutes, latitudeSeconds,
+                           longitudeDegrees, longitudeMinutes,longitudeSeconds) {
+    var num = $('.clonedInput').length;
+    var newNum = new Number(num + 1);
+
+    if ($('#myparam1').val() == 0) {
+        $('#myparam1').val(latitudeDegrees);
+        $('#myparam2').val(latitudeMinutes);
+        $('#myparam3').val(latitudeSeconds);
+        $('#myparam4').val(longitudeDegrees);
+        $('#myparam5').val(longitudeMinutes);
+        $('#myparam6').val(longitudeSeconds);
+    }
+    else {
+        var newElem = $('#input' + num).clone().attr('id', 'input' + newNum);
+
+        newElem.children('#myparam0').attr(
+            'name',
+            'resourceArea.poligons[' + poligonNumber + '].points['
+            + (newNum - 1) + '].orderNumber').val(newNum);
+        newElem.children('#myparam1').attr(
+            'name',
+            'resourceArea.poligons[' + poligonNumber + '].points['
+            + (newNum - 1) + '].latitudeDegrees').val(latitudeDegrees);
+        newElem.children('#myparam2').attr(
+            'name',
+            'resourceArea.poligons[' + poligonNumber + '].points['
+            + (newNum - 1) + '].latitudeMinutes').val(latitudeMinutes);
+        newElem.children('#myparam3').attr(
+            'name',
+            'resourceArea.poligons[' + poligonNumber + '].points['
+            + (newNum - 1) + '].latitudeSeconds').val(latitudeSeconds);
+        newElem.children('#myparam4').attr(
+            'name',
+            'resourceArea.poligons[' + poligonNumber + '].points['
+            + (newNum - 1) + '].longitudeDegrees').val(longitudeDegrees);
+        newElem.children('#myparam5').attr(
+            'name',
+            'resourceArea.poligons[' + poligonNumber + '].points['
+            + (newNum - 1) + '].longitudeMinutes').val(longitudeMinutes);
+        newElem.children('#myparam6').attr(
+            'name',
+            'resourceArea.poligons[' + poligonNumber + '].points['
+            + (newNum - 1) + '].longitudeSeconds').val(longitudeSeconds);
+        $('#input' + num).after(newElem);
+        $('#btnDelArea').attr('disabled', '');
+    }
+
+}
+
 $(document).ready(
 		function() {
-			$('#btnAddArea').click(
-					function() {
-						var num = $('.clonedInput').length;
-						var newNum = new Number(num + 1);
-						var newElem = $('#input' + num).clone().val("").attr('id',
-								'input' + newNum).removeAttr('value');
-						newElem.children('#myparam0').attr(
-								'name',
-								'resourceArea.poligons[0].points['
-										+ (newNum - 1) + '].orderNumber');
-						newElem.children('#myparam0').attr('value', newNum);
-						newElem.children('#myparam1').attr(
-								'name',
-								'resourceArea.poligons[0].points['
-										+ (newNum - 1) + '].latitudeDegrees');
-						newElem.children('#myparam1').attr('value', 0);
-						newElem.children('#myparam2').attr(
-								'name',
-								'resourceArea.poligons[0].points['
-										+ (newNum - 1) + '].latitudeMinutes');
-						newElem.children('#myparam2').attr('value', 0);
-						newElem.children('#myparam3').attr(
-								'name',
-								'resourceArea.poligons[0].points['
-										+ (newNum - 1) + '].latitudeSeconds');
-						newElem.children('#myparam3').attr('value', 0.0);
-						newElem.children('#myparam4').attr(
-								'name',
-								'resourceArea.poligons[0].points['
-										+ (newNum - 1) + '].longitudeDegrees');
-						newElem.children('#myparam4').attr('value', 0);
-						newElem.children('#myparam5').attr(
-								'name',
-								'resourceArea.poligons[0].points['
-										+ (newNum - 1) + '].longitudeMinutes');
-						newElem.children('#myparam5').attr('value', 0);
-						newElem.children('#myparam6').attr(
-								'name',
-								'resourceArea.poligons[0].points['
-										+ (newNum - 1) + '].longitudeSeconds');
-						newElem.children('#myparam6').attr('value', 0.0);
-						$('#input' + num).after(newElem);
-						$('#btnDelArea').attr('disabled', '');
 
-					});
+			$('#btnAddArea').click(function(){addNewPoint(0,0,0,0.0,0,0,0.0)});
 
 			$('#btnDelArea').click(function() {
 				var num = $('.clonedInput').length;
-				$('#input' + num).remove();
-				$('#btnAdd').attr('disabled', '');
-				if (num - 1 == 1)
-					$('#btnDel').attr('disabled', 'disabled');
+				//$('#btnAdd').attr('disabled', '');
+				if (num <= 1) {
+                    $('#btnDel').attr('disabled', 'disabled');
+                }
+                else {
+                    $('#input' + num).remove();
+                }
+
 			});
 
 			$('#btnAddDiscrete').click(function() {
 
 			});
 
-			$('#btnDelArea').attr('disabled', 'disabled');
+			//$('#btnDelArea').attr('disabled', 'disabled');
 		});
