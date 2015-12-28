@@ -13,7 +13,7 @@
     <h4 id="pageID">Зареєструвати нового користувача</h4>
       <div id="contact">
 <!--         <fieldset id="personalInfo"> -->
-         <form id="register_form" name="register" method="post" action="/resources/register">
+         <form id="register_form" name="register" method="post" action="/registrator/register">
              <p>
                 <label for="login">Логін:</label>
                 <input name="login" type="text" class="text" id="login" tabindex="100" />

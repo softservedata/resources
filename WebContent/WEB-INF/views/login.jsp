@@ -12,7 +12,7 @@
 <div class="title">
 <div class="signin-container">
   <fieldset id="login_fieldset" class="forms">
-        <form name="login_form" action="/resources/login" method="post">
+        <form name="login_form" action="/registrator/login" method="post">
             <p>
                 <label for="login-field">Ім"я користувача:</label>
                 <br><input type="text" name="login" id="login-field"></br>
@@ -37,7 +37,7 @@
 <div class="registration-container">
     <fieldset id="login_fieldset">
     <p>Я новий користувач</p>
-    <p><a href="/resources/register">Зареєструватися</a></p>
+    <p><a href="/registrator/register">Зареєструватися</a></p>
     </fieldset>
 </div>
 <!--<footer>Developed and Designed by <a href="http://www.softserveinc.com/">SoftServe Inc.</footer>
