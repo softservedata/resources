@@ -5,7 +5,7 @@ var BH = function () {
     var menu_height = $("#menu").height();
     var footer_height = $("#footer").height();
     var new_height = window_height - header_height - menu_height - footer_height - 100;
-    alert("window_height: " + window_height + "body_height: " + body_height);
+    console.log("window_height: " + window_height + " body_height: " + body_height);
     if (body_height < new_height) {
         $("#body").height(new_height);
     }
@@ -22,7 +22,7 @@ $(document).ready(function () {
         $.post(baseUrl.toString() + "/registrator/resource/countResources", {"count": "true"}, onPostSuccess);
         function onPostSuccess (data) {
             if(data.toString().length < 5) {
-                data = "000"+data;
+                data = ""+data;
             }
             $("#count").html(data);
         }

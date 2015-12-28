@@ -67,9 +67,9 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void changeUserRole(String login, Role role) {
+	public void changeUserRole(String login, int role_id) {
 		User user = getUserByLogin(login);
-		user.setRole(role);
+		user.setRoleId(role_id);
 		userRepository.save(user);
 	}
 
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 		user.setMiddleName(userDto.getMiddleName());
 		user.setEmail(userDto.getEmail());
 		user.setPassword(userDto.getPassword());
-		user.setRole(checkRole(userDto.getRole()));
+		user.setRoleId(user.getRoleId());
 		user.setStatus(checkUserStatus(userDto.getStatus()));
 		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
 				userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-					user.getRole().getType().name(), user.getLogin(), user.getPassword(), user.getEmail(),
+					user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
 					user.getStatus().toString(), addressDto, passportDto);
 			userDtoList.add(userDto);
 		}
@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().getType().name(), user.getLogin(), user.getPassword(), user.getEmail(),
+				user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
 				user.getStatus().toString(), addressDto, passportDto);
 		return userdto;
 	}
@@ -163,16 +163,35 @@ public class UserServiceImpl implements UserService {
 		return inactiveUserDtoList;
 	}
 
-	private Role checkRole(String role) {
-		List<Role> roleList = roleRepository.findAll();
-		if (role.equals(RoleType.USER.name())) {
-			return roleList.get(0);
-		} else {
-			if (role.equals(RoleType.REGISTRATOR.name())) {
-				return roleList.get(1);
-			} else {
-				return roleList.get(2);
-			}
+
+	@Override
+	@Transactional
+//	public void registerUser(User user, PassportInfo passport, Address address) {
+	public void registerUser(User user) {
+
+		// by default, every new user is given role "User" and status "Inactive" until it's changed by Admin
+		// Roles map: Admin - 1, Registrator - 2, User - 3
+		user.setRoleId(3);
+		user.setStatus(UserStatus.INACTIVE);
+		userRepository.saveAndFlush(user);
+		//passportRepository.saveAndFlush(passport);
+		//addressRepository.saveAndFlush(address);
+	}
+
+	@Transactional
+	@Override
+	public int updateUser(User user) {
+		return 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean login(String username, String password) {
+		if(userRepository.getUserByLoginAndPassword(username, password) != null){
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 
