@@ -97,6 +97,7 @@
 			<i>Щоб виділити на мапі область, оберіть інструмент "Намалювати
 				фігуру" в верхній частині мапи.</i>
 		</p>
+
 		<div id="map_canvas" class="container"
 			style="height: 500px; padding: 20px 0px;"></div>
 
@@ -203,8 +204,11 @@
 	</form:form> --%>
 
 	<%--Scripts for Google Map--%>
+    <p>
+        <input id="gmaps-input" class="controls form-control" style="width: 300px; margin: 9px 0px;" type="text" placeholder="Пошук на мапі">
+    </p>
 	<script
-		src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing"></script>
+		src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,places"></script>
 	<script type="text/javascript"
 		src="${base}resource/js/addResourceOnMap.js"></script>
 </div>
