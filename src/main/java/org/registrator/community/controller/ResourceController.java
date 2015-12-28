@@ -61,29 +61,36 @@ public class ResourceController {
      * Method for loading form for input the parameter of resource (with
      * existing resource types and registrator)
      */
-    @RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model) {
-        List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-        model.addAttribute("listOfResourceType", listOfResourceType);
-        return "allTypes";
-    }
+	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
+	public String addResourceForm(Model model) {
+		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
+		List<Tome> tomes = tomeRepository.findAll();
+		ResourceDTO newresource = new ResourceDTO();
+		model.addAttribute("listOfResourceType", listOfResourceType);
+		model.addAttribute("tomes", tomes);
+		model.addAttribute("newresource", newresource);
+		return "addResource";
+	}
+	
+	
+	
+	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
+	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
+		ResourceType resType = resourceTypeService.findByName(typeName);
+		
+		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
+        List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
 
-    @RequestMapping(value = "/add/{typeId}", method = RequestMethod.GET)
-    public String add(@PathVariable Integer typeId, Model model) {
-        ResourceType resType = resourceTypeService.
-                findByName(resourceTypeService.findById(typeId).getTypeName());
-        model.addAttribute("resType", resType);
-        List<Tome> tomes = tomeRepository.findAll();
-        model.addAttribute("tomes", tomes);
-        ResourceDTO newresource = new ResourceDTO();
-        model.addAttribute("newresource", newresource);
-        return "addResource";
-    }
+        model.addAttribute("discreteParameters", discreteParameters);
+        model.addAttribute("linearParameters", linearParameters);
+		return "resourceValues";
+	}
+	
 
     /**
      * Method save the resource in table list_of resources
      */
-    @RequestMapping(value = "/add/addresource", method = RequestMethod.POST)
+    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
     public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
                               BindingResult result, Model model) {
 
@@ -102,7 +109,6 @@ public class ResourceController {
      */
     @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
     public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
-        System.out.println("here");
         ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
         model.addAttribute("resource", resourceDTO);
         return "showResource";
