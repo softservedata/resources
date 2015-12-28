@@ -90,4 +90,10 @@
 			value="/WEB-INF/views/templates/inquiryAddInput.jsp" />
 	</definition>
 
+    <definition name="parameters" template="/WEB-INF/views/searchParameters.jsp">
+    </definition>
+
+	<definition name="resourceSearch" template="/WEB-INF/views/resourceSearch.jsp">
+	</definition>
+
 </tiles-definitions>

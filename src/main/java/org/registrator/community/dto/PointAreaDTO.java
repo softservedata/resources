@@ -87,7 +87,7 @@ public class PointAreaDTO {
 	
 	public Double getDecimalLongitude(){
 		return this.longitudeDegrees + this.longitudeMinutes / 60d
-				+ this.latitudeSeconds / 3600d;
+				+ this.longitudeSeconds / 3600d;
 	}
 
     @Override

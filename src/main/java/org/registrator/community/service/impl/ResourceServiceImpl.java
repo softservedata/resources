@@ -129,12 +129,14 @@ public class ResourceServiceImpl implements ResourceService {
 		Resource resourceEntity = resourceRepository.findByIdentifier(identifier);
 		List<LinearParameter> linearParameters = linearParameterRepository.
 				findByResourceType(resourceEntity.getType());
+        List<DiscreteParameter> discreteParameters = discreteParameterRepository.
+                findAllByResourceType(resourceEntity.getType());
 		List<ResourceLinearValue> linearValues = linearValueRepository.
 				findByResource(resourceEntity);
 		List<ResourceDiscreteValue> discreteValues = discreteValueRepository.
 				findByResource(resourceEntity);
 		List<Area> areas = areaRepository.findByResource(resourceEntity);
-			
+
 		ResourceDTO resourceDTO = new ResourceDTO();
 		resourceDTO.setDescription(resourceEntity.getDescription());
 		resourceDTO.setDate(resourceEntity.getDate());
@@ -142,14 +144,14 @@ public class ResourceServiceImpl implements ResourceService {
 		resourceDTO.setReasonInclusion(resourceEntity.getReasonInclusion());
 		resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() +
 				resourceEntity.getRegistrator().getMiddleName() +resourceEntity.getRegistrator().getLastName());
-		resourceDTO.setIdentifier(resourceEntity.getTome().getIdentifier());
-		resourceDTO.setResourceType(resourceEntity.getType());		
-			
+		resourceDTO.setTomeIdentifier(resourceEntity.getTome().getIdentifier());
+		resourceDTO.setResourceType(resourceEntity.getType());
+
 		List<ResourceLinearValueDTO> resLinDTOs = new ArrayList<ResourceLinearValueDTO>();
 		List<ResourceDiscreteValueDTO> resDiscDTOs = new ArrayList<ResourceDiscreteValueDTO>();
 		ResourceAreaDTO resourceArea = new ResourceAreaDTO();
 		List<PoligonAreaDTO> poligons = new ArrayList<PoligonAreaDTO>();
-		
+
 		for(LinearParameter lp :linearParameters) {
 			ResourceLinearValueDTO resLinDTO = new ResourceLinearValueDTO();
 			resLinDTO.setLinearParameterDescription(lp.getDescription());
@@ -157,7 +159,7 @@ public class ResourceServiceImpl implements ResourceService {
 			List<SegmentLinearDTO> segments = new ArrayList<SegmentLinearDTO>();
 			for (ResourceLinearValue linearValue : linearValues) {
 				//System.out.println("PaRAM"linearValue.getLinearParameter());
-				System.out.println(lp);
+//				System.out.println(lp);
 				if (linearValue.getLinearParameter().getDescription().equals(lp.getDescription())) {
 					SegmentLinearDTO segment = new SegmentLinearDTO();
 					segment.setBegin(linearValue.getMinValue());
@@ -169,13 +171,25 @@ public class ResourceServiceImpl implements ResourceService {
 			resLinDTOs.add(resLinDTO);
 		}
 		resourceDTO.setResourceLinear(resLinDTOs);
-		
-		for (ResourceDiscreteValue discreteValue : discreteValues) {
-			
-			//resDiscDTOs.add(e);
-		}
-//		resourceDTO.setResourceLinear(resLinDTOs);
-		
+
+        for (DiscreteParameter dp : discreteParameters) {
+            ResourceDiscreteValueDTO resDisDTO = new ResourceDiscreteValueDTO();
+            resDisDTO.setDiscreteParameterDescription(dp.getDescription());
+            resDisDTO.setDiscreteParameterUnit(dp.getUnitName());
+            List<Double> values = new ArrayList<>();
+            for (ResourceDiscreteValue dv : discreteValues) {
+                if(dv.getDiscreteParameter().getDiscreteParameterId().equals(dp.getDiscreteParameterId())) {
+                    values.add(dv.getValue());
+                }
+
+            }
+            resDisDTO.setValues(values);
+            resDiscDTOs.add(resDisDTO);
+        }
+        resourceDTO.setResourceDiscrete(resDiscDTOs);
+
+
+
 		PoligonAreaDTO poligon = new PoligonAreaDTO();
 		List<PointAreaDTO> pointDTOs = new ArrayList<PointAreaDTO>();
 		for (Area area : areas) {
@@ -190,7 +204,7 @@ public class ResourceServiceImpl implements ResourceService {
 		poligons.add(poligon);
 		resourceArea.setPoligons(poligons);
 		resourceDTO.setResourceArea(resourceArea);
-		
+
 		System.out.println(resourceEntity.getDescription());
 		return resourceDTO;
 	}

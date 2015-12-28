@@ -92,6 +92,10 @@
 			</tr>
 		</table>
 
+        <%--Container for Google map--%>
+        <p><i>Щоб виділити на мапі область, оберіть інструмент "Намалювати фігуру" в верхній частині мапи.</i></p>
+        <div id="map_canvas" class="container" style="height: 500px; padding: 20px 0px;"></div>
+
 		<table id="datatable">
 			<tr>
 				<th style="width: 300px"><spring:message
@@ -105,17 +109,23 @@
 		<div id="input1" class="clonedInput" style="float: left">
 			<input id="myparam0" style="width: 100px"
 				name="resourceArea.poligons[0].points[0].orderNumber" type="text"
-				value="${1}" disabled /> <input id="myparam1"
+				value="${1}" disabled />
+            <input id="myparam1"
 				name="resourceArea.poligons[0].points[0].latitudeDegrees"
-				value="${0}" /> <input id="myparam2"
+				value="${0}" />
+            <input id="myparam2"
 				name="resourceArea.poligons[0].points[0].latitudeMinutes"
-				value="${0}" /> <input id="myparam3"
+				value="${0}" />
+            <input id="myparam3"
 				name="resourceArea.poligons[0].points[0].latitudeSeconds"
-				value="${0.0}" /> <input id="myparam4"
+				value="${0.0}" />
+            <input id="myparam4"
 				name="resourceArea.poligons[0].points[0].longitudeDegrees"
-				value="${0}" /> <input id="myparam5"
+				value="${0}" />
+            <input id="myparam5"
 				name="resourceArea.poligons[0].points[0].longitudeMinutes"
-				value="${0}" /> <input id="myparam6"
+				value="${0}" />
+            <input id="myparam6"
 				name="resourceArea.poligons[0].points[0].longitudeSeconds"
 				value="${0.0}" />
 		</div>
@@ -126,13 +136,16 @@
 		</div>
 		<br />
 		<div class="button">
-			<input type="submit" value=<spring:message code="label.save"/>
-				class="btn btn-success">
+			<input type="submit" value=<spring:message code="label.save"/> class="btn  btn-success formsubmit"/>
 			<button type="reset" class="btn btn-default">
 				<spring:message code="label.clearall" />
 			</button>
 		</div>
 	</form:form>
+
+    <%--Scripts for Google Map--%>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing"></script>
+    <script type="text/javascript" src="${base}resource/js/addResourceOnMap.js"></script>
 </div>
 
 

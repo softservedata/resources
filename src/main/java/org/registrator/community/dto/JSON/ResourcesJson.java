@@ -1,4 +1,4 @@
-package org.registrator.community.dto;
+package org.registrator.community.dto.JSON;
 
 import org.registrator.community.enumeration.ResourceStatus;
 
