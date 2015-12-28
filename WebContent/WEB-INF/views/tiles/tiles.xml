@@ -50,10 +50,9 @@
 			value="/WEB-INF/views/templates/editWindow.jsp" />
 	</definition>
 
-	<!-- <definition name="passportWindow" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/passportWindow.jsp" />
-	</definition> -->
+	<!-- <definition name="passportWindow" extends="homepage"> <put-attribute 
+		name="body" type="template" value="/WEB-INF/views/templates/passportWindow.jsp" 
+		/> </definition> -->
 
 	<definition name="addResType" extends="homepage">
 		<put-attribute name="body" type="template"
@@ -69,20 +68,15 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/InActiveUsers.jsp" />
 	</definition>
-	
+
 	<definition name="inquiryAddOut" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/inquiryAddOut.jsp" />
 	</definition>
-	
+
 	<definition name="listInqUserOut" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/listInqUserOut.jsp" />
-	</definition>
-	
-	<definition name="userDataTable" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/userDataTable.jsp" />
 	</definition>
 	
 	<definition name="inquiryAddInput" extends="homepage">
@@ -90,10 +84,19 @@
 			value="/WEB-INF/views/templates/inquiryAddInput.jsp" />
 	</definition>
 
-    <definition name="parameters" template="/WEB-INF/views/searchParameters.jsp">
-    </definition>
+	<definition name="userDataTable" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/userDataTable.jsp" />
+	</definition>
+
+	<definition name="parameters" template="/WEB-INF/views/searchParameters.jsp">
+	</definition>
 
 	<definition name="resourceSearch" template="/WEB-INF/views/resourceSearch.jsp">
+	</definition>
+
+	<definition name="resourceValues"
+		template="/WEB-INF/views/templates/resourceValues.jsp">
 	</definition>
 
 </tiles-definitions>
