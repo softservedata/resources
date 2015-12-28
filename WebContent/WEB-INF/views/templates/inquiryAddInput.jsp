@@ -5,21 +5,21 @@
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<!-- <c:set var="req" value="${pageContext.request}" />
+ <c:set var="req" value="${pageContext.request}" />
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
--->
+
 
 <div style="text-align: center;">
 	<h4>
-		<spring:message code="label.inquiry.output.pagename" />
+		<!-- <spring:message code="label.inquiry.output.pagename" /> -->
+		Запит на внесення ресурсу
 	</h4>
 </div>
 
- <% session.setAttribute("userLogin", "ivan"); %> 
 
-		<form:form method="POST" action="addOutputInquiry" >
+		<form:form method="POST" action="addInputInquiry" >
 			<table class="table display">
 					<tr>
 						<td><spring:message code="label.resource.registrator" />
@@ -35,20 +35,20 @@
 							</select>
 						</td>
 					</tr>
-					<tr>
-						<td><spring:message code="label.resource.identifier" />:</td>
-						<td> <select name="resourceIdentifier">
+					
+				<!-- 	<tr>
+						<td><spring:message code="label.resource.type" />:</td>
+						<td> <select name="resourceType">
 								<option value=""><spring:message
-										code="label.resource.selectIdentifier" />:
+										code="label.resource.type" />:
 								</option>
-								<c:forEach items="${resources}" var="resource">
-									<option value="${resource.identifier}">${resource.identifier} </option>
-								</c:forEach>
+									<c:forEach items="${listOfResourceType}" var="restype">
+									<option value="${restype.typeId}">${restype.typeName} </option>
+									</c:forEach>
 							</select>
 						</td>
-					</tr>										   			
+					</tr>	-->									   			
 			</table>				
 			<input type="submit"  value="Надіслати запит" class="btn btn-success"/>
 		
 		</form:form>
-	

@@ -20,8 +20,10 @@
 <!-- <% session.setAttribute("userLogin", "ivan"); %> -->
 
 <p>
-	<a href="${base}inquiry/add/outputI"
+	<a href="${base}inquiry/add/outputInquiry"
 		class="btn btn-success" role="button"><spring:message code="label.inquiry.output.pagename"/></a>
+		<a href="${base}inquiry/add/inputInquiry"
+		class="btn btn-success" role="button">Inquiry for inputting the resource</a>
 </p> 
 
 			<table id="datatable" class="table display"> 
