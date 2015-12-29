@@ -10,13 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ResourceLinearValueRepository extends JpaRepository<ResourceLinearValue, Integer>{
-	
-	@Query("Select lv"+
-			" From ResourceLinearValue lv" +
-			" Where lv.resource = :resource" )
-	List<ResourceLinearValue> findByResource(@Param("resource")Resource resource);
+    
+    @Query("Select lv"+
+            " From ResourceLinearValue lv" +
+            " Where lv.resource = :resource" )
+    List<ResourceLinearValue> findByResource(@Param("resource")Resource resource);
 
-	List<ResourceLinearValue> findAllByLinearParameter (LinearParameter linearParameter);
+    List<ResourceLinearValue> findAllByLinearParameter (LinearParameter linearParameter);
 
     @Query("select lv "
             + "from ResourceLinearValue lv "
