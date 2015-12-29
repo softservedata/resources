@@ -43,26 +43,6 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
 	@Override
 	public ResourceTypeDTO editResourceType(ResourceTypeDTO resourceTypeDTO) {
-		/*
-		 * ResourceType rt =
-		 * resourceTypeRepository.findByName(resourceTypeDTO.getTypeName());
-		 * rt.setTypeName("newname(edited)");
-		 * rt.setTypeName(resourceTypeDTO.getTypeName()); rt =
-		 * resourceTypeRepository.saveAndFlush(resourceTypeEntity);
-		 * List<TypeParameterDTO> ltp = resourceTypeDTO.getParameters();
-		 * List<LinearParameter> lp = new ArrayList<LinearParameter>();
-		 * List<DiscreteParameter> dp = new ArrayList<DiscreteParameter>();
-		 * for(TypeParameterDTO tpar: ltp){
-		 * if((tpar.getParametersType()).equals("linearParameters")){ lp.add(new
-		 * LinearParameter(resourceTypeEntity, tpar.getDescription(),
-		 * tpar.getUnitName())); }
-		 * if((tpar.getParametersType()).equals("discreteParameters")){
-		 * dp.add(new DiscreteParameter(resourceTypeEntity,
-		 * tpar.getDescription(), tpar.getUnitName())); } }
-		 * linearParameterRepository.save(lp);
-		 * discreteParameterRepository.save(dp);
-		 * resourceTypeRepository.save(rt);
-		 */
 		return resourceTypeDTO;
 	}
 
@@ -87,10 +67,10 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 		List<DiscreteParameter> dp = new ArrayList<DiscreteParameter>();
 
 		for (TypeParameterDTO tpar : ltp) {
-			if ((tpar.getParametersType()).equals("linearParameters")) {
+			if (("linearParameters").equals(tpar.getParametersType())) {
 				lp.add(new LinearParameter(resourceTypeEntity, tpar.getDescription(), tpar.getUnitName()));
 			}
-			if ((tpar.getParametersType()).equals("discreteParameters")) {
+			if (("discreteParameters").equals(tpar.getParametersType())) {
 				dp.add(new DiscreteParameter(resourceTypeEntity, tpar.getDescription(), tpar.getUnitName()));
 			}
 

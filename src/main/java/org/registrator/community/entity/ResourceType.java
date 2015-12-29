@@ -19,71 +19,61 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "resource_types")
 public class ResourceType implements Serializable {
 
-    
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "resource_type_id")
-    @GeneratedValue
-    private Integer typeId;
+	@Column(name = "resource_type_id")
+	@GeneratedValue
+	private Integer typeId;
 
-    @Column(name = "type_name", unique = true, nullable = false)
-    private String typeName;
-    
-   @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
-   @Cascade({CascadeType.REMOVE})
-    private List<DiscreteParameter> discreteParameters = new ArrayList<DiscreteParameter>();
-   
-   @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
-   @Cascade({CascadeType.REMOVE})
-    private List<LinearParameter> linearParameters = new ArrayList<LinearParameter>();
-    
-    public ResourceType() {
-    }
+	@Column(name = "type_name", unique = true, nullable = false)
+	private String typeName;
 
-    public ResourceType(String typeName) {
-        this.typeName = typeName;
-    }
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+	@Cascade({ CascadeType.REMOVE })
+	private List<DiscreteParameter> discreteParameters = new ArrayList<DiscreteParameter>();
 
-    public Integer getTypeId() {
-        return typeId;
-    }
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+	@Cascade({ CascadeType.REMOVE })
+	private List<LinearParameter> linearParameters = new ArrayList<LinearParameter>();
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }
+	public ResourceType() {
+	}
 
-    public String getTypeName() {
-        return typeName;
-    }
+	public ResourceType(String typeName) {
+		this.typeName = typeName;
+	}
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-    
-    public List<DiscreteParameter> getDiscreteParameters() {
-        return discreteParameters;
-    }
+	public Integer getTypeId() {
+		return typeId;
+	}
 
-    public void setDiscreteParameters(List<DiscreteParameter> discreteParameters) {
-        this.discreteParameters = discreteParameters;
-    }
-    
+	public void setTypeId(Integer typeId) {
+		this.typeId = typeId;
+	}
 
-    public List<LinearParameter> getLinearParameters() {
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public List<DiscreteParameter> getDiscreteParameters() {
+		return discreteParameters;
+	}
+
+	public void setDiscreteParameters(List<DiscreteParameter> discreteParameters) {
+		this.discreteParameters = discreteParameters;
+	}
+
+	public List<LinearParameter> getLinearParameters() {
 		return linearParameters;
 	}
 
 	public void setLinearParameters(List<LinearParameter> linearParameters) {
 		this.linearParameters = linearParameters;
 	}
-
-	
-    
-    
 
 }

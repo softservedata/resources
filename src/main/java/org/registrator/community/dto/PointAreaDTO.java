@@ -100,13 +100,6 @@ public class PointAreaDTO {
     	"град " + longitudeDegrees+
     	"мн "+longitudeMinutes+
     	"сек "+longitudeSeconds;
-
-/*        String result;
-        result = String.valueOf("Точка номер: " + orderNumber + "\n"
-                + "Широта: " + latitudeDegrees + " " + latitudeMinutes + " " + latitudeSeconds + "\n"
-                + "Довгота: " + longitudeDegrees + " " + longitudeMinutes + " " + latitudeSeconds + "\n");
-        return result;*/
-
     }
 	
 }

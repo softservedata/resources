@@ -27,6 +27,7 @@ public class DiscreteParameterDTO {
 		this.unitName = unitName;
 	}
 	
+	@Override
 	public String toString(){
 		String result;
 		result = String.valueOf("Опис дискретних параметрів: " + description + "\n"
