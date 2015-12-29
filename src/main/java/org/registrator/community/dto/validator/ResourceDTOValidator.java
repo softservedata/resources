@@ -10,23 +10,23 @@ import org.springframework.validation.Validator;
 @Component
 public class ResourceDTOValidator implements Validator{
 
-	@Autowired
+    @Autowired
     ResourceRepository resourceRepository;
-	
-	@Override
-	public boolean supports(Class<?> clazz) {
-		return clazz.equals(ResourceDTO.class);
-	}
+    
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return clazz.equals(ResourceDTO.class);
+    }
 
-	@Override
-	public void validate(Object target, Errors errors) {
-		ResourceDTO resourceDTO = (ResourceDTO) target;
-		
+    @Override
+    public void validate(Object target, Errors errors) {
+        ResourceDTO resourceDTO = (ResourceDTO) target;
+        
         // Resource already exist
         if (resourceRepository.findByIdentifier(resourceDTO.getIdentifier()) != null) {
             errors.rejectValue("identifier", "msg.resource.identifier.exist");
         }
-		
-	}
+        
+    }
 
 }

@@ -19,7 +19,7 @@ public class UserDTO implements Serializable {
 	private PassportDTO passport;
 
 	public UserDTO(String firstName, String lastName, String middleName,String role, String login, String password,
-			String email, String status, AddressDTO address, PassportDTO passport) {
+				   String email, String status, AddressDTO address, PassportDTO passport) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
@@ -66,6 +66,16 @@ public class UserDTO implements Serializable {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+//	public Try getRole() {
+//		return role;
+//	}
+//
+//	public void setRole(Try role) {
+//		this.role = role;
+//	}
+
+
 
 	public String getLogin() {
 		return login;
