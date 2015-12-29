@@ -3,13 +3,14 @@ package org.registrator.community.service;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.dto.UserStatusDTO;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 
 public interface UserService {
 
-	public void changeUserStatus(String login, UserStatus userStatus);
+	public void changeUserStatus(UserStatusDTO userStatusDto);
 
 	public List<UserDTO> getAllRegistratedUsers();
 	

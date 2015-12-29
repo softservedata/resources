@@ -3,7 +3,6 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.RoleRepository;
@@ -11,6 +10,7 @@ import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.dto.UserStatusDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
@@ -45,9 +45,19 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void changeUserStatus(String login, UserStatus userStatus) {
-		User user = getUserByLogin(login);
-		user.setStatus(userStatus);
+	public void changeUserStatus(UserStatusDTO userStatusDTO) {
+		User user = getUserByLogin(userStatusDTO.getLogin());
+		if (userStatusDTO.getStatus().equals(UserStatus.BLOCK.toString())) {
+			user.setStatus(UserStatus.BLOCK);
+		} else {
+			if (userStatusDTO.getStatus().equals(UserStatus.UNBLOCK.toString())) {
+				user.setStatus(UserStatus.UNBLOCK);
+			} else {
+				if (userStatusDTO.getStatus().equals(UserStatus.INACTIVE.toString())) {
+					user.setStatus(UserStatus.INACTIVE);
+				}
+			}
+		}
 		userRepository.save(user);
 	}
 
