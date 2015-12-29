@@ -5,18 +5,17 @@ import java.util.List;
 import org.springframework.util.AutoPopulatingList;
 
 public class ResourceAreaDTO {
-	
-	private List<PoligonAreaDTO> poligons = new AutoPopulatingList<PoligonAreaDTO>(PoligonAreaDTO.class);
 
-	public ResourceAreaDTO() {
-		
-	}
+    private List<PoligonAreaDTO> poligons = new AutoPopulatingList<PoligonAreaDTO>(PoligonAreaDTO.class);
 
-	public List<PoligonAreaDTO> getPoligons() {
-		return poligons;
-	}
+    public ResourceAreaDTO() {
 
-	public void setPoligons(List<PoligonAreaDTO> poligons) {
-		this.poligons = poligons;
-	}
+    }
+    public List<PoligonAreaDTO> getPoligons() {
+    return poligons;
+    }
+
+    public void setPoligons(List<PoligonAreaDTO> poligons) {
+    this.poligons = poligons;
+    }
 }
