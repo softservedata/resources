@@ -3,29 +3,37 @@ package org.registrator.community.service;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.entity.Address;
+import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 
 public interface UserService {
 
-	public void changeUserStatus(String login, UserStatus userStatus);
+	void changeUserStatus(String login, UserStatus userStatus);
 
-	public List<UserDTO> getAllRegistratedUsers();
+	List<UserDTO> getAllRegistratedUsers();
 	
-	public User getUserByLogin(String login);
+	User getUserByLogin(String login);
 
-	public void changeUserRole(String login, Role role);
+	void changeUserRole(String login, int role);
 	
-	public UserDTO editUserInformation(UserDTO userDto);
+	UserDTO editUserInformation(UserDTO userDto);
 	
-	public List<UserStatus> fillInUserStatus();
+	List<UserStatus> fillInUserStatus();
 	
-	public List<UserDTO> getUserDtoList();
+	List<UserDTO> getUserDtoList();
 	
-	public UserDTO getUserDto(String login);
+	UserDTO getUserDto(String login);
 	
-	public List<UserDTO> getAllInactiveUsers();
+	List<UserDTO> getAllInactiveUsers();// set Role of inactive user to "USER"
 
+	//void registerUser(User user, PassportInfo passport, Address address);
+	void registerUser(User user);
+
+	int updateUser(User user);
+
+	boolean login(String username, String password);
 }
 

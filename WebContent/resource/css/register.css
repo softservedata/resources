@@ -1,0 +1,33 @@
+body {
+/*    background-color: rgba(0,0,0, 0.2);*/
+    font-family: "Georgia", sans-serif;
+    font-size: 10;
+    padding: 0;
+    margin: 0;
+} 
+form {
+    margin: 10px;
+}
+
+img {
+    width: 120%;
+    height: auto;
+    position: absolute;
+/*    z-index: 0;*/
+/*    transform: scaleX(-1);*/
+}
+
+#register_container {
+/*    width: 350px;*/
+    /*line-height: 2em;*/
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    display: inline-block;
+}
+
+#footer {
+    bottom: 10px;
+    align: center;
+    border-top: solid 1px black;
+}
