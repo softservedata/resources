@@ -8,51 +8,51 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tomes")
 public class Tome implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+    
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "tome_id")
-	@GeneratedValue
-	private Integer tomeId;
+    @Id
+    @Column(name = "tome_id")
+    @GeneratedValue
+    private Integer tomeId;
 
-	@Column(name = "identifier", unique = true, nullable = false)
-	private String identifier;
+    @Column(name = "identifier", unique = true, nullable = false)
+    private String identifier;
 
-	@ManyToOne
-	@JoinColumn(name = "registrator_id", nullable = false)
-	private User registrator;
+    @ManyToOne
+    @JoinColumn(name = "registrator_id", nullable = false)
+    private User registrator;
 
-	public Tome() {
-		
-	}
-	
-	public Tome(User registrator, String identifier) {
-		this.identifier = identifier;
-		this.registrator = registrator;
-	}
+    public Tome() {
+        
+    }
+    
+    public Tome(User registrator, String identifier) {
+        this.identifier = identifier;
+        this.registrator = registrator;
+    }
 
-	public Integer getTomeId() {
-		return tomeId;
-	}
+    public Integer getTomeId() {
+        return tomeId;
+    }
 
-	public void setTomeId(Integer tome_id) {
-		this.tomeId = tome_id;
-	}
+    public void setTomeId(Integer tomeId) {
+        this.tomeId = tomeId;
+    }
 
-	public String getIdentifier() {
-		return identifier;
-	}
+    public String getIdentifier() {
+        return identifier;
+    }
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
-	public User getRegistrator() {
-		return registrator;
-	}
+    public User getRegistrator() {
+        return registrator;
+    }
 
-	public void setRegistrator(User registrator) {
-		this.registrator = registrator;
-	}
+    public void setRegistrator(User registrator) {
+        this.registrator = registrator;
+    }
 }

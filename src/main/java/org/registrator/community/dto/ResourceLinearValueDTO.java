@@ -3,7 +3,7 @@ package org.registrator.community.dto;
 import java.util.List;
 
 public class ResourceLinearValueDTO {
-//	private LinearParameterDTO linearParameterDTO;
+
 	private List<SegmentLinearDTO> segments;
 	private String linearParameterDescription;
 	private String linearParameterUnit;
@@ -36,4 +36,5 @@ public class ResourceLinearValueDTO {
 	public void setLinearParameterUnit(String linearParameterUnit) {
 		this.linearParameterUnit = linearParameterUnit;
 	}
+
 }
