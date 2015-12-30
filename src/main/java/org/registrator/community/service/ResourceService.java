@@ -18,4 +18,6 @@ public interface ResourceService {
     long count();
     
     List<String> getDescriptionBySearchTag(String searchTag);
+    
 }
+

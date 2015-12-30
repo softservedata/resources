@@ -5,7 +5,6 @@ import java.util.*;
 import javax.validation.Valid;
 
 
-
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceDiscreteValueDTO;
@@ -62,31 +61,31 @@ public class ResourceController {
      * Method for loading form for input the parameter of resource (with
      * existing resource types and registrator)
      */
-	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-	public String addResourceForm(Model model) {
-		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-		List<Tome> tomes = tomeRepository.findAll();
-		ResourceDTO newresource = new ResourceDTO();
-		model.addAttribute("listOfResourceType", listOfResourceType);
-		model.addAttribute("tomes", tomes);
-		model.addAttribute("newresource", newresource);
-		return "addResource";
-	}
-	
-	
-	
-	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
-	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
-		ResourceType resType = resourceTypeService.findByName(typeName);
-		
-		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
+    @RequestMapping(value = "/addresource", method = RequestMethod.GET)
+    public String addResourceForm(Model model) {
+        List<ResourceType> listOfResourceType = resourceTypeService.findAll();
+        List<Tome> tomes = tomeRepository.findAll();
+        ResourceDTO newresource = new ResourceDTO();
+        model.addAttribute("listOfResourceType", listOfResourceType);
+        model.addAttribute("tomes", tomes);
+        model.addAttribute("newresource", newresource);
+        return "addResource";
+    }
+    
+    
+    
+    @RequestMapping(value = "/getParameters", method = RequestMethod.POST)
+    public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
+        ResourceType resType = resourceTypeService.findByName(typeName);
+        
+        List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
         List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
 
         model.addAttribute("discreteParameters", discreteParameters);
         model.addAttribute("linearParameters", linearParameters);
-		return "resourceValues";
-	}
-	
+        return "resourceValues";
+    }
+    
 
     /**
      * Method save the resource in table list_of resources
@@ -97,6 +96,7 @@ public class ResourceController {
 
         validator.validate(resourceDTO, result);
         if (result.hasErrors()) {
+            model.addAttribute("newresource", resourceDTO);
             return "addResource";
         } else {
             resourceService.addNewResource(resourceDTO);
@@ -270,7 +270,7 @@ public class ResourceController {
     public Long countResources() {
         return resourceService.count();
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "/decs", method = RequestMethod.GET)
     public Map<String,List<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
@@ -279,7 +279,4 @@ public class ResourceController {
     	suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
         return suggestions;
     }
-    
-    
-
 }

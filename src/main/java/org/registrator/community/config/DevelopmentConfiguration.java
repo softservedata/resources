@@ -23,6 +23,7 @@ import java.util.Map;
 @ComponentScan("org.registrator.community")
 @PropertySource(value = "classpath:database.properties")
 public class DevelopmentConfiguration {
+
     @Autowired
     private Environment env;
 
@@ -36,7 +37,6 @@ public class DevelopmentConfiguration {
 //        dataSource.setConnectionProperties(env.getProperty("db.connectionProperties"));
         return dataSource;
     }
-
 
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
@@ -59,6 +59,5 @@ public class DevelopmentConfiguration {
         entityManagerFactoryBean.setJpaPropertyMap(jpaProperties);
 
         return entityManagerFactoryBean;
-
     }
 }

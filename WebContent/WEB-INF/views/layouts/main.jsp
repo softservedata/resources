@@ -17,6 +17,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
+    <!-- fav-icon -->
+    <link rel="Shortcut Icon" href="/resource/img/tree_leaf.ico" type="image/x-icon"/>
     <title><tiles:getAsString name="title"/></title>
 
     <!-- Bootstrap -->

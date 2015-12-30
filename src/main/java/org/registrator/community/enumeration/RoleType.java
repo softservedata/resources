@@ -7,10 +7,10 @@ public enum RoleType{
 	
 	private final String TYPE;
 	
-	private RoleType(final String name) {
-		this.TYPE = name;
+	private RoleType(final String TYPE) {
+		this.TYPE = TYPE;
 	}
-		
+	
 	@Override
 	public String toString() {
 		return TYPE;

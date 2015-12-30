@@ -9,164 +9,166 @@ import org.registrator.community.enumeration.ResourceStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class ResourceDTO {
-	
-	//private ResourceTypeDTO resourceType;
-	private ResourceType resourceType;
-	private String identifier;
-	private String description;
-	private String registratorName;
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date date;
-	private ResourceStatus status;
-	private String reasonInclusion;
-	private String tomeIdentifier;
-	
-	
-	private ResourceAreaDTO resourceArea;
-	
-	private List<ResourceLinearValueDTO> resourceLinear = new ArrayList<ResourceLinearValueDTO>();
-	private List<ResourceDiscreteValueDTO> resourceDiscrete = new ArrayList<ResourceDiscreteValueDTO>();;
-	
-	public ResourceDTO() {
-		
-	}
-		
-	/*
-	public ResourceDTO(ResourceTypeDTO resourceType, String identifier, String description, String registratorName, Date date,
-			ResourceStatus status, String reasonInclusion, String tomeIdentifier, ResourceAreaDTO resourceArea,
-			List<ResourceLinearValueDTO> resourceLinear, List<ResourceDiscreteValueDTO> resourceDiscrete) {
-		this.resourceType = resourceType;
-		this.identifier = identifier;
-		this.description = description;
-		this.registratorName = registratorName;
-		this.date = date;
-		this.status = status;
-		this.reasonInclusion = reasonInclusion;
-		this.tomeIdentifier = tomeIdentifier;
-		this.resourceArea = resourceArea;
-		this.resourceLinear = resourceLinear;
-		this.resourceDiscrete = resourceDiscrete;
-		
-	}
-	*/
-	
-	public ResourceType getResourceType() {
-		return resourceType;
-	}
-	
-	public void setResourceType(ResourceType resourceType) {
-		this.resourceType = resourceType;
-	}
-	
-	
-	public String getIdentifier() {
-		return identifier;
-	}
+    
+    //private ResourceTypeDTO resourceType;
+    private ResourceType resourceType;
+    private String identifier;
+    
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+    private String description;
+    private String registratorName;
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date date;
+    private ResourceStatus status;
+    private String reasonInclusion;
+    private String tomeIdentifier;
+    
+    
+    private ResourceAreaDTO resourceArea;
+    
+    private List<ResourceLinearValueDTO> resourceLinear = new ArrayList<ResourceLinearValueDTO>();
+    private List<ResourceDiscreteValueDTO> resourceDiscrete = new ArrayList<ResourceDiscreteValueDTO>();;
+    
+    public ResourceDTO() {
+        
+    }
+        
+    /*
+    public ResourceDTO(ResourceTypeDTO resourceType, String identifier, String description, String registratorName, Date date,
+            ResourceStatus status, String reasonInclusion, String tomeIdentifier, ResourceAreaDTO resourceArea,
+            List<ResourceLinearValueDTO> resourceLinear, List<ResourceDiscreteValueDTO> resourceDiscrete) {
+        this.resourceType = resourceType;
+        this.identifier = identifier;
+        this.description = description;
+        this.registratorName = registratorName;
+        this.date = date;
+        this.status = status;
+        this.reasonInclusion = reasonInclusion;
+        this.tomeIdentifier = tomeIdentifier;
+        this.resourceArea = resourceArea;
+        this.resourceLinear = resourceLinear;
+        this.resourceDiscrete = resourceDiscrete;
+        
+    }
+    */
+    
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+    
+    public void setResourceType(ResourceType resourceType) {
+        this.resourceType = resourceType;
+    }
+    
+    
+    public String getIdentifier() {
+        return identifier;
+    }
 
-
-	public String getDescription() {
-		return description;
-	}
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
 
-	public String getRegistratorName() {
-		return registratorName;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
-	public void setRegistratorName(String registratorName) {
-		this.registratorName = registratorName;
-	}
+    public String getRegistratorName() {
+        return registratorName;
+    }
 
 
-	public Date getDate() {
-		return date;
-	}
+    public void setRegistratorName(String registratorName) {
+        this.registratorName = registratorName;
+    }
 
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
 
-	public ResourceStatus getStatus() {
-		return status;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
 
-	public void setStatus(ResourceStatus status) {
-		this.status = status;
-	}
+    public ResourceStatus getStatus() {
+        return status;
+    }
 
 
-	public String getReasonInclusion() {
-		return reasonInclusion;
-	}
+    public void setStatus(ResourceStatus status) {
+        this.status = status;
+    }
 
 
-	public void setReasonInclusion(String reasonInclusion) {
-		this.reasonInclusion = reasonInclusion;
-	}
+    public String getReasonInclusion() {
+        return reasonInclusion;
+    }
 
 
-	public String getTomeIdentifier() {
-		return tomeIdentifier;
-	}
+    public void setReasonInclusion(String reasonInclusion) {
+        this.reasonInclusion = reasonInclusion;
+    }
 
 
-	public void setTomeIdentifier(String tomeIdentifier) {
-		this.tomeIdentifier = tomeIdentifier;
-	}
-
-	public ResourceAreaDTO getResourceArea() {
-		return resourceArea;
-	}
-
-	public void setResourceArea(ResourceAreaDTO resourceArea) {
-		this.resourceArea = resourceArea;
-	}
-
-	public List<ResourceLinearValueDTO> getResourceLinear() {
-		return resourceLinear;
-	}
-
-	public void setResourceLinear(List<ResourceLinearValueDTO> resourceLinear) {
-		this.resourceLinear = resourceLinear;
-	}
-
-	public List<ResourceDiscreteValueDTO> getResourceDiscrete() {
-		return resourceDiscrete;
-	}
-
-	public void setResourceDiscrete(List<ResourceDiscreteValueDTO> resourceDiscrete) {
-		this.resourceDiscrete = resourceDiscrete;
-	}
+    public String getTomeIdentifier() {
+        return tomeIdentifier;
+    }
 
 
-	
-/*	public String toString(){
-		return "\n\n\n" + "**************************************" + "\n" +
-	"Ідентифікатор ресурсу: " + identifier + "\n"+
-	"Тип ресурсу: " + resourceType.getTypeName() + "\n"+
-	"Опис ресурсу: " + description + "\n" + 
-	"Причина внесення в базу:  " + reasonInclusion + "\n" +
-	"Ім'я та прізвище реєстратора   " + registratorName + "\n"+
-	"Номер тому: " + tomeIdentifier + "\n"+
-	"Дата внесення: " + date + "\n"+
-	"Статус: " + status.toString() + "\n"+
-	"Територія: " + resourceArea + "\n" +
-	"Лінійні параметри: " + resourceLinear + "\n" +
- 	"Дискретні параметри: "	+ resourceDiscrete;
-		
-	}*/
+    public void setTomeIdentifier(String tomeIdentifier) {
+        this.tomeIdentifier = tomeIdentifier;
+    }
+
+    public ResourceAreaDTO getResourceArea() {
+        return resourceArea;
+    }
+
+    public void setResourceArea(ResourceAreaDTO resourceArea) {
+        this.resourceArea = resourceArea;
+    }
+
+    public List<ResourceLinearValueDTO> getResourceLinear() {
+        return resourceLinear;
+    }
+
+    public void setResourceLinear(List<ResourceLinearValueDTO> resourceLinear) {
+        this.resourceLinear = resourceLinear;
+    }
+
+    public List<ResourceDiscreteValueDTO> getResourceDiscrete() {
+        return resourceDiscrete;
+    }
+
+    public void setResourceDiscrete(List<ResourceDiscreteValueDTO> resourceDiscrete) {
+        this.resourceDiscrete = resourceDiscrete;
+    }
+
+
+    
+/*    public String toString(){
+        return "\n\n\n" + "**************************************" + "\n" +
+    "Ідентифікатор ресурсу: " + identifier + "\n"+
+    "Тип ресурсу: " + resourceType.getTypeName() + "\n"+
+    "Опис ресурсу: " + description + "\n" + 
+    "Причина внесення в базу:  " + reasonInclusion + "\n" +
+    "Ім'я та прізвище реєстратора   " + registratorName + "\n"+
+    "Номер тому: " + tomeIdentifier + "\n"+
+    "Дата внесення: " + date + "\n"+
+    "Статус: " + status.toString() + "\n"+
+    "Територія: " + resourceArea + "\n" +
+    "Лінійні параметри: " + resourceLinear + "\n" +
+     "Дискретні параметри: "    + resourceDiscrete;
+        
+    }*/
 }

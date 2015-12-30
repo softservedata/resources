@@ -3,17 +3,36 @@
         "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-	<definition name="homepage" template="/WEB-INF/views/layouts/main.jsp">
-		<put-attribute name="title" value="Resources" />
-		<put-attribute name="header" type="template"
-			value="/WEB-INF/views/templates/header.jsp" />
-		<put-attribute name="menu" type="template"
-			value="/WEB-INF/views/templates/menu.jsp" />
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/body.jsp" />
-		<put-attribute name="footer" type="template"
-			value="/WEB-INF/views/templates/footer.jsp" />
-	</definition>
+	<!-- Base -->
+		<definition name="base" template="/WEB-INF/views/layouts/base.jsp">
+			<put-attribute name="title" value="Base" />
+			<put-attribute name="footer" type="template" value="/WEB-INF/views/templates/login_footer.jsp" />
+		</definition>
+
+		<!-- Login Page -->
+		<definition name="login" extends="base">
+			<put-attribute name="title" value="Login" />
+			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/login_header.jsp" />
+			<put-attribute name="body" type="template" value="/WEB-INF/views/login.jsp" />
+		</definition>
+
+		<!-- Register Page -->
+		<definition name="register" extends="base">
+			<put-attribute name="body" type="template" value="/WEB-INF/views/register.jsp"/>
+			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
+		</definition>
+		<definition name="thanks-for-registration" extends="base">
+			<put-attribute name="body" type="template" value="/WEB-INF/views/thanks-for-registration.jsp"/>
+		</definition>
+
+		<!-- Pages for logged users -->
+		<definition name="homepage" template="/WEB-INF/views/layouts/main.jsp">
+			<put-attribute name="title" value="Resources" />
+			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
+			<put-attribute name="menu" type="template" value="/WEB-INF/views/templates/menu.jsp" />
+			<put-attribute name="body" type="template" value="/WEB-INF/views/templates/body.jsp" />
+			<put-attribute name="footer" type="template" value="/WEB-INF/views/templates/footer.jsp" />
+		</definition>
 
 	<definition name="RegistratedUsers" extends="homepage">
 		<put-attribute name="body" type="template"
@@ -88,6 +107,11 @@
 	</definition>
 
 	<definition name="resourceSearch" template="/WEB-INF/views/resourceSearch.jsp">
+	</definition>
+
+	<!--Logged in user profile-->
+	<definition name="profile" extends="homepage">
+	<put-attribute name="body" type="template" value="/WEB-INF/views/profile.jsp" />
 	</definition>
 
 	<definition name="resourceValues"

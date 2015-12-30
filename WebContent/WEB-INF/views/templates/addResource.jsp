@@ -9,21 +9,21 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<%-- <spring:url --%>
-<%-- 	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" --%>
-<%-- 	var="jqueryJs" /> --%>
-<spring:url value="/resource/js/lib/jquery.autocomplete.min.js" var="autocompleteJs" />
+<spring:url
+	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
+	var="jqueryJs" />
 <spring:url value="/resource/js/addArea.js" var="addAreaJs" />
+<spring:url value="/resource/js/lib/jquery.autocomplete.min.js" var="autocompleteJs" />
 <spring:url value="/resource/js/descriptionAutocomplete.js" var="descAutocomplete" />
 <spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
-<script src="${jqueryJs}"></script>
-<script src="${addAreaJs}"></script>
+
 <script src="${autocompleteJs}"></script>
 <script src="${descAutocomplete}"></script>
+<script src="${jqueryJs}"></script>
+<script src="${addAreaJs}"></script>
 <link rel="stylesheet" type="text/css" href="${suggestionCss}">
 
 <div class="container">
-<!-- 	<input type="text"  id="w-input-search" value=""> -->
 	<h2>
 		<spring:message code="label.resource.add" />
 	</h2>
@@ -33,9 +33,9 @@
 			<label class="control-label col-sm-3"><spring:message
 					code="label.resource.description" />:</label>
 			<div class="col-sm-3">
-				<input type="text" class="form-control" name="description"
+				<input class="form-control" name="description"
 					id="w-input-search"
-					value="${description}">
+					value="${newresource.description}">
 			</div>
 		</div>
 		<div class="form-group">
@@ -59,8 +59,10 @@
 					code="label.resource.identifier" />:</label>
 			<div class="col-sm-3">
 				<input class="form-control" name="identifier" required
-					value="${identifier}">
-				<form:errors name="identifier" />
+					value="${newresource.identifier}">
+			</div>
+			<div class="control-group error">
+				<form:errors path="identifier" />
 			</div>
 		</div>
 		<div class="form-group">
@@ -68,7 +70,7 @@
 					code="label.resource.reasonInclusion" />:</label>
 			<div class="col-sm-3">
 				<textarea class="form-control" rows="5" name="reasonInclusion"
-					required></textarea>
+					required>${newresource.reasonInclusion}</textarea>
 			</div>
 		</div>
 		<div class="form-group">
@@ -77,6 +79,9 @@
 			<div class="col-sm-3">
 				<input class="form-control" type="date" name="date" required
 					value="${date}">
+			</div>
+			<div class="control-group error">
+				<form:errors path="date" />
 			</div>
 		</div>
 		<div class="form-group ">
@@ -105,10 +110,11 @@
 			<i>Щоб виділити на мапі область, оберіть інструмент "Намалювати
 				фігуру" в верхній частині мапи.</i>
 		</p>
+
 		<div id="map_canvas" class="container"
 			style="height: 500px; padding: 20px 0px;"></div>
 
-				<table id="datatable">
+		<table id="datatable">
 			<tr>
 				<th style="width: 300px"><spring:message
 						code="label.resource.orderPoint" /></th>
@@ -121,25 +127,22 @@
 		<div id="input1" class="clonedInput" style="float: left">
 			<input id="myparam0" style="width: 100px"
 				name="resourceArea.poligons[0].points[0].orderNumber" type="text"
-				value="${1}" disabled />
-            <input id="myparam1"
+				value="${1}" disabled /> <input id="myparam1"
 				name="resourceArea.poligons[0].points[0].latitudeDegrees"
-				value="${0}" />
-            <input id="myparam2"
+				value="${0}" /> <input id="myparam2"
 				name="resourceArea.poligons[0].points[0].latitudeMinutes"
-				value="${0}" />
-            <input id="myparam3"
+				value="${0}" /> <input id="myparam3"
 				name="resourceArea.poligons[0].points[0].latitudeSeconds"
-				value="${0.0}" />
-            <input id="myparam4"
+				value="${0.0}" /> <input id="myparam4"
 				name="resourceArea.poligons[0].points[0].longitudeDegrees"
-				value="${0}" />
-            <input id="myparam5"
+				value="${0}" /> <input id="myparam5"
 				name="resourceArea.poligons[0].points[0].longitudeMinutes"
-				value="${0}" />
-            <input id="myparam6"
+				value="${0}" /> <input id="myparam6"
 				name="resourceArea.poligons[0].points[0].longitudeSeconds"
 				value="${0.0}" />
+		</div>
+		<div class="control-group error">
+			<form:errors path="resourceArea.poligons[0].points[0].latitudeDegrees" />
 		</div>
 		<div id="mybuttontype">
 			<input type="button" id="btnAddArea" value="+"
@@ -148,14 +151,15 @@
 		</div>
 		<br />
 		<div class="button">
-			<input type="submit" value=<spring:message code="label.save"/> class="btn  btn-success formsubmit"/>
+			<input type="submit" value=<spring:message code="label.save"/>
+				class="btn  btn-success formsubmit" />
 			<button type="reset" class="btn btn-default">
 				<spring:message code="label.clearall" />
 			</button>
 		</div>
 	</form:form>
 
-<%-- 		<div class="form-group">
+	<%-- 		<div class="form-group">
 			<label class="control-label col-sm-1"><spring:message
 					code="label.resource.orderPoint" /></label> <label
 				class="control-label col-sm-3"><spring:message
@@ -211,10 +215,13 @@
 	</form:form> --%>
 
 	<%--Scripts for Google Map--%>
+	<p>
+		<input id="gmaps-input" class="controls form-control"
+			style="width: 300px; margin: 9px 0px;" type="text"
+			placeholder="Пошук на мапі">
+	</p>
 	<script
-		src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing"></script>
+		src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,places"></script>
 	<script type="text/javascript"
 		src="${base}resource/js/addResourceOnMap.js"></script>
 </div>
-
-
