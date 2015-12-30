@@ -4,11 +4,8 @@ import java.util.*;
 
 import javax.validation.Valid;
 
-
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDiscreteValueDTO;
-import org.registrator.community.dto.ResourceLinearValueDTO;
 import org.registrator.community.entity.*;
 import org.registrator.community.dto.validator.ResourceDTOValidator;
 import org.registrator.community.service.ResourceService;
@@ -273,9 +270,9 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/decs", method = RequestMethod.GET)
-    public Map<String,List<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
-    	Map<String,List<String>> suggestions=new HashMap<String, List<String>>();
-    	suggestions.put("query", Arrays.asList("unit"));
+    public Map<String,Set<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
+    	Map<String,Set<String>> suggestions=new HashMap<String, Set<String>>();
+//    	suggestions.put("query", new TreeSet<String>().add("unit"));
     	suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
         return suggestions;
     }

@@ -3,6 +3,7 @@ package org.registrator.community.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.registrator.community.dao.AreaRepository;
 import org.registrator.community.dao.DiscreteParameterRepository;
@@ -215,7 +216,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
     
     @Override
-	public List<String> getDescriptionBySearchTag(String searchTag) {
+	public Set<String> getDescriptionBySearchTag(String searchTag) {
 		return resourceRepository.findDescriptionsLikeProposed(searchTag);
 	}
 }

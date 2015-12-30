@@ -5,6 +5,7 @@ import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface ResourceService {
@@ -17,7 +18,7 @@ public interface ResourceService {
 
     long count();
     
-    List<String> getDescriptionBySearchTag(String searchTag);
+    Set<String> getDescriptionBySearchTag(String searchTag);
     
 }
 
