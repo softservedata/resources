@@ -10,13 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ResourceDiscreteValueRepository extends JpaRepository<ResourceDiscreteValue, Integer>{
-	
-	@Query("Select dv"+
-			" From ResourceDiscreteValue dv" +
-			" Where dv.resource = :resource" )
-	List<ResourceDiscreteValue> findByResource(@Param("resource")Resource resource);
+    
+    @Query("Select dv"+
+            " From ResourceDiscreteValue dv" +
+            " Where dv.resource = :resource" )
+    List<ResourceDiscreteValue> findByResource(@Param("resource")Resource resource);
 
-	List<ResourceDiscreteValue> findAllByDiscreteParameter (DiscreteParameter discreteParameter);
+    List<ResourceDiscreteValue> findAllByDiscreteParameter (DiscreteParameter discreteParameter);
 
     @Query("Select dv"+
             " From ResourceDiscreteValue dv" +
