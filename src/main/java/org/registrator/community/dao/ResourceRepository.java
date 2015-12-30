@@ -18,5 +18,8 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
     List<Resource> findByType(ResourceType type);
 
     long count();
+    
+    @Query("SELECT r.description FROM Resource r WHERE r.description LIKE :searchTerm%")
+    public List<String> findDescriptionsLikeProposed(@Param("searchTerm") String searchTerm);
 
 }

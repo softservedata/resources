@@ -9,14 +9,21 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<spring:url
-	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
-	var="jqueryJs" />
+<%-- <spring:url --%>
+<%-- 	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" --%>
+<%-- 	var="jqueryJs" /> --%>
+<spring:url value="/resource/js/lib/jquery.autocomplete.min.js" var="autocompleteJs" />
 <spring:url value="/resource/js/addArea.js" var="addAreaJs" />
+<spring:url value="/resource/js/descriptionAutocomplete.js" var="descAutocomplete" />
+<spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
 <script src="${jqueryJs}"></script>
 <script src="${addAreaJs}"></script>
+<script src="${autocompleteJs}"></script>
+<script src="${descAutocomplete}"></script>
+<link rel="stylesheet" type="text/css" href="${suggestionCss}">
 
 <div class="container">
+<!-- 	<input type="text"  id="w-input-search" value=""> -->
 	<h2>
 		<spring:message code="label.resource.add" />
 	</h2>
@@ -26,7 +33,8 @@
 			<label class="control-label col-sm-3"><spring:message
 					code="label.resource.description" />:</label>
 			<div class="col-sm-3">
-				<input class="form-control" name="description"
+				<input type="text" class="form-control" name="description"
+					id="w-input-search"
 					value="${description}">
 			</div>
 		</div>

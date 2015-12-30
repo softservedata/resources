@@ -8,6 +8,7 @@ import java.util.List;
 
 
 public interface ResourceService {
+	
 	ResourceDTO addNewResource(ResourceDTO resourceDTO);
 	
 	ResourceDTO findByIdentifier(String identifier);
@@ -15,4 +16,6 @@ public interface ResourceService {
     List<Resource> findByType (ResourceType type);
 
     long count();
+    
+    List<String> getDescriptionBySearchTag(String searchTag);
 }

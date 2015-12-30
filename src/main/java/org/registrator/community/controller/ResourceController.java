@@ -5,6 +5,7 @@ import java.util.*;
 import javax.validation.Valid;
 
 
+
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceDiscreteValueDTO;
@@ -269,5 +270,16 @@ public class ResourceController {
     public Long countResources() {
         return resourceService.count();
     }
+    
+    @ResponseBody
+    @RequestMapping(value = "/decs", method = RequestMethod.GET)
+    public Map<String,List<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
+    	Map<String,List<String>> suggestions=new HashMap<String, List<String>>();
+    	suggestions.put("query", Arrays.asList("unit"));
+    	suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
+        return suggestions;
+    }
+    
+    
 
 }

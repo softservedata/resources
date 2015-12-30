@@ -218,4 +218,9 @@ public class ResourceServiceImpl implements ResourceService {
     public long count() {
         return resourceRepository.count();
     }
+
+	@Override
+	public List<String> getDescriptionBySearchTag(String searchTag) {
+		return resourceRepository.findDescriptionsLikeProposed(searchTag);
+	}
 }
