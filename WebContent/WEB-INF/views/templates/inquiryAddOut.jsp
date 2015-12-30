@@ -19,7 +19,7 @@
 
  <% session.setAttribute("userLogin", "ivan"); %> 
 
-		<form:form method="POST" action="addOutputI" >
+		<form:form method="POST" action="addOutputInquiry" >
 			<table class="table display">
 					<tr>
 						<td><spring:message code="label.resource.registrator" />
