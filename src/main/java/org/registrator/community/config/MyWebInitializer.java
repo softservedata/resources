@@ -11,7 +11,7 @@ public class MyWebInitializer extends
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { SpringRootConfig.class,DevelopmentConfiguration.class };
+		return new Class[] { SpringRootConfig.class,DevelopmentConfiguration.class ,SecurityConfiguration.class};
 	}
 
 	@Override
