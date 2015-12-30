@@ -28,10 +28,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 @Controller
 @RequestMapping(value = "/registrator/resource")
 public class ResourceController {
-
+	
     @Autowired
     ResourceDTOValidator validator;
 
@@ -61,7 +62,7 @@ public class ResourceController {
      * Method for loading form for input the parameter of resource (with
      * existing resource types and registrator)
      */
-	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
+		@RequestMapping(value = "/addresource", method = RequestMethod.GET)
 	public String addResourceForm(Model model) {
 		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
 		List<Tome> tomes = tomeRepository.findAll();
@@ -71,7 +72,6 @@ public class ResourceController {
 		model.addAttribute("newresource", newresource);
 		return "addResource";
 	}
-	
 	
 	
 	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)

@@ -10,6 +10,12 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
+<spring:url
+	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
+	var="jqueryJs" />
+<spring:url value="/resource/js/inquiryAddResource.js" var="inquiryJs" />
+
+<% session.setAttribute("selectedTomeIdentifier", "ivan"); %>
 
 <div style="text-align: center;">
 	<h4>
@@ -18,37 +24,51 @@
 	</h4>
 </div>
 
-
-		<form:form method="POST" action="addInputInquiry" >
-			<table class="table display">
-					<tr>
-						<td><spring:message code="label.resource.registrator" />
-							(<spring:message code="label.resource.tome" />):</td>
-						<td><select name="tomeIdentifier">
-								<option value=""><spring:message
+	<form:form method="GET" action="http://localhost:8080/resources/registrator/resource/addresource" >
+				 <div>
+						<spring:message code="label.resource.registrator" />
+							(<spring:message code="label.resource.tome" />):
+							<br/>
+						<select id="tomeIdentifier" name="selectedTomeIdentifier" onchange="this.form.submit();">
+								<option value="selectedTomeIdentifier"><spring:message
 										code="label.resource.registrator.select" />:
 								</option>
 								<c:forEach items="${tomes}" var="tome">
-									<option value="${tome.tomeIdentifier}">${tome.registratorLastName} ${tome.registratorFirstName} 
+									<option value="${tome.tomeIdentifier}">
+									
+									${tome.registratorLastName} ${tome.registratorFirstName} 
 										${tome.registratorMiddleName} (номер тому: ${tome.tomeIdentifier})</option>
 								</c:forEach>
-							</select>
-						</td>
-					</tr>
+							</select>						
+					</div>
 					
-				<!-- 	<tr>
-						<td><spring:message code="label.resource.type" />:</td>
-						<td> <select name="resourceType">
-								<option value=""><spring:message
-										code="label.resource.type" />:
-								</option>
-									<c:forEach items="${listOfResourceType}" var="restype">
-									<option value="${restype.typeId}">${restype.typeName} </option>
-									</c:forEach>
-							</select>
-						</td>
-					</tr>	-->									   			
-			</table>				
-			<input type="submit"  value="Надіслати запит" class="btn btn-success"/>
-		
+					
 		</form:form>
+					
+					<!--
+					<a href="http://localhost:8080/resources/registrator/resource/addresource"
+					 class="btn btn-success" role="button"> Підтвердити </a>
+					 
+					<a href="http://localhost:8080/resources/registrator/resource/addresource">Заповнити ресурс</a>
+					 -->	
+					
+					
+					<!--
+					<div>
+						<spring:message code="label.resource.registrator" />
+							(<spring:message code="label.resource.tome" />):
+					</div>
+							<br/>
+					<div>
+														
+						<c:forEach items="${tomes}" var="tome">							
+							<a href="http://localhost:8080/resources/registrator/resource/addresource/${tome.tomeIdentifier}">
+							${tome.registratorLastName} ${tome.registratorFirstName} 
+								${tome.registratorMiddleName} (номер тому: ${tome.tomeIdentifier})</a>
+							<br/>	
+						</c:forEach>
+													
+					</div>	
+					 -->	   			
+			
+		
