@@ -21,6 +21,9 @@ input {
     position: absolute;
     z-index: 0;
     transform: scaleX(-1);
+    /*background-image: url('../resource/img/pexels-photo.jpg');*/
+    background-position: center center;
+    background-size: cover;
 }
 
 .signin-container {

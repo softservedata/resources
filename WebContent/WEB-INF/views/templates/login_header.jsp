@@ -12,14 +12,10 @@
    <h3><spring:message code="label.name.part2"/></h3>
 </div>
 <div class="lang-container" id="header">
-    <div>
-        <div>
             <ul class="languages">
                 <a href="?lang=ua"><img src="resource/img/lang/ua.png"></a></li>
                 <a href="?lang=ru"><img src="resource/img/lang/ru.png"></a></li>
                 <a href="?lang=en"><img src="resource/img/lang/en.png"></a></li>
             </ul>
-        </div>
-    </div>
 </div>
 

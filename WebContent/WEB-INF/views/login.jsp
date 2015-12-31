@@ -1,14 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<!--<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login Page</title>
-<link rel="stylesheet" href="resource/css/login.css" type="text/css" media="screen">
-</head>-->
 <body>
-<!--<img id="login_img" src="resource/img/pexels-photo.jpg">-->
 <div class="title">
 <div class="signin-container">
   <fieldset id="login_fieldset" class="forms">
@@ -40,6 +32,4 @@
     <p><a href="/registrator/register">Зареєструватися</a></p>
     </fieldset>
 </div>
-<!--<footer>Developed and Designed by <a href="http://www.softserveinc.com/">SoftServe Inc.</footer>
 </body>
-</html>-->
