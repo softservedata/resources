@@ -2,14 +2,17 @@ package org.registrator.community.controller;
 
 import java.util.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
+import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.*;
 import org.registrator.community.dto.validator.ResourceDTOValidator;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
+import org.registrator.community.service.UserService;
 import org.registrator.community.service.impl.DiscreteParameterServiceImpl;
 import org.registrator.community.service.impl.LinearParameterServiceImpl;
 import org.registrator.community.service.impl.ResourceDiscreteValueServiceImpl;
@@ -53,13 +56,20 @@ public class ResourceController {
 
     @Autowired
     ResourceLinearValueServiceImpl resourceLinearValueService;
+   
+    @Autowired
+    UserService userService;
+    
+    
 
     /**
      * Method for loading form for input the parameter of resource (with
      * existing resource types and registrator)
      */
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model) {
+    public String addResourceForm(Model model, HttpSession session) {
+    	UserDTO user = userService.getUserDto("oleks");
+    	session.setAttribute("user", user);
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
         List<Tome> tomes = tomeRepository.findAll();
         ResourceDTO newresource = new ResourceDTO();
