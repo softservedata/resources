@@ -1,8 +1,32 @@
 var map;
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
 function initialize() {
+// Reading the cookie of start position
+    var lastMapSearchLat = getCookie("LastMapSearchLat");
+    var lastMapSearchLng = getCookie("LastMapSearchLng");
+    var startPoint;
+    if ((lastMapSearchLat.length > 0) && (lastMapSearchLng.length > 0)) {
+        var startLat = Number(lastMapSearchLat);
+        var startLng = Number(lastMapSearchLng);
+        startPoint = new google.maps.LatLng(startLat,startLng);
+    }
+    else {
+        startPoint = new google.maps.LatLng(49.8326679,23.942196);
+    }
+
     var mapProp = {
-        center: new google.maps.LatLng(49.8326679,23.942196),
+        center: startPoint,
         zoom: 13,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -70,6 +94,16 @@ function initialize() {
                 title: place.name,
                 position: place.geometry.location
             }));
+
+//Expires date for cookie
+            var d = new Date();
+            d.setTime(d.getTime()+ 7*24*60*60*1000);
+//Deleting of the old cookie
+            document.cookie = "LastMapSearchLat=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            document.cookie = "LastMapSearchLng=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+//Add new cookie
+            document.cookie = "LastMapSearchLat="+place.geometry.location.lat()+";expires="+ d.toUTCString();
+            document.cookie = "LastMapSearchLng="+place.geometry.location.lng()+";expires="+ d.toUTCString();
 
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
