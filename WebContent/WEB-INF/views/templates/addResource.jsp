@@ -13,8 +13,53 @@
 	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
 	var="jqueryJs" />
 <spring:url value="/resource/js/addArea.js" var="addAreaJs" />
+<spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
+	var="autocompleteJs" />
+<spring:url value="/resource/js/descriptionAutocomplete.js"
+	var="descAutocomplete" />
+<spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
+
+<script src="${autocompleteJs}"></script>
+<script src="${descAutocomplete}"></script>
 <script src="${jqueryJs}"></script>
 <script src="${addAreaJs}"></script>
+<link rel="stylesheet" type="text/css" href="${suggestionCss}">
+
+
+<script> 
+$(document).ready(function() {
+	
+	
+    $(".checkbox input").click(function(){
+        $("#reasonInclusion").text('');
+        $(".checkbox :checked").each(function(){
+        	var id =  $(this).attr('id');
+        	 if(id === "pass") {        		 
+        		 var seria = "${user.passport.seria} " + "${user.passport.number}";
+        		 var name = "${user.firstName} " + "${user.middleName} " +"${user.lastName}";
+        		 var published ="${user.passport.published_by_data}";
+        		$("#reasonInclusion").append("паспорт громадянина України " 
+        				+ seria +", виданий на ім’я " + name + " " + published + ";\n");        		
+        	}
+        	 if(id === "will") {        		 
+        		 var document = "волевиявлення людини";
+        		$("#reasonInclusion").append(document + ";\n");        		
+        	}
+        	 else if(id === "tytul"){
+        		 var inputString = "титул власності на природні ресурси України від 02 квітня 2015 року;";
+        		 $("#reasonInclusion").append( inputString + "\n");
+        	 }
+        	 else if(id === "delivery"){
+        		 var inputDelivery = "доручення;";
+        		 $("#reasonInclusion").append(inputDelivery + "\n");        		
+        	}
+        });
+   });		
+
+});
+</script>
+
+
 
 <div class="container">
 	<h2>
@@ -26,8 +71,8 @@
 			<label class="control-label col-sm-3"><spring:message
 					code="label.resource.description" />:</label>
 			<div class="col-sm-3">
-				<input class="form-control" name="description"
-					value="${description}">
+				<input class="form-control" name="description" id="w-input-search"
+					value="${newresource.description}">
 			</div>
 		</div>
 		<div class="form-group">
@@ -51,16 +96,25 @@
 					code="label.resource.identifier" />:</label>
 			<div class="col-sm-3">
 				<input class="form-control" name="identifier" required
-					value="${identifier}">
-				<form:errors name="identifier" />
+					value="${newresource.identifier}">
+			</div>
+			<div class="control-group error">
+				<form:errors path="identifier" cssClass="error" style="color:red" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-3"><spring:message
 					code="label.resource.reasonInclusion" />:</label>
 			<div class="col-sm-3">
-				<textarea class="form-control" rows="5" name="reasonInclusion"
-					required></textarea>
+				<textarea id="reasonInclusion" class="form-control" rows="5"
+					name="reasonInclusion" required>${newresource.reasonInclusion}</textarea>
+			</div>
+			<div class="checkbox">
+				<label><input id="pass" type="checkbox">паспорт</label><br />
+				<label><input id="will" type="checkbox">волевиявлення
+					людини</label><br /> <label><input id="tytul" type="checkbox">титул
+					власності</label><br /> <label><input id="delivery"
+					type="checkbox">доручення</label>
 			</div>
 		</div>
 		<div class="form-group">
@@ -69,6 +123,9 @@
 			<div class="col-sm-3">
 				<input class="form-control" type="date" name="date" required
 					value="${date}">
+			</div>
+			<div class="control-group error">
+				<form:errors path="date" cssClass="error" style="color:red" />
 			</div>
 		</div>
 		<div class="form-group ">
@@ -101,54 +158,7 @@
 		<div id="map_canvas" class="container"
 			style="height: 500px; padding: 20px 0px;"></div>
 
-				<table id="datatable">
-			<tr>
-				<th style="width: 300px"><spring:message
-						code="label.resource.orderPoint" /></th>
-				<th align="right" style="width: 550px"><spring:message
-						code="label.resource.latitude" /></th>
-				<th align="center" style="width: 300px"><spring:message
-						code="label.resource.longitude" /></th>
-			</tr>
-		</table>
-		<div id="input1" class="clonedInput" style="float: left">
-			<input id="myparam0" style="width: 100px"
-				name="resourceArea.poligons[0].points[0].orderNumber" type="text"
-				value="${1}" disabled />
-            <input id="myparam1"
-				name="resourceArea.poligons[0].points[0].latitudeDegrees"
-				value="${0}" />
-            <input id="myparam2"
-				name="resourceArea.poligons[0].points[0].latitudeMinutes"
-				value="${0}" />
-            <input id="myparam3"
-				name="resourceArea.poligons[0].points[0].latitudeSeconds"
-				value="${0.0}" />
-            <input id="myparam4"
-				name="resourceArea.poligons[0].points[0].longitudeDegrees"
-				value="${0}" />
-            <input id="myparam5"
-				name="resourceArea.poligons[0].points[0].longitudeMinutes"
-				value="${0}" />
-            <input id="myparam6"
-				name="resourceArea.poligons[0].points[0].longitudeSeconds"
-				value="${0.0}" />
-		</div>
-		<div id="mybuttontype">
-			<input type="button" id="btnAddArea" value="+"
-				class="btn btn-primary" /> <input type="button" id="btnDelArea"
-				value="-" class="btn btn-primary" />
-		</div>
-		<br />
-		<div class="button">
-			<input type="submit" value=<spring:message code="label.save"/> class="btn  btn-success formsubmit"/>
-			<button type="reset" class="btn btn-default">
-				<spring:message code="label.clearall" />
-			</button>
-		</div>
-	</form:form>
-
-<%-- 		<div class="form-group">
+ 		<div class="form-group">
 			<label class="control-label col-sm-1"><spring:message
 					code="label.resource.orderPoint" /></label> <label
 				class="control-label col-sm-3"><spring:message
@@ -163,31 +173,35 @@
 					readonly>
 			</div>
 			<div class="col-sm-1" style="width: 130px; height: 34px">
-				<input class="form-control"
-					name="resourceArea.poligons[0].points[0].latitudeDegrees" required>
+				<input id="myparam1" class="form-control"
+					name="resourceArea.poligons[0].points[0].latitudeDegrees" value="${0}"required>
 			</div>
 			<div class="col-sm-1" style="width: 130px; height: 34px">
-				<input class="form-control"
-					name="resourceArea.poligons[0].points[0].latitudeMinutes" required>
+				<input id="myparam2" class="form-control"
+					name="resourceArea.poligons[0].points[0].latitudeMinutes" value="${0}" required>
 			</div>
 			<div class="col-sm-1" style="width: 130px; height: 34px">
-				<input class="form-control"
-					name="resourceArea.poligons[0].points[0].latitudeSeconds" required>
+				<input id="myparam3" class="form-control"
+					name="resourceArea.poligons[0].points[0].latitudeSeconds" value="${0.0}" required>
 			</div>
 			<div class="col-sm-1" style="width: 130px; height: 34px">
-				<input class="form-control"
-					name="resourceArea.poligons[0].points[0].longitudeDegrees" required>
+				<input id="myparam4" class="form-control"
+					name="resourceArea.poligons[0].points[0].longitudeDegrees" value="${0}" required>
 			</div>
 			<div class="col-sm-1" style="width: 130px; height: 34px">
-				<input class="form-control"
-					name="resourceArea.poligons[0].points[0].longitudeMinutes" required>
+				<input id="myparam5" class="form-control"
+					name="resourceArea.poligons[0].points[0].longitudeMinutes" value="${0}" required>
 			</div>
 			<div class="col-sm-1" style="width: 130px; height: 34px">
-				<input class="form-control"
-					name="resourceArea.poligons[0].points[0].longitudeSeconds" required>
+				<input id="myparam6" class="form-control"
+					name="resourceArea.poligons[0].points[0].longitudeSeconds" value="${0.0}" required>
 			</div>
 		</div>
-
+		<div class="control-group error">
+			<form:errors
+				path="resourceArea.poligons[0].points[0].latitudeDegrees"
+				cssClass="error" style="color:red" />
+		</div>
 		<div id="mybuttontype">
 			<input type="button" id="btnAddAreaPoint" value="+"
 				class="btn btn-primary" /> <input type="button"
@@ -201,16 +215,16 @@
 				<spring:message code="label.clearall" />
 			</button>
 		</div>
-	</form:form> --%>
+	</form:form>
 
 	<%--Scripts for Google Map--%>
-    <p>
-        <input id="gmaps-input" class="controls form-control" style="width: 300px; margin: 9px 0px;" type="text" placeholder="Пошук на мапі">
-    </p>
+	<p>
+		<input id="gmaps-input" class="controls form-control"
+			style="width: 300px; margin: 9px 0px;" type="text"
+			placeholder="Пошук на мапі">
+	</p>
 	<script
 		src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,places"></script>
 	<script type="text/javascript"
 		src="${base}resource/js/addResourceOnMap.js"></script>
 </div>
-
-

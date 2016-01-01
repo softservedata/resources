@@ -19,29 +19,24 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "resource_types")
 public class ResourceType implements Serializable {
 
-    
+    private static final long serialVersionUID = 1L;
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Id
+    @Id
     @Column(name = "resource_type_id")
     @GeneratedValue
     private Integer typeId;
 
     @Column(name = "type_name", unique = true, nullable = false)
     private String typeName;
-    
-   @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
-   @Cascade({CascadeType.REMOVE})
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+    @Cascade({ CascadeType.REMOVE })
     private List<DiscreteParameter> discreteParameters = new ArrayList<DiscreteParameter>();
-   
-   @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
-   @Cascade({CascadeType.REMOVE})
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resourceType")
+    @Cascade({ CascadeType.REMOVE })
     private List<LinearParameter> linearParameters = new ArrayList<LinearParameter>();
-    
+
     public ResourceType() {
     }
 
@@ -64,7 +59,7 @@ public class ResourceType implements Serializable {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
-    
+
     public List<DiscreteParameter> getDiscreteParameters() {
         return discreteParameters;
     }
@@ -72,18 +67,13 @@ public class ResourceType implements Serializable {
     public void setDiscreteParameters(List<DiscreteParameter> discreteParameters) {
         this.discreteParameters = discreteParameters;
     }
-    
 
     public List<LinearParameter> getLinearParameters() {
-		return linearParameters;
-	}
+        return linearParameters;
+    }
 
-	public void setLinearParameters(List<LinearParameter> linearParameters) {
-		this.linearParameters = linearParameters;
-	}
-
-	
-    
-    
+    public void setLinearParameters(List<LinearParameter> linearParameters) {
+        this.linearParameters = linearParameters;
+    }
 
 }

@@ -3,6 +3,7 @@ package org.registrator.community.service;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.dto.UserStatusDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
@@ -11,7 +12,8 @@ import org.registrator.community.enumeration.UserStatus;
 
 public interface UserService {
 
-	void changeUserStatus(String login, UserStatus userStatus);
+	public void changeUserStatus(UserStatusDTO userStatusDto);
+
 
 	List<UserDTO> getAllRegistratedUsers();
 	

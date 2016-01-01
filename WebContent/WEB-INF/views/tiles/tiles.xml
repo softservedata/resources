@@ -97,7 +97,12 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/listInqUserOut.jsp" />
 	</definition>
-
+	
+	<definition name="inquiryAddInput" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/inquiryAddInput.jsp" />
+	</definition>
+	
 	<definition name="userDataTable" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/userDataTable.jsp" />

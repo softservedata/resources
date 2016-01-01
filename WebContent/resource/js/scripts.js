@@ -28,10 +28,5 @@ $(document).ready(function () {
         }
     });
 
-    $("#datatable").DataTable({
-
-        }
-    );
-
     $("#body").children("div").resize(BH());
 });

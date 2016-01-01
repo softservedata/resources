@@ -4,19 +4,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<spring:url
-	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
-	var="jqueryJs" />
-<spring:url value="/resource/js/addArea.js" var="addAreaJs" />
-<script src="${jqueryJs}"></script>
-<script src="${addAreaJs}"></script>
 
-<%-- <spring:url
-	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
-	var="jqueryJs" />
-<spring:url value="/resource/js/addResourceValue.js" var="addResourceValueJs" />
-<script src="${jqueryJs}"></script>
-<script src="${addResourceValueJs}"></script> --%>
+<spring:url value="/resource/js/addParameterValues.js" var="addParameterValues" />
+<script src="${addParameterValues}"></script>
+
 
 <!-- Showing all discrete parameters for resource type -->
 <c:if test="${not empty discreteParameters}">

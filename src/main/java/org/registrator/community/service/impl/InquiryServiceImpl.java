@@ -10,12 +10,14 @@ import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
+import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
 import org.registrator.community.service.InquiryService;
+import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class InquiryServiceImpl implements InquiryService{
 	ResourceRepository resourceRepository;
 	@Autowired
 	TomeRepository tomeRepository;
+	@Autowired
+    ResourceService resourceService;
 
 	
 	/**
@@ -44,7 +48,7 @@ public class InquiryServiceImpl implements InquiryService{
 		User user = userRepository.findUserByLogin(userLogin);
 		String tomeIdentifier = inquiryDTO.getTomeIdentifier();
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
-		User registrator =tome.getRegistrator();
+		User registrator = tome.getRegistrator();
 		String resourceIdentifier = inquiryDTO.getResourceIdentifier();
 		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
 		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
@@ -100,6 +104,25 @@ public class InquiryServiceImpl implements InquiryService{
 	@Override
 	public void removeInquiry (Integer inquiryId){
 		inquiryRepository.delete(inquiryId);
+	}
+	
+	/**
+	 * Method saves the data in the table inquiry_list.
+	 */
+	@Transactional
+	@Override
+	public ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin){
+		resourceDTO = resourceService.addNewResource(resourceDTO);
+		User user = userRepository.findUserByLogin(userLogin);
+		String tomeIdentifier = resourceDTO.getTomeIdentifier();
+		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
+		User registrator = tome.getRegistrator();
+		String resourceIdentifier = resourceDTO.getIdentifier();
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
+		Inquiry inquiry = new Inquiry("INPUT", new Date(), user, registrator, resource);
+		inquiryRepository.saveAndFlush(inquiry);
+		
+		return resourceDTO;
 	}
 	
 	

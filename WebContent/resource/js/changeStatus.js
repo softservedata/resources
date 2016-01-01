@@ -1,14 +1,28 @@
-$(document).on('change','select',function() {
-	var option=$(this).val();
-	alert(option);
-//	$.ajax({
-//		type : "POST",
-//		url: "${base}administrator/users/change-User-Role",
-//		data: JSON.stringify(option),
-//		dataType : 'json',
-//		timeout : 100000,
-//		success: function(data) {
-//			console.log('Success',data);
-//		}
-//	});
+$(document).on('change', '#userStatusId', function(event) {
+	var json = {
+		"status" : $(this).val(),
+		"login" : $("#login").text()
+	};
+	
+	
+	$.ajax({
+		type : "POST",
+		url : "get-all-inactive-users",
+		dataType : "text",
+		data : JSON.stringify(json),
+		contentType : 'application/json; charset=utf-8',
+
+		success : function() {
+			var tr = $(event.target).closest("tr");
+            tr.css("background-color","#000000");
+            tr.fadeIn(1000).fadeOut(200, function(){
+            tr.remove();})
+		},
+		error : function() {
+			alert("b");
+		}
+	});
+	
+	event.preventDefault();
+
 });
