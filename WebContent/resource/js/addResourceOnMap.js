@@ -138,9 +138,18 @@ function initialize() {
                 longitudeDegrees, longitudeMinutes,longitudeSeconds);
         }
 
-        alert("Периметр виділеної області: " + (google.maps.geometry.spherical.computeLength(event.overlay.getPath())).toFixed(1) + " м\n" +
-            "Площа виділеної області: " + (google.maps.geometry.spherical.computeArea(event.overlay.getPath())/10000).toFixed(5) + " га");
+        //alert("Периметр виділеної області: " + (google.maps.geometry.spherical.computeLength(event.overlay.getPath())).toFixed(1) + " м\n" +
+        //    "Площа виділеної області: " + (google.maps.geometry.spherical.computeArea(event.overlay.getPath())/10000).toFixed(5) + " га");
 
+        //Adding area and perimeter values to input fields
+        $("input").each(function(){
+            if($(this).val() == "площа") {
+                $(this).siblings("div").find("input").val((google.maps.geometry.spherical.computeArea(event.overlay.getPath())/10000).toFixed(5));
+            }
+            if($(this).val() == "периметер") {
+                $(this).siblings("div").find("input").val((google.maps.geometry.spherical.computeLength(event.overlay.getPath())).toFixed(1));
+            }
+        });
         poligonNumber++;
     });
 }
