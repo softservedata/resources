@@ -31,23 +31,26 @@ public class UsersController {
 	RoleService roleService;
 
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
-	public String fillEditWindow(@RequestParam("login") String login, Model model) {
-		UserDTO userDto = userService.getUserDto(login);
-		model.addAttribute("userDto", userDto);
+	public String fillInEditWindow(@RequestParam("login") String login, Model model) {
+		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+		userDtoList.add(userService.getUserDto(login));
+		model.addAttribute("userDto", userDtoList.get(0));
 		List<Role> roleList = roleService.getAllRole();
 		model.addAttribute("roleList", roleList);
-		List<UserStatus> userStatusList = userService.fillInUserStatus();
+		List<UserStatus> userStatusList = userService.fillInUserStatus(userDtoList);
 		model.addAttribute("userStatusList", userStatusList);
 		return "editWindow";
 	}
 
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.POST)
 	public String editRegistratedUser(@ModelAttribute("userDTO") UserDTO userDto, Model model) {
-		UserDTO editUserDto = userService.editUserInformation(userDto);
-		model.addAttribute("userDto", editUserDto);
+		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+		//UserDTO editUserDto = userService.editUserInformation(userDto);
+		userDtoList.add(userService.editUserInformation(userDto));
+		model.addAttribute("userDto", userDtoList.get(0));
 		List<Role> roleList = roleService.getAllRole();
 		model.addAttribute("roleList", roleList);
-		List<UserStatus> userStatusList = userService.fillInUserStatus();
+		List<UserStatus> userStatusList = userService.fillInUserStatus(userDtoList);
 		model.addAttribute("userStatusList", userStatusList);
 		return "redirect:/administrator/users/get-all-users";
 	}
@@ -64,7 +67,7 @@ public class UsersController {
 	public String getAllInactiveUsers(Model model) {
 		List<UserDTO> inactiveUsers = userService.getAllInactiveUsers();
 		model.addAttribute("unregistatedUsers", inactiveUsers);
-		List<UserStatus> userStatusList = userService.fillInUserStatus();
+		List<UserStatus> userStatusList = userService.fillInUserStatus(inactiveUsers);
 		model.addAttribute("userStatusList", userStatusList);
 		List<Role> roleList = roleService.getAllRole();
 		model.addAttribute("roleList", roleList);

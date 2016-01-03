@@ -114,11 +114,19 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public List<UserStatus> fillInUserStatus() {
+	public List<UserStatus> fillInUserStatus(List<UserDTO> userDtoList) {
 		List<UserStatus> userStatusList = new ArrayList<UserStatus>();
-		userStatusList.add(UserStatus.INACTIVE);
-		userStatusList.add(UserStatus.BLOCK);
-		userStatusList.add(UserStatus.UNBLOCK);
+		for (UserDTO userDto : userDtoList) {
+			if (userDto.getStatus().equals(UserStatus.INACTIVE.name())) {
+				userStatusList.add(UserStatus.INACTIVE);
+				userStatusList.add(UserStatus.BLOCK);
+				userStatusList.add(UserStatus.UNBLOCK);
+			} else {
+				userStatusList.add(UserStatus.BLOCK);
+				userStatusList.add(UserStatus.UNBLOCK);
+			}
+
+		}
 		return userStatusList;
 	}
 
@@ -173,19 +181,20 @@ public class UserServiceImpl implements UserService {
 		return inactiveUserDtoList;
 	}
 
-
 	@Override
 	@Transactional
-//	public void registerUser(User user, PassportInfo passport, Address address) {
+	// public void registerUser(User user, PassportInfo passport, Address
+	// address) {
 	public void registerUser(User user) {
 
-		// by default, every new user is given role "User" and status "Inactive" until it's changed by Admin
+		// by default, every new user is given role "User" and status "Inactive"
+		// until it's changed by Admin
 		// Roles map: Admin - 1, Registrator - 2, User - 3
 		user.setRoleId(3);
 		user.setStatus(UserStatus.INACTIVE);
 		userRepository.saveAndFlush(user);
-		//passportRepository.saveAndFlush(passport);
-		//addressRepository.saveAndFlush(address);
+		// passportRepository.saveAndFlush(passport);
+		// addressRepository.saveAndFlush(address);
 	}
 
 	@Transactional
@@ -197,10 +206,9 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public boolean login(String username, String password) {
-		if(userRepository.getUserByLoginAndPassword(username, password) != null){
+		if (userRepository.getUserByLoginAndPassword(username, password) != null) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
