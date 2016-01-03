@@ -1,30 +1,13 @@
--- phpMyAdmin SQL Dump
--- version 3.5.3
--- http://www.phpmyadmin.net
---
--- Хост: localhost
--- Время создания: Янв 03 2016 г., 23:50
--- Версия сервера: 5.5.25a
--- Версия PHP: 5.4.4
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT=0;
+START TRANSACTION;
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- База данных: `registrator_db`
---
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `address`
---
 
 CREATE TABLE IF NOT EXISTS `address` (
   `address_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -40,22 +23,12 @@ CREATE TABLE IF NOT EXISTS `address` (
   KEY `FK_7rod8a71yep5vxasb0ms3osbg` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
---
--- Дамп данных таблицы `address`
---
-
 INSERT INTO `address` (`address_id`, `building`, `city`, `district`, `flat`, `postcode`, `region`, `street`, `user_id`) VALUES
 (1, '35', 'Львів', 'Галицький', '20', '79026', 'Львівська', 'Пастернака', 1),
 (2, '17', 'Хмельницький', 'Семенівський', '17', '29000', 'Хмельницька', 'Героїв Майдану', 2),
 (3, '30', 'Стрий', 'Стрийський', '0', '353567', 'Львівська', 'Героїв Майдану', 3),
 (4, '45', 'Львів', 'Залізничний', '78', '79026', 'Львівська', 'Стрийська', 4),
 (5, '34', 'Київ', 'Троєщина', '90', '4456767', 'Київська', 'Бандери', 5);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `area`
---
 
 CREATE TABLE IF NOT EXISTS `area` (
   `area_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -66,10 +39,6 @@ CREATE TABLE IF NOT EXISTS `area` (
   PRIMARY KEY (`area_id`),
   KEY `FK_j05enuc6gftyec9v9m07880bs` (`resource_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=261 ;
-
---
--- Дамп данных таблицы `area`
---
 
 INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `resource_id`) VALUES
 (5, 53.876, 30.01, 1, 2),
@@ -328,12 +297,6 @@ INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `resourc
 (259, 49.83947705836027, 24.015863835811615, 17, 13),
 (260, 49.839750372383826, 24.015890657901764, 18, 13);
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `discrete_parameters`
---
-
 CREATE TABLE IF NOT EXISTS `discrete_parameters` (
   `discrete_parameter_id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -343,22 +306,12 @@ CREATE TABLE IF NOT EXISTS `discrete_parameters` (
   KEY `FK_itxbdpyec26wdkfoaltga8pau` (`resource_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
---
--- Дамп данных таблицы `discrete_parameters`
---
-
 INSERT INTO `discrete_parameters` (`discrete_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
 (1, 'периметер', 'м', 1),
 (2, 'площа', 'га', 1),
 (3, 'потужність', 'мВт', 2),
 (4, 'напруженість', 'мВт', 2),
 (11, 'площа', 'га', 2);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `inquiry_list`
---
 
 CREATE TABLE IF NOT EXISTS `inquiry_list` (
   `inquiry_list_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -373,18 +326,8 @@ CREATE TABLE IF NOT EXISTS `inquiry_list` (
   KEY `FK_37qp17x0dnyms8oxyo33jigpb` (`from_user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
---
--- Дамп данных таблицы `inquiry_list`
---
-
 INSERT INTO `inquiry_list` (`inquiry_list_id`, `date`, `inquiry_type`, `to_user_id`, `resource_id`, `from_user_id`) VALUES
 (1, '2015-12-30 16:06:00', 'OUTPUT', 2, 2, 3);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `linear_parameters`
---
 
 CREATE TABLE IF NOT EXISTS `linear_parameters` (
   `linear_parameter_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -395,20 +338,10 @@ CREATE TABLE IF NOT EXISTS `linear_parameters` (
   KEY `FK_dv74cnpongab75t5q30ysncco` (`resource_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
---
--- Дамп данных таблицы `linear_parameters`
---
-
 INSERT INTO `linear_parameters` (`linear_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
 (1, 'cмуга радіочастот', 'МГц', 2),
 (2, 'широта діапазону', 'кГц', 2),
 (3, 'радіус дії', 'км', 2);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `list_of_resouces`
---
 
 CREATE TABLE IF NOT EXISTS `list_of_resouces` (
   `resources_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -427,10 +360,6 @@ CREATE TABLE IF NOT EXISTS `list_of_resouces` (
   KEY `FK_764t63m3e5fl8seck12tyr8j` (`resource_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
 
---
--- Дамп данных таблицы `list_of_resouces`
---
-
 INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifier`, `reason_inclusion`, `status`, `registrator_id`, `tome_id`, `resource_type_id`) VALUES
 (2, '2015-12-08 15:33:01', 'радіочастоти', '123555', 'Паспорт громадянина україни...', 'ACTIVE', 2, 1, 2),
 (3, '2015-12-08 15:33:01', 'суперрадіочастоти', '111111', 'Посвідчення водія ...', 'ACTIVE', 2, 1, 2),
@@ -445,12 +374,6 @@ INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifi
 (12, '2016-01-04 00:00:00', 'парк Імені Франка', '79000-009', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 4, 2, 1),
 (13, '2016-01-04 00:00:00', 'сад Собору святого Юра', '79000-010', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1);
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `passport_data`
---
-
 CREATE TABLE IF NOT EXISTS `passport_data` (
   `passport_data_id` int(11) NOT NULL AUTO_INCREMENT,
   `number` int(11) NOT NULL,
@@ -461,22 +384,12 @@ CREATE TABLE IF NOT EXISTS `passport_data` (
   KEY `FK_b3ufslic16u2m3j35ksfp0ivb` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
---
--- Дамп данных таблицы `passport_data`
---
-
 INSERT INTO `passport_data` (`passport_data_id`, `number`, `published_by_data`, `seria`, `user_id`) VALUES
 (1, 2234, 'Львівський....', 'КС', 1),
 (2, 123456, 'Хмельницьким МВ УМВС України в Хмельницький області 01 січня 1997 року', 'КК', 2),
 (3, 123456, 'Стрийський МВ УМВС України в Львівській області 01 січня 1965 року', 'КК', 3),
 (4, 1122456, 'Львівський....', 'КС', 4),
 (5, 1126789, 'Київський....', 'КС', 5);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `registration_number_of_the_resource`
---
 
 CREATE TABLE IF NOT EXISTS `registration_number_of_the_resource` (
   `number_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -487,12 +400,6 @@ CREATE TABLE IF NOT EXISTS `registration_number_of_the_resource` (
   KEY `FK_2cirohw1jeueoif8ngmjl6jbt` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `resource_discrete_values`
---
-
 CREATE TABLE IF NOT EXISTS `resource_discrete_values` (
   `resource_discrete_value_id` int(11) NOT NULL AUTO_INCREMENT,
   `value` double NOT NULL,
@@ -502,10 +409,6 @@ CREATE TABLE IF NOT EXISTS `resource_discrete_values` (
   KEY `FK_mo277omjo0v4jv8269f2lsaen` (`discrete_parameter_id`),
   KEY `FK_g9upwtpejnv2fd6o4hvsshcgn` (`resource_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=27 ;
-
---
--- Дамп данных таблицы `resource_discrete_values`
---
 
 INSERT INTO `resource_discrete_values` (`resource_discrete_value_id`, `value`, `discrete_parameter_id`, `resource_id`) VALUES
 (3, 100, 3, 2),
@@ -533,12 +436,6 @@ INSERT INTO `resource_discrete_values` (`resource_discrete_value_id`, `value`, `
 (25, 802.1, 1, 13),
 (26, 3.1126, 2, 13);
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `resource_linear_values`
---
-
 CREATE TABLE IF NOT EXISTS `resource_linear_values` (
   `resource_linear_param_id` int(11) NOT NULL AUTO_INCREMENT,
   `maximal_value` double NOT NULL,
@@ -550,10 +447,6 @@ CREATE TABLE IF NOT EXISTS `resource_linear_values` (
   KEY `FK_eyg8asvvonj51aepmy6y8fk9w` (`resource_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
---
--- Дамп данных таблицы `resource_linear_values`
---
-
 INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value`, `minimal_value`, `linear_parameter_id`, `resource_id`) VALUES
 (1, 2483.5, 2400, 1, 2),
 (2, 5350, 5150, 2, 2),
@@ -561,12 +454,6 @@ INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value
 (4, 2483.5, 1100, 3, 2),
 (5, 5350, 1110, 2, 2),
 (6, 2100, 9999, 1, 2);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `resource_parameters`
---
 
 CREATE TABLE IF NOT EXISTS `resource_parameters` (
   `resource_parameters_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -577,12 +464,6 @@ CREATE TABLE IF NOT EXISTS `resource_parameters` (
   KEY `FK_1unvdmfastc818i00xvmglchl` (`resource_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `resource_types`
---
-
 CREATE TABLE IF NOT EXISTS `resource_types` (
   `resource_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -590,19 +471,9 @@ CREATE TABLE IF NOT EXISTS `resource_types` (
   UNIQUE KEY `UK_5fwgdwi603f06mf65x5fhv42a` (`type_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
---
--- Дамп данных таблицы `resource_types`
---
-
 INSERT INTO `resource_types` (`resource_type_id`, `type_name`) VALUES
 (1, 'земельний'),
 (2, 'радіочастотний');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `roles`
---
 
 CREATE TABLE IF NOT EXISTS `roles` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -612,20 +483,10 @@ CREATE TABLE IF NOT EXISTS `roles` (
   UNIQUE KEY `UK_q9npl2ty4pngm2cussiul2qj5` (`type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
---
--- Дамп данных таблицы `roles`
---
-
 INSERT INTO `roles` (`role_id`, `description`, `type`) VALUES
 (1, 'description', 'ADMIN'),
 (2, 'description', 'REGISTRATOR'),
 (3, 'description', 'USER');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `tomes`
---
 
 CREATE TABLE IF NOT EXISTS `tomes` (
   `tome_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -636,19 +497,9 @@ CREATE TABLE IF NOT EXISTS `tomes` (
   KEY `FK_pnsd367apavsotihxdt51mo7v` (`registrator_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
---
--- Дамп данных таблицы `tomes`
---
-
 INSERT INTO `tomes` (`tome_id`, `identifier`, `registrator_id`) VALUES
 (1, '12345', 2),
 (2, '6789', 4);
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `users`
---
 
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -665,10 +516,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `UK_ow0gan20590jrb00upg3va2fn` (`login`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
---
--- Дамп данных таблицы `users`
---
-
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `middle_name`, `password`, `role_id`, `status`) VALUES
 (1, 'oless.@gmail.com', 'Олександр', 'Архилюк', 'oleks', 'Олександрович', 'pass1', 1, 'UNBLOCK'),
 (2, 'petro.@gmail.com', 'Петро', 'Петренко', 'petro', 'Петрович', 'pass2', 2, 'UNBLOCK'),
@@ -676,88 +523,50 @@ INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `mi
 (4, 'vasyl.@gmail.com', 'Василь', 'Василюк', 'vasyl', 'Васильович', 'pass4', 2, 'UNBLOCK'),
 (5, 'oleh.@gmail.com', 'Олег', 'Василюк', 'oleh', 'Олеговчич', 'pass5', 3, 'INACTIVE');
 
---
--- Ограничения внешнего ключа сохраненных таблиц
---
 
---
--- Ограничения внешнего ключа таблицы `address`
---
 ALTER TABLE `address`
   ADD CONSTRAINT `FK_7rod8a71yep5vxasb0ms3osbg` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
---
--- Ограничения внешнего ключа таблицы `area`
---
 ALTER TABLE `area`
   ADD CONSTRAINT `FK_j05enuc6gftyec9v9m07880bs` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`);
 
---
--- Ограничения внешнего ключа таблицы `discrete_parameters`
---
 ALTER TABLE `discrete_parameters`
   ADD CONSTRAINT `FK_itxbdpyec26wdkfoaltga8pau` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`);
 
---
--- Ограничения внешнего ключа таблицы `inquiry_list`
---
 ALTER TABLE `inquiry_list`
   ADD CONSTRAINT `FK_37qp17x0dnyms8oxyo33jigpb` FOREIGN KEY (`from_user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `FK_cqtn406s2sbvribvsveeln8k1` FOREIGN KEY (`to_user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `FK_j8gyy6aabddkoxp4jivw8fini` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`);
 
---
--- Ограничения внешнего ключа таблицы `linear_parameters`
---
 ALTER TABLE `linear_parameters`
   ADD CONSTRAINT `FK_dv74cnpongab75t5q30ysncco` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`);
 
---
--- Ограничения внешнего ключа таблицы `list_of_resouces`
---
 ALTER TABLE `list_of_resouces`
   ADD CONSTRAINT `FK_764t63m3e5fl8seck12tyr8j` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`),
   ADD CONSTRAINT `FK_2bflnodo3qtvgos2ou0s9sp9` FOREIGN KEY (`registrator_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `FK_3dk2u1o6r3f41knbp4bw0u4e2` FOREIGN KEY (`tome_id`) REFERENCES `tomes` (`tome_id`);
 
---
--- Ограничения внешнего ключа таблицы `passport_data`
---
 ALTER TABLE `passport_data`
   ADD CONSTRAINT `FK_b3ufslic16u2m3j35ksfp0ivb` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
---
--- Ограничения внешнего ключа таблицы `registration_number_of_the_resource`
---
 ALTER TABLE `registration_number_of_the_resource`
   ADD CONSTRAINT `FK_2cirohw1jeueoif8ngmjl6jbt` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
---
--- Ограничения внешнего ключа таблицы `resource_discrete_values`
---
 ALTER TABLE `resource_discrete_values`
   ADD CONSTRAINT `FK_g9upwtpejnv2fd6o4hvsshcgn` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`),
   ADD CONSTRAINT `FK_mo277omjo0v4jv8269f2lsaen` FOREIGN KEY (`discrete_parameter_id`) REFERENCES `discrete_parameters` (`discrete_parameter_id`);
 
---
--- Ограничения внешнего ключа таблицы `resource_linear_values`
---
 ALTER TABLE `resource_linear_values`
   ADD CONSTRAINT `FK_eyg8asvvonj51aepmy6y8fk9w` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`),
   ADD CONSTRAINT `FK_5s1a0lk9h75mnqyiq6g1wu5wp` FOREIGN KEY (`linear_parameter_id`) REFERENCES `linear_parameters` (`linear_parameter_id`);
 
---
--- Ограничения внешнего ключа таблицы `resource_parameters`
---
 ALTER TABLE `resource_parameters`
   ADD CONSTRAINT `FK_1unvdmfastc818i00xvmglchl` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`),
   ADD CONSTRAINT `FK_tc2co2gdknt0kyt43e0wwejh9` FOREIGN KEY (`parameter_id`) REFERENCES `linear_parameters` (`linear_parameter_id`);
 
---
--- Ограничения внешнего ключа таблицы `tomes`
---
 ALTER TABLE `tomes`
   ADD CONSTRAINT `FK_pnsd367apavsotihxdt51mo7v` FOREIGN KEY (`registrator_id`) REFERENCES `users` (`user_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
