@@ -1,8 +1,32 @@
 var map;
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
 function initialize() {
+// Reading the cookie of start position
+    var lastMapSearchLat = getCookie("LastMapSearchLat");
+    var lastMapSearchLng = getCookie("LastMapSearchLng");
+    var startPoint;
+    if ((lastMapSearchLat.length > 0) && (lastMapSearchLng.length > 0)) {
+        var startLat = Number(lastMapSearchLat);
+        var startLng = Number(lastMapSearchLng);
+        startPoint = new google.maps.LatLng(startLat,startLng);
+    }
+    else {
+        startPoint = new google.maps.LatLng(49.8326679,23.942196);
+    }
+
     var mapProp = {
-        center: new google.maps.LatLng(49.8326679,23.942196),
+        center: startPoint,
         zoom: 13,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -30,8 +54,10 @@ function initialize() {
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('gmaps-input');
+    var button = document.getElementById('gmaps-show-res');
     var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function() {
@@ -71,6 +97,16 @@ function initialize() {
                 position: place.geometry.location
             }));
 
+//Expires date for cookie
+            var d = new Date();
+            d.setTime(d.getTime()+ 7*24*60*60*1000);
+//Deleting of the old cookie
+            document.cookie = "LastMapSearchLat=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            document.cookie = "LastMapSearchLng=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+//Add new cookie
+            document.cookie = "LastMapSearchLat="+place.geometry.location.lat()+";expires="+ d.toUTCString();
+            document.cookie = "LastMapSearchLng="+place.geometry.location.lng()+";expires="+ d.toUTCString();
+
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
                 bounds.union(place.geometry.viewport);
@@ -104,12 +140,109 @@ function initialize() {
                 longitudeDegrees, longitudeMinutes,longitudeSeconds);
         }
 
-        alert("Периметр виділеної області: " + (google.maps.geometry.spherical.computeLength(event.overlay.getPath())).toFixed(1) + " м\n" +
-            "Площа виділеної області: " + (google.maps.geometry.spherical.computeArea(event.overlay.getPath())/10000).toFixed(5) + " га");
-
+        //Adding area and perimeter values to input fields
+        $("input").each(function(){
+            if($(this).val() == "площа") {
+                $(this).siblings("div").find("input").val((google.maps.geometry.spherical.computeArea(event.overlay.getPath())/10000).toFixed(5));
+            }
+            if($(this).val() == "периметер") {
+                $(this).siblings("div").find("input").val((google.maps.geometry.spherical.computeLength(event.overlay.getPath())).toFixed(1));
+            }
+        });
         poligonNumber++;
     });
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+var polygons = [];
+$("#gmaps-show-res").click(function(){
+    var maxLat = map.getBounds().getNorthEast().lat();
+    var minLat = map.getBounds().getSouthWest().lat();
+    var maxLng = map.getBounds().getNorthEast().lng();
+    var minLng = map.getBounds().getSouthWest().lng();
 
+    if(polygons.length > 0) {
+        for(var i=0; i<polygons.length; i++) {
+            polygons[i].setMap(null);
+        }
+        polygons = [];
+    }
+
+    $("#dark_bg").show();
+    $.ajax({
+        data: {
+            "minLat" : minLat,
+            "maxLat" : maxLat,
+            "minLng" : minLng,
+            "maxLng" : maxLng},
+        type: "POST",
+        url: baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits",
+        timeout: 20000,
+        contentType: "application/x-www-form-urlencoded;charset=ISO-8859-15",
+        dataType: 'json',
+        success: function(data) {
+            for (var i=0; i<data.length;i++) {
+
+                var polygonPath = [];
+                var points = data[i].points;
+                for (var j=0; j<points.length;j++){
+                    polygonPath.push(new google.maps.LatLng(points[j].latitude, points[j].longitude));
+                }
+
+                var polygon = new google.maps.Polygon({
+                    path: polygonPath, // Координаты
+                    strokeColor: "#FF0000", // Цвет обводки
+                    strokeOpacity: 0.8, // Прозрачность обводки
+                    strokeWeight: 2, // Ширина обводки
+                    fillColor: "#0000FF", // Цвет заливки
+                    fillOpacity: 0.4, // Прозрачность заливки
+                    map: map
+                });
+                polygons.push(polygon);
+            }
+            $("#dark_bg").hide();
+        }
+    });
+
+    //$.post(baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits", {
+    //    "minLat" : minLat,
+    //    "maxLat" : maxLat,
+    //    "minLng" : minLng,
+    //    "maxLng" : maxLng},
+    //    function(data) {
+    //        var json = $.parseJSON(data);
+    //        $("#resourcesByAreaLimits").html(json);
+    //
+    //    });
+    //alert("S: " + south + "\n N: " + north + "\n E: " + east + "\n W: " + west);
+});
+
+//function addPolygon(){
+//    //for(var polygon in polygons) {
+//    //    polygon.setMap(map);
+//    //}
+//    var polygonCoords = [];
+//    polygonCoords.push(new google.maps.LatLng(49.824805785820764, 24.02088761329651));
+//    polygonCoords.push(new google.maps.LatLng(49.8252626001068, 24.030782282352448));
+//    polygonCoords.push(new google.maps.LatLng(49.82704482671908, 24.028530567884445));
+//
+//    var polygon = new google.maps.Polygon({
+//        path: polygonCoords, // Координаты
+//        strokeColor: "#FF0000", // Цвет обводки
+//        strokeOpacity: 0.8, // Прозрачность обводки
+//        strokeWeight: 2, // Ширина обводки
+//        fillColor: "#0000FF", // Цвет заливки
+//        fillOpacity: 0.4, // Прозрачность заливки
+//        map: map
+//    });
+//
+//   // polygon.setMap(map);
+//}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+//map.addDomListener($("#gmaps-button"), 'click', function() {
+//    addPolygon();
+//});
+
+//$("#gmaps-button").click(function(){
+//    addPolygon();
+//});

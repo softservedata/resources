@@ -1,5 +1,5 @@
 body {
-
+  
 }
 
 #header {
@@ -11,18 +11,46 @@ body {
     display: flex;
 }
 
-#menubar {
+#menubaruser, #menubarreg, #menubaradmin {
     height: 40px;
     line-height: 40px;
     vertical-align: middle;
 }
 
-#menubar li {
+#menubaruser li, #menubarreg li, #menubaradmin li{
     padding-left: 7px;
 }
 
 #footer {
-    padding-top: 10px;
-    margin-top: 10px;
     border-top: solid 1px black;
+}
+
+/*Google maps buttons*/
+.gmap-button {
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    margin: 10px 10px 0 0px;
+    border: none;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    color: black;
+}
+
+.gmap-button:hover {
+    background-color: #ededed;
+    text-decoration: none;
+}
+
+.gmap-input {
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    margin: 10px 10px 0 0px;
+    border: none;
 }

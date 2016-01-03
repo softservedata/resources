@@ -50,6 +50,9 @@ public class InquiryController {
 	ResourceTypeService resourceTypeService;
 	
 	@Autowired
+	ResourceService resourceService;
+	
+	@Autowired
 	DiscreteParameterService discreteParameterService;
 	
 	@Autowired
@@ -157,7 +160,20 @@ public class InquiryController {
          return "showResource";
     }
 	
-	
+    /**
+     * Show the information about resource by identifier
+     * !copy from ResourceController
+     */
+    @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
+    public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
+        ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
+        model.addAttribute("resource", resourceDTO);
+        return "showResource";
+    }
+    
+    
+    
+    
 	
 	/* proba old
 	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
