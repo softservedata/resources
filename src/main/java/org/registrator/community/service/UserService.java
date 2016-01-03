@@ -14,28 +14,25 @@ public interface UserService {
 
 	public void changeUserStatus(UserStatusDTO userStatusDto);
 
-
 	List<UserDTO> getAllRegistratedUsers();
-	
+
 	User getUserByLogin(String login);
 
 	void changeUserRole(String login, int role);
-	
-	UserDTO editUserInformation(UserDTO userDto);
-	
-	List<UserStatus> fillInUserStatus();
-	
-	List<UserDTO> getUserDtoList();
-	
-	UserDTO getUserDto(String login);
-	
-	List<UserDTO> getAllInactiveUsers();// set Role of inactive user to "USER"
 
-	//void registerUser(User user, PassportInfo passport, Address address);
+	UserDTO editUserInformation(UserDTO userDto);
+
+	List<UserStatus> fillInUserStatus(List<UserDTO> userDtoList);
+
+	List<UserDTO> getUserDtoList();
+
+	UserDTO getUserDto(String login);
+
+	List<UserDTO> getAllInactiveUsers();
+
 	void registerUser(User user);
 
 	int updateUser(User user);
 
 	boolean login(String username, String password);
 }
-
