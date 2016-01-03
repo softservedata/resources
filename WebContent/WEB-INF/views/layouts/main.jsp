@@ -49,8 +49,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12" id="menu">
-            <tiles:insertAttribute name="menu"/>
+        <div class="col-md-12" id="menuForAdmin">
+            <tiles:insertAttribute name="menuForAdmin" role="ADMIN"/>
+       
+        </div>
+             <div class="col-md-12" id="menuForRegistrator">
+            <tiles:insertAttribute name="menuForRegistrator" role="REGISTRATOR"/>
+       
+        </div>
+             <div class="col-md-12" id="menuForUser">
+            <tiles:insertAttribute name="menuForUser" role="USER"/>
+       
         </div>
     </div>
     <div class="row">
