@@ -2,12 +2,12 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="req" value="${pageContext.request}" />
+<c:set var="req" value="${pageContext.request}"/>
 <c:set var="url">${req.requestURL}</c:set>
-<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
+<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
 
 <!DOCTYPE html>
 <html>
@@ -38,7 +38,7 @@
 
     <!-- Our JavaScript-->
     <script src="${base}resource/js/scripts.js"></script>
-    
+
 
 </head>
 <body>
@@ -49,17 +49,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12" id="menuForAdmin">
-            <tiles:insertAttribute name="menuForAdmin" role="ADMIN"/>
-       
-        </div>
-             <div class="col-md-12" id="menuForRegistrator">
-            <tiles:insertAttribute name="menuForRegistrator" role="REGISTRATOR"/>
-       
-        </div>
-             <div class="col-md-12" id="menuForUser">
-            <tiles:insertAttribute name="menuForUser" role="USER"/>
-       
+        <div id="menu" style="overflow:hidden;">
+            <div class="col-md-12" id="menuForAdmin">
+                <tiles:insertAttribute name="menuForAdmin" role="ADMIN"/>
+
+            </div>
+            <div class="col-md-12" id="menuForRegistrator">
+                <tiles:insertAttribute name="menuForRegistrator" role="REGISTRATOR"/>
+
+            </div>
+            <div class="col-md-12" id="menuForUser">
+                <tiles:insertAttribute name="menuForUser" role="USER"/>
+
+            </div>
         </div>
     </div>
     <div class="row">

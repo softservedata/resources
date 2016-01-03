@@ -11,11 +11,13 @@ $(document).ready(function () {
 
     $("#resourcesTypeSelect").change(function () {
         //table.ajax.reload(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId");
+        $("#dark_bg").show();
         $.post(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
             {"resourceTypeId": $("#resourcesTypeSelect").val()},
             function (data) {
                 $("#searchParameters").html(data);
                 $("#table").html("");
+                $("#dark_bg").hide();
             });
     });
 
@@ -47,6 +49,8 @@ $(document).ready(function () {
         var linearParamId = [-1];
         var linearParamVal = [-1];
 
+        $("#dark_bg").show();
+
         $(".discreteParameter").each(function () {
             discreteParamId.push($(this).attr("param_id"));
             discreteParamCompare.push($(this).find(".compare").val());
@@ -72,6 +76,7 @@ $(document).ready(function () {
             success: function(data){
                 $("#table").html(data);
                 $("#datatable").DataTable();
+                $("#dark_bg").hide();
             },
             traditional: true
         });

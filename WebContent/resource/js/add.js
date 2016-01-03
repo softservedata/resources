@@ -22,6 +22,7 @@ $(document).ready(
 								$('#input' + num).after(newElem);
 								$('#btnDel').attr('disabled', '');
 
+                                positionFooter();
 							});
 
 			$('#btnDel').click(function() {
@@ -30,6 +31,7 @@ $(document).ready(
 				$('#btnAdd').attr('disabled', '');
 				if (num - 1 == 1)
 					$('#btnDel').attr('disabled', 'disabled');
+                positionFooter();
 			});
 
 			$('#btnDel').attr('disabled', 'disabled');

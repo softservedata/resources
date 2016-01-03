@@ -22,6 +22,7 @@ body {
 }
 
 #footer {
+    margin-top: 20px;
     border-top: solid 1px black;
 }
 
@@ -43,6 +44,7 @@ body {
 .gmap-button:hover {
     background-color: #ededed;
     text-decoration: none;
+    color: black;
 }
 
 .gmap-input {
