@@ -40,6 +40,14 @@ var addNewPoint = function(poligonNumber,
 
 $(document).ready(
 		function() {
+
+            /* Switch off form submit on ENTER keypress from every input field */
+            $('form').bind("keypress", function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
 			
 			/* load parameters of selected value */
 			$("#resourcesTypeSelect").change(function() {

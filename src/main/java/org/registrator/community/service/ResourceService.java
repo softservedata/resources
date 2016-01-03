@@ -1,6 +1,7 @@
 package org.registrator.community.service;
 
 import org.registrator.community.dto.ResourceDTO;
+import org.registrator.community.entity.Area;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 
@@ -19,6 +20,8 @@ public interface ResourceService {
     long count();
     
     Set<String> getDescriptionBySearchTag(String searchTag);
+
+    List<ResourceDTO> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng);
     
 }
 

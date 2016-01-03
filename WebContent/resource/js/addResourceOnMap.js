@@ -54,8 +54,10 @@ function initialize() {
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('gmaps-input');
+    var button = document.getElementById('gmaps-show-res');
     var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function() {
@@ -138,9 +140,6 @@ function initialize() {
                 longitudeDegrees, longitudeMinutes,longitudeSeconds);
         }
 
-        //alert("Периметр виділеної області: " + (google.maps.geometry.spherical.computeLength(event.overlay.getPath())).toFixed(1) + " м\n" +
-        //    "Площа виділеної області: " + (google.maps.geometry.spherical.computeArea(event.overlay.getPath())/10000).toFixed(5) + " га");
-
         //Adding area and perimeter values to input fields
         $("input").each(function(){
             if($(this).val() == "площа") {
@@ -154,5 +153,96 @@ function initialize() {
     });
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+var polygons = [];
+$("#gmaps-show-res").click(function(){
+    var maxLat = map.getBounds().getNorthEast().lat();
+    var minLat = map.getBounds().getSouthWest().lat();
+    var maxLng = map.getBounds().getNorthEast().lng();
+    var minLng = map.getBounds().getSouthWest().lng();
 
+    if(polygons.length > 0) {
+        for(var i=0; i<polygons.length; i++) {
+            polygons[i].setMap(null);
+        }
+        polygons = [];
+    }
+
+    $("#dark_bg").show();
+    $.ajax({
+        data: {
+            "minLat" : minLat,
+            "maxLat" : maxLat,
+            "minLng" : minLng,
+            "maxLng" : maxLng},
+        type: "POST",
+        url: baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits",
+        timeout: 20000,
+        contentType: "application/x-www-form-urlencoded;charset=ISO-8859-15",
+        dataType: 'json',
+        success: function(data) {
+            for (var i=0; i<data.length;i++) {
+
+                var polygonPath = [];
+                var points = data[i].points;
+                for (var j=0; j<points.length;j++){
+                    polygonPath.push(new google.maps.LatLng(points[j].latitude, points[j].longitude));
+                }
+
+                var polygon = new google.maps.Polygon({
+                    path: polygonPath, // Координаты
+                    strokeColor: "#FF0000", // Цвет обводки
+                    strokeOpacity: 0.8, // Прозрачность обводки
+                    strokeWeight: 2, // Ширина обводки
+                    fillColor: "#0000FF", // Цвет заливки
+                    fillOpacity: 0.4, // Прозрачность заливки
+                    map: map
+                });
+                polygons.push(polygon);
+            }
+            $("#dark_bg").hide();
+        }
+    });
+
+    //$.post(baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits", {
+    //    "minLat" : minLat,
+    //    "maxLat" : maxLat,
+    //    "minLng" : minLng,
+    //    "maxLng" : maxLng},
+    //    function(data) {
+    //        var json = $.parseJSON(data);
+    //        $("#resourcesByAreaLimits").html(json);
+    //
+    //    });
+    //alert("S: " + south + "\n N: " + north + "\n E: " + east + "\n W: " + west);
+});
+
+//function addPolygon(){
+//    //for(var polygon in polygons) {
+//    //    polygon.setMap(map);
+//    //}
+//    var polygonCoords = [];
+//    polygonCoords.push(new google.maps.LatLng(49.824805785820764, 24.02088761329651));
+//    polygonCoords.push(new google.maps.LatLng(49.8252626001068, 24.030782282352448));
+//    polygonCoords.push(new google.maps.LatLng(49.82704482671908, 24.028530567884445));
+//
+//    var polygon = new google.maps.Polygon({
+//        path: polygonCoords, // Координаты
+//        strokeColor: "#FF0000", // Цвет обводки
+//        strokeOpacity: 0.8, // Прозрачность обводки
+//        strokeWeight: 2, // Ширина обводки
+//        fillColor: "#0000FF", // Цвет заливки
+//        fillOpacity: 0.4, // Прозрачность заливки
+//        map: map
+//    });
+//
+//   // polygon.setMap(map);
+//}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+//map.addDomListener($("#gmaps-button"), 'click', function() {
+//    addPolygon();
+//});
+
+//$("#gmaps-button").click(function(){
+//    addPolygon();
+//});

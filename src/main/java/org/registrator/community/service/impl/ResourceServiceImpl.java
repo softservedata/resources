@@ -2,6 +2,7 @@ package org.registrator.community.service.impl;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -219,5 +220,19 @@ public class ResourceServiceImpl implements ResourceService {
 	public Set<String> getDescriptionBySearchTag(String searchTag) {
 		return resourceRepository.findDescriptionsLikeProposed(searchTag);
 	}
+
+    @Override
+    public List<ResourceDTO> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng) {
+        List<ResourceDTO> resourcesDTO = new ArrayList<>();
+        Set<Resource> resources = new HashSet<>();
+        List<Area> areas = areaRepository.findByLatLngLimits(minLat, maxLat, minLng, maxLng);
+        for (Area area : areas) {
+            resources.add(area.getResource());
+        }
+        for (Resource resource : resources) {
+            resourcesDTO.add(findByIdentifier(resource.getIdentifier()));
+        }
+        return resourcesDTO;
+    }
 }
 

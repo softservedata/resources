@@ -5,7 +5,14 @@ import java.util.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.google.gson.Gson;
+import org.registrator.community.dao.AreaRepository;
+import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.TomeRepository;
+import org.registrator.community.dto.JSON.PointJSON;
+import org.registrator.community.dto.JSON.PolygonJSON;
+import org.registrator.community.dto.PointAreaDTO;
+import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.*;
@@ -285,5 +292,42 @@ public class ResourceController {
 //    	suggestions.put("query", new TreeSet<String>().add("unit"));
     	suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
         return suggestions;
+    }
+
+    @Autowired
+    private AreaRepository areaRepository;
+    @Autowired
+    private ResourceRepository resourceRepository;
+
+    @ResponseBody
+    @RequestMapping(value = "/getResourcesByAreaLimits", method = RequestMethod.POST)
+    public String showAllResourcesByAreaLimits(@RequestParam("minLat") Double minLat,
+                                           @RequestParam("maxLat") Double maxLat,
+                                           @RequestParam("minLng") Double minLng,
+                                           @RequestParam("maxLng") Double maxLng,
+                                           Model model) {
+        List<ResourceDTO> resourceDTOs = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng);
+
+        List<PolygonJSON> polygons = new ArrayList<>();
+        for (ResourceDTO resourceDTO : resourceDTOs) {
+            PolygonJSON polygon = new PolygonJSON();
+            List<Area> areas = areaRepository.findByResource(resourceRepository.findByIdentifier(resourceDTO.getIdentifier()));
+            List<PointJSON> points = new ArrayList<>();
+
+            for (Area area : areas) {
+                PointJSON point = new PointJSON();
+                point.setLatitude(area.getLatitude());
+                point.setLongitude(area.getLongitude());
+                point.setPoint_order(area.getOrderNumber());
+                points.add(point);
+            }
+
+            polygon.setResourceDescription(resourceDTO.getDescription());
+            polygon.setPoints(points);
+
+            polygons.add(polygon);
+        }
+        Gson gson = new Gson();
+        return gson.toJson(polygons);
     }
 }

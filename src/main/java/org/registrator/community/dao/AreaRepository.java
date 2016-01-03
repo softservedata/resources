@@ -15,4 +15,15 @@ public interface AreaRepository extends JpaRepository<Area, Integer>{
             " Where a.resource = :resource" )
     List<Area> findByResource(@Param("resource")Resource resource);
 
+    @Query("Select a"+
+            " From Area a" +
+            " Where a.latitude >= :minLat " +
+            "and a.latitude <= :maxLat " +
+            "and a.longitude >= :minLng " +
+            "and a.longitude <= :maxLng" )
+    List<Area> findByLatLngLimits(@Param("minLat")Double minLat,
+                                  @Param("maxLat")Double maxLat,
+                                  @Param("minLng")Double minLng,
+                                  @Param("maxLng")Double maxLng);
+
 }
