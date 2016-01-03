@@ -2,10 +2,10 @@
 -- version 3.5.3
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jan 03, 2016 at 11:28 PM
--- Server version: 5.5.25a
--- PHP Version: 5.4.4
+-- Хост: localhost
+-- Время создания: Янв 03 2016 г., 23:50
+-- Версия сервера: 5.5.25a
+-- Версия PHP: 5.4.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `registrator_db`
+-- База данных: `registrator_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `address`
+-- Структура таблицы `address`
 --
 
 CREATE TABLE IF NOT EXISTS `address` (
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `address` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `address`
+-- Дамп данных таблицы `address`
 --
 
 INSERT INTO `address` (`address_id`, `building`, `city`, `district`, `flat`, `postcode`, `region`, `street`, `user_id`) VALUES
@@ -54,7 +54,7 @@ INSERT INTO `address` (`address_id`, `building`, `city`, `district`, `flat`, `po
 -- --------------------------------------------------------
 
 --
--- Table structure for table `area`
+-- Структура таблицы `area`
 --
 
 CREATE TABLE IF NOT EXISTS `area` (
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `area` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=261 ;
 
 --
--- Dumping data for table `area`
+-- Дамп данных таблицы `area`
 --
 
 INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `resource_id`) VALUES
@@ -331,7 +331,7 @@ INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `resourc
 -- --------------------------------------------------------
 
 --
--- Table structure for table `discrete_parameters`
+-- Структура таблицы `discrete_parameters`
 --
 
 CREATE TABLE IF NOT EXISTS `discrete_parameters` (
@@ -344,7 +344,7 @@ CREATE TABLE IF NOT EXISTS `discrete_parameters` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
--- Dumping data for table `discrete_parameters`
+-- Дамп данных таблицы `discrete_parameters`
 --
 
 INSERT INTO `discrete_parameters` (`discrete_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
@@ -357,7 +357,7 @@ INSERT INTO `discrete_parameters` (`discrete_parameter_id`, `description`, `unit
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inquiry_list`
+-- Структура таблицы `inquiry_list`
 --
 
 CREATE TABLE IF NOT EXISTS `inquiry_list` (
@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS `inquiry_list` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `inquiry_list`
+-- Дамп данных таблицы `inquiry_list`
 --
 
 INSERT INTO `inquiry_list` (`inquiry_list_id`, `date`, `inquiry_type`, `to_user_id`, `resource_id`, `from_user_id`) VALUES
@@ -383,7 +383,7 @@ INSERT INTO `inquiry_list` (`inquiry_list_id`, `date`, `inquiry_type`, `to_user_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `linear_parameters`
+-- Структура таблицы `linear_parameters`
 --
 
 CREATE TABLE IF NOT EXISTS `linear_parameters` (
@@ -396,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `linear_parameters` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `linear_parameters`
+-- Дамп данных таблицы `linear_parameters`
 --
 
 INSERT INTO `linear_parameters` (`linear_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
@@ -407,7 +407,7 @@ INSERT INTO `linear_parameters` (`linear_parameter_id`, `description`, `unit_nam
 -- --------------------------------------------------------
 
 --
--- Table structure for table `list_of_resouces`
+-- Структура таблицы `list_of_resouces`
 --
 
 CREATE TABLE IF NOT EXISTS `list_of_resouces` (
@@ -428,7 +428,7 @@ CREATE TABLE IF NOT EXISTS `list_of_resouces` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
 
 --
--- Dumping data for table `list_of_resouces`
+-- Дамп данных таблицы `list_of_resouces`
 --
 
 INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifier`, `reason_inclusion`, `status`, `registrator_id`, `tome_id`, `resource_type_id`) VALUES
@@ -448,7 +448,7 @@ INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `passport_data`
+-- Структура таблицы `passport_data`
 --
 
 CREATE TABLE IF NOT EXISTS `passport_data` (
@@ -462,7 +462,7 @@ CREATE TABLE IF NOT EXISTS `passport_data` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `passport_data`
+-- Дамп данных таблицы `passport_data`
 --
 
 INSERT INTO `passport_data` (`passport_data_id`, `number`, `published_by_data`, `seria`, `user_id`) VALUES
@@ -475,7 +475,22 @@ INSERT INTO `passport_data` (`passport_data_id`, `number`, `published_by_data`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `resource_discrete_values`
+-- Структура таблицы `registration_number_of_the_resource`
+--
+
+CREATE TABLE IF NOT EXISTS `registration_number_of_the_resource` (
+  `number_id` int(11) NOT NULL AUTO_INCREMENT,
+  `number` int(11) NOT NULL,
+  `registrator_number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`number_id`),
+  KEY `FK_2cirohw1jeueoif8ngmjl6jbt` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `resource_discrete_values`
 --
 
 CREATE TABLE IF NOT EXISTS `resource_discrete_values` (
@@ -489,7 +504,7 @@ CREATE TABLE IF NOT EXISTS `resource_discrete_values` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=27 ;
 
 --
--- Dumping data for table `resource_discrete_values`
+-- Дамп данных таблицы `resource_discrete_values`
 --
 
 INSERT INTO `resource_discrete_values` (`resource_discrete_value_id`, `value`, `discrete_parameter_id`, `resource_id`) VALUES
@@ -521,7 +536,7 @@ INSERT INTO `resource_discrete_values` (`resource_discrete_value_id`, `value`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `resource_linear_values`
+-- Структура таблицы `resource_linear_values`
 --
 
 CREATE TABLE IF NOT EXISTS `resource_linear_values` (
@@ -536,7 +551,7 @@ CREATE TABLE IF NOT EXISTS `resource_linear_values` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
--- Dumping data for table `resource_linear_values`
+-- Дамп данных таблицы `resource_linear_values`
 --
 
 INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value`, `minimal_value`, `linear_parameter_id`, `resource_id`) VALUES
@@ -550,7 +565,7 @@ INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value
 -- --------------------------------------------------------
 
 --
--- Table structure for table `resource_parameters`
+-- Структура таблицы `resource_parameters`
 --
 
 CREATE TABLE IF NOT EXISTS `resource_parameters` (
@@ -565,7 +580,7 @@ CREATE TABLE IF NOT EXISTS `resource_parameters` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `resource_types`
+-- Структура таблицы `resource_types`
 --
 
 CREATE TABLE IF NOT EXISTS `resource_types` (
@@ -576,7 +591,7 @@ CREATE TABLE IF NOT EXISTS `resource_types` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `resource_types`
+-- Дамп данных таблицы `resource_types`
 --
 
 INSERT INTO `resource_types` (`resource_type_id`, `type_name`) VALUES
@@ -586,7 +601,7 @@ INSERT INTO `resource_types` (`resource_type_id`, `type_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles`
+-- Структура таблицы `roles`
 --
 
 CREATE TABLE IF NOT EXISTS `roles` (
@@ -598,7 +613,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `roles`
+-- Дамп данных таблицы `roles`
 --
 
 INSERT INTO `roles` (`role_id`, `description`, `type`) VALUES
@@ -609,7 +624,7 @@ INSERT INTO `roles` (`role_id`, `description`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tomes`
+-- Структура таблицы `tomes`
 --
 
 CREATE TABLE IF NOT EXISTS `tomes` (
@@ -622,7 +637,7 @@ CREATE TABLE IF NOT EXISTS `tomes` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `tomes`
+-- Дамп данных таблицы `tomes`
 --
 
 INSERT INTO `tomes` (`tome_id`, `identifier`, `registrator_id`) VALUES
@@ -632,7 +647,7 @@ INSERT INTO `tomes` (`tome_id`, `identifier`, `registrator_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Структура таблицы `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -651,7 +666,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `users`
+-- Дамп данных таблицы `users`
 --
 
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `middle_name`, `password`, `role_id`, `status`) VALUES
@@ -662,29 +677,29 @@ INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `mi
 (5, 'oleh.@gmail.com', 'Олег', 'Василюк', 'oleh', 'Олеговчич', 'pass5', 3, 'INACTIVE');
 
 --
--- Constraints for dumped tables
+-- Ограничения внешнего ключа сохраненных таблиц
 --
 
 --
--- Constraints for table `address`
+-- Ограничения внешнего ключа таблицы `address`
 --
 ALTER TABLE `address`
   ADD CONSTRAINT `FK_7rod8a71yep5vxasb0ms3osbg` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Constraints for table `area`
+-- Ограничения внешнего ключа таблицы `area`
 --
 ALTER TABLE `area`
   ADD CONSTRAINT `FK_j05enuc6gftyec9v9m07880bs` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`);
 
 --
--- Constraints for table `discrete_parameters`
+-- Ограничения внешнего ключа таблицы `discrete_parameters`
 --
 ALTER TABLE `discrete_parameters`
   ADD CONSTRAINT `FK_itxbdpyec26wdkfoaltga8pau` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`);
 
 --
--- Constraints for table `inquiry_list`
+-- Ограничения внешнего ключа таблицы `inquiry_list`
 --
 ALTER TABLE `inquiry_list`
   ADD CONSTRAINT `FK_37qp17x0dnyms8oxyo33jigpb` FOREIGN KEY (`from_user_id`) REFERENCES `users` (`user_id`),
@@ -692,13 +707,13 @@ ALTER TABLE `inquiry_list`
   ADD CONSTRAINT `FK_j8gyy6aabddkoxp4jivw8fini` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`);
 
 --
--- Constraints for table `linear_parameters`
+-- Ограничения внешнего ключа таблицы `linear_parameters`
 --
 ALTER TABLE `linear_parameters`
   ADD CONSTRAINT `FK_dv74cnpongab75t5q30ysncco` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`);
 
 --
--- Constraints for table `list_of_resouces`
+-- Ограничения внешнего ключа таблицы `list_of_resouces`
 --
 ALTER TABLE `list_of_resouces`
   ADD CONSTRAINT `FK_764t63m3e5fl8seck12tyr8j` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`),
@@ -706,34 +721,40 @@ ALTER TABLE `list_of_resouces`
   ADD CONSTRAINT `FK_3dk2u1o6r3f41knbp4bw0u4e2` FOREIGN KEY (`tome_id`) REFERENCES `tomes` (`tome_id`);
 
 --
--- Constraints for table `passport_data`
+-- Ограничения внешнего ключа таблицы `passport_data`
 --
 ALTER TABLE `passport_data`
   ADD CONSTRAINT `FK_b3ufslic16u2m3j35ksfp0ivb` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Constraints for table `resource_discrete_values`
+-- Ограничения внешнего ключа таблицы `registration_number_of_the_resource`
+--
+ALTER TABLE `registration_number_of_the_resource`
+  ADD CONSTRAINT `FK_2cirohw1jeueoif8ngmjl6jbt` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Ограничения внешнего ключа таблицы `resource_discrete_values`
 --
 ALTER TABLE `resource_discrete_values`
   ADD CONSTRAINT `FK_g9upwtpejnv2fd6o4hvsshcgn` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`),
   ADD CONSTRAINT `FK_mo277omjo0v4jv8269f2lsaen` FOREIGN KEY (`discrete_parameter_id`) REFERENCES `discrete_parameters` (`discrete_parameter_id`);
 
 --
--- Constraints for table `resource_linear_values`
+-- Ограничения внешнего ключа таблицы `resource_linear_values`
 --
 ALTER TABLE `resource_linear_values`
   ADD CONSTRAINT `FK_eyg8asvvonj51aepmy6y8fk9w` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`),
   ADD CONSTRAINT `FK_5s1a0lk9h75mnqyiq6g1wu5wp` FOREIGN KEY (`linear_parameter_id`) REFERENCES `linear_parameters` (`linear_parameter_id`);
 
 --
--- Constraints for table `resource_parameters`
+-- Ограничения внешнего ключа таблицы `resource_parameters`
 --
 ALTER TABLE `resource_parameters`
   ADD CONSTRAINT `FK_1unvdmfastc818i00xvmglchl` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`),
   ADD CONSTRAINT `FK_tc2co2gdknt0kyt43e0wwejh9` FOREIGN KEY (`parameter_id`) REFERENCES `linear_parameters` (`linear_parameter_id`);
 
 --
--- Constraints for table `tomes`
+-- Ограничения внешнего ключа таблицы `tomes`
 --
 ALTER TABLE `tomes`
   ADD CONSTRAINT `FK_pnsd367apavsotihxdt51mo7v` FOREIGN KEY (`registrator_id`) REFERENCES `users` (`user_id`);
