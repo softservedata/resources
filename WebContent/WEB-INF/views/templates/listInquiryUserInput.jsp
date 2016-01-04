@@ -14,15 +14,15 @@
 
 <div style="text-align: center;">
 	<h4>
-		<spring:message code="label.inquiry.listInquiryUserOut.pagename" />
+		<spring:message code="label.inquiry.input.pagename" />
 	</h4>
 </div>
 
 <% session.setAttribute("userLogin", "ivan"); %> 
 
 <p>
-	<a href="${base}inquiry/add/outputInquiry"
-		class="btn btn-success" role="button"><spring:message code="label.inquiry.output.pagename"/></a>
+		<a href="${base}inquiry/add/addresource"
+		class="btn btn-success" role="button"><spring:message code="label.inquiry.input.pagename"/></a>
 </p> 
 
 			<table id="datatable" class="table display"> 
@@ -35,27 +35,29 @@
 						<th><spring:message code="label.resource.registrator" /></th>
 						<th hidden="true"><spring:message code="label.inquiry.inquiryType" /></th>
 						<th><spring:message code="label.resource.identifier" /></th>
+						<th><spring:message code="label.resource.status" /></th>
 						<th><spring:message code="label.restype.actions" /></th>
 					</tr>
 				</thead>
 				
 				<tbody>
-					 <c:if test="${not empty listInquiryUserOut}"> 
+					 <c:if test="${not empty listInquiryUser}"> 
 					
-						<c:forEach items="${listInquiryUserOut}" var="inquiryUserOut">						
+						<c:forEach items="${listInquiryUser}" var="inquiryUser">						
 							<tr>								
-								<td hidden="true"> ${inquiryUserOut.inquiry_list_id}	</td>
-								<fmt:formatDate value="${inquiryUserOut.date}" pattern="dd.MM.yyyy" var="Date" />
+								<td hidden="true"> ${inquiryUser.inquiry_list_id}	</td>
+								<fmt:formatDate value="${inquiryUser.date}" pattern="dd.MM.yyyy" var="Date" />
 								<td> ${Date}	</td>
-								<td> ${inquiryUserOut.userName}	</td>
-								<td> ${inquiryUserOut.registratorName}	</td>
-								<td hidden="true"> ${inquiryUserOut.inquiryType}	</td>
-								<td><a href="get/${inquiryUserOut.resourceIdentifier}"> ${inquiryUserOut.resourceIdentifier}	</a></td>	
+								<td> ${inquiryUser.userName}	</td>
+								<td> ${inquiryUser.registratorName}	</td>
+								<td hidden="true"> ${inquiryUser.inquiryType}	</td>
+								<td><a href="get/${inquiryUser.resourceIdentifier}"> ${inquiryUser.resourceIdentifier}	</a></td>	
+								<td> ${inquiryUser.resourceStatus}	</td>
 								<td> <div class="block">
-										<a href="delete/${inquiryUserOut.inquiry_list_id}"
+										<!--  <a href="delete/${inquiryUser.inquiry_list_id}"
 											class="btn btn-danger" role="button"> 
-											<spring:message code="label.restype.delete" /></a>	
-										<a href="printOutput/${inquiryUserOut.inquiry_list_id}"
+											<spring:message code="label.restype.delete" /></a>	 -->
+										<a href="printOutput/${inquiryUser.inquiry_list_id}"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
 									</div>								
@@ -68,6 +70,6 @@
 				</tbody>
 										   			
 			</table>				
-			
-		
+
+
 		

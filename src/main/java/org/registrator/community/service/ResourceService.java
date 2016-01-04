@@ -4,6 +4,7 @@ import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.entity.Area;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
+import org.registrator.community.enumeration.ResourceStatus;
 
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 public interface ResourceService {
 	
-	ResourceDTO addNewResource(ResourceDTO resourceDTO);
+	ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus);
 	
 	ResourceDTO findByIdentifier(String identifier);
 

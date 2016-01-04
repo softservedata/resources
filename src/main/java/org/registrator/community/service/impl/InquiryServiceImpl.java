@@ -16,6 +16,8 @@ import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
+import org.registrator.community.enumeration.InquiryType;
+import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
@@ -74,29 +76,29 @@ public class InquiryServiceImpl implements InquiryService{
 	}
 
 	/**
-	 * Method for showing all inquiries from logged user on UI 
+	 * Method for showing all output inquiries from logged user on UI 
 	 * forms List<InquiryListDTO> to fill listInqUserOut.jsp.
 	 */
 	@Transactional
 	@Override
-	public List<InquiryListDTO> listInquiryUserOut(String userLogin){
-		logger.info("begin listInquiryUserOut");
+	public List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType){
+		logger.info("begin listInquiryUser");
 		List<InquiryListDTO> listInquiryDTO = new ArrayList<InquiryListDTO>();
 		InquiryListDTO inquiryListDTO;
 		User user = userRepository.findUserByLogin(userLogin);
-		List<Inquiry> listInquiry = inquiryRepository.findByUserAndInquiryType(user);
+		List<Inquiry> listInquiry = inquiryRepository.findByUserAndInquiryType(user, inquiryType);
 		for (Inquiry inquiry : listInquiry){
 			inquiryListDTO = new InquiryListDTO(inquiry.getInquiry_list_id(), inquiry.getInquiryType().toString(), 
-						inquiry.getDate(), null, null, inquiry.getResource().getIdentifier());
+						inquiry.getDate(), null, null, inquiry.getResource().getIdentifier(), inquiry.getResource().getStatus());
 			inquiryListDTO.setUserName(user.getLastName()+ " " +user.getFirstName()+ " " +user.getMiddleName());
 			User registrator = inquiry.getRegistrator();
 			inquiryListDTO.setRegistratorName(registrator.getLastName()+ " " +registrator.getFirstName()+ " " +registrator.getMiddleName());
 			listInquiryDTO.add(inquiryListDTO);
 		}
-		logger.info("end listInquiryUserOut");
+		logger.info("end listInquiryUser");
 		return listInquiryDTO;
 	}
-	
+		
 	/**
 	 * Method for deleting chosen inquiry by Id.
 	 */
@@ -112,7 +114,7 @@ public class InquiryServiceImpl implements InquiryService{
 	@Transactional
 	@Override
 	public ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin){
-		resourceDTO = resourceService.addNewResource(resourceDTO);
+		resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.UNCHECKED);
 		User user = userRepository.findUserByLogin(userLogin);
 		String tomeIdentifier = resourceDTO.getTomeIdentifier();
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
