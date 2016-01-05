@@ -125,4 +125,9 @@
 		template="/WEB-INF/views/templates/resourceValues.jsp">
 	</definition>
 
+	<definition name="searchOnMap" extends="homepage">
+		<put-attribute name="body" type="template"
+					   value="/WEB-INF/views/searchOnMap.jsp" />
+	</definition>
+
 </tiles-definitions>

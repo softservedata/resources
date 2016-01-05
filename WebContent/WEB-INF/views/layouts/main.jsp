@@ -49,7 +49,7 @@
         </div>
     </div>
     <div class="row">
-        <div id="menu" style="overflow:hidden;">
+        <div id="menu">
             <div class="col-md-12" id="menuForAdmin">
                 <tiles:insertAttribute name="menuForAdmin" role="ADMIN"/>
 

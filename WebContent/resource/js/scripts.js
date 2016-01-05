@@ -27,8 +27,6 @@ $(document).ready(function () {
 
     positionFooter();
 
-
-
     var getUrl = window.location;
     baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
@@ -37,11 +35,6 @@ $(document).ready(function () {
     });
 
     $(window).resize(positionFooter);
-
-    //$(document).bind("DOMSubtreeModified",function(){
-    //    //console.log($('body').width() + ' x '+$('body').height());
-    //    positionFooter();
-    //});
 
     $(window).load(function () {
 
@@ -53,9 +46,14 @@ $(document).ready(function () {
             }
             $("#count").html(data);
         }
-
-        //$("#body").change(positionFooter());
     });
 
-    //$("#body").children("div").resize(BH());
+    //Dropdown menu
+    $(".dropdown").mouseenter(function(){
+        $(".dropdown_menu").slideDown(150);
+    });
+
+    $(".dropdown").mouseleave(function(){
+        $(".dropdown_menu").slideUp(150);
+    });
 });

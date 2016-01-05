@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class PolygonJSON {
     private String resourceDescription;
+    private String identifier;
+    private String resourceType;
     private List<PointJSON> points;
 
     public String getResourceDescription() {
@@ -17,6 +19,22 @@ public class PolygonJSON {
 
     public void setResourceDescription(String resourceDescription) {
         this.resourceDescription = resourceDescription;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
     }
 
     public List<PointJSON> getPoints() {

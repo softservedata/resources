@@ -323,11 +323,18 @@ public class ResourceController {
             }
 
             polygon.setResourceDescription(resourceDTO.getDescription());
+            polygon.setIdentifier(resourceDTO.getIdentifier());
+            polygon.setResourceType(resourceDTO.getResourceType().getTypeName());
             polygon.setPoints(points);
 
             polygons.add(polygon);
         }
         Gson gson = new Gson();
         return gson.toJson(polygons);
+    }
+
+    @RequestMapping(value = "/searchOnMap", method = RequestMethod.GET)
+    public String searchOnMap(Model model) {
+        return "searchOnMap";
     }
 }

@@ -16,7 +16,16 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="${base}" class="glyphicon glyphicon-home"></a></li>
-                <li><a href="${base}registrator/resource/showAllResources"><spring:message code="label.menu.resources" /></a></li>
+                <li class="dropdown"><a href="#"><spring:message code="label.menu.resources" /></a>
+                    <ul class="dropdown_menu">
+                        <li><a href="${base}registrator/resource/showAllResources">
+                            <spring:message code="label.menu.searchByParameters" /></a>
+                        </li>
+                        <li><a href="${base}registrator/resource/searchOnMap">
+                            <spring:message code="label.menu.searchOnMap" /></a>
+                        </li>
+                    </ul>
+                </li>
                 <li><a href="${base}registrator/resourcetypes/show-res-types"><spring:message code="label.menu.resourcesTypes" /></a></li>
                 <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.registrated.pagename" /></a></li>
                 <li><a href="${base}administrator/users/get-all-inactive-users"><spring:message code="label.inactive.pagename" /></a></li>
