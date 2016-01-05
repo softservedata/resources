@@ -16,6 +16,7 @@ import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.*;
+import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.dto.validator.ResourceDTOValidator;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
@@ -113,7 +114,7 @@ public class ResourceController {
             model.addAttribute("newresource", resourceDTO);
             return "addResource";
         } else {
-            resourceService.addNewResource(resourceDTO);
+            resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE);
             model.addAttribute("resource", resourceDTO);
             return "showResource";
         }

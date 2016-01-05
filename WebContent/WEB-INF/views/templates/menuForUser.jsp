@@ -26,7 +26,13 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="${base}inquiry/add/listInqUserOut"><spring:message code="label.menu.inquiries" /></a></li>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                					<spring:message code="label.menu.inquiries" /><span class="caret"></span></a>
+                		 <ul class="dropdown-menu">
+                			<li> <a href="${base}inquiry/add/listInquiryUserInput"><spring:message code="label.menu.inquiries.input" /></a></li>
+                			<li> <a href="${base}inquiry/add/listInqUserOut"><spring:message code="label.menu.inquiries.output" /></a></li>
+                		 </ul>
+                </li>
                 <li><a href="${base}registrator/resource/addresource"><spring:message code="label.menu.addnewresource"/></a>
             </ul>
         </div>

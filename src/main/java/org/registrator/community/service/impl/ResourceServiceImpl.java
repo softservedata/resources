@@ -61,14 +61,14 @@ public class ResourceServiceImpl implements ResourceService {
     DiscreteParameterRepository discreteParameterRepository;
 
     @Override
-    public ResourceDTO addNewResource(ResourceDTO resourceDTO) {
+    public ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus) {
         Resource resourceEntity = new Resource();
         resourceEntity.setIdentifier(resourceDTO.getIdentifier());
         resourceEntity.setDescription(resourceDTO.getDescription());
         resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
         resourceEntity.setTome(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()));
         resourceEntity.setRegistrator(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()).getRegistrator());
-        resourceEntity.setStatus(ResourceStatus.ACTIVE);
+        resourceEntity.setStatus(resourceStatus);
         ResourceType resourceType = resourceTypeRepository.findByName(resourceDTO.getResourceType().getTypeName());
         resourceEntity.setType(resourceType);
         resourceEntity.setDate(resourceDTO.getDate());

@@ -16,6 +16,7 @@ import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Tome;
+import org.registrator.community.enumeration.InquiryType;
 import org.registrator.community.service.DiscreteParameterService;
 import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.LinearParameterService;
@@ -92,16 +93,29 @@ public class InquiryController {
 	}
 	
 	/**
-	 * Method for showing all inquiries from logged user on UI.
+	 * Method for showing all output inquiries from logged user on UI.
 	 */
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
 	public String listInqUserOut(Model model, HttpSession session) {
 		logger.info("begin listInqUserOut");
 		String userLogin =(String) session.getAttribute("userLogin");
-		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUserOut(userLogin);
+		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
 		logger.info("end listInqUserOut");
 		return "listInqUserOut";
+	}
+	
+	/**
+	 * Method for showing all input inquiries from logged user on UI.
+	 */
+	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
+	public String listInquiryUserInput(Model model, HttpSession session) {
+		logger.info("begin listInqUserInput");
+		String userLogin =(String) session.getAttribute("userLogin");
+		List<InquiryListDTO> listInquiryUserInput = inquiryService.listInquiryUser(userLogin, InquiryType.INPUT);
+		model.addAttribute("listInquiryUser", listInquiryUserInput);
+		logger.info("end listInqUserInput");
+		return "listInquiryUserInput";
 	}
 	
 	/**
