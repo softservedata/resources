@@ -248,6 +248,10 @@ function searchOnMap(latLng, marker) {
             infowindow.open(map, marker);
 
             $("#dark_bg").hide();
+        },
+        error: function() {
+            $("#dark_bg").hide();
+            alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
         }
     });
 }

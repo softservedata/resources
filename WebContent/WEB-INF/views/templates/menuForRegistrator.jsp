@@ -29,7 +29,16 @@
                 <li><a href="${base}registrator/resourcetypes/show-res-types"><spring:message code="label.menu.resourcesTypes" /></a></li>
                 <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.registrated.pagename" /></a></li>
                 <li><a href="${base}administrator/users/get-all-inactive-users"><spring:message code="label.inactive.pagename" /></a></li>
-                <li><a href="${base}inquiry/add/listInqUserOut"><spring:message code="label.menu.inquiries" /></a></li>
+                <li class="dropdown"><a href="#"><spring:message code="label.menu.inquiries" /></a>
+                    <ul class="dropdown_menu">
+                        <li> <a href="${base}inquiry/add/listInquiryUserInput">
+                            <spring:message code="label.menu.inquiries.input" /></a>
+                        </li>
+                        <li> <a href="${base}inquiry/add/listInqUserOut">
+                            <spring:message code="label.menu.inquiries.output" /></a>
+                        </li>
+                    </ul>
+                </li>
                 <li><a href="${base}registrator/resource/addresource"><spring:message code="label.menu.addnewresource"/></a>
                 <li><a href="${base}administrator/users/search"><spring:message code="label.menu.search"/></a>
             </ul>

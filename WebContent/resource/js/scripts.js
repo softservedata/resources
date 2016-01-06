@@ -50,10 +50,10 @@ $(document).ready(function () {
 
     //Dropdown menu
     $(".dropdown").mouseenter(function(){
-        $(".dropdown_menu").slideDown(150);
+        $(this).find(".dropdown_menu").slideDown(150);
     });
 
     $(".dropdown").mouseleave(function(){
-        $(".dropdown_menu").slideUp(150);
+        $(this).find(".dropdown_menu").slideUp(150);
     });
 });
