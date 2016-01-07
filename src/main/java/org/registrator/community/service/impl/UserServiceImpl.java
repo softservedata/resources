@@ -78,38 +78,39 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void changeUserRole(String login, int role_id) {
-		User user = getUserByLogin(login);
-		user.setRoleId(role_id);
-		userRepository.save(user);
+//		User user = getUserByLogin(login);
+//		user.setRoleId(role_id);
+//		userRepository.save(user);
 	}
 
 	@Transactional
 	@Override
 	public UserDTO editUserInformation(UserDTO userDto) {
-		User user = getUserByLogin(userDto.getLogin());
-		user.setFirstName(userDto.getFirstName());
-		user.setLastName(userDto.getLastName());
-		user.setMiddleName(userDto.getMiddleName());
-		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getPassword());
-		user.setRoleId(user.getRoleId());
-		user.setStatus(checkUserStatus(userDto.getStatus()));
-		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
-				userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
-		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
-				userDto.getAddress().getDistrict(), userDto.getAddress().getCity(), userDto.getAddress().getStreet(),
-				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
-		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
-		if (result != 0) {
-			addressRepository.save(address);
-		}
-		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
-		if (result != 0) {
-			passportRepository.save(passport);
-		}
-		userRepository.save(user);
-
-		return userDto;
+//		User user = getUserByLogin(userDto.getLogin());
+//		user.setFirstName(userDto.getFirstName());
+//		user.setLastName(userDto.getLastName());
+//		user.setMiddleName(userDto.getMiddleName());
+//		user.setEmail(userDto.getEmail());
+//		user.setPassword(userDto.getPassword());
+//		user.setRoleId(user.getRoleId());
+//		user.setStatus(checkUserStatus(userDto.getStatus()));
+//		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
+//				userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
+//		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
+//				userDto.getAddress().getDistrict(), userDto.getAddress().getCity(), userDto.getAddress().getStreet(),
+//				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
+//		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
+//		if (result != 0) {
+//			addressRepository.save(address);
+//		}
+//		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
+//		if (result != 0) {
+//			passportRepository.save(passport);
+//		}
+//		userRepository.save(user);
+//
+//		return userDto;
+		return null;
 	}
 
 	@Transactional
@@ -134,36 +135,37 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDTO> getUserDtoList() {
 		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		List<User> userList = userRepository.findAll();
-		for (User user : userList) {
-			PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
-			PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
-					passportInfo.getPublishedByData());
-			Address address = user.getAddress().get(user.getAddress().size() - 1);
-			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
-					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
-			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-					user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
-					user.getStatus().toString(), addressDto, passportDto);
-			userDtoList.add(userDto);
-		}
+//		List<User> userList = userRepository.findAll();
+//		for (User user : userList) {
+//			PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+//			PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
+//					passportInfo.getPublishedByData());
+//			Address address = user.getAddress().get(user.getAddress().size() - 1);
+//			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+//					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+//			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+//					user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
+//					user.getStatus().toString(), addressDto, passportDto);
+//			userDtoList.add(userDto);
+//		}
 		return userDtoList;
 	}
 
 	@Transactional
 	@Override
 	public UserDTO getUserDto(String login) {
-		User user = getUserByLogin(login);
-		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
-		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
-				passportInfo.getPublishedByData());
-		Address address = user.getAddress().get(user.getAddress().size() - 1);
-		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
-				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
-		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
-				user.getStatus().toString(), addressDto, passportDto);
-		return userdto;
+//		User user = getUserByLogin(login);
+//		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+//		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
+//				passportInfo.getPublishedByData());
+//		Address address = user.getAddress().get(user.getAddress().size() - 1);
+//		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+//				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+//		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+//				user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
+//				user.getStatus().toString(), addressDto, passportDto);
+//		return userdto;
+		return null;
 	}
 
 	@Transactional
@@ -190,7 +192,7 @@ public class UserServiceImpl implements UserService {
 		// by default, every new user is given role "User" and status "Inactive"
 		// until it's changed by Admin
 		// Roles map: Admin - 1, Registrator - 2, User - 3
-		user.setRoleId(3);
+//		user.setRoleId(3);
 		user.setStatus(UserStatus.INACTIVE);
 		userRepository.saveAndFlush(user);
 		// passportRepository.saveAndFlush(passport);

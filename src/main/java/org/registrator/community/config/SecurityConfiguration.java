@@ -12,46 +12,44 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    @Qualifier("userDetailsService")
-    UserDetailsService userDetailsService;
+	@Autowired
+	@Qualifier("userDetailsService")
+	UserDetailsService userDetailsService;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	  auth.inMemoryAuthentication()
-        .withUser("registrator").password("registrator").roles("REGISTRATOR")
-      .and()
-	    .withUser("admin").password("admin").roles("ADMIN")
-      .and()
-	    .withUser("user").password("user").roles("USER");
+		auth.userDetailsService(userDetailsService);
+		System.out.println(userDetailsService);
+
 	}
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService);
-//    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
+		http.formLogin().loginPage("/login").permitAll()
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+				.failureUrl("/login?error").usernameParameter("j_username").passwordParameter("j_password").and()
+				.logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/login?logout").and().exceptionHandling()
+				.accessDeniedPage("/login").and()
 
-        http.formLogin().loginPage("/login").permitAll()
+				.authorizeRequests()
 
-                .failureUrl("/login?error")
-                .usernameParameter("j_username")
-                .passwordParameter("j_password")
-                .and()
-                .logout().logoutUrl("/logout").permitAll()
-                .logoutSuccessUrl("/login?logout").and().exceptionHandling().accessDeniedPage("/login").and()
+				.antMatchers("/registrator/resource/showAllResources")
+				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+				.antMatchers("/registrator/resource/searchOnMap")
+				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+				.antMatchers("/registrator/resourcetypes/show-res-types").access("hasRole('ROLE_REGISTRATOR')")
+				.antMatchers("/inquiry/add/listInquiryUserInput")
+				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+				.antMatchers("/inquiry/add/listInqUserOut")
+				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+				.antMatchers("/registrator/resource/addresource")
+				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+				.antMatchers("/administrator/users/search")
+				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
+				.antMatchers("/administrator/users/get-all-users").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/administrator/users/get-all-inactive-users").access("hasRole('ROLE_ADMIN')");
 
-                .authorizeRequests()
-                .antMatchers("/administrator/**").hasRole("ADMIN")
-                .antMatchers("/registrator/**").hasRole("REGISTRATOR")
-                .antMatchers("/inquiry/**").hasRole("USER").and()
-                .csrf().disable();
-
-
-    }
-
+	}
 
 }
