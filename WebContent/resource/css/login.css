@@ -32,11 +32,7 @@ input {
     right: 50px;
     display: inline-block;
 
-    border-top-color: rgb(225, 232, 237);
-    border-top-style: solid;
-    border-top-width: 1px;
-    background: #e1e8ed;
-    box-shadow: #e1e8ed;
+    
 }
 
 .registration-container{

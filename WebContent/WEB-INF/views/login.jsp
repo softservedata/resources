@@ -6,78 +6,61 @@
 
 
 
-<img src="resource/img/ukraine_logo.gif"/>
+<img src="resource/img/ukraine_logo.gif" />
 
 
 <div class="title">
-<div class="signin-container">
+	<div class="signin-container">
 
 
 
-  <fieldset id="login_fieldset" class="forms">
-  
-  <c:if test="${pageContext.request.userPrincipal.name == null}">
+		<fieldset id="login_fieldset" class="forms">
 
-	<form:form name='loginForm' id="loginForm" action="${pageContext.request.contextPath}/login" method='POST'>
+			<c:if test="${pageContext.request.userPrincipal.name == null}">
 
-		<table width="50%" border="0" align="center"
-			style="padding-bottom: 50px;">
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="color: blue; font-size: 20px;"><b>Login
-						Here </b></td>
-			</tr>
+				<form:form name='loginForm' id="loginForm"
+					action="${pageContext.request.contextPath}/login" method='POST'>
+
+					<div style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>
+
+					<div class="form-group">
+						<label for="inputEmail">Email</label> 
+						<input class="form-control"
+							id="j_username" name="j_username" type="text"
+							placeholder="Username" size="30" autocomplete="on"
+							autofocus="autofocus">
+
+					</div>
 
 
-			<tr>
-				<td width="35%">Username</td>
-				<td><input id="j_username" name="j_username" type="text"
-					placeholder="Username" size="30" autocomplete="on"
-					autofocus="autofocus"></td>
-			</tr>
-			<tr>
-				<td>Password</td>
-				<td><input id="j_password" name="j_password" type="password"
-					placeholder="Password" size="30" autocomplete="on"></td>
-			</tr>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
+					<div class="form-group">
+						<label for="inputPassword">Password</label> 
+						<input
+							class="form-control" id="j_password" name="j_password"
+							type="password" placeholder="Password" size="30"
+							autocomplete="on">
+					</div>
 
-			<tr>
-				<td>&nbsp;</td>
-				<td style="height: 20px;" class="tdLabelC">
-					<button id="subbtn">Sign In</button>
-				</td>
-			</tr>
-		</table>
 
-	</form:form>
-	
-</c:if>
-  
-       
-        
-        
-        
-  </fieldset>
-</div>
-<hr>
-<div class="registration-container">
-    <fieldset id="login_fieldset">
-    <p>Я новий користувач</p>
-    <p><a href="/registrator/register">Зареєструватися</a></p>
-    </fieldset>
-</div>
+
+					<div class="checkbox">
+						<label><input type="checkbox"> Remember me</label>
+					</div>
+					<button type="submit" class="btn btn-primary"
+						style="width: 100px; margin-left: 60px;">Login</button>
+					<a href="/registrator/register" class="btn btn-success"
+						role="button" style="width: 100px;">Register</a>
+
+
+				</form:form>
+			</c:if>
+		</fieldset>
+	</div>
+
+
+
+
+
 
 </div>
 
