@@ -1,12 +1,31 @@
+-- phpMyAdmin SQL Dump
+-- version 3.5.3
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jan 07, 2016 at 04:43 PM
+-- Server version: 5.5.25a
+-- PHP Version: 5.4.4
+
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+--
+-- Database: `registrator_db`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `address`
+--
 
 CREATE TABLE IF NOT EXISTS `address` (
   `address_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -22,6 +41,10 @@ CREATE TABLE IF NOT EXISTS `address` (
   KEY `FK_7rod8a71yep5vxasb0ms3osbg` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
+--
+-- Dumping data for table `address`
+--
+
 INSERT INTO `address` (`address_id`, `building`, `city`, `district`, `flat`, `postcode`, `region`, `street`, `user_id`) VALUES
 (1, '35', 'Львів', 'Галицький', '20', '79026', 'Львівська', 'Пастернака', 1),
 (2, '17', 'Хмельницький', 'Семенівський', '17', '29000', 'Хмельницька', 'Героїв Майдану', 2),
@@ -29,25 +52,35 @@ INSERT INTO `address` (`address_id`, `building`, `city`, `district`, `flat`, `po
 (4, '45', 'Львів', 'Залізничний', '78', '79026', 'Львівська', 'Стрийська', 4),
 (5, '34', 'Київ', 'Троєщина', '90', '4456767', 'Київська', 'Бандери', 5);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `area`
+--
+
 CREATE TABLE IF NOT EXISTS `area` (
   `area_id` int(11) NOT NULL AUTO_INCREMENT,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
   `order_number` int(11) NOT NULL,
-  `resource_id` int(11) NOT NULL,
+  `polygon_id` bigint(20) NOT NULL,
   PRIMARY KEY (`area_id`),
-  KEY `FK_j05enuc6gftyec9v9m07880bs` (`resource_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=261 ;
+  KEY `FK_iqi8xqpdy7godtnnhtbvsuq3h` (`polygon_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=273 ;
 
-INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `resource_id`) VALUES
-(5, 53.876, 30.01, 1, 2),
-(6, 63.55, 33.76, 2, 2),
-(7, 49.3552, 43.54, 3, 2),
-(8, 50.345, 24.07699, 4, 2),
-(9, 53.876, 30.01, 1, 3),
-(10, 63.55, 33.76, 2, 3),
-(11, 49.3552, 43.54, 3, 3),
-(12, 50.345, 24.07699, 4, 3),
+--
+-- Dumping data for table `area`
+--
+
+INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `polygon_id`) VALUES
+(5, 49.91754184754319, 24.21084593050182, 1, 2),
+(6, 49.9024188855169, 26.249633822590113, 2, 2),
+(7, 49.158718087297515, 26.2177737057209, 3, 2),
+(8, 49.14506496754859, 24.739013705402613, 4, 2),
+(9, 49.022741040596344, 24.524780306965113, 1, 3),
+(10, 49.030305067856254, 24.943359391763806, 2, 3),
+(11, 48.806139908078684, 24.964233431965113, 3, 3),
+(12, 48.77356871983263, 24.414917025715113, 4, 3),
 (14, 49.824805785820764, 24.02088761329651, 1, 4),
 (15, 49.818589914319574, 24.020270705223083, 2, 4),
 (16, 49.81786998450602, 24.024454951286316, 3, 4),
@@ -294,7 +327,25 @@ INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `resourc
 (257, 49.83790287789755, 24.015085995197296, 15, 13),
 (258, 49.83875397963245, 24.01673823595047, 16, 13),
 (259, 49.83947705836027, 24.015863835811615, 17, 13),
-(260, 49.839750372383826, 24.015890657901764, 18, 13);
+(260, 49.839750372383826, 24.015890657901764, 18, 13),
+(261, 49.89242267614535, 23.91826629638672, 1, 14),
+(262, 49.74666869146797, 23.91895294189453, 2, 14),
+(263, 49.74489390461096, 24.277381896972656, 3, 14),
+(264, 49.90215348414364, 24.26502227783203, 4, 14),
+(265, 49.80448010718857, 24.018521904945374, 1, 15),
+(266, 49.80481940007729, 24.015045762062073, 2, 15),
+(267, 49.803372195481934, 24.014734625816345, 3, 15),
+(268, 49.803302950158404, 24.01564657688141, 4, 15),
+(269, 49.80220193620765, 24.015442728996277, 5, 15),
+(270, 49.80221578559521, 24.01582896709442, 6, 15),
+(271, 49.80198034546755, 24.0178245306015, 7, 15),
+(272, 49.802077291541146, 24.017931818962097, 8, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `discrete_parameters`
+--
 
 CREATE TABLE IF NOT EXISTS `discrete_parameters` (
   `discrete_parameter_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -305,12 +356,22 @@ CREATE TABLE IF NOT EXISTS `discrete_parameters` (
   KEY `FK_itxbdpyec26wdkfoaltga8pau` (`resource_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
+--
+-- Dumping data for table `discrete_parameters`
+--
+
 INSERT INTO `discrete_parameters` (`discrete_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
 (1, 'периметер', 'м', 1),
 (2, 'площа', 'га', 1),
 (3, 'потужність', 'мВт', 2),
 (4, 'напруженість', 'мВт', 2),
 (11, 'площа', 'га', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inquiry_list`
+--
 
 CREATE TABLE IF NOT EXISTS `inquiry_list` (
   `inquiry_list_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -325,8 +386,18 @@ CREATE TABLE IF NOT EXISTS `inquiry_list` (
   KEY `FK_37qp17x0dnyms8oxyo33jigpb` (`from_user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
+--
+-- Dumping data for table `inquiry_list`
+--
+
 INSERT INTO `inquiry_list` (`inquiry_list_id`, `date`, `inquiry_type`, `to_user_id`, `resource_id`, `from_user_id`) VALUES
 (1, '2015-12-30 16:06:00', 'OUTPUT', 2, 2, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `linear_parameters`
+--
 
 CREATE TABLE IF NOT EXISTS `linear_parameters` (
   `linear_parameter_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -337,10 +408,20 @@ CREATE TABLE IF NOT EXISTS `linear_parameters` (
   KEY `FK_dv74cnpongab75t5q30ysncco` (`resource_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
+--
+-- Dumping data for table `linear_parameters`
+--
+
 INSERT INTO `linear_parameters` (`linear_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
 (1, 'cмуга радіочастот', 'МГц', 2),
 (2, 'широта діапазону', 'кГц', 2),
 (3, 'радіус дії', 'км', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `list_of_resouces`
+--
 
 CREATE TABLE IF NOT EXISTS `list_of_resouces` (
   `resources_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -357,7 +438,11 @@ CREATE TABLE IF NOT EXISTS `list_of_resouces` (
   KEY `FK_2bflnodo3qtvgos2ou0s9sp9` (`registrator_id`),
   KEY `FK_3dk2u1o6r3f41knbp4bw0u4e2` (`tome_id`),
   KEY `FK_764t63m3e5fl8seck12tyr8j` (`resource_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+
+--
+-- Dumping data for table `list_of_resouces`
+--
 
 INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifier`, `reason_inclusion`, `status`, `registrator_id`, `tome_id`, `resource_type_id`) VALUES
 (2, '2015-12-08 15:33:01', 'радіочастоти', '123555', 'Паспорт громадянина україни...', 'ACTIVE', 2, 1, 2),
@@ -371,7 +456,15 @@ INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifi
 (10, '2016-01-04 00:00:00', 'Дендрарій', '79000-007', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 4, 2, 1),
 (11, '2016-01-04 00:00:00', 'парк Піскові озера', '79000-008', 'волевиявлення людини;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1),
 (12, '2016-01-04 00:00:00', 'парк Імені Франка', '79000-009', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 4, 2, 1),
-(13, '2016-01-04 00:00:00', 'сад Собору святого Юра', '79000-010', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1);
+(13, '2016-01-04 00:00:00', 'сад Собору святого Юра', '79000-010', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1),
+(14, '2016-01-05 00:00:00', 'Радіо 24', '79000-1-001', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 4, 2, 2),
+(15, '2016-01-07 00:00:00', 'парк Богданівка', '79000-011', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `passport_data`
+--
 
 CREATE TABLE IF NOT EXISTS `passport_data` (
   `passport_data_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -383,12 +476,59 @@ CREATE TABLE IF NOT EXISTS `passport_data` (
   KEY `FK_b3ufslic16u2m3j35ksfp0ivb` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
+--
+-- Dumping data for table `passport_data`
+--
+
 INSERT INTO `passport_data` (`passport_data_id`, `number`, `published_by_data`, `seria`, `user_id`) VALUES
 (1, 2234, 'Львівський....', 'КС', 1),
 (2, 123456, 'Хмельницьким МВ УМВС України в Хмельницький області 01 січня 1997 року', 'КК', 2),
 (3, 123456, 'Стрийський МВ УМВС України в Львівській області 01 січня 1965 року', 'КК', 3),
 (4, 1122456, 'Львівський....', 'КС', 4),
 (5, 1126789, 'Київський....', 'КС', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `polygon`
+--
+
+CREATE TABLE IF NOT EXISTS `polygon` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `maxLat` double NOT NULL,
+  `maxLng` double NOT NULL,
+  `minLat` double NOT NULL,
+  `minLng` double NOT NULL,
+  `resource_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_pe123f6p6o4l1saqw3192lbkq` (`resource_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+
+--
+-- Dumping data for table `polygon`
+--
+
+INSERT INTO `polygon` (`id`, `maxLat`, `maxLng`, `minLat`, `minLng`, `resource_id`) VALUES
+(2, 49.91754184754319, 26.249633822590113, 49.14506496754859, 24.21084593050182, 2),
+(3, 49.030305067856254, 24.964233431965113, 48.77356871983263, 24.414917025715113, 3),
+(4, 49.82776288975754, 24.0322145819664, 49.81786998450602, 24.020270705223083, 4),
+(5, 49.830536416279834, 24.02985155582428, 49.82500650778075, 24.01808202266693, 5),
+(6, 49.82140722897276, 24.040676951408386, 49.81652700988103, 24.033638834953308, 6),
+(7, 49.83100701759922, 24.017183482646942, 49.82569864608306, 24.010601341724396, 7),
+(8, 49.834083114901524, 24.03218239545822, 49.832411873711294, 24.029274880886078, 8),
+(9, 49.81580012662576, 24.01112973690033, 49.81085703092696, 24.00186002254486, 9),
+(10, 49.83158142182773, 24.03243988752365, 49.83047413046795, 24.030637443065643, 10),
+(11, 49.825048036358154, 23.99975448846817, 49.82262201550723, 23.995135724544525, 11),
+(12, 49.84057376478728, 24.022682011127472, 49.836685015214144, 24.016164243221283, 12),
+(13, 49.83994065338674, 24.01673823595047, 49.83790287789755, 24.013315737247467, 13),
+(14, 49.90215348414364, 24.277381896972656, 49.74489390461096, 23.91826629638672, 14),
+(15, 49.80481940007729, 24.018521904945374, 49.80198034546755, 24.014734625816345, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `registration_number_of_the_resource`
+--
 
 CREATE TABLE IF NOT EXISTS `registration_number_of_the_resource` (
   `number_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -399,6 +539,12 @@ CREATE TABLE IF NOT EXISTS `registration_number_of_the_resource` (
   KEY `FK_2cirohw1jeueoif8ngmjl6jbt` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resource_discrete_values`
+--
+
 CREATE TABLE IF NOT EXISTS `resource_discrete_values` (
   `resource_discrete_value_id` int(11) NOT NULL AUTO_INCREMENT,
   `value` double NOT NULL,
@@ -407,7 +553,11 @@ CREATE TABLE IF NOT EXISTS `resource_discrete_values` (
   PRIMARY KEY (`resource_discrete_value_id`),
   KEY `FK_mo277omjo0v4jv8269f2lsaen` (`discrete_parameter_id`),
   KEY `FK_g9upwtpejnv2fd6o4hvsshcgn` (`resource_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ;
+
+--
+-- Dumping data for table `resource_discrete_values`
+--
 
 INSERT INTO `resource_discrete_values` (`resource_discrete_value_id`, `value`, `discrete_parameter_id`, `resource_id`) VALUES
 (3, 100, 3, 2),
@@ -433,7 +583,18 @@ INSERT INTO `resource_discrete_values` (`resource_discrete_value_id`, `value`, `
 (23, 1299.1, 1, 12),
 (24, 9.43888, 2, 12),
 (25, 802.1, 1, 13),
-(26, 3.1126, 2, 13);
+(26, 3.1126, 2, 13),
+(27, 100, 3, 14),
+(28, 100, 4, 14),
+(29, 42728.62051, 11, 14),
+(30, 791.4, 1, 15),
+(31, 6.20849, 2, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resource_linear_values`
+--
 
 CREATE TABLE IF NOT EXISTS `resource_linear_values` (
   `resource_linear_param_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -444,7 +605,11 @@ CREATE TABLE IF NOT EXISTS `resource_linear_values` (
   PRIMARY KEY (`resource_linear_param_id`),
   KEY `FK_5s1a0lk9h75mnqyiq6g1wu5wp` (`linear_parameter_id`),
   KEY `FK_eyg8asvvonj51aepmy6y8fk9w` (`resource_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `resource_linear_values`
+--
 
 INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value`, `minimal_value`, `linear_parameter_id`, `resource_id`) VALUES
 (1, 2483.5, 2400, 1, 2),
@@ -452,7 +617,16 @@ INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value
 (3, 2700, 2500, 1, 2),
 (4, 2483.5, 1100, 3, 2),
 (5, 5350, 1110, 2, 2),
-(6, 2100, 9999, 1, 2);
+(6, 2100, 9999, 1, 2),
+(7, 102.4, 102.4, 1, 14),
+(8, 102, 100, 2, 14),
+(9, 15, 10, 3, 14);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resource_parameters`
+--
 
 CREATE TABLE IF NOT EXISTS `resource_parameters` (
   `resource_parameters_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -463,6 +637,12 @@ CREATE TABLE IF NOT EXISTS `resource_parameters` (
   KEY `FK_1unvdmfastc818i00xvmglchl` (`resource_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resource_types`
+--
+
 CREATE TABLE IF NOT EXISTS `resource_types` (
   `resource_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -470,9 +650,19 @@ CREATE TABLE IF NOT EXISTS `resource_types` (
   UNIQUE KEY `UK_5fwgdwi603f06mf65x5fhv42a` (`type_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `resource_types`
+--
+
 INSERT INTO `resource_types` (`resource_type_id`, `type_name`) VALUES
 (1, 'земельний'),
 (2, 'радіочастотний');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
 
 CREATE TABLE IF NOT EXISTS `roles` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -482,10 +672,20 @@ CREATE TABLE IF NOT EXISTS `roles` (
   UNIQUE KEY `UK_q9npl2ty4pngm2cussiul2qj5` (`type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
+--
+-- Dumping data for table `roles`
+--
+
 INSERT INTO `roles` (`role_id`, `description`, `type`) VALUES
 (1, 'description', 'ADMIN'),
 (2, 'description', 'REGISTRATOR'),
 (3, 'description', 'USER');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tomes`
+--
 
 CREATE TABLE IF NOT EXISTS `tomes` (
   `tome_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -496,9 +696,19 @@ CREATE TABLE IF NOT EXISTS `tomes` (
   KEY `FK_pnsd367apavsotihxdt51mo7v` (`registrator_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `tomes`
+--
+
 INSERT INTO `tomes` (`tome_id`, `identifier`, `registrator_id`) VALUES
 (1, '12345', 2),
 (2, '6789', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
 
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -515,6 +725,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `UK_ow0gan20590jrb00upg3va2fn` (`login`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
+--
+-- Dumping data for table `users`
+--
+
 INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `middle_name`, `password`, `role_id`, `status`) VALUES
 (1, 'oless.@gmail.com', 'Олександр', 'Архилюк', 'oleks', 'Олександрович', 'pass1', 1, 'UNBLOCK'),
 (2, 'petro.@gmail.com', 'Петро', 'Петренко', 'petro', 'Петрович', 'pass2', 2, 'UNBLOCK'),
@@ -523,48 +737,6 @@ INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `mi
 (5, 'oleh.@gmail.com', 'Олег', 'Василюк', 'oleh', 'Олеговчич', 'pass5', 3, 'INACTIVE');
 
 
-ALTER TABLE `address`
-  ADD CONSTRAINT `FK_7rod8a71yep5vxasb0ms3osbg` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
-ALTER TABLE `area`
-  ADD CONSTRAINT `FK_j05enuc6gftyec9v9m07880bs` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`);
-
-ALTER TABLE `discrete_parameters`
-  ADD CONSTRAINT `FK_itxbdpyec26wdkfoaltga8pau` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`);
-
-ALTER TABLE `inquiry_list`
-  ADD CONSTRAINT `FK_37qp17x0dnyms8oxyo33jigpb` FOREIGN KEY (`from_user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `FK_cqtn406s2sbvribvsveeln8k1` FOREIGN KEY (`to_user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `FK_j8gyy6aabddkoxp4jivw8fini` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`);
-
-ALTER TABLE `linear_parameters`
-  ADD CONSTRAINT `FK_dv74cnpongab75t5q30ysncco` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`);
-
-ALTER TABLE `list_of_resouces`
-  ADD CONSTRAINT `FK_764t63m3e5fl8seck12tyr8j` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`),
-  ADD CONSTRAINT `FK_2bflnodo3qtvgos2ou0s9sp9` FOREIGN KEY (`registrator_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `FK_3dk2u1o6r3f41knbp4bw0u4e2` FOREIGN KEY (`tome_id`) REFERENCES `tomes` (`tome_id`);
-
-ALTER TABLE `passport_data`
-  ADD CONSTRAINT `FK_b3ufslic16u2m3j35ksfp0ivb` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
-ALTER TABLE `registration_number_of_the_resource`
-  ADD CONSTRAINT `FK_2cirohw1jeueoif8ngmjl6jbt` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
-ALTER TABLE `resource_discrete_values`
-  ADD CONSTRAINT `FK_g9upwtpejnv2fd6o4hvsshcgn` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`),
-  ADD CONSTRAINT `FK_mo277omjo0v4jv8269f2lsaen` FOREIGN KEY (`discrete_parameter_id`) REFERENCES `discrete_parameters` (`discrete_parameter_id`);
-
-ALTER TABLE `resource_linear_values`
-  ADD CONSTRAINT `FK_eyg8asvvonj51aepmy6y8fk9w` FOREIGN KEY (`resource_id`) REFERENCES `list_of_resouces` (`resources_id`),
-  ADD CONSTRAINT `FK_5s1a0lk9h75mnqyiq6g1wu5wp` FOREIGN KEY (`linear_parameter_id`) REFERENCES `linear_parameters` (`linear_parameter_id`);
-
-ALTER TABLE `resource_parameters`
-  ADD CONSTRAINT `FK_1unvdmfastc818i00xvmglchl` FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types` (`resource_type_id`),
-  ADD CONSTRAINT `FK_tc2co2gdknt0kyt43e0wwejh9` FOREIGN KEY (`parameter_id`) REFERENCES `linear_parameters` (`linear_parameter_id`);
-
-ALTER TABLE `tomes`
-  ADD CONSTRAINT `FK_pnsd367apavsotihxdt51mo7v` FOREIGN KEY (`registrator_id`) REFERENCES `users` (`user_id`);
 SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

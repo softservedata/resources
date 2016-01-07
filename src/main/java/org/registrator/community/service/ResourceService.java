@@ -1,5 +1,6 @@
 package org.registrator.community.service;
 
+import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.entity.Area;
 import org.registrator.community.entity.Resource;
@@ -22,7 +23,11 @@ public interface ResourceService {
     
     Set<String> getDescriptionBySearchTag(String searchTag);
 
-    List<ResourceDTO> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng);
+    Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType);
+
+    Set<String> getAllByPoint(Double lat, Double lng);
+
+    List<PolygonJSON> createPolygonJSON (String identifier);
     
 }
 

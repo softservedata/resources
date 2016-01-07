@@ -6,14 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.registrator.community.dao.AreaRepository;
-import org.registrator.community.dao.DiscreteParameterRepository;
-import org.registrator.community.dao.LinearParameterRepository;
-import org.registrator.community.dao.ResourceDiscreteValueRepository;
-import org.registrator.community.dao.ResourceLinearValueRepository;
-import org.registrator.community.dao.ResourceRepository;
-import org.registrator.community.dao.ResourceTypeRepository;
-import org.registrator.community.dao.TomeRepository;
+import org.registrator.community.dao.*;
+import org.registrator.community.dto.JSON.PointJSON;
+import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
@@ -21,13 +16,7 @@ import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceDiscreteValueDTO;
 import org.registrator.community.dto.ResourceLinearValueDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
-import org.registrator.community.entity.Area;
-import org.registrator.community.entity.DiscreteParameter;
-import org.registrator.community.entity.LinearParameter;
-import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceDiscreteValue;
-import org.registrator.community.entity.ResourceLinearValue;
-import org.registrator.community.entity.ResourceType;
+import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +33,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     ResourceTypeRepository resourceTypeRepository;
+
+    @Autowired
+    PolygonRepository polygonRepository;
 
     @Autowired
     AreaRepository areaRepository;
@@ -73,13 +65,47 @@ public class ResourceServiceImpl implements ResourceService {
         resourceEntity.setType(resourceType);
         resourceEntity.setDate(resourceDTO.getDate());
         resourceEntity = resourceRepository.save(resourceEntity);
+
+//        Setter for resourceDTO???
         resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() +
-                resourceEntity.getRegistrator().getMiddleName() +resourceEntity.getRegistrator().getLastName());
+                resourceEntity.getRegistrator().getMiddleName() +
+                resourceEntity.getRegistrator().getLastName());
+
         List<Area> areas = new ArrayList<Area>();
         for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
+
+            Polygon polygonEntity = new Polygon();
+            Double minLat = 90.0;
+            Double maxLat = -90.0;
+            Double minLng = 180.0;
+            Double maxLng = -180.0;
+
+            for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
+                if(minLat > point.getDecimalLatitude()) {
+                    minLat = point.getDecimalLatitude();
+                }
+                if(maxLat < point.getDecimalLatitude()) {
+                    maxLat = point.getDecimalLatitude();
+                }
+                if(minLng > point.getDecimalLongitude()) {
+                    minLng = point.getDecimalLongitude();
+                }
+                if(maxLng < point.getDecimalLongitude()) {
+                    maxLng = point.getDecimalLongitude();
+                }
+            }
+
+            polygonEntity.setMinLat(minLat);
+            polygonEntity.setMaxLat(maxLat);
+            polygonEntity.setMinLng(minLng);
+            polygonEntity.setMaxLng(maxLng);
+            polygonEntity.setResource(resourceEntity);
+
+            polygonEntity = polygonRepository.save(polygonEntity);
+
             for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
                 Area area = new Area();
-                area.setResource(resourceEntity);
+                area.setPolygon(polygonEntity);
                 area.setOrderNumber(point.getOrderNumber());
                 area.setLatitude(point.getDecimalLatitude());
                 area.setLongitude(point.getDecimalLongitude());
@@ -135,7 +161,11 @@ public class ResourceServiceImpl implements ResourceService {
                 findByResource(resourceEntity);
         List<ResourceDiscreteValue> discreteValues = discreteValueRepository.
                 findByResource(resourceEntity);
-        List<Area> areas = areaRepository.findByResource(resourceEntity);
+        List<Polygon> polygons = polygonRepository.findByResource(resourceEntity);
+        List<Area> areas = new ArrayList<>();
+        for (Polygon polygon : polygons) {
+            areas.addAll(areaRepository.findByPolygon(polygon));
+        }
 
         ResourceDTO resourceDTO = new ResourceDTO();
         resourceDTO.setDescription(resourceEntity.getDescription());
@@ -150,7 +180,7 @@ public class ResourceServiceImpl implements ResourceService {
         List<ResourceLinearValueDTO> resLinDTOs = new ArrayList<ResourceLinearValueDTO>();
         List<ResourceDiscreteValueDTO> resDiscDTOs = new ArrayList<ResourceDiscreteValueDTO>();
         ResourceAreaDTO resourceArea = new ResourceAreaDTO();
-        List<PoligonAreaDTO> poligons = new ArrayList<PoligonAreaDTO>();
+        List<PoligonAreaDTO> poligonsDTO = new ArrayList<PoligonAreaDTO>();
 
         for(LinearParameter lp :linearParameters) {
             ResourceLinearValueDTO resLinDTO = new ResourceLinearValueDTO();
@@ -199,8 +229,8 @@ public class ResourceServiceImpl implements ResourceService {
             pointDTOs.add(pointDTO);
             poligon.setPoints(pointDTOs);
         }
-        poligons.add(poligon);
-        resourceArea.setPoligons(poligons);
+        poligonsDTO.add(poligon);
+        resourceArea.setPoligons(poligonsDTO);
         resourceDTO.setResourceArea(resourceArea);
 
         return resourceDTO;
@@ -222,17 +252,64 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 
     @Override
-    public List<ResourceDTO> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng) {
-        List<ResourceDTO> resourcesDTO = new ArrayList<>();
-        Set<Resource> resources = new HashSet<>();
-        List<Area> areas = areaRepository.findByLatLngLimits(minLat, maxLat, minLng, maxLng);
-        for (Area area : areas) {
-            resources.add(area.getResource());
+    public Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType) {
+//        List<ResourceDTO> resourcesDTO = new ArrayList<>();
+        Set<String> identifiers = new HashSet<>();
+        List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng);
+        for (Polygon polygon : polygons) {
+            if(resType.equals(polygon.getResource().getType().getTypeName())){
+                identifiers.add(polygon.getResource().getIdentifier());
+            }
         }
-        for (Resource resource : resources) {
-            resourcesDTO.add(findByIdentifier(resource.getIdentifier()));
+//        for (Resource resource : resources) {
+//            resourcesDTO.add(findByIdentifier(resource.getIdentifier()));
+//        }
+        return identifiers;
+    }
+
+    @Override
+    public Set<String> getAllByPoint(Double lat, Double lng) {
+        Set<String> identifiers = new HashSet<>();
+//        Set<Resource> resources = new HashSet<>();
+        List<Polygon> polygons = polygonRepository.findByPoint(lat, lng);
+        for (Polygon polygon : polygons) {
+            identifiers.add(polygon.getResource().getIdentifier());
         }
-        return resourcesDTO;
+//        for (Resource resource : resources) {
+//            resourcesDTO.add(findByIdentifier(resource.getIdentifier()));
+//        }
+        return identifiers;
+    }
+
+    @Override
+    public List<PolygonJSON> createPolygonJSON(String identifier) {
+        List<PolygonJSON> polygonsJSON = new ArrayList<>();
+
+        Resource resource = resourceRepository.findByIdentifier(identifier);
+        List<Polygon> polygons = polygonRepository.findByResource(resource);
+
+        for (Polygon polygon : polygons) {
+            PolygonJSON polygonJSON = new PolygonJSON();
+            List<PointJSON> points = new ArrayList<>();
+            List<Area> areas = areaRepository.findByPolygon(polygon);
+
+            for (Area area : areas) {
+                PointJSON point = new PointJSON();
+                point.setLatitude(area.getLatitude());
+                point.setLongitude(area.getLongitude());
+                point.setPoint_order(area.getOrderNumber());
+                points.add(point);
+            }
+
+            polygonJSON.setResourceDescription(resource.getDescription());
+            polygonJSON.setIdentifier(resource.getIdentifier());
+            polygonJSON.setResourceType(resource.getType().getTypeName());
+            polygonJSON.setPoints(points);
+
+            polygonsJSON.add(polygonJSON);
+
+        }
+        return polygonsJSON;
     }
 }
 

@@ -9,9 +9,9 @@ function positionFooter() {
 
     var newBodyHeight = ($(window).height()-headerHeight-menuHeight-footerHeight-5);
 
-    console.log("Header: "+headerHeight+"Menu: "+menuHeight+" Body: "+body.height()
-        + " footer: " + footerHeight +" new body: "+newBodyHeight
-        + " window: "+$(window).height());
+    //console.log("Header: "+headerHeight+"Menu: "+menuHeight+" Body: "+body.height()
+    //    + " footer: " + footerHeight +" new body: "+newBodyHeight
+    //    + " window: "+$(window).height());
 
     //if ( ($("body").children(".container").height()+footerHeight) < $(window).height()) {
     if ( (body.height()) < newBodyHeight+5) {

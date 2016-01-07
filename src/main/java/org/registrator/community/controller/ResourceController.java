@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.google.gson.Gson;
 import org.registrator.community.dao.AreaRepository;
+import org.registrator.community.dao.PolygonRepository;
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.JSON.PointJSON;
@@ -295,41 +296,37 @@ public class ResourceController {
         return suggestions;
     }
 
-    @Autowired
-    private AreaRepository areaRepository;
-    @Autowired
-    private ResourceRepository resourceRepository;
-
     @ResponseBody
     @RequestMapping(value = "/getResourcesByAreaLimits", method = RequestMethod.POST)
     public String showAllResourcesByAreaLimits(@RequestParam("minLat") Double minLat,
                                            @RequestParam("maxLat") Double maxLat,
                                            @RequestParam("minLng") Double minLng,
                                            @RequestParam("maxLng") Double maxLng,
+                                           @RequestParam("resType") String resType,
                                            Model model) {
-        List<ResourceDTO> resourceDTOs = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng);
-
+        Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType);
         List<PolygonJSON> polygons = new ArrayList<>();
-        for (ResourceDTO resourceDTO : resourceDTOs) {
-            PolygonJSON polygon = new PolygonJSON();
-            List<Area> areas = areaRepository.findByResource(resourceRepository.findByIdentifier(resourceDTO.getIdentifier()));
-            List<PointJSON> points = new ArrayList<>();
 
-            for (Area area : areas) {
-                PointJSON point = new PointJSON();
-                point.setLatitude(area.getLatitude());
-                point.setLongitude(area.getLongitude());
-                point.setPoint_order(area.getOrderNumber());
-                points.add(point);
-            }
-
-            polygon.setResourceDescription(resourceDTO.getDescription());
-            polygon.setIdentifier(resourceDTO.getIdentifier());
-            polygon.setResourceType(resourceDTO.getResourceType().getTypeName());
-            polygon.setPoints(points);
-
-            polygons.add(polygon);
+        for (String identifier : identifiers) {
+            polygons.addAll(resourceService.createPolygonJSON(identifier));
         }
+
+        Gson gson = new Gson();
+        return gson.toJson(polygons);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getResourcesByPoint", method = RequestMethod.POST)
+    public String showAllResourcesByAreaLimits(@RequestParam("lat") Double lat,
+                                               @RequestParam("lng") Double lng,
+                                               Model model) {
+        Set<String> identifiers = resourceService.getAllByPoint(lat, lng);
+        List<PolygonJSON> polygons = new ArrayList<>();
+
+        for (String identifier : identifiers) {
+            polygons.addAll(resourceService.createPolygonJSON(identifier));
+        }
+
         Gson gson = new Gson();
         return gson.toJson(polygons);
     }
@@ -338,4 +335,5 @@ public class ResourceController {
     public String searchOnMap(Model model) {
         return "searchOnMap";
     }
+
 }

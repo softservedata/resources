@@ -155,6 +155,14 @@ function initialize() {
 
 var polygons = [];
 $("#gmaps-show-res").click(function(){
+    var resType = $("#resourcesTypeSelect").val();
+
+    if (resType == "") {
+        $("#resourcesTypeSelect").focus();
+        alert("Будь ласка, оберіть підклас об'єкту.");
+        return false;
+    }
+
     var maxLat = map.getBounds().getNorthEast().lat();
     var minLat = map.getBounds().getSouthWest().lat();
     var maxLng = map.getBounds().getNorthEast().lng();
@@ -173,7 +181,8 @@ $("#gmaps-show-res").click(function(){
             "minLat" : minLat,
             "maxLat" : maxLat,
             "minLng" : minLng,
-            "maxLng" : maxLng},
+            "maxLng" : maxLng,
+            "resType": resType},
         type: "POST",
         url: baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits",
         timeout: 20000,
@@ -200,6 +209,10 @@ $("#gmaps-show-res").click(function(){
                 polygons.push(polygon);
             }
             $("#dark_bg").hide();
+        },
+        error: function() {
+            $("#dark_bg").hide();
+            alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
         }
     });
 

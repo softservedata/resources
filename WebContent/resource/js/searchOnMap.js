@@ -161,6 +161,12 @@ $("#searchOnMapButton").click( function() {
 
     var myLatLng = new google.maps.LatLng(searchLat, searchLng);
 
+    // Clear out the old markers.
+    markers.forEach(function (marker) {
+        marker.setMap(null);
+    });
+    markers = [];
+
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: map
@@ -175,12 +181,10 @@ var polygons = [];
 function searchOnMap(latLng, marker) {
 
     map.setCenter(latLng);
-    map.setZoom(16);
+    map.setZoom(13);
 
-    var maxLat = map.getBounds().getNorthEast().lat();
-    var minLat = map.getBounds().getSouthWest().lat();
-    var maxLng = map.getBounds().getNorthEast().lng();
-    var minLng = map.getBounds().getSouthWest().lng();
+    var lat = latLng.lat();
+    var lng = latLng.lng();
 
     if (polygons.length > 0) {
         for (var i = 0; i < polygons.length; i++) {
@@ -192,25 +196,53 @@ function searchOnMap(latLng, marker) {
     $("#dark_bg").show();
     $.ajax({
         data: {
-            "minLat": minLat,
-            "maxLat": maxLat,
-            "minLng": minLng,
-            "maxLng": maxLng
+            "lat": lat,
+            "lng": lng
         },
         type: "POST",
-        url: baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits",
+        url: baseUrl.toString() + "/registrator/resource/getResourcesByPoint",
         timeout: 20000,
         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         dataType: 'json',
         success: function (data) {
+            //Function add additional 0 in the beginning of string to the @max length
+            function pad (str, max) {
+                str = str.toString();
+                return str.length < max ? pad("0" + str, max) : str;
+            }
+
+            function changeFillColor(color) {
+                color = color.substr(1);
+                var number = parseInt(color,16);
+                number +=100000;
+                color = number.toString(16);
+                color = pad(color,6);
+                console.log("New color: #"+color);
+                return "#"+color;
+            }
+
             var infoWindowContent = "<table id='infowindow_table'><tr><th>Опис</th><th>Підклас</th><th></th></tr>";
             var contentString ="";
+
+            var color = "#000000";
+            var resTypes = [];
+
+            var bounds = new google.maps.LatLngBounds();
+
             for (var i = 0; i < data.length; i++) {
 
                 var polygonPath = [];
                 var points = data[i].points;
                 for (var j = 0; j < points.length; j++) {
-                    polygonPath.push(new google.maps.LatLng(points[j].latitude, points[j].longitude));
+                    var myLatLng = new google.maps.LatLng(points[j].latitude, points[j].longitude);
+                    polygonPath.push(myLatLng);
+                    bounds.extend(myLatLng);
+                }
+
+                //Changing fill color depending on resource type
+                if ($.inArray(data[i].resourceType, resTypes) == (-1)) {
+                    resTypes.push(data[i].resourceType);
+                    color = changeFillColor(color);
                 }
 
                 var polygon = new google.maps.Polygon({
@@ -218,9 +250,8 @@ function searchOnMap(latLng, marker) {
                     strokeColor: "#FF0000", // Цвет обводки
                     strokeOpacity: 0.8, // Прозрачность обводки
                     strokeWeight: 2, // Ширина обводки
-                    fillColor: "#0000FF", // Цвет заливки
-                    fillOpacity: 0.4, // Прозрачность заливки
-                    map: map
+                    fillColor: color, // Цвет заливки
+                    fillOpacity: 0.4 // Прозрачность заливки
                 });
                 polygons.push(polygon);
 
@@ -231,11 +262,16 @@ function searchOnMap(latLng, marker) {
                         "<td>"+ data[i].resourceType +"</td>"+
                         "<td><a href='"+baseUrl.toString() + "/registrator/resource/get/"+data[i].identifier+"'><i>Детальніше</i></a> </td>"+
                         "</tr>";
+                    polygon.setMap(map);
                 }
             }
 
+
+
             if (contentString.length >0) {
                 infoWindowContent +=contentString+"</table>";
+                //Zoom map to show all resources, which displayed
+                map.fitBounds(bounds);
             }
             else {
                 infoWindowContent = "<div>В цій точці ще нема зареєстрованих ресурсів</div>"
