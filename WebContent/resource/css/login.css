@@ -67,9 +67,3 @@ input {
      left: 100px;
      position: absolute;
 }
-
-#footer {
-    bottom: 10px;
-    align: center;
-    border-top: solid 1px black;
-}
