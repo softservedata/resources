@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.failureUrl("/login?error").usernameParameter("j_username").passwordParameter("j_password").and()
 				.logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/login?logout").and().exceptionHandling()
 				.accessDeniedPage("/login")
-			
+				
 				.and()
 				.authorizeRequests()
 				.antMatchers("/registrator/resource/showAllResources")
