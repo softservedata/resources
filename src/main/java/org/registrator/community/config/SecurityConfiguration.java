@@ -1,13 +1,18 @@
 package org.registrator.community.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -16,6 +21,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Qualifier("userDetailsService")
 	UserDetailsService userDetailsService;
 
+	 @Autowired
+	 DataSource dataSource;
+	
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
@@ -30,10 +39,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 				.failureUrl("/login?error").usernameParameter("j_username").passwordParameter("j_password").and()
 				.logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/login?logout").and().exceptionHandling()
-				.accessDeniedPage("/login").and()
-
+				.accessDeniedPage("/login")
+			
+				.and()
 				.authorizeRequests()
-
 				.antMatchers("/registrator/resource/showAllResources")
 				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 				.antMatchers("/registrator/resource/searchOnMap")
@@ -48,8 +57,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/administrator/users/search")
 				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
 				.antMatchers("/administrator/users/get-all-users").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/administrator/users/get-all-inactive-users").access("hasRole('ROLE_ADMIN')");
+				.antMatchers("/administrator/users/get-all-inactive-users").access("hasRole('ROLE_ADMIN')")
+		        .and().rememberMe().rememberMeParameter("_spring_security_remember_me").tokenRepository(persistentTokenRepository()).tokenValiditySeconds(87400) 
+				;
 
 	}
+	
+	
+	@Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepositoryImpl = new JdbcTokenRepositoryImpl();
+        tokenRepositoryImpl.setDataSource(dataSource);
+        return tokenRepositoryImpl;
+    }
+	
+	
 
 }
