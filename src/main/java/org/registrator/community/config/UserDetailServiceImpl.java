@@ -41,7 +41,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	
 	
 	private User buildUserForAuthentication(org.registrator.community.entity.User userEntity, List<GrantedAuthority> authorities) {
-		return new User(userEntity.getFirstName()+"  "+userEntity.getLastName(), userEntity.getPassword(), true, true, true, true, authorities);
+		//return new User(userEntity.getFirstName()+"  "+userEntity.getLastName(), userEntity.getPassword(), true, true, true, true, authorities);
+		return new User(userEntity.getLogin(), userEntity.getPassword(), authorities);		
 	}
 		
 	

@@ -31,6 +31,9 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
     @Column(name = "published_by_data", nullable = false)
     private String published_by_data;
     
+    @Column(name = "comment")
+    private String comment;
+    
     public PassportInfo() {
     	
     }
@@ -80,6 +83,14 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 
 	public void setPublishedByData(String published_by_data) {
 		this.published_by_data = published_by_data;
+	}
+	
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	@Override

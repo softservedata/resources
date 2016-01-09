@@ -11,11 +11,11 @@ import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.UserStatusDTO;
+import org.registrator.community.dto.WillDocumentDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
-import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
-import org.registrator.community.enumeration.RoleType;
+import org.registrator.community.entity.WillDocument;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,18 +154,29 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public UserDTO getUserDto(String login) {
-//		User user = getUserByLogin(login);
-//		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
-//		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
-//				passportInfo.getPublishedByData());
-//		Address address = user.getAddress().get(user.getAddress().size() - 1);
-//		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
-//				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
-//		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-//				user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
-//				user.getStatus().toString(), addressDto, passportDto);
-//		return userdto;
-		return null;
+		User user = getUserByLogin(login);
+		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
+				passportInfo.getPublishedByData());
+		if(passportInfo.getComment() != null) {
+			passportDto.setComment(passportInfo.getComment());
+		}
+		Address address = user.getAddress().get(user.getAddress().size() - 1);
+		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+				user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
+				user.getStatus().toString(), addressDto, passportDto);
+		if(!user.getWillDocument().isEmpty()) {
+			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size()-1);
+			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
+			willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
+			if(willDocument.getComment() != null) {
+				willDocumentDTO.setComment(willDocument.getComment());
+			}
+			userdto.setWillDocument(willDocumentDTO);
+		}		
+		return userdto;
 	}
 
 	@Transactional

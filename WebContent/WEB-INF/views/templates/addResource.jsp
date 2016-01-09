@@ -27,9 +27,15 @@
 <link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
 
 
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script> 
 $(document).ready(function() {
-	
+ 	if( "${user.willDocument}" === "") {
+		$('#will').attr('disabled', 'disabled');		
+	}
+	if( "${user.passport}" === "") {
+		$('#pass').attr('disabled', 'disabled');		
+	} 
 	
     $(".checkbox input").click(function(){
         $("#reasonInclusion").text('');
@@ -39,12 +45,23 @@ $(document).ready(function() {
         		 var seria = "${user.passport.seria} " + "${user.passport.number}";
         		 var name = "${user.firstName} " + "${user.middleName} " +"${user.lastName}";
         		 var published ="${user.passport.published_by_data}";
-        		$("#reasonInclusion").append("паспорт громадянина України " 
-        				+ seria +", виданий на ім’я " + name + " " + published + ";\n");        		
+        		 var passportInfo = "паспорт громадянина України " 
+     				+ seria +", виданий на ім’я " + name + " " + published;       		
+        		if("${user.passport.comment}" !== "") {
+        			var comment ="${user.passport.comment}";
+        			passportInfo = passportInfo + "; " + comment;
+        		}
+        		$("#reasonInclusion").append(passportInfo + ";\n");
         	}
-        	 if(id === "will") {        		 
-        		 var document = "волевиявлення людини";
-        		$("#reasonInclusion").append(document + ";\n");        		
+        	if(id === "will") {
+        		var date = '${user.willDocument.accessionDate}';
+        		var stringDate = $.datepicker.formatDate('dd.mm.yy', new Date(date));
+        		var willDocument = "документ волевиявлення від " + stringDate;
+        		if("${user.willDocument.comment}" !== "") {
+        			var comment ="${user.willDocument.comment}";
+        			willDocument = willDocument + "; " + comment;
+        		}
+        		$("#reasonInclusion").append( willDocument+ ";\n");        		
         	}
         	 else if(id === "tytul"){
         		 var inputString = "титул власності на природні ресурси України від 02 квітня 2015 року;";

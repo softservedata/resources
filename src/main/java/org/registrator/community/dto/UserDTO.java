@@ -17,6 +17,7 @@ public class UserDTO implements Serializable {
 	private String status;
 	private AddressDTO address;
 	private PassportDTO passport;
+	private WillDocumentDTO willDocument;
 
 	public UserDTO(String firstName, String lastName, String middleName,String role, String login, String password,
 				   String email, String status, AddressDTO address, PassportDTO passport) {
@@ -124,7 +125,15 @@ public class UserDTO implements Serializable {
 	public void setPassport(PassportDTO passport) {
 		this.passport = passport;
 	}
-
+	
+	public WillDocumentDTO getWillDocument() {
+		return willDocument;
+	}
+	public void setWillDocument(WillDocumentDTO willDocument) {
+		this.willDocument = willDocument;
+	}
+	
+	
 	@Override
 	public String toString() {
 		String result;

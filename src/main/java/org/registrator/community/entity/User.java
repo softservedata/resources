@@ -65,6 +65,10 @@ public class User implements Serializable {
 	@JsonManagedReference
 	private List<PassportInfo> passport = new ArrayList<PassportInfo>();
 	
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
+	@JsonManagedReference
+	private List<WillDocument> willDocument = new ArrayList<WillDocument>();
+	
 	public User() {
 		
 	}
@@ -181,5 +185,13 @@ public class User implements Serializable {
 	public void setPassport(List<PassportInfo> passport) {
 		this.passport=passport;
 	}
-	
+
+	public List<WillDocument> getWillDocument() {
+		return willDocument;
+	}
+
+	public void setWillDocument(List<WillDocument> willDocument) {
+		this.willDocument = willDocument;
+	}
+		
 }
