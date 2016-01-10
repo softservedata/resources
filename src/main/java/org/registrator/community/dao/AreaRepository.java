@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface AreaRepository extends JpaRepository<Area, Integer>{
-	
-	@Query("Select a"+
-			" From Area a" +
-			" Where a.resource = :resource" )
-	List<Area> findByResource(@Param("resource")Resource resource);
+    
+    @Query("Select a"+
+            " From Area a" +
+            " Where a.resource = :resource" )
+    List<Area> findByResource(@Param("resource")Resource resource);
 
 }

@@ -1,6 +1,7 @@
 package org.registrator.community.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
@@ -18,5 +19,8 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
     List<Resource> findByType(ResourceType type);
 
     long count();
+    
+    @Query("SELECT r.description FROM Resource r WHERE r.description LIKE :searchTerm%")
+    public Set<String> findDescriptionsLikeProposed(@Param("searchTerm") String searchTerm);
 
 }

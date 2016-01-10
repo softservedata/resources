@@ -2,17 +2,17 @@ package org.registrator.community.controller;
 
 import java.util.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDiscreteValueDTO;
-import org.registrator.community.dto.ResourceLinearValueDTO;
+import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.*;
 import org.registrator.community.dto.validator.ResourceDTOValidator;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
+import org.registrator.community.service.UserService;
 import org.registrator.community.service.impl.DiscreteParameterServiceImpl;
 import org.registrator.community.service.impl.LinearParameterServiceImpl;
 import org.registrator.community.service.impl.ResourceDiscreteValueServiceImpl;
@@ -56,36 +56,43 @@ public class ResourceController {
 
     @Autowired
     ResourceLinearValueServiceImpl resourceLinearValueService;
+   
+    @Autowired
+    UserService userService;
+    
+    
 
     /**
      * Method for loading form for input the parameter of resource (with
      * existing resource types and registrator)
      */
-	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-	public String addResourceForm(Model model) {
-		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-		List<Tome> tomes = tomeRepository.findAll();
-		ResourceDTO newresource = new ResourceDTO();
-		model.addAttribute("listOfResourceType", listOfResourceType);
-		model.addAttribute("tomes", tomes);
-		model.addAttribute("newresource", newresource);
-		return "addResource";
-	}
-	
-	
-	
-	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
-	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
-		ResourceType resType = resourceTypeService.findByName(typeName);
-		
-		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
+    @RequestMapping(value = "/addresource", method = RequestMethod.GET)
+    public String addResourceForm(Model model, HttpSession session) {
+    	UserDTO user = userService.getUserDto("oleks");
+    	session.setAttribute("user", user);
+        List<ResourceType> listOfResourceType = resourceTypeService.findAll();
+        List<Tome> tomes = tomeRepository.findAll();
+        ResourceDTO newresource = new ResourceDTO();
+        model.addAttribute("listOfResourceType", listOfResourceType);
+        model.addAttribute("tomes", tomes);
+        model.addAttribute("newresource", newresource);
+        return "addResource";
+    }
+    
+    
+    
+    @RequestMapping(value = "/getParameters", method = RequestMethod.POST)
+    public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
+        ResourceType resType = resourceTypeService.findByName(typeName);
+        
+        List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
         List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
 
         model.addAttribute("discreteParameters", discreteParameters);
         model.addAttribute("linearParameters", linearParameters);
-		return "resourceValues";
-	}
-	
+        return "resourceValues";
+    }
+    
 
     /**
      * Method save the resource in table list_of resources
@@ -96,6 +103,7 @@ public class ResourceController {
 
         validator.validate(resourceDTO, result);
         if (result.hasErrors()) {
+            model.addAttribute("newresource", resourceDTO);
             return "addResource";
         } else {
             resourceService.addNewResource(resourceDTO);
@@ -270,4 +278,12 @@ public class ResourceController {
         return resourceService.count();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/decs", method = RequestMethod.GET)
+    public Map<String,Set<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
+    	Map<String,Set<String>> suggestions=new HashMap<String, Set<String>>();
+//    	suggestions.put("query", new TreeSet<String>().add("unit"));
+    	suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
+        return suggestions;
+    }
 }

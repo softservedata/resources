@@ -3,7 +3,7 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.ss.formula.functions.T;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.RoleRepository;
@@ -11,6 +11,7 @@ import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.dto.UserStatusDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
@@ -45,9 +46,19 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void changeUserStatus(String login, UserStatus userStatus) {
-		User user = getUserByLogin(login);
-		user.setStatus(userStatus);
+	public void changeUserStatus(UserStatusDTO userStatusDTO) {
+		User user = getUserByLogin(userStatusDTO.getLogin());
+		if (userStatusDTO.getStatus().equals(UserStatus.BLOCK.toString())) {
+			user.setStatus(UserStatus.BLOCK);
+		} else {
+			if (userStatusDTO.getStatus().equals(UserStatus.UNBLOCK.toString())) {
+				user.setStatus(UserStatus.UNBLOCK);
+			} else {
+				if (userStatusDTO.getStatus().equals(UserStatus.INACTIVE.toString())) {
+					user.setStatus(UserStatus.INACTIVE);
+				}
+			}
+		}
 		userRepository.save(user);
 	}
 
@@ -86,7 +97,7 @@ public class UserServiceImpl implements UserService {
 		user.setStatus(checkUserStatus(userDto.getStatus()));
 		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
 				userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
-		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
+		Address address = new Address(userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
 				userDto.getAddress().getDistrict(), userDto.getAddress().getCity(), userDto.getAddress().getStreet(),
 				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
 		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
@@ -163,17 +174,23 @@ public class UserServiceImpl implements UserService {
 		return inactiveUserDtoList;
 	}
 
-
 	@Override
 	@Transactional
+	public void registerUser(User user, Address address) {
 //	public void registerUser(User user, PassportInfo passport, Address address) {
-	public void registerUser(User user) {
-
+	//public void registerUser(User user) {
 		// by default, every new user is given role "User" and status "Inactive" until it's changed by Admin
 		// Roles map: Admin - 1, Registrator - 2, User - 3
 		user.setRoleId(3);
 		user.setStatus(UserStatus.INACTIVE);
+		user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + user.getPassword()));
+
 		userRepository.saveAndFlush(user);
+		if(userRepository.findUserByLogin(user.getLogin()) != null){
+			address.setUser(user);
+//			address.setUserId(user.getUserId());
+			addressRepository.saveAndFlush(address);
+		}
 		//passportRepository.saveAndFlush(passport);
 		//addressRepository.saveAndFlush(address);
 	}
@@ -186,14 +203,49 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public boolean login(String username, String password) {
-		if(userRepository.getUserByLoginAndPassword(username, password) != null){
+	public boolean login(String login, String password) {
+
+		if(userRepository.findUserByLogin(login) != null &&
+				userRepository.getUsersPasswordHash(login) == DigestUtils.md5Hex(password)){
 			return true;
 		}
-		else{
+		else {
 			return false;
 		}
 	}
+
+	@Transactional
+	@Override
+	public boolean checkUsernameNotExistInDB(String login) {
+		if(userRepository.findUserByLogin(login) != null){
+			// when username exists in DB
+			return false;
+		}
+		// if username isn't found in DB
+		return true;
+	}
+
+//	@Override
+//	public boolean recoverUsersPassword(String email, String usersCaptchaAnswer, String captchaFileName) {
+//		if(validateUsersEmail(email) && validateCaptchaCode(captchaFileName)){
+//			return true;
+//		}
+//		return false; //- "There is no such email in the DB" or "Entered captcha code is incorrect"
+//	}
+
+
+
+	//captchaMap.putAll(captchaProperties);
+	//public String getProperty(String key) {
+//			return (String) captchaMap.get(key);
+//		}
+
+//	public boolean validateUsersEmail (String email){
+//		userRepository.getUserByEmail(email);
+//		//TBD !!!!!!!!!!!!
+//		return true;
+//	}
+
 
 	private UserStatus checkUserStatus(String status) {
 		if (status.equals(UserStatus.BLOCK.name())) {

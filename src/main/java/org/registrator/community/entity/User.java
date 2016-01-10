@@ -179,6 +179,10 @@ public class User implements Serializable {
 		this.passport=passport;
 	}
 
+	public void setPasswordHash(String passwordHash){
+		this.password = passwordHash;
+	}
+
 	public String getRoleById(int param){
 		String role;
 		switch(param){

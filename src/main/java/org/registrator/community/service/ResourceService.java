@@ -5,9 +5,11 @@ import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface ResourceService {
+	
 	ResourceDTO addNewResource(ResourceDTO resourceDTO);
 	
 	ResourceDTO findByIdentifier(String identifier);
@@ -15,4 +17,8 @@ public interface ResourceService {
     List<Resource> findByType (ResourceType type);
 
     long count();
+    
+    Set<String> getDescriptionBySearchTag(String searchTag);
+    
 }
+

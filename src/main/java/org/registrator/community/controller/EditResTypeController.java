@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/registrator/resourcetypes/")
 public class EditResTypeController {
 
-	@Autowired
-	ResourceTypeService resourceTypeService;
+    @Autowired
+    ResourceTypeService resourceTypeService;
 
-	@RequestMapping(value = "/edit/{typeId}", method = RequestMethod.GET)
-	public String addResourceEditTypeForm(@PathVariable ("typeId") Integer typeId, Model model) {
-		ResourceType rt = resourceTypeService.findById(typeId);
-		model.addAttribute("oneResType", rt);
-		return "findOneResType";
-	}
-	
-	@RequestMapping(value = "/edit/{typeId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/{typeId}", method = RequestMethod.GET)
+    public String addResourceEditTypeForm(@PathVariable ("typeId") Integer typeId, Model model) {
+        ResourceType rt = resourceTypeService.findById(typeId);
+        model.addAttribute("oneResType", rt);
+        return "findOneResType";
+    }
+    
+    @RequestMapping(value = "/edit/{typeId}", method = RequestMethod.POST)
     public String editResourceType(@ModelAttribute("newrestype") ResourceTypeDTO resourceTypeDTO, Model model) {
-		resourceTypeService.editResourceType(resourceTypeDTO);
-		model.addAttribute("editResType", resourceTypeDTO);
-		return "findOneResType";
+        resourceTypeService.editResourceType(resourceTypeDTO);
+        model.addAttribute("editResType", resourceTypeDTO);
+        return "findOneResType";
     }
 }
