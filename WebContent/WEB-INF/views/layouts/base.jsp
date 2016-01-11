@@ -16,7 +16,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- fav-icon -->
-    <link rel="Shortcut Icon" href="${base}resource/img/favicon.ico" type="image/x-icon"/>
+    <link rel="Shortcut Icon" href="${base}resource/img/maple_leaf.ico" type="image/x-icon"/>
     <title><tiles:getAsString name="title"/></title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -33,9 +33,8 @@
    	<div id="body">
    		<tiles:insertAttribute name="body" />
    	</div>
-<%--    	<hr/>
    	<div id="footer">
    		<tiles:insertAttribute name="footer" />
-   	</div> --%>
+   	</div>
 </div>
 </html>

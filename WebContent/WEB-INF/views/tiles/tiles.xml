@@ -5,8 +5,8 @@
 <tiles-definitions>
 	<!-- Base -->
 		<definition name="base" template="/WEB-INF/views/layouts/base.jsp">
-			<put-attribute name="title" value="Base" />
-			<!-- <put-attribute name="footer" type="template" value="/WEB-INF/views/templates/login_footer.jsp" /> -->
+			<put-attribute name="title" value="Registrar" />
+			<put-attribute name="footer" type="template" value="/WEB-INF/views/templates/footer.jsp" />
 		</definition>
 
 		<!-- Login Page -->
@@ -29,6 +29,18 @@
 			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
 		</definition>
 
+		<!-- FAQ -->
+		<definition name="faq" extends="base">
+			<put-attribute name="body" type="template" value="/WEB-INF/views/faq.jsp"/>
+			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
+		</definition>
+
+		<!--Contact Administrator-->
+		<definition name="help" extends="base">
+			<put-attribute name="body" type="template" value="/WEB-INF/views/help.jsp"/>
+			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
+		</definition>
+
 		<definition name="thanks-for-registration" extends="base">
 			<put-attribute name="title" value="Thanks for registration" />
 			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
@@ -39,7 +51,9 @@
 		<definition name="homepage" template="/WEB-INF/views/layouts/main.jsp">
 			<put-attribute name="title" value="Resources" />
 			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
-			<put-attribute name="menu" type="template" value="/WEB-INF/views/templates/menu.jsp" />
+			<put-attribute name="menuForAdmin" type="template" value="/WEB-INF/views/templates/menuForAdmin.jsp" role="ADMIN"/>
+			<put-attribute name="menuForRegistrator" type="template" value="/WEB-INF/views/templates/menuForRegistrator.jsp" role="REGISTRATOR"/>
+			<put-attribute name="menuForUser" type="template" value="/WEB-INF/views/templates/menuForUser.jsp" role="USER"/>
 			<put-attribute name="body" type="template" value="/WEB-INF/views/templates/body.jsp" />
 			<put-attribute name="footer" type="template" value="/WEB-INF/views/templates/footer.jsp" />
 		</definition>
@@ -108,9 +122,9 @@
 			value="/WEB-INF/views/templates/listInqUserOut.jsp" />
 	</definition>
 	
-	<definition name="inquiryAddInput" extends="homepage">
+	<definition name="listInquiryUserInput" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/inquiryAddInput.jsp" />
+			value="/WEB-INF/views/templates/listInquiryUserInput.jsp" />
 	</definition>
 	
 	<definition name="userDataTable" extends="homepage">
@@ -131,6 +145,11 @@
 
 	<definition name="resourceValues"
 		template="/WEB-INF/views/templates/resourceValues.jsp">
+	</definition>
+
+	<definition name="searchOnMap" extends="homepage">
+		<put-attribute name="body" type="template"
+					   value="/WEB-INF/views/searchOnMap.jsp" />
 	</definition>
 
 </tiles-definitions>

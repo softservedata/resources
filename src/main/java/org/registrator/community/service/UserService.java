@@ -12,7 +12,7 @@ import org.registrator.community.enumeration.UserStatus;
 
 public interface UserService {
 
-	public void changeUserStatus(UserStatusDTO userStatusDto);
+	void changeUserStatus(UserStatusDTO userStatusDto);
 
 	List<UserDTO> getAllRegistratedUsers();
 	
@@ -21,18 +21,16 @@ public interface UserService {
 	void changeUserRole(String login, int role);
 	
 	UserDTO editUserInformation(UserDTO userDto);
-	
-	List<UserStatus> fillInUserStatus();
-	
+
+	List<UserStatus> fillInUserStatus(List<UserDTO> userDtoList);
+
 	List<UserDTO> getUserDtoList();
 	
 	UserDTO getUserDto(String login);
 	
 	List<UserDTO> getAllInactiveUsers();// set Role of inactive user to "USER"
 
-	void registerUser(User user, Address address);
-	//void registerUser(User user, PassportInfo passport, Address address);
-	//void registerUser(User user);
+	void registerUser(User user, PassportInfo passport, Address address);
 
 	int updateUser(User user);
 

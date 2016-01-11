@@ -1,5 +1,5 @@
 $(function() {
-	$(Document).on("click","#deleterestype",
+	$(document).on("click","#deleterestype",
 					function(event) {
 						var conBox = confirm("Ви впевнені, що хочете видалити цей підклас?");
 						if (conBox) {

@@ -16,9 +16,9 @@ public class Area implements Serializable {
     private Integer areaId;
 
     @ManyToOne
-    @JoinColumn(name = "resource_id", nullable = false)
-    private Resource resource;
-    
+    @JoinColumn(name = "polygon_id", nullable = false)
+    private Polygon polygon;
+
     @Column(name = "latitude", nullable = false)
     private Double latitude;
     
@@ -32,8 +32,8 @@ public class Area implements Serializable {
         
     }
     
-    public Area(Resource resource, Integer orderNumber, Double latitude, Double longitude) {
-        this.resource = resource;
+    public Area(Polygon polygon, Integer orderNumber, Double latitude, Double longitude) {
+        this.polygon = polygon;
         this.orderNumber = orderNumber;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -49,12 +49,12 @@ public class Area implements Serializable {
         this.areaId = areaId;
     }
 
-    public Resource getResource() {
-        return resource;
+    public Polygon getPolygon() {
+        return polygon;
     }
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    public void setPolygon(Polygon polygon) {
+        this.polygon = polygon;
     }
 
     public Double getLatitude() {

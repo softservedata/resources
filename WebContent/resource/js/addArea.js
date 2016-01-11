@@ -40,6 +40,14 @@ var addNewPoint = function(poligonNumber,
 
 $(document).ready(
 		function() {
+
+            /* Switch off form submit on ENTER keypress from every input field */
+            $('form').bind("keypress", function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
 			
 			/* load parameters of selected value */
 			$("#resourcesTypeSelect").change(function() {
@@ -53,6 +61,9 @@ $(document).ready(
 			});
 			
 			$('#btnAddAreaPoint').click(function() {
+                if ($('#myparam1').val() == 0) {
+                    alert("Будь ласка, введіть значення координат першої точки.");
+                }
 				addNewPoint(0,0,0,0.0,0,0,0.0);
 			});
 

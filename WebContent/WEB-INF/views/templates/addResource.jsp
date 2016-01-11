@@ -9,9 +9,9 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<spring:url
-	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
-	var="jqueryJs" />
+<%--<spring:url--%>
+	<%--value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"--%>
+	<%--var="jqueryJs" />--%>
 <spring:url value="/resource/js/addArea.js" var="addAreaJs" />
 <spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
 	var="autocompleteJs" />
@@ -24,11 +24,18 @@
 <script src="${jqueryJs}"></script>
 <script src="${addAreaJs}"></script>
 <link rel="stylesheet" type="text/css" href="${suggestionCss}">
+<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
 
 
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script> 
 $(document).ready(function() {
-	
+ 	if( "${user.willDocument}" === "") {
+		$('#will').attr('disabled', 'disabled');		
+	}
+	if( "${user.passport}" === "") {
+		$('#pass').attr('disabled', 'disabled');		
+	} 
 	
     $(".checkbox input").click(function(){
         $("#reasonInclusion").text('');
@@ -38,12 +45,23 @@ $(document).ready(function() {
         		 var seria = "${user.passport.seria} " + "${user.passport.number}";
         		 var name = "${user.firstName} " + "${user.middleName} " +"${user.lastName}";
         		 var published ="${user.passport.published_by_data}";
-        		$("#reasonInclusion").append("паспорт громадянина України " 
-        				+ seria +", виданий на ім’я " + name + " " + published + ";\n");        		
+        		 var passportInfo = "паспорт громадянина України " 
+     				+ seria +", виданий на ім’я " + name + " " + published;       		
+        		if("${user.passport.comment}" !== "") {
+        			var comment ="${user.passport.comment}";
+        			passportInfo = passportInfo + "; " + comment;
+        		}
+        		$("#reasonInclusion").append(passportInfo + ";\n");
         	}
-        	 if(id === "will") {        		 
-        		 var document = "волевиявлення людини";
-        		$("#reasonInclusion").append(document + ";\n");        		
+        	if(id === "will") {
+        		var date = '${user.willDocument.accessionDate}';
+        		var stringDate = $.datepicker.formatDate('dd.mm.yy', new Date(date));
+        		var willDocument = "документ волевиявлення від " + stringDate;
+        		if("${user.willDocument.comment}" !== "") {
+        			var comment ="${user.willDocument.comment}";
+        			willDocument = willDocument + "; " + comment;
+        		}
+        		$("#reasonInclusion").append( willDocument+ ";\n");        		
         	}
         	 else if(id === "tytul"){
         		 var inputString = "титул власності на природні ресурси України від 02 квітня 2015 року;";
@@ -209,20 +227,43 @@ $(document).ready(function() {
 		</div>
 		<br />
 		<div class="button">
-			<input type="submit" value=<spring:message code="label.save"/>
-				class="btn btn-success">
+			<input type="submit" class="btn btn-success" value=<spring:message code="label.save"/> >
 			<button type="reset" class="btn btn-default" id="hahaha">
 				<spring:message code="label.clearall" />
 			</button>
 		</div>
 	</form:form>
 
-	<%--Scripts for Google Map--%>
+<%--Scripts for Google Map--%>
 	<p>
-		<input id="gmaps-input" class="controls form-control"
-			style="width: 300px; margin: 9px 0px;" type="text"
+		<input id="gmaps-input" class="controls gmap-input"
+			style="width: 300px;" type="text"
 			placeholder="Пошук на мапі">
 	</p>
+    <p><a id="gmaps-show-res" class="controls gmap-button">Показати ресурси</a></p>
+
+<%--AJAX Loader on the dark display--%>
+    <div id="dark_bg">
+        <div class="windows8">
+            <div class="wBall" id="wBall_1">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_2">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_3">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_4">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_5">
+                <div class="wInnerBall"></div>
+            </div>
+        </div>
+    </div>
+
+
 	<script
 		src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,places"></script>
 	<script type="text/javascript"

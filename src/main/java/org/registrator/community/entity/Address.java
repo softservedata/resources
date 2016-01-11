@@ -17,9 +17,6 @@ public class Address implements Serializable, Comparable<Address> {
 	@GeneratedValue
 	private Integer addressId;
 
-//	@Column(name = "user_id", nullable = false)
-//	private Integer user_id;
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonBackReference
 	@JoinColumn(name = "user_id", nullable = false)
@@ -70,15 +67,7 @@ public class Address implements Serializable, Comparable<Address> {
 		this.addressId = addressId;
 	}
 
-//	public Integer getUserId() {
-//		return user_id;
-//	}
-//
-//	public void setUserId(Integer user_id) {
-//		this.user_id = user_id;
-//	}
-
-		public User getUser() {
+	public User getUser() {
 		return user;
 	}
 

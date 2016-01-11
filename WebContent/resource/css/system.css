@@ -1,5 +1,5 @@
 body {
-
+  
 }
 
 #header {
@@ -11,18 +11,87 @@ body {
     display: flex;
 }
 
-#menubar {
+#menubaruser, #menubarreg, #menubaradmin {
     height: 40px;
     line-height: 40px;
     vertical-align: middle;
 }
 
-#menubar li {
+#menubaruser li, #menubarreg li, #menubaradmin li{
     padding-left: 7px;
 }
 
+.dropdown {
+    position: relative;
+}
+
+.dropdown_menu {
+    display: none;
+    list-style: none;
+    background: #f8f8f8;
+    border-radius: 0px 0px 4px 4px;
+    border: 1px solid #e7e7e7;
+    border-top-style: none;
+    padding: 3px;
+    width: 200px;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 10;
+}
+
+.dropdown_menu a {
+    color: #777;
+    text-decoration: none;
+}
+
+.dropdown_menu a:hover {
+    color: #000;
+}
+
 #footer {
-    padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
     border-top: solid 1px black;
+}
+
+/*Google maps buttons*/
+.gmap-button {
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    margin: 10px 10px 0 0px;
+    border: none;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    color: black;
+}
+
+.gmap-button:hover {
+    background-color: #ededed;
+    text-decoration: none;
+    color: black;
+}
+
+.gmap-input {
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    margin: 10px 10px 0 0px;
+    border: none;
+}
+
+/*Google maps infowindow*/
+
+#infowindow_table tr{
+    line-height: 15px;
+}
+
+#infowindow_table th,td{
+    padding: 3px 5px;
+    font-size: 15px;
 }

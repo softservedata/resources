@@ -5,6 +5,8 @@ import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.entity.Inquiry;
+import org.registrator.community.enumeration.InquiryType;
+
 import java.util.List;
 
 public interface InquiryService {
@@ -13,8 +15,8 @@ public interface InquiryService {
 	
 	 List<TomeDTO> listTomeDTO();
 	
-	List<InquiryListDTO> listInquiryUserOut(String userLogin);
-	
+	List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType);
+		
 	void removeInquiry (Integer inquiryId);
 	
 	ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin);

@@ -37,11 +37,13 @@ public class User implements Serializable {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	//@ManyToOne
-	//@JoinColumn(name = "role_id", nullable = false)
 	@Column(name = "role_id", nullable = false)
 	private Integer role_id;
-	//private Role role;
+	/* Kindly ask - no to change 'role_id' of Integer type to Role type. The reason is in "user" table 'role_id' column can store only "int" values.
+     In the opposite case - it'll be impossible register user with 'Role role_id' :(
+     So, in case, you need to get role (ADMIN, USER, etc.) of the user, use "getRoleById" method - defined in the bottom of this class.
+     Example of use:
+     String usersRole = user.getRoleById(user.getRoleId()); */
 
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
@@ -67,15 +69,19 @@ public class User implements Serializable {
 	@JsonManagedReference
 	private List<PassportInfo> passport = new ArrayList<PassportInfo>();
 
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
+	@JsonManagedReference
+	private List<WillDocument> willDocument = new ArrayList<WillDocument>();
+
 	public User() {
 
 	}
 
-	public User(String login, String password, String firstName, String lastName, String middleName,
-				String email, String status) {
+	public User(String login, String password, Integer role_id, String firstName, String lastName, String middleName,
+			String email, String status) {
 		this.login = login;
 		this.password = password;
-//		this.role = role;
+		this.role_id = role_id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
@@ -114,14 +120,6 @@ public class User implements Serializable {
 	public void setRoleId(Integer role_id) {
 		this.role_id = role_id;
 	}
-
-	//	public Role getRole() {
-//		return role;
-//	}
-//
-//	public void setRole(Role role) {
-//		this.role = role;
-//	}
 
 	public String getFirstName() {
 		return firstName;
@@ -179,10 +177,22 @@ public class User implements Serializable {
 		this.passport=passport;
 	}
 
+	public List<WillDocument> getWillDocument() {
+		return willDocument;
+	}
+
+	public void setWillDocument(List<WillDocument> willDocument) {
+		this.willDocument = willDocument;
+	}
+
 	public void setPasswordHash(String passwordHash){
 		this.password = passwordHash;
 	}
 
+	// use below method instead of previous "getRole()":
+	// public Role getRole() {
+	// 		return role;
+	//	}
 	public String getRoleById(int param){
 		String role;
 		switch(param){

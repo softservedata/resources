@@ -7,15 +7,22 @@
 <c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 <link rel="stylesheet" href="${base}resource/css/login.css">
 
-<img id="login_img" src="${base}/resource/img/pexels-photo.jpg">
+<img id="login_img" src="resource/img/pexels-photo.jpg">
 <div class="site-title">
-   <h3><spring:message code="label.name.part1"/></h3>
-   <h3><spring:message code="label.name.part2"/></h3>
+   <h3 style="color :white; background-color: blue;"><spring:message code="label.name.part1"/></h3>
+   <h3 style="color :white; background-color: blue;"><spring:message code="label.name.part2"/></h3>
 </div>
+
+
 <div class="lang-container" id="header">
+    <div>
+        <div>
             <ul class="languages">
                 <a href="?lang=ua"><img src="resource/img/lang/ua.png"></a></li>
                 <a href="?lang=ru"><img src="resource/img/lang/ru.png"></a></li>
                 <a href="?lang=en"><img src="resource/img/lang/en.png"></a></li>
             </ul>
+        </div>
+    </div>
 </div>
+

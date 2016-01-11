@@ -6,7 +6,7 @@
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
 
-
+<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
 <script type="text/javascript" src="${base}/resource/js/showAllResources.js"></script>
 
 <div>
@@ -24,26 +24,26 @@
         <br>
         <div id="table" class="container"></div>
 
-        <%--<table id="table">--%>
-            <%--<thead>--%>
-            <%--<tr>--%>
-                <%--<th>ID</th>--%>
-                <%--<th>Identifier</th>--%>
-                <%--<th>Description</th>--%>
-                <%--<th>Date</th>--%>
-                <%--<th>Status</th>--%>
-            <%--</tr>--%>
-            <%--</thead>--%>
-            <%--<tbody>--%>
-            <%--<tr>--%>
-                <%--<td></td>--%>
-                <%--<td></td>--%>
-                <%--<td></td>--%>
-                <%--<td></td>--%>
-                <%--<td></td>--%>
-            <%--</tr>--%>
-            <%--</tbody>--%>
-        <%--</table>--%>
+        <%--AJAX Loader on the dark display--%>
+        <div id="dark_bg">
+            <div class="windows8">
+                <div class="wBall" id="wBall_1">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_2">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_3">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_4">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_5">
+                    <div class="wInnerBall"></div>
+                </div>
+            </div>
+        </div>
     </c:if>
 
 </div>

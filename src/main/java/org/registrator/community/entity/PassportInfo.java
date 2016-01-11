@@ -13,35 +13,38 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "passport_data_id")
-    @GeneratedValue
-    private Integer passportId;
+	@Column(name = "passport_data_id")
+	@GeneratedValue
+	private Integer passportId;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JsonBackReference
-    @JoinColumn(name="user_id", nullable = false)  
-    private User user;
+	@JoinColumn(name="user_id", nullable = false)
+	private User user;
 
-    @Column(name = "seria", nullable = false)
-    private String seria;
-    
-    @Column(name = "number", nullable = false)
-    private Integer number;
-    
-    @Column(name = "published_by_data", nullable = false)
-    private String published_by_data;
-    
-    public PassportInfo() {
-    	
-    }
-    
-    public PassportInfo(User user, String seria, Integer number, String published_by_data) {
+	@Column(name = "seria", nullable = false)
+	private String seria;
+
+	@Column(name = "number", nullable = false)
+	private Integer number;
+
+	@Column(name = "published_by_data", nullable = false)
+	private String published_by_data;
+
+	@Column(name = "comment")
+	private String comment;
+
+	public PassportInfo() {
+
+	}
+
+	public PassportInfo(User user, String seria, Integer number, String published_by_data) {
 		this.user = user;
 		this.seria = seria;
 		this.number = number;
 		this.published_by_data = published_by_data;
 	}
-    
+
 	public Integer getPassportId() {
 		return passportId;
 	}
@@ -82,6 +85,14 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 		this.published_by_data = published_by_data;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	@Override
 	public int compareTo(PassportInfo passport) {
 		if(this.seria.equals(passport.seria) && (this.number.equals(passport.number) && (this.published_by_data.equals(passport.published_by_data)))) {
@@ -89,6 +100,6 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 		} else {
 			return 1;
 		}
-		
-	}   
+
+	}
 }
