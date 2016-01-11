@@ -16,6 +16,7 @@
                 <li><a href="${base}" class="glyphicon glyphicon-home"></a></li>
                 <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.registrated.pagename" /></a></li>
                 <li><a href="${base}administrator/users/get-all-inactive-users"><spring:message code="label.inactive.pagename" /></a></li>
+                <li><a href="${base}administrator/users/settings"><spring:message code="label.admin.settings"/></a>
                 <li><a href="${base}administrator/users/search"><spring:message code="label.menu.search"/></a>
             </ul>
         </div>
