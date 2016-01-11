@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.UserStatusDTO;
-import org.registrator.community.entity.Address;
-import org.registrator.community.entity.PassportInfo;
-import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 
@@ -18,7 +15,7 @@ public interface UserService {
 
 	User getUserByLogin(String login);
 
-	void changeUserRole(String login, int role);
+	void changeUserRole(String login, Integer role_id);
 
 	UserDTO editUserInformation(UserDTO userDto);
 

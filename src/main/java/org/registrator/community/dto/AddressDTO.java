@@ -13,7 +13,8 @@ public class AddressDTO implements Serializable {
 	private String building;
 	private String flat;
 
-	public AddressDTO(String postcode,String region,String district, String city,String street,String building,String flat) {
+	public AddressDTO(String postcode, String region, String district, String city, String street, String building,
+			String flat) {
 		this.postcode = postcode;
 		this.region = region;
 		this.district = district;
@@ -22,9 +23,9 @@ public class AddressDTO implements Serializable {
 		this.building = building;
 		this.flat = flat;
 	}
-	
+
 	public AddressDTO() {
-		
+
 	}
 
 	public String getPostcode() {
@@ -85,9 +86,8 @@ public class AddressDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\n" + "Postcode " + postcode + "\n" + "Region " + region
-				+ "\n" + "District " + district + "\n" + "City " + city
-				+ "\n" + "Street " + street + "\n" + "Building " + building
-				+ "\n" + "Flat " + flat + "\n";
+		return "\n" + "Postcode " + postcode + "\n" + "Region " + region + "\n" + "District " + district + "\n"
+				+ "City " + city + "\n" + "Street " + street + "\n" + "Building " + building + "\n" + "Flat " + flat
+				+ "\n";
 	}
 }

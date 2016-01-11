@@ -4,14 +4,14 @@ public class UserStatusDTO {
 	private String login;
 	private String status;
 
-	public UserStatusDTO(String login,String status) {
-		this.login=login;
-		this.status=status;
+	public UserStatusDTO(String login, String status) {
+		this.login = login;
+		this.status = status;
 	}
-	
+
 	public UserStatusDTO() {
 	}
-	
+
 	public String getLogin() {
 		return login;
 	}

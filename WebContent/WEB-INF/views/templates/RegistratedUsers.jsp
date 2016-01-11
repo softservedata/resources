@@ -17,7 +17,7 @@
 	</h4>
 </div>
 
-<table id="datatable" class="table display">
+<table id="datatable" class="table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
 			<th><spring:message code="label.user.secondname" /></th>
@@ -27,8 +27,6 @@
 			<th><spring:message code="label.user.address" /></th>
 			<th><spring:message code="label.user.passport" /></th>
 			<th><spring:message code="label.restype.actions" /></th>
-			<!-- <th>Змінити Роль</th>
-			<th>Змінти Статус</th> -->
 		</tr>
 	</thead>
 	<c:if test="${not empty userDtoList}">

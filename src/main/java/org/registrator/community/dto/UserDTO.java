@@ -2,8 +2,6 @@ package org.registrator.community.dto;
 
 import java.io.Serializable;
 
-import org.registrator.community.entity.Role;
-
 public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -19,8 +17,8 @@ public class UserDTO implements Serializable {
 	private PassportDTO passport;
 	private WillDocumentDTO willDocument;
 
-	public UserDTO(String firstName, String lastName, String middleName,String role, String login, String password,
-				   String email, String status, AddressDTO address, PassportDTO passport) {
+	public UserDTO(String firstName, String lastName, String middleName, String role, String login, String password,
+			String email, String status, AddressDTO address, PassportDTO passport) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
@@ -32,8 +30,9 @@ public class UserDTO implements Serializable {
 		this.address = address;
 		this.passport = passport;
 	}
+
 	public UserDTO() {
-		
+
 	}
 
 	public String getFirstName() {
@@ -68,15 +67,13 @@ public class UserDTO implements Serializable {
 		this.role = role;
 	}
 
-//	public Try getRole() {
-//		return role;
-//	}
-//
-//	public void setRole(Try role) {
-//		this.role = role;
-//	}
-
-
+	// public Try getRole() {
+	// return role;
+	// }
+	//
+	// public void setRole(Try role) {
+	// this.role = role;
+	// }
 
 	public String getLogin() {
 		return login;
@@ -125,22 +122,22 @@ public class UserDTO implements Serializable {
 	public void setPassport(PassportDTO passport) {
 		this.passport = passport;
 	}
-	
+
 	public WillDocumentDTO getWillDocument() {
 		return willDocument;
 	}
+
 	public void setWillDocument(WillDocumentDTO willDocument) {
 		this.willDocument = willDocument;
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		String result;
-		result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n" + "Роль:  "
-				+ getRole() + "\n" + "Логін: " + login + "\n" + "Пароль: " + password + "\n" + "Пошта: "
-				+ email + "\n" + "Статус: " + status + "\n" + "Паспортні дані:" + passport.toString() + "\n"
-				+ "Адреса: " + address.toString() + "\n");
+		result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n" + "Роль:  " + getRole()
+				+ "\n" + "Логін: " + login + "\n" + "Пароль: " + password + "\n" + "Пошта: " + email + "\n" + "Статус: "
+				+ status + "\n" + "Паспортні дані:" + passport.toString() + "\n" + "Адреса: " + address.toString()
+				+ "\n");
 		return result;
 	}
 }

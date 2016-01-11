@@ -19,60 +19,60 @@ import javax.persistence.Table;
 import org.registrator.community.enumeration.UserStatus;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
-	
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "user_id")
-    @GeneratedValue
-    private Integer userId;
-	
-	@Column(name = "login",unique = true, nullable = false)	
+	@Column(name = "user_id")
+	@GeneratedValue
+	private Integer userId;
+
+	@Column(name = "login", unique = true, nullable = false)
 	private String login;
 
 	@Column(name = "password", nullable = false)
 	private String password;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
-	private Role role; 
-	
+	private Role role;
+
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
-	
+
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
-	
+
 	@Column(name = "middle_name", nullable = false)
 	private String middleName;
-	
-	@Column(name = "email",unique = true, nullable = false)
+
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
-	
+
 	@Column(name = "status", nullable = false, columnDefinition = "ENUM('BLOCK','UNBLOCK','INACTIVE')")
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
-	
-	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<Address> address = new ArrayList<Address>();
-	
-	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<PassportInfo> passport = new ArrayList<PassportInfo>();
-	
-	@OneToMany(mappedBy="user",fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<WillDocument> willDocument = new ArrayList<WillDocument>();
-	
+
 	public User() {
-		
+
 	}
-	
+
 	public User(String login, String password, Role role, String firstName, String lastName, String middleName,
 			String email, String status) {
 		this.login = login;
@@ -81,22 +81,9 @@ public class User implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
-		this.email = email;		
+		this.email = email;
 		this.status = UserStatus.valueOf(status.toUpperCase());
 	}
-	
-	
-	/*public User(String firstName, String middleName, String lastName, Role role,
-			String email, String login, String password, String status) {
-		this.login = login;
-		this.password = password;
-		this.role = role;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.middleName = middleName;
-		this.email = email;		
-		this.status = UserStatus.valueOf(status.toUpperCase());
-	}*/
 
 	public Integer getUserId() {
 		return userId;
@@ -169,21 +156,21 @@ public class User implements Serializable {
 	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
-	
+
 	public List<Address> getAddress() {
 		return address;
 	}
-	
+
 	public void setAddress(List<Address> address) {
-		this.address=address;
+		this.address = address;
 	}
-	
+
 	public List<PassportInfo> getPassport() {
 		return passport;
 	}
-	
+
 	public void setPassport(List<PassportInfo> passport) {
-		this.passport=passport;
+		this.passport = passport;
 	}
 
 	public List<WillDocument> getWillDocument() {
@@ -193,5 +180,5 @@ public class User implements Serializable {
 	public void setWillDocument(List<WillDocument> willDocument) {
 		this.willDocument = willDocument;
 	}
-		
+
 }

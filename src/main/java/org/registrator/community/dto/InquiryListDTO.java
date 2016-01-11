@@ -10,11 +10,10 @@ import java.util.Date;
 
 import org.registrator.community.enumeration.ResourceStatus;
 
-
 public class InquiryListDTO implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer inquiry_list_id;
 	private String inquiryType;
 	private Date date;
@@ -22,8 +21,7 @@ public class InquiryListDTO implements Serializable {
 	private String registratorName;
 	private String resourceIdentifier;
 	private ResourceStatus resourceStatus;
-	
-		
+
 	public InquiryListDTO() {
 	}
 
@@ -93,5 +91,5 @@ public class InquiryListDTO implements Serializable {
 	public void setResourceStatus(ResourceStatus resourceStatus) {
 		this.resourceStatus = resourceStatus;
 	}
-	
+
 }

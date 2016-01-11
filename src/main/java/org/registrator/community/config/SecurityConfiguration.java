@@ -21,10 +21,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Qualifier("userDetailsService")
 	UserDetailsService userDetailsService;
 
-	 @Autowired
-	 DataSource dataSource;
-	
-	
+	@Autowired
+	DataSource dataSource;
+
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
@@ -35,42 +34,47 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+		// http.formLogin().loginPage("/login").permitAll()
+		//
+		// .failureUrl("/login?error").usernameParameter("j_username").passwordParameter("j_password").and()
+		// .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/login?logout").and().exceptionHandling()
+		// .accessDeniedPage("/login")
+		//
+		// .and()
+		// .authorizeRequests()
+		// .antMatchers("/registrator/resource/showAllResources")
+		// .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+		// .antMatchers("/registrator/resource/searchOnMap")
+		// .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+		// .antMatchers("/registrator/resourcetypes/show-res-types").access("hasRole('ROLE_REGISTRATOR')")
+		// .antMatchers("/inquiry/add/listInquiryUserInput")
+		// .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+		// .antMatchers("/inquiry/add/listInqUserOut")
+		// .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+		// .antMatchers("/registrator/resource/addresource")
+		// .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+		// .antMatchers("/administrator/users/search")
+		// .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
+		// .antMatchers("/administrator/users/get-all-users").access("hasRole('ROLE_ADMIN')")
+		// .antMatchers("/administrator/users/get-all-inactive-users").access("hasRole('ROLE_ADMIN')")
+		// .and().rememberMe().rememberMeParameter("_spring_security_remember_me").tokenRepository(persistentTokenRepository()).tokenValiditySeconds(87400)
+		// ;
+
 		http.formLogin().loginPage("/login").permitAll()
 
 				.failureUrl("/login?error").usernameParameter("j_username").passwordParameter("j_password").and()
 				.logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/login?logout").and().exceptionHandling()
-				.accessDeniedPage("/login")
-				
-				.and()
-				.authorizeRequests()
-				.antMatchers("/registrator/resource/showAllResources")
-				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
-				.antMatchers("/registrator/resource/searchOnMap")
-				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
-				.antMatchers("/registrator/resourcetypes/show-res-types").access("hasRole('ROLE_REGISTRATOR')")
-				.antMatchers("/inquiry/add/listInquiryUserInput")
-				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
-				.antMatchers("/inquiry/add/listInqUserOut")
-				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
-				.antMatchers("/registrator/resource/addresource")
-				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
-				.antMatchers("/administrator/users/search")
-				.access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
-				.antMatchers("/administrator/users/get-all-users").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/administrator/users/get-all-inactive-users").access("hasRole('ROLE_ADMIN')")
-		        .and().rememberMe().rememberMeParameter("_spring_security_remember_me").tokenRepository(persistentTokenRepository()).tokenValiditySeconds(87400) 
-				;
+				.accessDeniedPage("/login").and()
 
+				.authorizeRequests().antMatchers("/administrator/**").hasRole("ADMIN").antMatchers("/registrator/**")
+				.hasRole("REGISTRATOR").antMatchers("/inquiry/**").hasRole("USER").and().csrf().disable();
 	}
-	
-	
+
 	@Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepositoryImpl = new JdbcTokenRepositoryImpl();
-        tokenRepositoryImpl.setDataSource(dataSource);
-        return tokenRepositoryImpl;
-    }
-	
-	
+	public PersistentTokenRepository persistentTokenRepository() {
+		JdbcTokenRepositoryImpl tokenRepositoryImpl = new JdbcTokenRepositoryImpl();
+		tokenRepositoryImpl.setDataSource(dataSource);
+		return tokenRepositoryImpl;
+	}
 
 }
