@@ -9,9 +9,9 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<%--<spring:url--%>
-	<%--value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"--%>
-	<%--var="jqueryJs" />--%>
+<%-- <spring:url
+	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
+	var="jqueryJs" /> --%>
 <spring:url value="/resource/js/addArea.js" var="addAreaJs" />
 <spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
 	var="autocompleteJs" />
@@ -27,7 +27,7 @@
 <link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
 
 
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<!-- <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 <script> 
 $(document).ready(function() {
  	if( "${user.willDocument}" === "") {

@@ -24,6 +24,9 @@ public class ResourceDiscreteValue implements Serializable {
     @Column(name = "value", nullable = false)
     private Double value;
     
+	@Column(name = "comment")
+	private String comment;
+    
     @ManyToOne
     @JoinColumn(name = "discrete_parameter_id", nullable = false)
     private DiscreteParameter discreteParameter;    
@@ -80,5 +83,13 @@ public class ResourceDiscreteValue implements Serializable {
     public void setDiscreteParameter(DiscreteParameter discreteParameter) {
         this.discreteParameter = discreteParameter;
     }
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
 }

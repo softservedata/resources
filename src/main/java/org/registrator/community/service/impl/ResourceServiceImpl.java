@@ -6,9 +6,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.registrator.community.dao.*;
-import org.registrator.community.dto.JSON.PointJSON;
-import org.registrator.community.dto.JSON.PolygonJSON;
+import javax.transaction.Transactional;
+
+import org.registrator.community.dao.AreaRepository;
+import org.registrator.community.dao.DiscreteParameterRepository;
+import org.registrator.community.dao.LinearParameterRepository;
+import org.registrator.community.dao.PolygonRepository;
+import org.registrator.community.dao.ResourceDiscreteValueRepository;
+import org.registrator.community.dao.ResourceLinearValueRepository;
+import org.registrator.community.dao.ResourceRepository;
+import org.registrator.community.dao.ResourceTypeRepository;
+import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
@@ -16,7 +24,17 @@ import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.ResourceDiscreteValueDTO;
 import org.registrator.community.dto.ResourceLinearValueDTO;
 import org.registrator.community.dto.SegmentLinearDTO;
-import org.registrator.community.entity.*;
+import org.registrator.community.dto.ValueDiscreteDTO;
+import org.registrator.community.dto.JSON.PointJSON;
+import org.registrator.community.dto.JSON.PolygonJSON;
+import org.registrator.community.entity.Area;
+import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.LinearParameter;
+import org.registrator.community.entity.Polygon;
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceDiscreteValue;
+import org.registrator.community.entity.ResourceLinearValue;
+import org.registrator.community.entity.ResourceType;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +69,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     DiscreteParameterRepository discreteParameterRepository;
-
+   
     @Override
+    @Transactional
     public ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus) {
         Resource resourceEntity = new Resource();
         resourceEntity.setIdentifier(resourceDTO.getIdentifier());
@@ -137,11 +156,12 @@ public class ResourceServiceImpl implements ResourceService {
                 DiscreteParameter discreteParameter = discreteParameterRepository
                         .findByResourceAndName(discValueDTO.getDiscreteParameterDescription(), resourceType);
 
-                for (Double value : discValueDTO.getValues()) {
+                for (ValueDiscreteDTO valueDiscrete : discValueDTO.getValueDiscretes()) {
                     ResourceDiscreteValue discreteValue = new ResourceDiscreteValue();
                     discreteValue.setResource(resourceEntity);
                     discreteValue.setDiscreteParameter(discreteParameter);
-                    discreteValue.setValue(value);
+                    discreteValue.setValue(valueDiscrete.getValue());
+                    discreteValue.setComment(valueDiscrete.getComment());
                     resourceDiscreteValues.add(discreteValue);
                 }
             }
@@ -200,18 +220,33 @@ public class ResourceServiceImpl implements ResourceService {
         }
         resourceDTO.setResourceLinear(resLinDTOs);
 
+        
         for (DiscreteParameter dp : discreteParameters) {
             ResourceDiscreteValueDTO resDisDTO = new ResourceDiscreteValueDTO();
             resDisDTO.setDiscreteParameterDescription(dp.getDescription());
             resDisDTO.setDiscreteParameterUnit(dp.getUnitName());
-            List<Double> values = new ArrayList<>();
+            
+/*            List<Double> values = new ArrayList<>();
+            for (ResourceDiscreteValue dv : discreteValues) {
+            	if(dv.getDiscreteParameter().getDiscreteParameterId().equals(dp.getDiscreteParameterId())) {
+            		values.add(dv.getValue());
+            	}
+            	
+            }
+            resDisDTO.setValues(values);
+            resDiscDTOs.add(resDisDTO);
+*/           
+            List<ValueDiscreteDTO> valuediscretes = new ArrayList<>();
             for (ResourceDiscreteValue dv : discreteValues) {
                 if(dv.getDiscreteParameter().getDiscreteParameterId().equals(dp.getDiscreteParameterId())) {
-                    values.add(dv.getValue());
+                	ValueDiscreteDTO valueDiscrete = new ValueDiscreteDTO();
+                	valueDiscrete.setValue(dv.getValue());
+                	valueDiscrete.setComment(dv.getComment());
+                	valuediscretes.add(valueDiscrete);
                 }
 
             }
-            resDisDTO.setValues(values);
+            resDisDTO.setValueDiscretes(valuediscretes);
             resDiscDTOs.add(resDisDTO);
         }
         resourceDTO.setResourceDiscrete(resDiscDTOs);

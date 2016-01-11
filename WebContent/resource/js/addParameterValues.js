@@ -12,7 +12,7 @@ $("button").click(function() {
 		newElem.find('input').each( function() {
 			$(this).removeAttr('value');
 			$(this).attr("name", $(this).attr(
-			"name").replace('values[' + prevNum + ']','values['	+ num + ']'));
+			"name").replace('valueDiscretes[' + prevNum + ']','valueDiscretes['	+ num + ']'));
 			
 		});
 		$('#discreteInput_'+ theId + '_'+ num).after(newElem);
