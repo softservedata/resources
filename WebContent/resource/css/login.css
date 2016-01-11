@@ -21,6 +21,8 @@ input {
     position: absolute;
     z-index: 0;
     transform: scaleX(-1);
+    background-position: center center;
+    background-size: cover;
 }
 
 .signin-container {
@@ -32,7 +34,7 @@ input {
     right: 50px;
     display: inline-block;
 
-    
+
 }
 
 .registration-container{
@@ -62,4 +64,15 @@ input {
      top: 50px;
      left: 100px;
      position: absolute;
+}
+
+footer {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 50px;
+    padding-left: 0px;
+    margin-top: 10px;
+    #padding-bottom: 10px;
+    align: center;
+    border-top: solid 1px black;
 }

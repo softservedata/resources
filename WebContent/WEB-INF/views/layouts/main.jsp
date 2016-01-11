@@ -142,8 +142,8 @@
 							<div style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>
 
 							<div class="form-group">
-								<label for="inputEmail">Email</label> <input
-									class="form-control" id="j_username" name="j_username"
+								<label for="inputEmail">Login</label> <input
+									class="form-control" id="login" name="login"
 									type="text" placeholder="Username" size="30" autocomplete="on"
 									autofocus="autofocus">
 
@@ -152,7 +152,7 @@
 
 							<div class="form-group">
 								<label for="inputPassword">Password</label> <input
-									class="form-control" id="j_password" name="j_password"
+									class="form-control" id="password" name="password"
 									type="password" placeholder="Password" size="30"
 									autocomplete="on">
 							</div>

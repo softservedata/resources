@@ -3,6 +3,7 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.RoleRepository;
@@ -195,21 +196,21 @@ public class UserServiceImpl implements UserService {
 		return inactiveUserDtoList;
 	}
 
-	@Override
-	@Transactional
-	// public void registerUser(User user, PassportInfo passport, Address
-	// address) {
-	public void registerUser(User user) {
-
-		// by default, every new user is given role "User" and status "Inactive"
-		// until it's changed by Admin
-		// Roles map: Admin - 1, Registrator - 2, User - 3
-		// user.setRoleId(3);
-		user.setStatus(UserStatus.INACTIVE);
-		userRepository.saveAndFlush(user);
-		// passportRepository.saveAndFlush(passport);
-		// addressRepository.saveAndFlush(address);
-	}
+//	@Override
+//	@Transactional
+//	// public void registerUser(User user, PassportInfo passport, Address
+//	// address) {
+//	public void registerUser(User user) {
+//
+//		// by default, every new user is given role "User" and status "Inactive"
+//		// until it's changed by Admin
+//		// Roles map: Admin - 1, Registrator - 2, User - 3
+//		// user.setRoleId(3);
+//		user.setStatus(UserStatus.INACTIVE);
+//		userRepository.saveAndFlush(user);
+//		// passportRepository.saveAndFlush(passport);
+//		// addressRepository.saveAndFlush(address);
+//	}
 
 	@Transactional
 	@Override
@@ -236,4 +237,66 @@ public class UserServiceImpl implements UserService {
 			return UserStatus.UNBLOCK;
 		}
 	}
+
+	@Override
+	@Transactional
+	public void registerUser(User user, PassportInfo passport, Address address) {
+		// by default, every new user is given role "User" and status "Inactive"
+		// until it's changed by Admin
+		// Roles map: Admin - 1, Registrator - 2, User - 3
+//		user.setRoleId(3);
+//		user.setStatus(UserStatus.INACTIVE);
+//		user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + user.getPassword()));
+
+		userRepository.saveAndFlush(user);
+
+		if (userRepository.findUserByLogin(user.getLogin()) != null) {
+			// // insert user's address records into "address" table
+			address.setUser(user);
+			addressRepository.saveAndFlush(address);
+			// // insert user's passport data into "passport_data" table
+			passport.setUser(user);
+			passport.setPublishedByData("РВУ ЛМУ України");
+			passportRepository.saveAndFlush(passport);
+		}
+	}
+
+//	@Transactional
+//	@Override
+//	public int updateUser(User user) {
+//		return 0;
+//	}
+//
+//	@Transactional
+//	@Override
+//	public boolean login(String login, String password) {
+//		if (userRepository.findUserByLogin(login) != null
+//				&& userRepository.getUsersPasswordHash(login) == DigestUtils.md5Hex(password)) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+
+	@Transactional
+	@Override
+	public boolean checkUsernameNotExistInDB(String login) {
+		if (userRepository.findUserByLogin(login) != null) {
+			// when username exists in DB
+			return false;
+		}
+		// if username isn't found in DB
+		return true;
+	}
+
+	// @Override
+	// public boolean recoverUsersPassword(String email, String
+	// usersCaptchaAnswer, String captchaFileName) {
+	// if(validateUsersEmail(email) && validateCaptchaCode(captchaFileName)){
+	// return true;
+	// }
+	// return false; //- "There is no such email in the DB" or "Entered captcha
+	// code is incorrect"
+	// }
+
 }

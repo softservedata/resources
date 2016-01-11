@@ -4,6 +4,8 @@ package org.registrator.community.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.registrator.community.entity.Address;
+import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
@@ -31,17 +33,11 @@ public class RegisterController {
         return "register";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-//    public String processNewUserData(@Valid User user, @Valid PassportInfo passport, @Valid Address address, BindingResult result) {
-    public String processNewUserData(@Valid User user, BindingResult result) {
-        if (result.hasErrors()) {
-        	System.out.println("***** Oops, unable to process new user register data: looks like one (or more) fields are filled in incorrectly - TEMPORARY STUB");
-            return "register";
-        }
-        //userService.registerUser(user, passport, address);
-        userService.registerUser(user);
+    @RequestMapping(value = "/register2", method = RequestMethod.GET)
+   public String processNewUserData(@Valid User user, @Valid PassportInfo passport, @Valid Address address, BindingResult result) {
+        userService.registerUser(user, passport, address);
         log.info("Successfully registered new user: " + user.getUserId());
-        return "redirect:thanks-for-registration";
+        return "thanks-for-registration";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -49,13 +45,13 @@ public class RegisterController {
         return "login";
     }
 
-    @RequestMapping(value="/login", method=RequestMethod.POST)
-    public String showUserProfile(@RequestParam String login, @RequestParam String password) {
-        if(!userService.login(login, password)){
-            return "The username or password is incorrect";
-        }
-        return "profile";
-    }
+//    @RequestMapping(value="/login", method=RequestMethod.POST)
+//    public String showUserProfile(@RequestParam String login, @RequestParam String password) {
+//        if(!userService.login(login, password)){
+//            return "The username or password is incorrect";
+//        }
+//        return "profile";
+//    }
     
     @RequestMapping(value = "/logout")
 	public String logout(Model map, HttpServletRequest req) {
@@ -64,6 +60,22 @@ public class RegisterController {
 		
 		 return "redirect:/login";
 	}
-    
+
+    // Password Recovery
+    @RequestMapping(value = "/send-password", method = RequestMethod.GET)
+    public String showPasswordRecoveryForm(){
+        return "password_recovery";
+    }
+
+    // Frequently Asked Questions (FAQ)
+    @RequestMapping(value = "/faq", method = RequestMethod.GET)
+    public String showFAQpage(){
+        return "faq";
+    }
+
+    @RequestMapping(value = "/help", method = RequestMethod.GET)
+    public String showContactAdminPage(){
+        return "help";
+    }
     
 }

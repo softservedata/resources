@@ -4,11 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-
-
-<img src="resource/img/ukraine_logo.gif" />
-
-
 <div class="title">
 	<div class="signin-container">
 
@@ -24,9 +19,9 @@
 					<div style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>
 
 					<div class="form-group">
-						<label for="inputEmail">Email</label> 
+						<label for="inputEmail">Login</label>
 						<input class="form-control"
-							id="j_username" name="j_username" type="text"
+							id="login" name="login" type="text"
 							placeholder="Username" size="30" autocomplete="on"
 							autofocus="autofocus">
 
@@ -34,9 +29,9 @@
 
 
 					<div class="form-group">
-						<label for="inputPassword">Password</label> 
+						<label for="inputPassword">Password</label>
 						<input
-							class="form-control" id="j_password" name="j_password"
+							class="form-control" id="password" name="password"
 							type="password" placeholder="Password" size="30"
 							autocomplete="on">
 					</div>

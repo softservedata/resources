@@ -62,7 +62,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		http.formLogin().loginPage("/login").permitAll()
 
-				.failureUrl("/login?error").usernameParameter("j_username").passwordParameter("j_password").and()
+//				.failureUrl("/login?error").usernameParameter("j_username").passwordParameter("j_password").and()
+				.failureUrl("/login?error").usernameParameter("login").passwordParameter("password").and()
 				.logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/login?logout").and().exceptionHandling()
 				.accessDeniedPage("/login").and()
 
