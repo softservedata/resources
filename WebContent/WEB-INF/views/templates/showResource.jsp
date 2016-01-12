@@ -57,12 +57,12 @@
 							<td>
                                 <span class="latitudeDegrees">${point.latitudeDegrees}</span>°
                                 <span class="latitudeMinutes">${point.latitudeMinutes}</span>'
-                                <span class="latitudeSeconds">${point.latitudeSeconds}</span>"
+                                <span class="latitudeSeconds"><fmt:formatNumber type="number" maxFractionDigits="2" value="${point.latitudeSeconds}" /></span>"
                             </td>
 							<td>
                                 <span class="longitudeDegrees">${point.longitudeDegrees}</span>°
                                 <span class="longitudeMinutes">${point.longitudeMinutes}</span>'
-                                <span class="longitudeSeconds">${point.longitudeSeconds}</span>"
+                                <span class="longitudeSeconds"><fmt:formatNumber type="number" maxFractionDigits="2" value="${point.longitudeSeconds}" /></span>"
                             </td>
 						</tr>
 					</c:forEach>
@@ -78,8 +78,9 @@
 				<c:forEach var="discrete" items="${resource.resourceDiscrete}">
 					<tr>
 						<td>${discrete.discreteParameterDescription},${discrete.discreteParameterUnit}</td>
-						<c:forEach var="value" items="${discrete.values}">
-							<td>${value}</td>
+						<c:forEach var="valueDiscrete" items="${discrete.valueDiscretes}">
+							<td>${valueDiscrete.value}</td>
+							<td>${valueDiscrete.comment}</td>
 						</c:forEach>
 					</tr>
 				</c:forEach>

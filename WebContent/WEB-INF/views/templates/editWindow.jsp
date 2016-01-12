@@ -28,7 +28,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="firstName" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.firstName}">
+								value="${userDto.firstName}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -37,7 +37,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="lastName" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.lastName}">
+								value="${userDto.lastName}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -46,7 +46,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="middleName" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.middleName}">
+								value="${userDto.middleName}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -63,7 +63,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="password" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.password}">
+								value="${userDto.password}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -72,7 +72,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="email" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.email}">
+								value="${userDto.email}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -124,7 +124,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="address.region" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.address.region}">
+								value="${userDto.address.region}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -133,7 +133,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="address.city" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.address.city}">
+								value="${userDto.address.city}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -142,7 +142,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="address.district" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.address.district}">
+								value="${userDto.address.district}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -151,7 +151,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="address.street" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.address.street}">
+								value="${userDto.address.street}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -160,7 +160,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="address.building" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.address.building}">
+								value="${userDto.address.building}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -169,7 +169,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="address.flat" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.address.flat}">
+								value="${userDto.address.flat}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -178,7 +178,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="address.postcode" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.address.postcode}">
+								value="${userDto.address.postcode}" required>
 						</div>
 					</div>
 				</div>
@@ -192,7 +192,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="passport.seria" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.passport.seria}">
+								value="${userDto.passport.seria}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -201,7 +201,7 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="passport.number" placeholder=""
 								class="form-control input-md" type="text"
-								value="${userDto.passport.number}">
+								value="${userDto.passport.number}" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -210,13 +210,13 @@
 						<div class="col-lg-8">
 							<input id="textinput" name="passport.published_by_data"
 								placeholder="" class="form-control input-md" type="text"
-								value="${userDto.passport.published_by_data}">
+								value="${userDto.passport.published_by_data}" required>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="wrapper" style="text-align: center">
-				<input type="submit" value="Submit" class="btn btn-primary btn-sm">
+				<input type="submit" value=<spring:message code="label.user.button"/> class="btn btn-primary btn-sm">
 			</div>
 			<p>
 		</fieldset>

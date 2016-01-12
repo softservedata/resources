@@ -14,6 +14,7 @@
         map = new google.maps.Map(document.getElementById("map_canvas"), mapProp);
 
         var polygonCoords = [];
+        var bounds = new google.maps.LatLngBounds();
 
         $(".coordinates").each(function () {
             var latitudeDegrees = Number($(this).find(".latitudeDegrees").html());
@@ -26,7 +27,9 @@
             var lat = latitudeDegrees + latitudeMinutes / 60 + latitudeSeconds / 3600;
             var lng = longitudeDegrees + longitudeMinutes / 60 + longitudeSeconds / 3600;
 
-            polygonCoords.push(new google.maps.LatLng(lat, lng));
+            var latLng = new google.maps.LatLng(lat, lng);
+            bounds.extend(latLng);
+            polygonCoords.push(latLng);
         });
         polygonCoords.push(new google.maps.LatLng(centerlat, centerlng));
 
@@ -40,6 +43,7 @@
         });
 
         polygon.setMap(map);
+        map.fitBounds(bounds);
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);

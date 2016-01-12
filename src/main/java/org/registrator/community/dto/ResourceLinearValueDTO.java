@@ -4,37 +4,37 @@ import java.util.List;
 
 public class ResourceLinearValueDTO {
 
-	private List<SegmentLinearDTO> segments;
-	private String linearParameterDescription;
-	private String linearParameterUnit;
-	
-	
-	public ResourceLinearValueDTO() {
-	
-	}
-	
-	public List<SegmentLinearDTO> getSegments() {
-		return segments;
-	}
+    private List<SegmentLinearDTO> segments;
+    private String linearParameterDescription;
+    private String linearParameterUnit;
+    
+    
+    public ResourceLinearValueDTO() {
+    
+    }
+    
+    public List<SegmentLinearDTO> getSegments() {
+        return segments;
+    }
 
-	public void setSegments(List<SegmentLinearDTO> segments) {
-		this.segments = segments;
-	}
+    public void setSegments(List<SegmentLinearDTO> segments) {
+        this.segments = segments;
+    }
 
-	public String getLinearParameterDescription() {
-		return linearParameterDescription;
-	}
+    public String getLinearParameterDescription() {
+        return linearParameterDescription;
+    }
 
-	public void setLinearParameterDescription(String linearParameterDescription) {
-		this.linearParameterDescription = linearParameterDescription;
-	}
+    public void setLinearParameterDescription(String linearParameterDescription) {
+        this.linearParameterDescription = linearParameterDescription;
+    }
 
-	public String getLinearParameterUnit() {
-		return linearParameterUnit;
-	}
+    public String getLinearParameterUnit() {
+        return linearParameterUnit;
+    }
 
-	public void setLinearParameterUnit(String linearParameterUnit) {
-		this.linearParameterUnit = linearParameterUnit;
-	}
+    public void setLinearParameterUnit(String linearParameterUnit) {
+        this.linearParameterUnit = linearParameterUnit;
+    }
 
 }

@@ -1,20 +1,20 @@
 body {
-/*    background-color: rgba(0,0,0, 0.2);*/
-    font-family: "Georgia", sans-serif;
-    font-size: 10;
-    padding: 0;
-    margin: 0;
-} 
-form {
-    margin: 10px;
+  background-color: #e3e3e3;
 }
 
-img {
-    width: 120%;
-    height: auto;
-    position: absolute;
-/*    z-index: 0;*/
-/*    transform: scaleX(-1);*/
+#register_form label.error {
+  margin-left: 10px;
+  width: auto;
+  display: inline;
+  color: red;
+  font: "Verdana";
+  font-style: italic;
+}
+
+.header {
+  border: 1px solid orange;
+  background-color: orange;
+  height: 25px;
 }
 
 #register_container {
@@ -27,7 +27,11 @@ img {
 }
 
 #footer {
-    bottom: 10px;
+	padding-top: 50px;
+    padding-right: 0px;
+    padding-bottom: 50px;
+    padding-left: 0px;
+    /* #bottom: 10px; */
     align: center;
     border-top: solid 1px black;
 }

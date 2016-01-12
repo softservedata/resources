@@ -18,7 +18,7 @@ public class ResourceDTO {
     private String description;
     private String registratorName;
     
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date date;
     private ResourceStatus status;
     private String reasonInclusion;
@@ -28,7 +28,7 @@ public class ResourceDTO {
     private ResourceAreaDTO resourceArea;
     
     private List<ResourceLinearValueDTO> resourceLinear = new ArrayList<ResourceLinearValueDTO>();
-    private List<ResourceDiscreteValueDTO> resourceDiscrete = new ArrayList<ResourceDiscreteValueDTO>();;
+    private List<ResourceDiscreteValueDTO> resourceDiscrete = new ArrayList<ResourceDiscreteValueDTO>();
     
     public ResourceDTO() {
         

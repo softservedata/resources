@@ -11,10 +11,13 @@ import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.UserStatusDTO;
+import org.registrator.community.dto.WillDocumentDTO;
 import org.registrator.community.entity.Address;
+import org.registrator.community.entity.OtherDocuments;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
+import org.registrator.community.entity.WillDocument;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
@@ -77,9 +80,10 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void changeUserRole(String login, int role_id) {
+	public void changeUserRole(String login, Integer role_id) {
 		User user = getUserByLogin(login);
-		user.setRoleId(role_id);
+		Role role = roleRepository.findOne(String.valueOf(role_id));
+		user.setRole(role);
 		userRepository.save(user);
 	}
 
@@ -92,7 +96,7 @@ public class UserServiceImpl implements UserService {
 		user.setMiddleName(userDto.getMiddleName());
 		user.setEmail(userDto.getEmail());
 		user.setPassword(userDto.getPassword());
-		user.setRoleId(user.getRoleId());
+		user.setRole(checkRole(userDto.getRole()));
 		user.setStatus(checkUserStatus(userDto.getStatus()));
 		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
 				userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
@@ -114,11 +118,19 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public List<UserStatus> fillInUserStatus() {
+	public List<UserStatus> fillInUserStatus(List<UserDTO> userDtoList) {
 		List<UserStatus> userStatusList = new ArrayList<UserStatus>();
-		userStatusList.add(UserStatus.INACTIVE);
-		userStatusList.add(UserStatus.BLOCK);
-		userStatusList.add(UserStatus.UNBLOCK);
+		for (UserDTO userDto : userDtoList) {
+			if (userDto.getStatus().equals(UserStatus.INACTIVE.name())) {
+				userStatusList.add(UserStatus.INACTIVE);
+				userStatusList.add(UserStatus.BLOCK);
+				userStatusList.add(UserStatus.UNBLOCK);
+			} else {
+				userStatusList.add(UserStatus.BLOCK);
+				userStatusList.add(UserStatus.UNBLOCK);
+			}
+
+		}
 		return userStatusList;
 	}
 
@@ -135,7 +147,7 @@ public class UserServiceImpl implements UserService {
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-					user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
+					user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
 					user.getStatus().toString(), addressDto, passportDto);
 			userDtoList.add(userDto);
 		}
@@ -149,12 +161,33 @@ public class UserServiceImpl implements UserService {
 		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
 		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
 				passportInfo.getPublishedByData());
+		if (passportInfo.getComment() != null) {
+			passportDto.setComment(passportInfo.getComment());
+		}
 		Address address = user.getAddress().get(user.getAddress().size() - 1);
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRoleById(user.getRoleId()), user.getLogin(), user.getPassword(), user.getEmail(),
+				user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
 				user.getStatus().toString(), addressDto, passportDto);
+		if (!user.getWillDocument().isEmpty()) {
+			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
+			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
+			willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
+			if (willDocument.getComment() != null) {
+				willDocumentDTO.setComment(willDocument.getComment());
+			}
+			userdto.setWillDocument(willDocumentDTO);
+		}
+		
+        if (!user.getOtherDocuments().isEmpty()) {
+            List<String> otherDocuments = new ArrayList<String>();
+            for(OtherDocuments otherDocument : user.getOtherDocuments()) {
+                otherDocuments.add(otherDocument.getComment());
+            }
+            userdto.setOtherDocuments(otherDocuments);
+        }
+        
 		return userdto;
 	}
 
@@ -173,20 +206,21 @@ public class UserServiceImpl implements UserService {
 		return inactiveUserDtoList;
 	}
 
-
-	@Override
-	@Transactional
-//	public void registerUser(User user, PassportInfo passport, Address address) {
-	public void registerUser(User user) {
-
-		// by default, every new user is given role "User" and status "Inactive" until it's changed by Admin
-		// Roles map: Admin - 1, Registrator - 2, User - 3
-		user.setRoleId(3);
-		user.setStatus(UserStatus.INACTIVE);
-		userRepository.saveAndFlush(user);
-		//passportRepository.saveAndFlush(passport);
-		//addressRepository.saveAndFlush(address);
-	}
+//	@Override
+//	@Transactional
+//	// public void registerUser(User user, PassportInfo passport, Address
+//	// address) {
+//	public void registerUser(User user) {
+//
+//		// by default, every new user is given role "User" and status "Inactive"
+//		// until it's changed by Admin
+//		// Roles map: Admin - 1, Registrator - 2, User - 3
+//		// user.setRoleId(3);
+//		user.setStatus(UserStatus.INACTIVE);
+//		userRepository.saveAndFlush(user);
+//		// passportRepository.saveAndFlush(passport);
+//		// addressRepository.saveAndFlush(address);
+//	}
 
 	@Transactional
 	@Override
@@ -197,10 +231,9 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public boolean login(String username, String password) {
-		if(userRepository.getUserByLoginAndPassword(username, password) != null){
+		if (userRepository.getUserByLoginAndPassword(username, password) != null) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
@@ -214,4 +247,81 @@ public class UserServiceImpl implements UserService {
 			return UserStatus.UNBLOCK;
 		}
 	}
+	
+	private Role checkRole(String role) {
+		List<Role> roleList = roleRepository.findAll();
+		if (role.equals(RoleType.USER.name())) {
+			return roleList.get(0);
+		} else {
+			if (role.equals(RoleType.REGISTRATOR.name())) {
+				return roleList.get(1);
+			} else {
+				return roleList.get(2);
+			}
+		}
+	}
+
+	@Override
+	@Transactional
+	public void registerUser(User user, PassportInfo passport, Address address) {
+		// by default, every new user is given role "User" and status "Inactive"
+		// until it's changed by Admin
+		// Roles map: Admin - 1, Registrator - 2, User - 3
+
+//		user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + user.getPassword()));
+
+        user.setRole(roleRepository.findRoleByType(RoleType.USER));
+        user.setStatus(UserStatus.INACTIVE);
+        userRepository.saveAndFlush(user);
+
+        if (userRepository.findUserByLogin(user.getLogin()) != null) {
+            // // insert user's address records into "address" table
+            address.setUser(user);
+            addressRepository.saveAndFlush(address);
+            // // insert user's passport data into "passport_data" table
+            passport.setUser(user);
+            //passport.setPublishedByData("РВУ ЛМУ України");
+            passportRepository.saveAndFlush(passport);
+        }
+	}
+
+//	@Transactional
+//	@Override
+//	public int updateUser(User user) {
+//		return 0;
+//	}
+//
+//	@Transactional
+//	@Override
+//	public boolean login(String login, String password) {
+//		if (userRepository.findUserByLogin(login) != null
+//				&& userRepository.getUsersPasswordHash(login) == DigestUtils.md5Hex(password)) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+
+	@Transactional
+	@Override
+	public boolean checkUsernameNotExistInDB(String login) {
+		if (userRepository.findUserByLogin(login) != null) {
+			// when username exists in DB
+			return false;
+		}
+		// if username isn't found in DB
+		return true;
+	}
+
+	// @Override
+	// public boolean recoverUsersPassword(String email, String
+	// usersCaptchaAnswer, String captchaFileName) {
+	// if(validateUsersEmail(email) && validateCaptchaCode(captchaFileName)){
+	// return true;
+	// }
+	// return false; //- "There is no such email in the DB" or "Entered captcha
+	// code is incorrect"
+	// }
+
+
 }

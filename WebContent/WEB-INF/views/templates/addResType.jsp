@@ -14,23 +14,20 @@
 	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
 	var="jqueryJs" />
 <spring:url value="/resource/js/add.js" var="addJs" />
-<spring:url value="/resource/js/valid.js" var="validJs" />
 <script src="${jqueryJs}"></script>
 <script src="${addJs}"></script>
-<script src="${validJs}"></script>
-
 <h2>
 	<spring:message code="label.restype.add" />
 </h2>
 
 <form:form method="POST" action="addrestype" modelAttribute="newrestype"
 	class="form-horizontal">
-<form:errors path="typeName" cssClass="error" style="color:red"/>
+	<form:errors path="typeName" cssClass="error" style="color:red" />
 	<div class="form-group">
 		<label class="control-label col-sm-2"><spring:message
 				code="label.restype.title" />:</label>
 		<div class="col-sm-2">
-			
+
 			<input class="form-control" name="typeName" value="${typeName}"
 				placeholder="Введіть назву тут" required>
 		</div>
@@ -75,11 +72,11 @@
 	<br />
 	<div class="button">
 		<input type="submit" value=<spring:message code="label.save"/>
-			class="btn btn-success" id="valid"/>
+			class="btn btn-success" id="valid" />
 		<button type="reset" class="btn btn-default">
 			<spring:message code="label.clearall" />
 		</button>
 	</div>
-	
+
 </form:form>
 

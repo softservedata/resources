@@ -7,11 +7,11 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class MyWebInitializer extends
-		AbstractAnnotationConfigDispatcherServletInitializer {
+		AbstractAnnotationConfigDispatcherServletInitializer  {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { SpringRootConfig.class,DevelopmentConfiguration.class };
+		return new Class[] { SpringRootConfig.class,DevelopmentConfiguration.class ,SecurityConfiguration.class};
 	}
 
 	@Override

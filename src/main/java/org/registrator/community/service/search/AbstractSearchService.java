@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.criteria.CriteriaQuery;
-
 import org.registrator.community.dao.specification.SpecificationsBuilder;
 import org.registrator.community.dto.search.SearchColumn;
 import org.registrator.community.dto.search.TableSearchRequestDTO;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.core.EntityInformation;
 
 public abstract class AbstractSearchService<T,R extends JpaSpecificationExecutor<T> 
 	& PagingAndSortingRepository<T,? extends Serializable>>  implements BaseSearchService<T>{

@@ -8,30 +8,32 @@ package org.registrator.community.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.registrator.community.enumeration.ResourceStatus;
 
 public class InquiryListDTO implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer inquiry_list_id;
 	private String inquiryType;
 	private Date date;
 	private String userName;
 	private String registratorName;
 	private String resourceIdentifier;
-	
-		
+	private ResourceStatus resourceStatus;
+
 	public InquiryListDTO() {
 	}
 
 	public InquiryListDTO(Integer inquiry_list_id, String inquiryType, Date date, String userName,
-			String registratorName, String resourceIdentifier) {
+			String registratorName, String resourceIdentifier, ResourceStatus resourceStatus) {
 		this.inquiry_list_id = inquiry_list_id;
 		this.inquiryType = inquiryType;
 		this.date = date;
 		this.userName = userName;
 		this.registratorName = registratorName;
 		this.resourceIdentifier = resourceIdentifier;
+		this.resourceStatus = resourceStatus;
 	}
 
 	public Integer getInquiry_list_id() {
@@ -81,5 +83,13 @@ public class InquiryListDTO implements Serializable {
 	public void setResourceIdentifier(String resourceIdentifier) {
 		this.resourceIdentifier = resourceIdentifier;
 	}
-	
+
+	public ResourceStatus getResourceStatus() {
+		return resourceStatus;
+	}
+
+	public void setResourceStatus(ResourceStatus resourceStatus) {
+		this.resourceStatus = resourceStatus;
+	}
+
 }

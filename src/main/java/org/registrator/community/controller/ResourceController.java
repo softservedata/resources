@@ -1,20 +1,37 @@
 package org.registrator.community.controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.entity.*;
+import org.registrator.community.dto.UserDTO;
+import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.validator.ResourceDTOValidator;
+import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.LinearParameter;
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceDiscreteValue;
+import org.registrator.community.entity.ResourceLinearValue;
+import org.registrator.community.entity.ResourceType;
+import org.registrator.community.entity.Tome;
+import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
+import org.registrator.community.service.UserService;
 import org.registrator.community.service.impl.DiscreteParameterServiceImpl;
 import org.registrator.community.service.impl.LinearParameterServiceImpl;
 import org.registrator.community.service.impl.ResourceDiscreteValueServiceImpl;
 import org.registrator.community.service.impl.ResourceLinearValueServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +41,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value = "/registrator/resource")
@@ -53,13 +72,21 @@ public class ResourceController {
 
     @Autowired
     ResourceLinearValueServiceImpl resourceLinearValueService;
+   
+    @Autowired
+    UserService userService;
+    
+    
 
     /**
      * Method for loading form for input the parameter of resource (with
      * existing resource types and registrator)
      */
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model) {
+    public String addResourceForm(Model model, HttpSession session) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO user = userService.getUserDto(auth.getName());
+        session.setAttribute("user", user);
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
         List<Tome> tomes = tomeRepository.findAll();
         ResourceDTO newresource = new ResourceDTO();
@@ -96,7 +123,7 @@ public class ResourceController {
             model.addAttribute("newresource", resourceDTO);
             return "addResource";
         } else {
-            resourceService.addNewResource(resourceDTO);
+            resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE);
             model.addAttribute("resource", resourceDTO);
             return "showResource";
         }
@@ -271,9 +298,50 @@ public class ResourceController {
     @ResponseBody
     @RequestMapping(value = "/decs", method = RequestMethod.GET)
     public Map<String,Set<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
-    	Map<String,Set<String>> suggestions=new HashMap<String, Set<String>>();
-//    	suggestions.put("query", new TreeSet<String>().add("unit"));
-    	suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
+        Map<String,Set<String>> suggestions=new HashMap<String, Set<String>>();
+//        suggestions.put("query", new TreeSet<String>().add("unit"));
+        suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
         return suggestions;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getResourcesByAreaLimits", method = RequestMethod.POST)
+    public String showAllResourcesByAreaLimits(@RequestParam("minLat") Double minLat,
+                                           @RequestParam("maxLat") Double maxLat,
+                                           @RequestParam("minLng") Double minLng,
+                                           @RequestParam("maxLng") Double maxLng,
+                                           @RequestParam("resType") String resType,
+                                           Model model) {
+        Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType);
+        List<PolygonJSON> polygons = new ArrayList<>();
+
+        for (String identifier : identifiers) {
+            polygons.addAll(resourceService.createPolygonJSON(identifier));
+        }
+
+        Gson gson = new Gson();
+        return gson.toJson(polygons);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getResourcesByPoint", method = RequestMethod.POST)
+    public String showAllResourcesByAreaLimits(@RequestParam("lat") Double lat,
+                                               @RequestParam("lng") Double lng,
+                                               Model model) {
+        Set<String> identifiers = resourceService.getAllByPoint(lat, lng);
+        List<PolygonJSON> polygons = new ArrayList<>();
+
+        for (String identifier : identifiers) {
+            polygons.addAll(resourceService.createPolygonJSON(identifier));
+        }
+
+        Gson gson = new Gson();
+        return gson.toJson(polygons);
+    }
+
+    @RequestMapping(value = "/searchOnMap", method = RequestMethod.GET)
+    public String searchOnMap(Model model) {
+        return "searchOnMap";
+    }
+
 }

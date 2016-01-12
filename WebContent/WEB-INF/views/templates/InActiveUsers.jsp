@@ -16,7 +16,7 @@
 </div>
 <form:form id="editWinodow" modelAttribute="userDTO" method="post"
 	action="get-all-inactive-users">
-	<table id="datatable" class="table display">
+	<table id="datatable" class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr id="myTable">
 				<th>Login</th>
@@ -26,7 +26,7 @@
 				<th><spring:message code="label.user.email" /></th>
 				<th><spring:message code="label.user.address" /></th>
 				<th><spring:message code="label.user.passport" /></th>
-				<th>Змінти Статус</th>
+				<th><spring:message code="label.user.changestatus" /></th>
 			</tr>
 		</thead>
 		<c:if test="${not empty unregistatedUsers}">
