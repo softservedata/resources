@@ -152,4 +152,10 @@
 					   value="/WEB-INF/views/searchOnMap.jsp" />
 	</definition>
 
+	<definition name="adminSettings" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/adminSettings.jsp" />
+	</definition>
+
+
 </tiles-definitions>
