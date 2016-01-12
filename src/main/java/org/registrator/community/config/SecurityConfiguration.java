@@ -57,9 +57,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
                 .antMatchers("/administrator/users/search")
                 .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/administrator/users/get-all-users").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/administrator/users/get-all-inactive-users").access("hasRole('ROLE_ADMIN')")
-//                .and().rememberMe().rememberMeParameter("_spring_security_remember_me").tokenRepository(persistentTokenRepository()).tokenValiditySeconds(87400)
+                .antMatchers("/administrator/users/get-all-users").access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
+                .antMatchers("/administrator/users/get-all-inactive-users").access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
+                .and().rememberMe().rememberMeParameter("_spring_security_remember_me").tokenRepository(persistentTokenRepository()).tokenValiditySeconds(87400)
         ;
 
 

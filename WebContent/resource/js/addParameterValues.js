@@ -16,7 +16,7 @@ $("button").click(function() {
 			
 		});
 		$('#discreteInput_'+ theId + '_'+ num).after(newElem);
-		$('#btnDelDiscreteValue_' + theId).attr('disabled', '');	
+		$('#btnDelDiscreteValue_' + theId).removeAttr('disabled');	
 	}
 	
 	if ($(this).attr("id").match(/^btnDelDiscreteValue_(\d+)$/)) {
@@ -25,7 +25,7 @@ $("button").click(function() {
 		if (num - 1 == 1)
 			$('#btnDelDiscreteValue_'+ theId).attr('disabled', 'disabled');
 		$('#discreteInput_'+ theId + '_'+ num).remove();
-		$('#btnAddDiscreteValue_' + theId).attr('disabled', '');
+		$('#btnAddDiscreteValue_' + theId).removeAttr('disabled');
 	}
 	
 	if ($(this).attr("id").match(/^btnAddLinearValue_(\d+)$/)) {
