@@ -21,6 +21,7 @@
 <script src="${addAreaJs}"></script>
 <link rel="stylesheet" type="text/css" href="${suggestionCss}">
 <link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 
 
 <script src=" http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.js"></script>

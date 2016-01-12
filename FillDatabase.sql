@@ -460,6 +460,20 @@ INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifi
 (14, '2016-01-05 00:00:00', 'Радіо 24', '79000-1-001', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 4, 2, 2),
 (15, '2016-01-07 00:00:00', 'парк Богданівка', '79000-011', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1);
 
+
+--
+-- Table structure for table `other_document`
+--
+
+CREATE TABLE IF NOT EXISTS `other_document` (
+  `other_document_id` int(11) NOT NULL AUTO_INCREMENT,
+  `comment` varchar(255) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`other_document_id`),
+  KEY `FK_4vvx09ds3yhl5sb8pa2snjchh` (`user_id`),
+  CONSTRAINT `FK_4vvx09ds3yhl5sb8pa2snjchh` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
 -- --------------------------------------------------------
 
 --
@@ -486,6 +500,14 @@ INSERT INTO `passport_data` (`passport_data_id`, `number`, `published_by_data`, 
 (3, 123456, 'Стрийський МВ УМВС України в Львівській області 01 січня 1965 року', 'КК', 3),
 (4, 1122456, 'Львівський....', 'КС', 4),
 (5, 1126789, 'Київський....', 'КС', 5);
+
+CREATE TABLE IF NOT EXISTS `persistent_logins` (
+  `username` varchar(64) NOT NULL,
+  `series` varchar(64) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`series`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -736,6 +758,24 @@ INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `mi
 (4, 'vasyl.@gmail.com', 'Василь', 'Василюк', 'vasyl', 'Васильович', 'pass4', 2, 'UNBLOCK'),
 (5, 'oleh.@gmail.com', 'Олег', 'Василюк', 'oleh', 'Олеговчич', 'pass5', 3, 'INACTIVE');
 
+--
+-- Table structure for table `will_data`
+--
+
+CREATE TABLE IF NOT EXISTS `will_data` (
+  `will_id` int(11) NOT NULL AUTO_INCREMENT,
+  `accession_date` datetime NOT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`will_id`),
+  KEY `FK_4pese2ljt9p52v2pyhs4bt3re` (`user_id`),
+  CONSTRAINT `FK_4pese2ljt9p52v2pyhs4bt3re` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `will_data`
+--
+INSERT INTO `will_data` VALUES (1,'2016-01-02 00:00:00','comment',2);
 
 SET FOREIGN_KEY_CHECKS=1;
 

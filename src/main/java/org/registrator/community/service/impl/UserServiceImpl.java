@@ -18,6 +18,7 @@ import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.entity.WillDocument;
+import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -256,6 +257,8 @@ public class UserServiceImpl implements UserService {
 //        user.setStatus(UserStatus.INACTIVE);
 //        user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + user.getPassword()));
 
+        user.setRole(roleRepository.findRoleByType(RoleType.USER));
+        user.setStatus(UserStatus.INACTIVE);
         userRepository.saveAndFlush(user);
 
         if (userRepository.findUserByLogin(user.getLogin()) != null) {
@@ -264,7 +267,7 @@ public class UserServiceImpl implements UserService {
             addressRepository.saveAndFlush(address);
             // // insert user's passport data into "passport_data" table
             passport.setUser(user);
-            passport.setPublishedByData("РВУ ЛМУ України");
+            //passport.setPublishedByData("РВУ ЛМУ України");
             passportRepository.saveAndFlush(passport);
         }
     }
