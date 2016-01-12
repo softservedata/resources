@@ -37,7 +37,7 @@
 <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
 
-<link rel="stylesheet" href="${base}resource/css/login.css">
+<%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
 
 <!-- JQuery lib-->
 <script

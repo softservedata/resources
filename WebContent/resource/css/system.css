@@ -52,6 +52,9 @@ body {
 #footer {
     margin-top: 20px;
     border-top: solid 1px black;
+    clear: both;
+    text-align: center;
+    line-height: 20px;
 }
 
 /*Google maps buttons*/

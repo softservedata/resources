@@ -6,45 +6,45 @@
 	<!-- Base -->
 		<definition name="base" template="/WEB-INF/views/layouts/base.jsp">
 			<put-attribute name="title" value="Registrar" />
-			<put-attribute name="footer" type="template" value="/WEB-INF/views/templates/footer.jsp" />
+			<put-attribute name="login_footer" type="template" value="/WEB-INF/views/templates/login_footer.jsp" />
 		</definition>
 
 		<!-- Login Page -->
 		<definition name="login" extends="base">
 			<put-attribute name="title" value="Login" />
-			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/login_header.jsp" />
-			<put-attribute name="body" type="template" value="/WEB-INF/views/login.jsp" />
+			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
+			<put-attribute name="login_body" type="template" value="/WEB-INF/views/login.jsp" />
 		</definition>
 
 		<!-- Password Recovery Page -->
 		<definition name="password_recovery" extends="base">
 			<put-attribute name="title" value="Password Recovery" />
-			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
-			<put-attribute name="body" type="template" value="/WEB-INF/views/password_recovery.jsp" />
+			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
+			<put-attribute name="login_body" type="template" value="/WEB-INF/views/password_recovery.jsp" />
 		</definition>
 
 		<!-- Register Page -->
 		<definition name="register" extends="base">
-			<put-attribute name="body" type="template" value="/WEB-INF/views/register.jsp"/>
-			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
+			<put-attribute name="login_body" type="template" value="/WEB-INF/views/register.jsp"/>
+			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
 		</definition>
 
 		<!-- FAQ -->
 		<definition name="faq" extends="base">
-			<put-attribute name="body" type="template" value="/WEB-INF/views/faq.jsp"/>
-			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
+			<put-attribute name="login_body" type="template" value="/WEB-INF/views/faq.jsp"/>
+			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
 		</definition>
 
 		<!--Contact Administrator-->
 		<definition name="help" extends="base">
-			<put-attribute name="body" type="template" value="/WEB-INF/views/help.jsp"/>
-			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
+			<put-attribute name="login_body" type="template" value="/WEB-INF/views/help.jsp"/>
+			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/base_header.jsp" />
 		</definition>
 
 		<definition name="thanks-for-registration" extends="base">
 			<put-attribute name="title" value="Thanks for registration" />
-			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
-			<put-attribute name="body" type="template" value="/WEB-INF/views/thanks-for-registration.jsp"/>
+			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
+			<put-attribute name="login_body" type="template" value="/WEB-INF/views/thanks-for-registration.jsp"/>
 		</definition>
 
 		<!-- Pages for logged users -->

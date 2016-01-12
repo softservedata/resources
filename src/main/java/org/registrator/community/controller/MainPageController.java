@@ -1,5 +1,7 @@
 package org.registrator.community.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +17,12 @@ public class MainPageController {
 */
     @RequestMapping("/")
     public String welcome(Model model){
-        String message = "Welcome to Spring MVC";
-        model.addAttribute("welcomeMessage", message);
-        return "homepage";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (("anonymousUser").equals(auth.getName())){
+            return "redirect:/login";
+        }
+        else {
+            return "homepage";
+        }
     }
 }

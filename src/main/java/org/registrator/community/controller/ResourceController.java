@@ -85,8 +85,8 @@ public class ResourceController {
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
     public String addResourceForm(Model model, HttpSession session) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	UserDTO user = userService.getUserDto(auth.getName());
-    	session.setAttribute("user", user);
+//    	UserDTO user = userService.getUserDto(auth.getName());
+//    	session.setAttribute("user", user);
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
         List<Tome> tomes = tomeRepository.findAll();
         ResourceDTO newresource = new ResourceDTO();
