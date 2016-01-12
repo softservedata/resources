@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ResourceDiscreteValueDTO {
     
-    private List<Double> values = new ArrayList<Double>();
+    private List<ValueDiscreteDTO> valueDiscretes = new ArrayList<ValueDiscreteDTO>();
  
     private String discreteParameterDescription;
     private String discreteParameterUnit;
@@ -30,17 +30,15 @@ public class ResourceDiscreteValueDTO {
         this.discreteParameterUnit = discreteParameterUnit;
     }
 
-    
-    public List<Double> getValues() {
-        return values;
+    public List<ValueDiscreteDTO> getValueDiscretes() {
+        return valueDiscretes;
     }
 
-    public void setValues(List<Double> values) {
-        this.values = values;
+    public void setValueDiscretes(List<ValueDiscreteDTO> valueDiscretes) {
+        this.valueDiscretes = valueDiscretes;
     }
 
-
-    /*public String toString() {
+     /*public String toString() {
 
         return "\n" + "Дискретні параметри: " + discreteParameterDTO + "\n"+
                 "Значення: " + values.toString();

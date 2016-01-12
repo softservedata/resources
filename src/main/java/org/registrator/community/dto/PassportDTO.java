@@ -51,10 +51,10 @@ public class PassportDTO implements Serializable {
 		this.comment = comment;
 	}
 
-	@Override
+/*	@Override
 	public String toString() {
 		return "Серія паспорту: " + seria + "\n" + "Номер паспорту: " + number + "\n" + "Виданий: " + published_by_data
 				+ "\n";
-	}
+	}*/
 
 }

@@ -5,7 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
-<spring:url value="/resource/js/addParameterValues.js" var="addParameterValues" />
+<spring:url value="/resource/js/addParameterValues.js"
+	var="addParameterValues" />
 <script src="${addParameterValues}"></script>
 
 
@@ -13,15 +14,21 @@
 <c:if test="${not empty discreteParameters}">
 	<c:forEach items="${discreteParameters}" var="parameter"
 		varStatus="param_i">
-		<div id="discreteInput_${param_i.index}_1" class="form-group DiscreteInput_${param_i.index}">
+		<div id="discreteInput_${param_i.index}_1"
+			class="form-group DiscreteInput_${param_i.index}">
 			<label class="control-label col-sm-3">${parameter.description},${parameter.unitName}:</label>
 			<input type="hidden"
 				name="resourceDiscrete[${param_i.index}].discreteParameterDescription"
 				value="${parameter.description}">
 			<div class="col-sm-3 ">
 				<input class="form-control"
-					name="resourceDiscrete[${param_i.index}].values[0]" required>
-
+					name="resourceDiscrete[${param_i.index}].valueDiscretes[0].value"
+					required>
+			</div>
+			<div class="col-sm-3 ">
+				<input class="form-control"
+					name="resourceDiscrete[${param_i.index}].valueDiscretes[0].comment"
+					placeholder="коментар">
 			</div>
 		</div>
 		<div>
@@ -38,7 +45,8 @@
 <c:if test="${not empty linearParameters}">
 	<c:forEach items="${linearParameters}" var="parameter"
 		varStatus="param_i">
-		<div id="linearInput_${param_i.index}_1" class="form-group LinearInput_${param_i.index}">
+		<div id="linearInput_${param_i.index}_1"
+			class="form-group LinearInput_${param_i.index}">
 			<label class="control-label col-sm-3">${parameter.description},${parameter.unitName}:</label>
 			<input type="hidden"
 				name="resourceLinear[${param_i.index}].linearParameterDescription"

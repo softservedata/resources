@@ -79,4 +79,18 @@ public class UsersController {
 		return "InActiveUsers";
 	}
 
+
+    @RequestMapping(value = "/settings", method = RequestMethod.GET)
+    public String showSettings(Model model) {
+        return "adminSettings";
+    }
+ 
+    
+  /*  @RequestMapping(value = "/settings", method = RequestMethod.POST)
+    public String changeSettings(String param) {
+        registrationService.changeRegistrationMethod(param);
+   
+        return "adminSettings";
+    }*/
+
 }

@@ -37,7 +37,7 @@
 <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
 
-<link rel="stylesheet" href="${base}resource/css/login.css">
+<%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
 
 <!-- JQuery lib-->
 <script
@@ -166,7 +166,7 @@
 							</div>
 							<button type="submit" class="btn btn-primary"
 								style="width: 100px; margin-left: 60px;">Login</button>
-							<a href="/registrator/register" class="btn btn-success"
+							<a href="${pageContext.request.contextPath}/register" class="btn btn-success"
 								role="button" style="width: 100px;">Register</a>
 
 

@@ -84,9 +84,9 @@ public class ResourceController {
      */
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
     public String addResourceForm(Model model, HttpSession session) {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	UserDTO user = userService.getUserDto(auth.getName());
-    	session.setAttribute("user", user);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO user = userService.getUserDto(auth.getName());
+        session.setAttribute("user", user);
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
         List<Tome> tomes = tomeRepository.findAll();
         ResourceDTO newresource = new ResourceDTO();
@@ -298,9 +298,9 @@ public class ResourceController {
     @ResponseBody
     @RequestMapping(value = "/decs", method = RequestMethod.GET)
     public Map<String,Set<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
-    	Map<String,Set<String>> suggestions=new HashMap<String, Set<String>>();
-//    	suggestions.put("query", new TreeSet<String>().add("unit"));
-    	suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
+        Map<String,Set<String>> suggestions=new HashMap<String, Set<String>>();
+//        suggestions.put("query", new TreeSet<String>().add("unit"));
+        suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
         return suggestions;
     }
 

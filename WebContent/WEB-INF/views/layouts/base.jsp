@@ -20,21 +20,26 @@
     <title><tiles:getAsString name="title"/></title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+    <%--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">--%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
-    <script src="${base}resource/js/lib/jquery-1.11.1.js" type="text/javascript"></script>
+    <%--<script src="${base}resource/js/lib/jquery-1.11.1.js" type="text/javascript"></script>--%>
     <script src="${base}resource/js/lib/jquery-validate/jquery.validate.js" type="text/javascript"></script>
-    <script src="${base}resource/js/scripts.js"></script>
+    <%--<script src="${base}resource/js/scripts.js"></script>--%>
+    <%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
+
+    <!-- Our own css -->
+    <link rel="stylesheet" href="${base}resource/css/system.css">
+
 <div class="container">
    	<div id="header">
-   		<tiles:insertAttribute name="header" />
+   		<tiles:insertAttribute name="login_header" />
    	</div>
    	<div id="body">
-   		<tiles:insertAttribute name="body" />
+   		<tiles:insertAttribute name="login_body" />
    	</div>
    	<div id="footer">
-   		<tiles:insertAttribute name="footer" />
+   		<tiles:insertAttribute name="login_footer" />
    	</div>
 </div>
 </html>

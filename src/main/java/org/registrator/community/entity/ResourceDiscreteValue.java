@@ -14,7 +14,7 @@ public class ResourceDiscreteValue implements Serializable {
     @Id
     @Column(name = "resource_discrete_value_id")
     @GeneratedValue
-    private Integer ResourceDiscreteId;
+    private Integer resourceDiscreteId;
 
     @ManyToOne
     @JoinColumn(name = "resource_id", nullable = false)
@@ -23,6 +23,9 @@ public class ResourceDiscreteValue implements Serializable {
     
     @Column(name = "value", nullable = false)
     private Double value;
+    
+    @Column(name = "comment")
+    private String comment;
     
     @ManyToOne
     @JoinColumn(name = "discrete_parameter_id", nullable = false)
@@ -60,13 +63,13 @@ public class ResourceDiscreteValue implements Serializable {
 
 
     public Integer getResourceDiscreteId() {
-        return ResourceDiscreteId;
+        return resourceDiscreteId;
     }
 
 
 
     public void setResourceDiscreteId(Integer resourceDiscreteId) {
-        ResourceDiscreteId = resourceDiscreteId;
+    	this.resourceDiscreteId = resourceDiscreteId;
     }
 
 
@@ -79,6 +82,14 @@ public class ResourceDiscreteValue implements Serializable {
 
     public void setDiscreteParameter(DiscreteParameter discreteParameter) {
         this.discreteParameter = discreteParameter;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
 }

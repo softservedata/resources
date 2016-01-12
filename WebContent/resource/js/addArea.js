@@ -22,6 +22,11 @@ var addNewPoint = function(poligonNumber,
 			$(this).attr( "name",$(this).attr("name").replace(
 					'points[' + prevNum + ']',
 					'points[' + num + ']'));
+            if (poligonNumber > 0) {
+                $(this).attr( "name",$(this).attr("name").replace(
+                    'poligons[' + (poligonNumber-1) + ']',
+                    'poligons[' + poligonNumber + ']'));
+            }
 			});
       
 		newElem.find('input#pointNumber').val(newNum);
@@ -33,7 +38,7 @@ var addNewPoint = function(poligonNumber,
         newElem.find('input#myparam6').val(longitudeSeconds);
         
 		$('#areaInput' + num).after(newElem);
-		$('#btnDelAreaPoint').attr('disabled', '');
+		$('#btnDelAreaPoint').removeAttr('disabled');
     }
 
 }
@@ -69,11 +74,9 @@ $(document).ready(
 
 			$('#btnDelAreaPoint').click(function() {
 				var num = $('.clonedAreaInput').length;
-				if (num <= 1) {
+				$('#areaInput' + num).remove();
+				if (num == 2) {
 					$('#btnDelAreaPoint').attr('disabled', 'disabled');
-                }
-                else {
-                	$('#areaInput' + num).remove();
                 }
 			});
 			

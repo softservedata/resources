@@ -4,12 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div class="title">
+
 	<div class="signin-container">
-
-
-
-		<fieldset id="login_fieldset" class="forms">
+        <img src="resource/img/ukraine_logo.gif" class="login_logo col-md-8">
+		<fieldset id="login_fieldset" class="forms col-md-4">
 
 			<c:if test="${pageContext.request.userPrincipal.name == null}">
 
@@ -43,7 +41,7 @@
 					</div>
 					<button type="submit" class="btn btn-primary"
 						style="width: 100px; margin-left: 60px;">Login</button>
-					<a href="/registrator/register" class="btn btn-success"
+					<a href="${pageContext.request.contextPath}/register" class="btn btn-success"
 						role="button" style="width: 100px;">Register</a>
 
 
@@ -51,13 +49,6 @@
 			</c:if>
 		</fieldset>
 	</div>
-
-
-
-
-
-
-</div>
 
 
 
