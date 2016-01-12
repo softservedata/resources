@@ -4,6 +4,7 @@ package org.registrator.community.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.registrator.community.components.AdminSettings;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
@@ -28,6 +29,9 @@ public class RegisterController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AdminSettings adminSettings;
+    
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm() {
         return "register";
@@ -41,7 +45,9 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String showLoginForm() {
+    public String showLoginForm(Model model) {
+        model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());
+        
         return "login";
     }
 

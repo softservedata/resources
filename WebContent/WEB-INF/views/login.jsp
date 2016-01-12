@@ -41,10 +41,12 @@
 					</div>
 					<button type="submit" class="btn btn-primary"
 						style="width: 100px; margin-left: 60px;">Login</button>
+					
+					
+					<c:if test="${registrationMethod eq ('PERSONAL') || registrationMethod eq ('MIXED')}">
 					<a href="${pageContext.request.contextPath}/register" class="btn btn-success"
 						role="button" style="width: 100px;">Register</a>
-
-
+					</c:if>
 				</form:form>
 			</c:if>
 		</fieldset>

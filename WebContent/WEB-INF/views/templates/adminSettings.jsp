@@ -10,35 +10,34 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-
 <div class="container">
 	<h4>
 		<spring:message code="label.admin.settings.method" />
 	</h4>
 	<p>Виберіть одну з опцій:</p>
-
-
-
-	<form:form id="сhangeReg" modelAttribute="userDTO" method="post"
+	<form:form id="сhangeReg" method="post" modelAttribute="param"
 		action="settings">
-
 		<div class="radio">
-		
-			<label><input type="radio" name="optradio" value="personalReg">Особиста
-				реєстрація</label>
+			<label><input type="radio" name="optradio" value="personal"
+				required>Особиста реєстрація</label>
 		</div>
 		<div class="radio">
-			<label><input type="radio" name="optradio" value="manualReg">Реєстрація
+			<label><input type="radio" name="optradio" value="manual">Реєстрація
 				нового користувача здійснюється виключно реєстратором</label>
 		</div>
 		<div class="radio">
-			<label><input type="radio" name="optradio" value="mixedReg">Обидва
+			<label><input type="radio" name="optradio" value="mixed">Обидва
 				способи реєстрації доступні</label>
 		</div>
-		<input type="submit" value="Підтвердити" class="btn btn-success" />
+		<input type="submit" id="confirmRegistrationMethod"
+			value="Підтвердити" class="btn btn-success" />
 	</form:form>
-
-
-
-
 </div>
+<script>
+$(document).ready(
+		function() {
+			$("#confirmRegistrationMethod").click(function() {
+				alert("Метод реєстрації буде змінено на вибраний вами");
+			});
+});
+</script>
