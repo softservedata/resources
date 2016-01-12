@@ -103,9 +103,9 @@
 			value="/WEB-INF/views/templates/inquiryAddInput.jsp" />
 	</definition>
 	
-	<definition name="userDataTable" extends="homepage">
+	<definition name="searchTableTemplate" extends="homepage">
 		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/userDataTable.jsp" />
+			value="/WEB-INF/views/templates/searchTableTemplate.jsp" />
 	</definition>
 
 	<definition name="parameters" template="/WEB-INF/views/searchParameters.jsp">
