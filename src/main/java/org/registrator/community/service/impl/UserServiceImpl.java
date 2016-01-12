@@ -3,7 +3,6 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.RoleRepository;
@@ -18,6 +17,7 @@ import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.entity.WillDocument;
+import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 		user.setMiddleName(userDto.getMiddleName());
 		user.setEmail(userDto.getEmail());
 		user.setPassword(userDto.getPassword());
-		user.setRole(user.getRole());
+		user.setRole(checkRole(userDto.getRole()));
 		user.setStatus(checkUserStatus(userDto.getStatus()));
 		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
 				userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
@@ -235,6 +235,19 @@ public class UserServiceImpl implements UserService {
 			return UserStatus.INACTIVE;
 		} else {
 			return UserStatus.UNBLOCK;
+		}
+	}
+	
+	private Role checkRole(String role) {
+		List<Role> roleList = roleRepository.findAll();
+		if (role.equals(RoleType.USER.name())) {
+			return roleList.get(0);
+		} else {
+			if (role.equals(RoleType.REGISTRATOR.name())) {
+				return roleList.get(1);
+			} else {
+				return roleList.get(2);
+			}
 		}
 	}
 
