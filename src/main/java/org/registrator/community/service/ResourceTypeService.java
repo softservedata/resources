@@ -9,7 +9,7 @@ import org.registrator.community.entity.ResourceType;
 public interface ResourceTypeService{
 
 	ResourceType addResourceType (ResourceType resourceType);
-	void delete(ResourceType resourceType);
+	int delete(ResourceType resourceType);
 	ResourceType findByName(String name);
 	List<ResourceType> findAll();
 	ResourceTypeDTO editResourceType(ResourceTypeDTO resourceTypeDTO);
