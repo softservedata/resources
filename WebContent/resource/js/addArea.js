@@ -65,6 +65,8 @@ $(document).ready(
 				});
 			});
 			
+			$( "#datepicker" ).datepicker({ dateFormat: 'dd.mm.yy' });
+			
 			$('#btnAddAreaPoint').click(function() {
                 if ($('#myparam1').val() == 0) {
                     alert("Будь ласка, введіть значення координат першої точки.");

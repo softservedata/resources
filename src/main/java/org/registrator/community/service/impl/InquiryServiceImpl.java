@@ -122,7 +122,7 @@ public class InquiryServiceImpl implements InquiryService{
 	@Transactional
 	@Override
 	public ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin){
-		resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.UNCHECKED);
+/*		resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.UNCHECKED);
 		User user = userRepository.findUserByLogin(userLogin);
 		String tomeIdentifier = resourceDTO.getTomeIdentifier();
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
@@ -132,7 +132,8 @@ public class InquiryServiceImpl implements InquiryService{
 		Inquiry inquiry = new Inquiry("INPUT", new Date(), user, registrator, resource);
 		inquiryRepository.saveAndFlush(inquiry);
 		
-		return resourceDTO;
+		return resourceDTO;*/
+	    return null;
 	}
 	
 	

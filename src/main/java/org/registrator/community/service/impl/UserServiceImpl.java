@@ -158,37 +158,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO getUserDto(String login) {
 		User user = getUserByLogin(login);
-		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
-		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
-				passportInfo.getPublishedByData());
-		if (passportInfo.getComment() != null) {
-			passportDto.setComment(passportInfo.getComment());
-		}
-		Address address = user.getAddress().get(user.getAddress().size() - 1);
-		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
-				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
-		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
-				user.getStatus().toString(), addressDto, passportDto);
-		if (!user.getWillDocument().isEmpty()) {
-			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
-			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
-			willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
-			if (willDocument.getComment() != null) {
-				willDocumentDTO.setComment(willDocument.getComment());
-			}
-			userdto.setWillDocument(willDocumentDTO);
-		}
-		
-        if (!user.getOtherDocuments().isEmpty()) {
-            List<String> otherDocuments = new ArrayList<String>();
-            for(OtherDocuments otherDocument : user.getOtherDocuments()) {
-                otherDocuments.add(otherDocument.getComment());
-            }
-            userdto.setOtherDocuments(otherDocuments);
-        }
-        
-		return userdto;
+		return formUserDTO(user);
 	}
 
 	@Transactional
@@ -313,7 +283,58 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
-	// @Override
+
+    @Override
+    public List<UserDTO> getUserBySearchTag(String searchTag) {
+        List<User> usersList = userRepository.findOwnersLikeProposed(searchTag);
+        List<UserDTO> userDtos= new ArrayList<UserDTO>();
+        for(User user : usersList) {
+            UserDTO userdto = formUserDTO(user);
+            userDtos.add(userdto);
+        }
+        System.out.println("DtOs" + userDtos);
+        return userDtos;
+    }
+    
+    
+
+    private UserDTO formUserDTO(User user){
+        PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+        PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber(),
+                passportInfo.getPublishedByData());
+        if (passportInfo.getComment() != null) {
+            passportDto.setComment(passportInfo.getComment());
+        }
+        Address address = user.getAddress().get(user.getAddress().size() - 1);
+        AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+                address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+        UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+                user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
+                user.getStatus().toString(), addressDto, passportDto);
+        if (!user.getWillDocument().isEmpty()) {
+            WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
+            WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
+            willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
+            if (willDocument.getComment() != null) {
+                willDocumentDTO.setComment(willDocument.getComment());
+            }
+            userdto.setWillDocument(willDocumentDTO);
+        }
+        
+        if (!user.getOtherDocuments().isEmpty()) {
+            List<String> otherDocuments = new ArrayList<String>();
+            for(OtherDocuments otherDocument : user.getOtherDocuments()) {
+                otherDocuments.add(otherDocument.getComment());
+            }
+            userdto.setOtherDocuments(otherDocuments);
+        }
+       
+        return userdto;
+    }
+	
+    
+    
+    // @Override
 	// public boolean recoverUsersPassword(String email, String
 	// usersCaptchaAnswer, String captchaFileName) {
 	// if(validateUsersEmail(email) && validateCaptchaCode(captchaFileName)){
