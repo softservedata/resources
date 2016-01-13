@@ -40,7 +40,9 @@
                     </ul>
                 </li>
                 <li><a href="${base}registrator/resource/addresource"><spring:message code="label.menu.addnewresource"/></a>
-                <li id="manualreg"><a href="${base}register"><spring:message code="label.manualregister"/></a></li>
+                <c:if test="${registrationMethod eq ('MANUAL') || registrationMethod eq ('MIXED')}">
+					 <li id="manualreg"><a href="${base}register"><spring:message code="label.manualregister"/></a></li>
+					</c:if>
                 <li><a href="${base}administrator/users/search"><spring:message code="label.menu.search"/></a>
             </ul>
         </div>
