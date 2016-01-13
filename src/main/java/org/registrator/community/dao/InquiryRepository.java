@@ -22,4 +22,9 @@ public interface InquiryRepository extends JpaRepository<Inquiry,Integer>{
 			" Where i.registrator = :registrator and i.inquiryType = :inquiryType" ) 				
 	public List<Inquiry> findByRegistratorAndInquiryType(@Param("registrator")User registrator, 
 						@Param("inquiryType")InquiryType inquiryType);
+	
+	@Query("Select i"+
+			" From Inquiry i" +
+			" Where i.inquiry_list_id = :inquiryId")
+	public Inquiry getOne(@Param("inquiryId")Integer inquiryId);
 }

@@ -20,6 +20,7 @@ import org.registrator.community.enumeration.InquiryType;
 import org.registrator.community.service.DiscreteParameterService;
 import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.LinearParameterService;
+import org.registrator.community.service.PrintService;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.FlashMap;
 
 
@@ -60,9 +62,9 @@ public class InquiryController {
 	@Autowired
 	LinearParameterService linearParameterService;
 	
-	 // to delete
-    @Autowired
-    TomeRepository tomeRepository;
+	@Autowired
+	PrintService printService;
+	 
 	
 	/**
 	 * Method for showing form on UI to input the parameters 
@@ -134,54 +136,7 @@ public class InquiryController {
 	}
 	
 	
-	
-	
 	/**
-     * Method for loading form for input the parameter of resource (with
-     * existing resource types and registrator)
-     * !copy from ResourceController
-     */
-		@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-	public String addResourceForm(Model model) {
-		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-		List<Tome> tomes = tomeRepository.findAll();
-		ResourceDTO newresource = new ResourceDTO();
-		model.addAttribute("listOfResourceType", listOfResourceType);
-		model.addAttribute("tomes", tomes);
-		model.addAttribute("newresource", newresource);
-		return "addResource";
-	}
-	
-		/** 
-	     * !copy from ResourceController
-	     */
-	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
-	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
-		ResourceType resType = resourceTypeService.findByName(typeName);
-		
-		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
-        List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
-
-        model.addAttribute("discreteParameters", discreteParameters);
-        model.addAttribute("linearParameters", linearParameters);
-		return "resourceValues";
-	}
-	
-	/**
-     * Method save the resource in table list_of resources
-     * similar to ResourceController
-     */
-    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
-    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
-                              BindingResult result, Model model, HttpSession session) {
-    	//String userLogin =(String) session.getAttribute("userLogin");
-    	String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-    	resourceDTO = inquiryService.addInputInquiry(resourceDTO, userLogin);
-         model.addAttribute("resource", resourceDTO);
-         return "showResource";
-    }
-	
-    /**
      * Show the information about resource by identifier
      * !copy from ResourceController
      */
@@ -192,6 +147,61 @@ public class InquiryController {
         return "showResource";
     }
     
+    @ResponseBody
+    @RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
+    public String printOutputInquiryByIdentifier(@PathVariable("inquiryId") Integer inquiryId) {
+    	String print = printService.printProcuration(inquiryId);	
+    	return print;    
+    }
+    
+
+// !!! user can't add resource!!!
+//	/**
+//     * Method for loading form for input the parameter of resource (with
+//     * existing resource types and registrator)
+//     * !copy from ResourceController
+//     */
+//		@RequestMapping(value = "/addresource", method = RequestMethod.GET)
+//	public String addResourceForm(Model model) {
+//		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
+//		List<Tome> tomes = tomeRepository.findAll();
+//		ResourceDTO newresource = new ResourceDTO();
+//		model.addAttribute("listOfResourceType", listOfResourceType);
+//		model.addAttribute("tomes", tomes);
+//		model.addAttribute("newresource", newresource);
+//		return "addResource";
+//	}
+//	
+//		/** 
+//	     * !copy from ResourceController
+//	     */
+//	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
+//	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
+//		ResourceType resType = resourceTypeService.findByName(typeName);
+//		
+//		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
+//        List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
+//
+//        model.addAttribute("discreteParameters", discreteParameters);
+//        model.addAttribute("linearParameters", linearParameters);
+//		return "resourceValues";
+//	}
+//	
+//	/**
+//     * Method save the resource in table list_of resources
+//     * similar to ResourceController
+//     */
+//    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
+//    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
+//                              BindingResult result, Model model, HttpSession session) {
+//    	//String userLogin =(String) session.getAttribute("userLogin");
+//    	String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+//    	resourceDTO = inquiryService.addInputInquiry(resourceDTO, userLogin);
+//         model.addAttribute("resource", resourceDTO);
+//         return "showResource";
+//    }
+//	
+//    
     
     
     
