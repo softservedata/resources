@@ -18,7 +18,7 @@
 	</h4>
 </div>
 
-<% session.setAttribute("userLogin", "ivan"); %> 
+
 
 <p>
 	<a href="${base}inquiry/add/outputInquiry"
@@ -69,5 +69,4 @@
 										   			
 			</table>				
 			
-		
 		

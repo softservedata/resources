@@ -25,6 +25,7 @@ import org.registrator.community.service.ResourceTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -85,7 +86,8 @@ public class InquiryController {
 	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
 	public String addOutputInquiry(InquiryDTO inquiryDTO, HttpSession session) {  			
 		logger.info("begin addOutputInquiry");
-		String userLogin =(String) session.getAttribute("userLogin");	
+		//String userLogin =(String) session.getAttribute("userLogin");
+		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
 		inquiryService.addOutputInquiry(inquiryDTO, userLogin);
 		logger.info("end addOutputInquiry");
@@ -96,9 +98,11 @@ public class InquiryController {
 	 * Method for showing all output inquiries from logged user on UI.
 	 */
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
-	public String listInqUserOut(Model model, HttpSession session) {
+	//public String listInqUserOut(Model model, HttpSession session) {
+	public String listInqUserOut(Model model) {	
 		logger.info("begin listInqUserOut");
-		String userLogin =(String) session.getAttribute("userLogin");
+		//String userLogin =(String) session.getAttribute("userLogin");
+		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
 		logger.info("end listInqUserOut");
@@ -109,9 +113,11 @@ public class InquiryController {
 	 * Method for showing all input inquiries from logged user on UI.
 	 */
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
-	public String listInquiryUserInput(Model model, HttpSession session) {
+	//public String listInquiryUserInput(Model model, HttpSession session) {
+	public String listInquiryUserInput(Model model) {
 		logger.info("begin listInqUserInput");
-		String userLogin =(String) session.getAttribute("userLogin");
+		//String userLogin =(String) session.getAttribute("userLogin");
+		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserInput = inquiryService.listInquiryUser(userLogin, InquiryType.INPUT);
 		model.addAttribute("listInquiryUser", listInquiryUserInput);
 		logger.info("end listInqUserInput");
@@ -168,7 +174,8 @@ public class InquiryController {
     @RequestMapping(value = "/addresource", method = RequestMethod.POST)
     public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
                               BindingResult result, Model model, HttpSession session) {
-    	String userLogin =(String) session.getAttribute("userLogin");
+    	//String userLogin =(String) session.getAttribute("userLogin");
+    	String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
     	resourceDTO = inquiryService.addInputInquiry(resourceDTO, userLogin);
          model.addAttribute("resource", resourceDTO);
          return "showResource";
@@ -257,3 +264,4 @@ public class InquiryController {
 	
 	
 }
+

@@ -23,6 +23,7 @@ import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,11 +87,18 @@ public class InquiryServiceImpl implements InquiryService{
 		List<InquiryListDTO> listInquiryDTO = new ArrayList<InquiryListDTO>();
 		InquiryListDTO inquiryListDTO;
 		User user = userRepository.findUserByLogin(userLogin);
-		List<Inquiry> listInquiry = inquiryRepository.findByUserAndInquiryType(user, inquiryType);
+		//SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		List<Inquiry> listInquiry;
+		if (user.getRole().getType().toString().equals("USER")){
+			listInquiry = inquiryRepository.findByUserAndInquiryType(user, inquiryType);
+		} else {
+			listInquiry = inquiryRepository.findByRegistratorAndInquiryType(user, inquiryType);
+		}
 		for (Inquiry inquiry : listInquiry){
 			inquiryListDTO = new InquiryListDTO(inquiry.getInquiry_list_id(), inquiry.getInquiryType().toString(), 
 						inquiry.getDate(), null, null, inquiry.getResource().getIdentifier(), inquiry.getResource().getStatus());
-			inquiryListDTO.setUserName(user.getLastName()+ " " +user.getFirstName()+ " " +user.getMiddleName());
+			User userFrom =inquiry.getUser();
+			inquiryListDTO.setUserName(userFrom.getLastName()+ " " +userFrom.getFirstName()+ " " +userFrom.getMiddleName());
 			User registrator = inquiry.getRegistrator();
 			inquiryListDTO.setRegistratorName(registrator.getLastName()+ " " +registrator.getFirstName()+ " " +registrator.getMiddleName());
 			listInquiryDTO.add(inquiryListDTO);
