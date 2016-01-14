@@ -186,7 +186,7 @@ $("#gmaps-show-res").click(function(){
         type: "POST",
         url: baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits",
         timeout: 20000,
-        contentType: "application/x-www-form-urlencoded;charset=ISO-8859-15",
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         dataType: 'json',
         success: function(data) {
             for (var i=0; i<data.length;i++) {

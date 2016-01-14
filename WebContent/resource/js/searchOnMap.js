@@ -1,5 +1,6 @@
 var map;
 var markers = [];
+var rectangles = [];
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -37,7 +38,16 @@ function initialize() {
         drawingControl: true,
         drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: [google.maps.drawing.OverlayType.MARKER]
+            drawingModes: [google.maps.drawing.OverlayType.MARKER, google.maps.drawing.OverlayType.RECTANGLE]
+        },
+        rectangleOptions: {
+            fillColor: '#008000',
+            fillOpacity: 0,
+            strokeColor: "#FF0000",
+            strokeWeight: 1,
+            strokeOpacity: 0.5,
+            clickable: false,
+            zIndex: 1
         }
     });
 
@@ -69,10 +79,16 @@ function initialize() {
         markers = [];
 
         // Clear out the old polygons.
-        polygons.forEach(function(poligon){
+        polygons.forEach(function (poligon) {
             poligon.setMap(null);
         });
         polygons = [];
+
+        // Clear out the old rectangles.
+        rectangles.forEach(function (rectangle) {
+            rectangle.setMap(null);
+        });
+        rectangles = [];
 
         // For each place, get the icon, name and location.
         var bounds = new google.maps.LatLngBounds();
@@ -116,7 +132,7 @@ function initialize() {
     });
 
 
-    google.maps.event.addListener(drawingManager, 'markercomplete', function(marker) {
+    google.maps.event.addListener(drawingManager, 'markercomplete', function (marker) {
 
         // Clear out the old markers.
         markers.forEach(function (marker) {
@@ -130,24 +146,73 @@ function initialize() {
         var longitude = marker.getPosition().lng();
 
         var latitudeDegrees = Math.floor(latitude);
-        var latitudeMinutes = Math.floor((latitude - latitudeDegrees)*60);
-        var latitudeSeconds = (((latitude-latitudeDegrees)*60 - latitudeMinutes)*60).toFixed(5);
+        var latitudeMinutes = Math.floor((latitude - latitudeDegrees) * 60);
+        var latitudeSeconds = (((latitude - latitudeDegrees) * 60 - latitudeMinutes) * 60).toFixed(5);
         var longitudeDegrees = Math.floor(longitude);
-        var longitudeMinutes = Math.floor((longitude - longitudeDegrees)*60);
-        var longitudeSeconds = (((longitude-longitudeDegrees)*60 - longitudeMinutes)*60).toFixed(5);
+        var longitudeMinutes = Math.floor((longitude - longitudeDegrees) * 60);
+        var longitudeSeconds = (((longitude - longitudeDegrees) * 60 - longitudeMinutes) * 60).toFixed(5);
 
-        $(".latitudeDegrees").val(latitudeDegrees);
-        $(".latitudeMinutes").val(latitudeMinutes);
-        $(".latitudeSeconds").val(latitudeSeconds);
-        $(".longitudeDegrees").val(longitudeDegrees);
-        $(".longitudeMinutes").val(longitudeMinutes);
-        $(".longitudeSeconds").val(longitudeSeconds);
+        $("#search_by_point").find(".latitudeDegrees").val(latitudeDegrees);
+        $("#search_by_point").find(".latitudeMinutes").val(latitudeMinutes);
+        $("#search_by_point").find(".latitudeSeconds").val(latitudeSeconds);
+        $("#search_by_point").find(".longitudeDegrees").val(longitudeDegrees);
+        $("#search_by_point").find(".longitudeMinutes").val(longitudeMinutes);
+        $("#search_by_point").find(".longitudeSeconds").val(longitudeSeconds);
 
-        searchOnMap(marker.getPosition(), marker);
+        searchOnMapByPoint(marker.getPosition(), marker);
+    });
+    google.maps.event.addListener(drawingManager, 'rectanglecomplete', function (rectangle) {
+        // Clear out the old polygons.
+        rectangles.forEach(function (rectangle) {
+            rectangle.setMap(null);
+        });
+        rectangles = [];
+
+        var ne = rectangle.getBounds().getNorthEast();
+        var sw = rectangle.getBounds().getSouthWest();
+
+        var neLat = ne.lat();
+        var neLng = ne.lng();
+        var swLat = sw.lat();
+        var swLng = sw.lng();
+
+        var neLatDeg = Math.floor(neLat);
+        var neLatMin = Math.floor((neLat - neLatDeg) * 60);
+        var neLatSec = (((neLat - neLatDeg) * 60 - neLatMin) * 60).toFixed(5);
+        var neLngDeg = Math.floor(neLng);
+        var neLngMin = Math.floor((neLng - neLngDeg) * 60);
+        var neLngSec = (((neLng - neLngDeg) * 60 - neLngMin) * 60).toFixed(5);
+
+        var swLatDeg = Math.floor(swLat);
+        var swLatMin = Math.floor((swLat - swLatDeg) * 60);
+        var swLatSec = (((swLat - swLatDeg) * 60 - swLatMin) * 60).toFixed(5);
+        var swLngDeg = Math.floor(swLng);
+        var swLngMin = Math.floor((swLng - swLngDeg) * 60);
+        var swLngSec = (((swLng - swLngDeg) * 60 - swLngMin) * 60).toFixed(5);
+
+
+        $("#first_point").find(".latitudeDegrees").val(neLatDeg);
+        $("#first_point").find(".latitudeMinutes").val(neLatMin);
+        $("#first_point").find(".latitudeSeconds").val(neLatSec);
+        $("#first_point").find(".longitudeDegrees").val(neLngDeg);
+        $("#first_point").find(".longitudeMinutes").val(neLngMin);
+        $("#first_point").find(".longitudeSeconds").val(neLngSec);
+
+        $("#second_point").find(".latitudeDegrees").val(swLatDeg);
+        $("#second_point").find(".latitudeMinutes").val(swLatMin);
+        $("#second_point").find(".latitudeSeconds").val(swLatSec);
+        $("#second_point").find(".longitudeDegrees").val(swLngDeg);
+        $("#second_point").find(".longitudeMinutes").val(swLngMin);
+        $("#second_point").find(".longitudeSeconds").val(swLngSec);
+
+        searchOnMapByArea(rectangle);
+        drawingManager.setDrawingMode(null);
+
+        rectangles.push(rectangle);
     });
 }
 
-$("#searchOnMapButton").click( function() {
+$("#searchOnMapButton").click(function () {
     var latitudeDegrees = Number($(".latitudeDegrees").val());
     var latitudeMinutes = Number($(".latitudeMinutes").val());
     var latitudeSeconds = Number($(".latitudeSeconds").val());
@@ -156,8 +221,8 @@ $("#searchOnMapButton").click( function() {
     var longitudeMinutes = Number($(".longitudeMinutes").val());
     var longitudeSeconds = Number($(".longitudeSeconds").val());
 
-    var searchLat = latitudeDegrees + latitudeMinutes/60 + latitudeSeconds/3600;
-    var searchLng = longitudeDegrees + longitudeMinutes/60 + longitudeSeconds/3600;
+    var searchLat = latitudeDegrees + latitudeMinutes / 60 + latitudeSeconds / 3600;
+    var searchLng = longitudeDegrees + longitudeMinutes / 60 + longitudeSeconds / 3600;
 
     var myLatLng = new google.maps.LatLng(searchLat, searchLng);
 
@@ -174,11 +239,83 @@ $("#searchOnMapButton").click( function() {
 
     markers.push(marker);
 
-    searchOnMap(myLatLng, marker);
+    searchOnMapByPoint(myLatLng, marker);
 });
 
+$("#searchOnMapButton_area").click(function () {
+    var firstLatDeg = Number($("#first_point").find(".latitudeDegrees").val());
+    var firstLatMin = Number($("#first_point").find(".latitudeMinutes").val());
+    var firstLatSec = Number($("#first_point").find(".latitudeSeconds").val());
+    var firstLngDeg = Number($("#first_point").find(".longitudeDegrees").val());
+    var firstLngMin = Number($("#first_point").find(".longitudeMinutes").val());
+    var firstLngSec = Number($("#first_point").find(".longitudeSeconds").val());
+
+    var secondLatDeg = Number($("#second_point").find(".latitudeDegrees").val());
+    var secondLatMin = Number($("#second_point").find(".latitudeMinutes").val());
+    var secondLatSec = Number($("#second_point").find(".latitudeSeconds").val());
+    var secondLngDeg = Number($("#second_point").find(".longitudeDegrees").val());
+    var secondLngMin = Number($("#second_point").find(".longitudeMinutes").val());
+    var secondLngSec = Number($("#second_point").find(".longitudeSeconds").val());
+
+    var firstLat = firstLatDeg + firstLatMin / 60 + firstLatSec / 3600;
+    var firstLng = firstLngDeg + firstLngMin / 60 + firstLngSec / 3600;
+
+    var secondLat = secondLatDeg + secondLatMin / 60 + secondLatSec / 3600;
+    var secondLng = secondLngDeg + secondLngMin / 60 + secondLngSec / 3600;
+
+    var north;
+    var south;
+    var east;
+    var west;
+
+    if (firstLat > secondLat) {
+        north = firstLat;
+        south = secondLat;
+    }
+    else {
+        north = secondLat;
+        south = firstLat;
+    }
+
+    if (firstLng > secondLng) {
+        east = firstLng;
+        west = secondLng;
+    }
+    else {
+        east = secondLng;
+        west = firstLng;
+    }
+
+    // Clear out the old rectangles.
+    rectangles.forEach(function (rectangle) {
+        rectangle.setMap(null);
+    });
+    rectangles = [];
+
+    var rectangle = new google.maps.Rectangle({
+        fillColor: '#008000',
+        fillOpacity: 0,
+        strokeColor: "#FF0000",
+        strokeWeight: 1,
+        strokeOpacity: 0.5,
+        clickable: false,
+        zIndex: 1,
+        bounds: {
+            north: north,
+            south: south,
+            east: east,
+            west: west
+        }
+    });
+
+    rectangle.setMap(map);
+    rectangles.push(rectangle);
+
+    searchOnMapByArea(rectangle);
+});
 var polygons = [];
-function searchOnMap(latLng, marker) {
+
+function searchOnMapByPoint(latLng, marker) {
 
     map.setCenter(latLng);
     map.setZoom(13);
@@ -206,23 +343,23 @@ function searchOnMap(latLng, marker) {
         dataType: 'json',
         success: function (data) {
             //Function add additional 0 in the beginning of string to the @max length
-            function pad (str, max) {
+            function pad(str, max) {
                 str = str.toString();
                 return str.length < max ? pad("0" + str, max) : str;
             }
 
             function changeFillColor(color) {
                 color = color.substr(1);
-                var number = parseInt(color,16);
-                number +=100000;
+                var number = parseInt(color, 16);
+                number += 100000;
                 color = number.toString(16);
-                color = pad(color,6);
-                console.log("New color: #"+color);
-                return "#"+color;
+                color = pad(color, 6);
+                console.log("New color: #" + color);
+                return "#" + color;
             }
 
             var infoWindowContent = "<table id='infowindow_table'><tr><th>Опис</th><th>Підклас</th><th></th></tr>";
-            var contentString ="";
+            var contentString = "";
 
             var color = "#000000";
             var resTypes = [];
@@ -256,20 +393,19 @@ function searchOnMap(latLng, marker) {
                 polygons.push(polygon);
 
                 var isWithinPolygon = google.maps.geometry.poly.containsLocation(latLng, polygon);
-                if(isWithinPolygon) {
-                    contentString += "<tr>"+
-                        "<td>"+ data[i].resourceDescription +"</td>"+
-                        "<td>"+ data[i].resourceType +"</td>"+
-                        "<td><a href='"+baseUrl.toString() + "/registrator/resource/get/"+data[i].identifier+"'><i>Детальніше</i></a> </td>"+
+                if (isWithinPolygon) {
+                    contentString += "<tr>" +
+                        "<td>" + data[i].resourceDescription + "</td>" +
+                        "<td>" + data[i].resourceType + "</td>" +
+                        "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + data[i].identifier + "'><i>Детальніше</i></a> </td>" +
                         "</tr>";
                     polygon.setMap(map);
                 }
             }
 
 
-
-            if (contentString.length >0) {
-                infoWindowContent +=contentString+"</table>";
+            if (contentString.length > 0) {
+                infoWindowContent += contentString + "</table>";
                 //Zoom map to show all resources, which displayed
                 map.fitBounds(bounds);
             }
@@ -285,10 +421,154 @@ function searchOnMap(latLng, marker) {
 
             $("#dark_bg").hide();
         },
-        error: function() {
+        error: function () {
             $("#dark_bg").hide();
             alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
         }
     });
 }
+
+function searchOnMapByArea(rectangle) {
+    map.fitBounds(rectangle.getBounds());
+    var maxLat = rectangle.getBounds().getNorthEast().lat();
+    var minLat = rectangle.getBounds().getSouthWest().lat();
+    var maxLng = rectangle.getBounds().getNorthEast().lng();
+    var minLng = rectangle.getBounds().getSouthWest().lng();
+
+    if (polygons.length > 0) {
+        for (var i = 0; i < polygons.length; i++) {
+            polygons[i].setMap(null);
+        }
+        polygons = [];
+    }
+
+    $("#dark_bg").show();
+    $.ajax({
+        data: {
+            "minLat": minLat,
+            "maxLat": maxLat,
+            "minLng": minLng,
+            "maxLng": maxLng,
+            "resType": "all"
+        },
+        type: "POST",
+        url: baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits",
+        timeout: 20000,
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+        dataType: 'json',
+        success: function (data) {
+            //Function add additional 0 in the beginning of string to the @max length
+            function pad(str, max) {
+                str = str.toString();
+                return str.length < max ? pad("0" + str, max) : str;
+            }
+
+            function changeFillColor(color) {
+                color = color.substr(1);
+                var number = parseInt(color, 16);
+                number += 100000;
+                color = number.toString(16);
+                color = pad(color, 6);
+                console.log("New color: #" + color);
+                return "#" + color;
+            }
+
+            var infoWindowContent = "<table id='infowindow_table'><tr><th>Опис</th><th>Підклас</th><th></th></tr>";
+            var contentString = "";
+            var resTypeFilter = "<p>Фільтр:</p>";
+            var infowindow = new google.maps.InfoWindow();
+
+            var color = "#000000";
+            var resTypes = [];
+
+            var bounds = new google.maps.LatLngBounds();
+
+            for (var i = 0; i < data.length; i++) {
+
+                var polygonPath = [];
+                var points = data[i].points;
+                for (var j = 0; j < points.length; j++) {
+                    var myLatLng = new google.maps.LatLng(points[j].latitude, points[j].longitude);
+                    polygonPath.push(myLatLng);
+                    bounds.extend(myLatLng);
+                }
+
+                //Changing fill color depending on resource type
+                if ($.inArray(data[i].resourceType, resTypes) == (-1)) {
+                    resTypes.push(data[i].resourceType);
+                    color = changeFillColor(color);
+                }
+
+                var polygon = new google.maps.Polygon({
+                    path: polygonPath, // Координаты
+                    strokeColor: "#FF0000", // Цвет обводки
+                    strokeOpacity: 0.8, // Прозрачность обводки
+                    strokeWeight: 2, // Ширина обводки
+                    fillColor: color, // Цвет заливки
+                    fillOpacity: 0.4, // Прозрачность заливки
+                    map: map,
+                    zIndex: 5,
+                    resType: data[i].resourceType,
+                    resDescription: data[i].resourceDescription,
+                    identifier: data[i].identifier
+                });
+
+                google.maps.event.addListener(polygon, 'click', function (event) {
+                    contentString = "<tr>" +
+                        "<td>" + this.resDescription + "</td>" +
+                        "<td>" + this.resType + "</td>" +
+                        "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + this.identifier + "'><i>Детальніше</i></a> </td>" +
+                        "</tr>";
+                    infowindow.setContent(infoWindowContent + contentString);
+                    infowindow.setPosition(event.latLng);
+                    infowindow.open(map);
+                });
+
+                polygons.push(polygon);
+            }
+
+            for (var i = 0; i < resTypes.length; i++) {
+                resTypeFilter += '<button class="btn btn-default btn-filter">' + resTypes[i] + '</button>';
+            }
+
+            $("#resTypeFilter").html(resTypeFilter);
+
+            $("#dark_bg").hide();
+        },
+        error: function () {
+            $("#dark_bg").hide();
+            alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
+        }
+    });
+}
+
+$(".toggle-button").click(function () {
+    if (!$(this).hasClass("active")) {
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
+        var id = $(this).attr("id");
+        id = id.substr(0, id.length - 6);
+        $(".searchDiv").hide();
+        $("#" + id + "Div").show();
+    }
+})
+$(document).on("click", ".btn-filter", function () {
+    if (!$(this).hasClass("active")) {
+        $("#dark_bg").show();
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
+        var resType = $(this).html();
+        for (var i = 0; i < polygons.length; i++) {
+            if ((polygons[i].resType == resType) && (polygons[i].map == null)) {
+                polygons[i].setMap(map);
+            }
+            else if ((polygons[i].map != null) && (polygons[i].resType != resType)) {
+                polygons[i].setMap(null);
+            }
+        }
+        $("#dark_bg").hide();
+    }
+});
+
+
 google.maps.event.addDomListener(window, 'load', initialize);
