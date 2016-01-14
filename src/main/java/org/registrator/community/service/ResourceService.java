@@ -1,19 +1,19 @@
 package org.registrator.community.service;
 
-import org.registrator.community.dto.JSON.PolygonJSON;
-import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.entity.Area;
-import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.enumeration.ResourceStatus;
-
 import java.util.List;
 import java.util.Set;
+
+import org.registrator.community.dto.ResourceDTO;
+import org.registrator.community.dto.JSON.PolygonJSON;
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceType;
+import org.registrator.community.entity.User;
+import org.registrator.community.enumeration.ResourceStatus;
 
 
 public interface ResourceService {
 	
-	ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus);
+	ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus, User registrator);
 	
 	ResourceDTO findByIdentifier(String identifier);
 

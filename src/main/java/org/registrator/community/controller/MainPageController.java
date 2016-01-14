@@ -22,12 +22,12 @@ public class MainPageController {
     
     @RequestMapping("/")
     public String welcome(Model model){
-        model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (("anonymousUser").equals(auth.getName())){
             return "redirect:/login";
         }
         else {
+            model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());
             return "homepage";
         }
     }

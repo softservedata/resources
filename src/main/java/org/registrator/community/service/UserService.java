@@ -36,6 +36,8 @@ public interface UserService {
 	boolean checkUsernameNotExistInDB(String username);
 
 	UserDTO editUserInformation(UserDTO userDto);
+	
+	List<UserDTO> getUserBySearchTag(String searchTag);
 
 	// boolean recoverUsersPassword(String email, String usersCaptchaAnswer,
 	// String captchaFileName);

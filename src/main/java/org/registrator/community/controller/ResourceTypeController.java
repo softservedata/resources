@@ -5,6 +5,8 @@ import java.util.List;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +43,12 @@ public class ResourceTypeController {
      */
     @RequestMapping(value = "/delete/{typeId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void deleteResourceType(@PathVariable Integer typeId) {
-        resourceTypeService.delete(resourceTypeService.findById(typeId));
+    public ResponseEntity<String> deleteResourceType(@PathVariable Integer typeId) {
+       
+        int check = resourceTypeService.delete(resourceTypeService.findById(typeId));
+        if(check != -1){
+        return new ResponseEntity<String>(HttpStatus.OK);}
+        
+        return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
     }
 }

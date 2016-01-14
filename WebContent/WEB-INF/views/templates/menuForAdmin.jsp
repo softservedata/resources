@@ -14,10 +14,14 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="${base}" class="glyphicon glyphicon-home"></a></li>
-                <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.registrated.pagename" /></a></li>
-                <li><a href="${base}administrator/users/get-all-inactive-users"><spring:message code="label.inactive.pagename" /></a></li>
+                 <li class="dropdown"><a href="#"><spring:message code="label.user.pagename" /></a>
+                    <ul class="dropdown_menu">
+                         <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.registrated.pagename" /></a></li>
+                          <li><a href="${base}administrator/users/get-all-inactive-users"><spring:message code="label.inactive.pagename" /></a></li>
+                    </ul>
+                </li>
                 <li><a href="${base}administrator/users/settings"><spring:message code="label.admin.settings"/></a>
-                <li><a href="${base}administrator/users/search"><spring:message code="label.menu.search"/></a>
+                <li><a href="${base}administrator/users/search" class="glyphicon glyphicon glyphicon-search"></a>
             </ul>
         </div>
     </div>
