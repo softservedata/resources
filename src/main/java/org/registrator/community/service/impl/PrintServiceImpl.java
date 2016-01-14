@@ -47,7 +47,7 @@ public class PrintServiceImpl implements PrintService{
 		
 		String print = userName + ",       "+ userAddress + ",       " + date + ",       " 
 		+ registratorName + ",       " + registratorAddress + ",       " + identifier;
-		System.out.println("!!!!!" + print);
+		System.out.println(print);
 		return print;
 	}
 }
