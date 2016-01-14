@@ -56,7 +56,7 @@ function reasonInclusionControl(owner) {
                 $("#reasonInclusion").append(passportInfo + ";\n");
             }
             if(id === "will") {
-                var date = 'owner.willDocument.accessionDate';
+                var date = owner.willDocument.accessionDate;
                 var stringDate = $.datepicker.formatDate('dd.mm.yy', new Date(date));
                 var willDocument = "документ волевиявлення від " + stringDate;
                 if(owner.willDocument.comment !==  null) {

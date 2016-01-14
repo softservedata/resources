@@ -9,28 +9,6 @@
 <c:set var="base"
     value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<spring:url value="/resource/js/addArea.js" var="addAreaJs" />
-<spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
-    var="autocompleteJs" />
-<spring:url value="/resource/js/descriptionAutocomplete.js"
-    var="descAutocomplete" />
-<spring:url value="/resource/js/ownerControl.js"
-    var="ownerControl" />
-<spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
-
-<script src="${autocompleteJs}"></script>
-<script src="${descAutocomplete}"></script>
-<script src="${ownerControl}"></script>
-<script src="${addAreaJs}"></script>
-<link rel="stylesheet" type="text/css" href="${suggestionCss}">
-<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-
-
-<!-- <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
-<!-- <script src=" http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.js"></script> -->
-
-
 <div class="container">
     <h2>
         <spring:message code="label.resource.add" />
@@ -40,7 +18,8 @@
         
         <!-- select co-owner -->
         <div class="form-group">
-            <label class="control-label col-sm-3">Виберіть співвласника:</label>
+            <label class="control-label col-sm-3"><spring:message
+                    code="label.resource.co-owner.select" />:</label>
             <div class="col-sm-3">
             <input class="form-control" id="owner_search" type="text" value="">
             </div>
@@ -97,17 +76,19 @@
                 <textarea id="reasonInclusion" class="form-control" rows="5"
                     name="reasonInclusion" required>${newresource.reasonInclusion}</textarea>
             </div>
-            <div class="checkbox">
-                <label><input id="pass" type="checkbox" disabled>паспорт</label><br />
-                <label><input id="will" type="checkbox" disabled>волевиявлення
-                    людини</label><br /> 
-                <label><input id="otherDocs" type="checkbox" disabled>інші документи</label><br /> 
-                    
-                    <label><input id="tytul" type="checkbox" disabled>титул
-                    власності</label><br /> <label><input id="delivery"
-                    type="checkbox" disabled>доручення</label>
-            </div>
-        </div>
+			<div class="checkbox">
+				<label><input id="pass" type="checkbox" disabled>
+				<spring:message code="label.resource.pass" /></label><br /> <label><input
+					id="will" type="checkbox" disabled>
+				<spring:message code="label.resource.willDocumant" /></label><br /> <label><input
+					id="otherDocs" type="checkbox" disabled>
+				<spring:message code="label.resource.otherDocuments" /></label><br /> <label><input
+					id="tytul" type="checkbox" disabled>
+				<spring:message code="label.resource.propertyTilel" /></label><br /> <label><input
+					id="delivery" type="checkbox">
+				<spring:message code="label.resource.assignment" /></label>
+			</div>
+		</div>
         
          <!-- reasonInclusion -->
         <div class="form-group">
@@ -238,3 +219,23 @@
     <script type="text/javascript"
         src="${base}resource/js/addResourceOnMap.js"></script>
 </div>
+
+<spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
+    var="autocompleteJs" />
+<spring:url value="/resource/js/lib/jquery-ui.datepscker.min.js"
+    var="datepickerJs" />
+<spring:url value="/resource/js/descriptionAutocomplete.js"
+    var="descAutocomplete" />
+<spring:url value="/resource/js/ownerControl.js"
+    var="ownerControl" />
+<spring:url value="/resource/js/addArea.js" var="addAreaJs" />
+<spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
+
+<script src="${datepickerJs}"></script>
+<script src="${autocompleteJs}"></script>
+<script src="${descAutocomplete}"></script>
+<script src="${ownerControl}"></script>
+<script src="${addAreaJs}"></script>
+<link rel="stylesheet" type="text/css" href="${suggestionCss}">
+<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
