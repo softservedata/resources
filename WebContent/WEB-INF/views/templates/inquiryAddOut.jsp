@@ -17,7 +17,7 @@
 	</h4>
 </div>
 
- <% session.setAttribute("userLogin", "ivan"); %> 
+ 
 
 		<form:form method="POST" action="addOutputInquiry" >
 			<table class="table display">

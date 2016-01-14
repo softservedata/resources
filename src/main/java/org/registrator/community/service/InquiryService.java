@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface InquiryService {
 	
-	 Inquiry addOutputInquiry(InquiryDTO inquiryDTO, String userLogin);
+	Inquiry addOutputInquiry(InquiryDTO inquiryDTO, String userLogin);
 	
-	 List<TomeDTO> listTomeDTO();
+	List<TomeDTO> listTomeDTO();
 	
 	List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType);
 		

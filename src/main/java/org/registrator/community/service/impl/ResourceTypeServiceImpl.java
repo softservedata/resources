@@ -10,7 +10,9 @@ import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.TypeParameterDTO;
 import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.LinearParameter;
+import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
+import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     private LinearParameterRepository linearParameterRepository;
     @Autowired
     private DiscreteParameterRepository discreteParameterRepository;
+    
+    @Autowired
+    private ResourceService resourceService;
 
     @Override
     public ResourceType addResourceType(ResourceType resourceType) {
@@ -47,8 +52,13 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public void delete(ResourceType resourceType) {
-        resourceTypeRepository.delete(resourceType);
+    public int delete(ResourceType resourceType) {
+        List<Resource> list = resourceService.findByType(resourceType);
+        if(list.isEmpty()){
+            resourceTypeRepository.delete(resourceType);
+            return 0;
+        }
+        return -1;
     }
 
     @Override
@@ -79,6 +89,5 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         discreteParameterRepository.save(dp);
 
         return resourceTypeDTO;
-
     }
 }

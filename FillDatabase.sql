@@ -1,78 +1,43 @@
--- phpMyAdmin SQL Dump
--- version 3.5.3
--- http://www.phpmyadmin.net
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
--- Host: localhost
--- Generation Time: Jan 07, 2016 at 04:43 PM
--- Server version: 5.5.25a
--- PHP Version: 5.4.4
-
-SET FOREIGN_KEY_CHECKS=0;
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
+-- Host: localhost    Database: registrator_db
+-- ------------------------------------------------------
+-- Server version   5.5.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-
---
--- Database: `registrator_db`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `address`
---
-
-CREATE TABLE IF NOT EXISTS `address` (
-  `address_id` int(11) NOT NULL AUTO_INCREMENT,
-  `building` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `city` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `district` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `flat` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `postcode` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `region` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `street` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`address_id`),
-  KEY `FK_7rod8a71yep5vxasb0ms3osbg` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
 -- Dumping data for table `address`
 --
 
-INSERT INTO `address` (`address_id`, `building`, `city`, `district`, `flat`, `postcode`, `region`, `street`, `user_id`) VALUES
-(1, '35', 'Львів', 'Галицький', '20', '79026', 'Львівська', 'Пастернака', 1),
-(2, '17', 'Хмельницький', 'Семенівський', '17', '29000', 'Хмельницька', 'Героїв Майдану', 2),
-(3, '30', 'Стрий', 'Стрийський', '0', '353567', 'Львівська', 'Героїв Майдану', 3),
-(4, '45', 'Львів', 'Залізничний', '78', '79026', 'Львівська', 'Стрийська', 4),
-(5, '34', 'Київ', 'Троєщина', '90', '4456767', 'Київська', 'Бандери', 5);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `area`
---
-
-CREATE TABLE IF NOT EXISTS `area` (
-  `area_id` int(11) NOT NULL AUTO_INCREMENT,
-  `latitude` double NOT NULL,
-  `longitude` double NOT NULL,
-  `order_number` int(11) NOT NULL,
-  `polygon_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`area_id`),
-  KEY `FK_iqi8xqpdy7godtnnhtbvsuq3h` (`polygon_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=273 ;
+LOCK TABLES `address` WRITE;
+/*!40000 ALTER TABLE `address` DISABLE KEYS */;
+INSERT INTO `address` VALUES 
+(1,'35','Львів','Галицький','20','79026','Львівська','Пастернака',1),
+(2,'17','Хмельницький','Семенівський','17','29000','Хмельницька','Героїв Майдану',2),
+(3,'30','Стрий','Стрийський','0','353567','Львівська','Героїв Майдану',3),
+(4,'45','Львів','Залізничний','78','79026','Львівська','Стрийська',4),
+(5,'34','Київ','Троєщина','90','4456767','Київська','Бандери',5),
+(6,'43','Львів','Троєщина','43','34345','Киівська','Стрийська',6);
+/*!40000 ALTER TABLE `address` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `area`
 --
 
-INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `polygon_id`) VALUES
+LOCK TABLES `area` WRITE;
+/*!40000 ALTER TABLE `area` DISABLE KEYS */;
+INSERT INTO `area` VALUES 
 (5, 49.91754184754319, 24.21084593050182, 1, 2),
 (6, 49.9024188855169, 26.249633822590113, 2, 2),
 (7, 49.158718087297515, 26.2177737057209, 3, 2),
@@ -340,111 +305,55 @@ INSERT INTO `area` (`area_id`, `latitude`, `longitude`, `order_number`, `polygon
 (270, 49.80221578559521, 24.01582896709442, 6, 15),
 (271, 49.80198034546755, 24.0178245306015, 7, 15),
 (272, 49.802077291541146, 24.017931818962097, 8, 15);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `discrete_parameters`
---
-
-CREATE TABLE IF NOT EXISTS `discrete_parameters` (
-  `discrete_parameter_id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `resource_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`discrete_parameter_id`),
-  KEY `FK_itxbdpyec26wdkfoaltga8pau` (`resource_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+/*!40000 ALTER TABLE `area` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `discrete_parameters`
 --
 
-INSERT INTO `discrete_parameters` (`discrete_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
-(1, 'периметер', 'м', 1),
-(2, 'площа', 'га', 1),
-(3, 'потужність', 'мВт', 2),
-(4, 'напруженість', 'мВт', 2),
-(11, 'площа', 'га', 2);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `inquiry_list`
---
-
-CREATE TABLE IF NOT EXISTS `inquiry_list` (
-  `inquiry_list_id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime NOT NULL,
-  `inquiry_type` enum('INPUT','OUTPUT') COLLATE utf8_unicode_ci NOT NULL,
-  `to_user_id` int(11) NOT NULL,
-  `resource_id` int(11) NOT NULL,
-  `from_user_id` int(11) NOT NULL,
-  PRIMARY KEY (`inquiry_list_id`),
-  KEY `FK_cqtn406s2sbvribvsveeln8k1` (`to_user_id`),
-  KEY `FK_j8gyy6aabddkoxp4jivw8fini` (`resource_id`),
-  KEY `FK_37qp17x0dnyms8oxyo33jigpb` (`from_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+LOCK TABLES `discrete_parameters` WRITE;
+/*!40000 ALTER TABLE `discrete_parameters` DISABLE KEYS */;
+INSERT INTO `discrete_parameters` VALUES 
+(1,'периметер','м',1),
+(2,'площа','га',1),
+(3,'потужність','мВт',2),
+(4,'напруженість','мВт',2),
+(11,'площа','га',2);
+/*!40000 ALTER TABLE `discrete_parameters` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `inquiry_list`
 --
 
-INSERT INTO `inquiry_list` (`inquiry_list_id`, `date`, `inquiry_type`, `to_user_id`, `resource_id`, `from_user_id`) VALUES
-(1, '2015-12-30 16:06:00', 'OUTPUT', 2, 2, 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `linear_parameters`
---
-
-CREATE TABLE IF NOT EXISTS `linear_parameters` (
-  `linear_parameter_id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `resource_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`linear_parameter_id`),
-  KEY `FK_dv74cnpongab75t5q30ysncco` (`resource_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+LOCK TABLES `inquiry_list` WRITE;
+/*!40000 ALTER TABLE `inquiry_list` DISABLE KEYS */;
+INSERT INTO `inquiry_list` VALUES 
+(1,'2015-12-30 16:06:00','OUTPUT',2,2,3);
+/*!40000 ALTER TABLE `inquiry_list` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `linear_parameters`
 --
 
-INSERT INTO `linear_parameters` (`linear_parameter_id`, `description`, `unit_name`, `resource_type_id`) VALUES
-(1, 'cмуга радіочастот', 'МГц', 2),
-(2, 'широта діапазону', 'кГц', 2),
-(3, 'радіус дії', 'км', 2);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `list_of_resouces`
---
-
-CREATE TABLE IF NOT EXISTS `list_of_resouces` (
-  `resources_id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime NOT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `identifier` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `reason_inclusion` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('ACTIVE','UNCHECKED','DENIDED','OBSOLETE') COLLATE utf8_unicode_ci NOT NULL,
-  `registrator_id` int(11) NOT NULL,
-  `tome_id` int(11) NOT NULL,
-  `resource_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`resources_id`),
-  UNIQUE KEY `UK_n9p3viaj7hq0gt1ifb4fetvfa` (`identifier`),
-  KEY `FK_2bflnodo3qtvgos2ou0s9sp9` (`registrator_id`),
-  KEY `FK_3dk2u1o6r3f41knbp4bw0u4e2` (`tome_id`),
-  KEY `FK_764t63m3e5fl8seck12tyr8j` (`resource_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+LOCK TABLES `linear_parameters` WRITE;
+/*!40000 ALTER TABLE `linear_parameters` DISABLE KEYS */;
+INSERT INTO `linear_parameters` VALUES 
+(1,'cмуга радіочастот','МГц',2),
+(2,'широта діапазону','кГц',2),
+(3,'радіус дії','км',2);
+/*!40000 ALTER TABLE `linear_parameters` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `list_of_resouces`
 --
 
-INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifier`, `reason_inclusion`, `status`, `registrator_id`, `tome_id`, `resource_type_id`) VALUES
+LOCK TABLES `list_of_resouces` WRITE;
+/*!40000 ALTER TABLE `list_of_resouces` DISABLE KEYS */;
+INSERT INTO `list_of_resouces` VALUES 
 (2, '2015-12-08 15:33:01', 'радіочастоти', '123555', 'Паспорт громадянина україни...', 'ACTIVE', 2, 1, 2),
 (3, '2015-12-08 15:33:01', 'суперрадіочастоти', '111111', 'Посвідчення водія ...', 'ACTIVE', 2, 1, 2),
 (4, '2016-01-02 00:00:00', 'Стрийський парк', '79000-001', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\n', 'ACTIVE', 2, 1, 1),
@@ -460,46 +369,33 @@ INSERT INTO `list_of_resouces` (`resources_id`, `date`, `description`, `identifi
 (14, '2016-01-05 00:00:00', 'Радіо 24', '79000-1-001', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 4, 2, 2),
 (15, '2016-01-07 00:00:00', 'парк Богданівка', '79000-011', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1);
 
+/*!40000 ALTER TABLE `list_of_resouces` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Table structure for table `other_document`
+-- Dumping data for table `other_document`
 --
 
-CREATE TABLE IF NOT EXISTS `other_document` (
-  `other_document_id` int(11) NOT NULL AUTO_INCREMENT,
-  `comment` varchar(255) DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`other_document_id`),
-  KEY `FK_4vvx09ds3yhl5sb8pa2snjchh` (`user_id`),
-  CONSTRAINT `FK_4vvx09ds3yhl5sb8pa2snjchh` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `passport_data`
---
-
-CREATE TABLE IF NOT EXISTS `passport_data` (
-  `passport_data_id` int(11) NOT NULL AUTO_INCREMENT,
-  `number` int(11) NOT NULL,
-  `published_by_data` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `seria` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`passport_data_id`),
-  KEY `FK_b3ufslic16u2m3j35ksfp0ivb` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+LOCK TABLES `other_document` WRITE;
+/*!40000 ALTER TABLE `other_document` DISABLE KEYS */;
+/*!40000 ALTER TABLE `other_document` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `passport_data`
 --
 
-INSERT INTO `passport_data` (`passport_data_id`, `number`, `published_by_data`, `seria`, `user_id`) VALUES
-(1, 2234, 'Львівський....', 'КС', 1),
-(2, 123456, 'Хмельницьким МВ УМВС України в Хмельницький області 01 січня 1997 року', 'КК', 2),
-(3, 123456, 'Стрийський МВ УМВС України в Львівській області 01 січня 1965 року', 'КК', 3),
-(4, 1122456, 'Львівський....', 'КС', 4),
-(5, 1126789, 'Київський....', 'КС', 5);
+LOCK TABLES `passport_data` WRITE;
+/*!40000 ALTER TABLE `passport_data` DISABLE KEYS */;
+INSERT INTO `passport_data` VALUES 
+(1,NULL,2234,'Львівський....','КС',1),
+(2,NULL,123456,'Хмельницьким МВ УМВС України в Хмельницький області 01 січня 1997 року','КК',2),
+(3,NULL,123456,'Стрийський МВ УМВС України в Львівській області 01 січня 1965 року','КК',3),
+(4,NULL,1122456,'Львівський....','КС',4),
+(5,NULL,1126789,'Київський....','КС',5),
+(6,NULL,43545,'Львівським....','КС',6);
+/*!40000 ALTER TABLE `passport_data` ENABLE KEYS */;
+UNLOCK TABLES;
 
 CREATE TABLE IF NOT EXISTS `persistent_logins` (
   `username` varchar(64) NOT NULL,
@@ -509,28 +405,14 @@ CREATE TABLE IF NOT EXISTS `persistent_logins` (
   PRIMARY KEY (`series`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `polygon`
---
-
-CREATE TABLE IF NOT EXISTS `polygon` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `maxLat` double NOT NULL,
-  `maxLng` double NOT NULL,
-  `minLat` double NOT NULL,
-  `minLng` double NOT NULL,
-  `resource_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_pe123f6p6o4l1saqw3192lbkq` (`resource_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `polygon`
 --
 
-INSERT INTO `polygon` (`id`, `maxLat`, `maxLng`, `minLat`, `minLng`, `resource_id`) VALUES
+LOCK TABLES `polygon` WRITE;
+/*!40000 ALTER TABLE `polygon` DISABLE KEYS */;
+INSERT INTO `polygon` VALUES 
 (2, 49.91754184754319, 26.249633822590113, 49.14506496754859, 24.21084593050182, 2),
 (3, 49.030305067856254, 24.964233431965113, 48.77356871983263, 24.414917025715113, 3),
 (4, 49.82776288975754, 24.0322145819664, 49.81786998450602, 24.020270705223083, 4),
@@ -545,95 +427,74 @@ INSERT INTO `polygon` (`id`, `maxLat`, `maxLng`, `minLat`, `minLng`, `resource_i
 (13, 49.83994065338674, 24.01673823595047, 49.83790287789755, 24.013315737247467, 13),
 (14, 49.90215348414364, 24.277381896972656, 49.74489390461096, 23.91826629638672, 14),
 (15, 49.80481940007729, 24.018521904945374, 49.80198034546755, 24.014734625816345, 15);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `registration_number_of_the_resource`
---
-
-CREATE TABLE IF NOT EXISTS `registration_number_of_the_resource` (
-  `number_id` int(11) NOT NULL AUTO_INCREMENT,
-  `number` int(11) NOT NULL,
-  `registrator_number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`number_id`),
-  KEY `FK_2cirohw1jeueoif8ngmjl6jbt` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
+/*!40000 ALTER TABLE `polygon` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Table structure for table `resource_discrete_values`
+-- Dumping data for table `registration_number_of_the_resource`
 --
 
-CREATE TABLE IF NOT EXISTS `resource_discrete_values` (
-  `resource_discrete_value_id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` double NOT NULL,
-  `discrete_parameter_id` int(11) NOT NULL,
-  `resource_id` int(11) NOT NULL,
-  PRIMARY KEY (`resource_discrete_value_id`),
-  KEY `FK_mo277omjo0v4jv8269f2lsaen` (`discrete_parameter_id`),
-  KEY `FK_g9upwtpejnv2fd6o4hvsshcgn` (`resource_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ;
+LOCK TABLES `registration_number_of_the_resource` WRITE;
+/*!40000 ALTER TABLE `registration_number_of_the_resource` DISABLE KEYS */;
+/*!40000 ALTER TABLE `registration_number_of_the_resource` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `registrator_owner`
+--
+
+LOCK TABLES `registrator_owner` WRITE;
+/*!40000 ALTER TABLE `registrator_owner` DISABLE KEYS */;
+INSERT INTO `registrator_owner` VALUES (2,3),(2,5);
+/*!40000 ALTER TABLE `registrator_owner` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `resource_discrete_values`
 --
 
-INSERT INTO `resource_discrete_values` (`resource_discrete_value_id`, `value`, `discrete_parameter_id`, `resource_id`) VALUES
-(3, 100, 3, 2),
-(4, 500.55, 3, 2),
-(5, 23.54, 3, 2),
-(6, 200, 4, 2),
-(7, 3280.3, 1, 4),
-(8, 53.46747, 2, 4),
-(9, 3299, 1, 5),
-(10, 21.91676, 2, 5),
-(11, 1860.6, 1, 6),
-(12, 14.8679, 2, 6),
-(13, 1743.7, 1, 7),
-(14, 7.07496, 2, 7),
-(15, 482.9, 1, 8),
-(16, 1.98205, 2, 8),
-(17, 2195.6, 1, 9),
-(18, 19.00922, 2, 9),
-(19, 241.5, 1, 10),
-(20, 0.72436, 2, 10),
-(21, 932.4, 1, 11),
-(22, 4.33756, 2, 11),
-(23, 1299.1, 1, 12),
-(24, 9.43888, 2, 12),
-(25, 802.1, 1, 13),
-(26, 3.1126, 2, 13),
-(27, 100, 3, 14),
-(28, 100, 4, 14),
-(29, 42728.62051, 11, 14),
-(30, 791.4, 1, 15),
-(31, 6.20849, 2, 15);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `resource_linear_values`
---
-
-CREATE TABLE IF NOT EXISTS `resource_linear_values` (
-  `resource_linear_param_id` int(11) NOT NULL AUTO_INCREMENT,
-  `maximal_value` double NOT NULL,
-  `minimal_value` double NOT NULL,
-  `linear_parameter_id` int(11) NOT NULL,
-  `resource_id` int(11) NOT NULL,
-  PRIMARY KEY (`resource_linear_param_id`),
-  KEY `FK_5s1a0lk9h75mnqyiq6g1wu5wp` (`linear_parameter_id`),
-  KEY `FK_eyg8asvvonj51aepmy6y8fk9w` (`resource_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+LOCK TABLES `resource_discrete_values` WRITE;
+/*!40000 ALTER TABLE `resource_discrete_values` DISABLE KEYS */;
+INSERT INTO `resource_discrete_values` VALUES 
+(3, null, 100, 3, 2),
+(4, null, 500.55, 3, 2),
+(5, null, 23.54, 3, 2),
+(6, null, 200, 4, 2),
+(7, null, 3280.3, 1, 4),
+(8, null, 53.46747, 2, 4),
+(9, null, 3299, 1, 5),
+(10, null, 21.91676, 2, 5),
+(11, null, 1860.6, 1, 6),
+(12, null, 14.8679, 2, 6),
+(13, null, 1743.7, 1, 7),
+(14, null, 7.07496, 2, 7),
+(15, null, 482.9, 1, 8),
+(16, null, 1.98205, 2, 8),
+(17, null, 2195.6, 1, 9),
+(18, null, 19.00922, 2, 9),
+(19, null, 241.5, 1, 10),
+(20, null, 0.72436, 2, 10),
+(21, null, 932.4, 1, 11),
+(22, null, 4.33756, 2, 11),
+(23, null, 1299.1, 1, 12),
+(24, null, 9.43888, 2, 12),
+(25, null, 802.1, 1, 13),
+(26, null, 3.1126, 2, 13),
+(27, null, 100, 3, 14),
+(28, null, 100, 4, 14),
+(29, null, 42728.62051, 11, 14),
+(30, null, 791.4, 1, 15),
+(31, null, 6.20849, 2, 15);
+/*!40000 ALTER TABLE `resource_discrete_values` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `resource_linear_values`
 --
 
-INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value`, `minimal_value`, `linear_parameter_id`, `resource_id`) VALUES
+LOCK TABLES `resource_linear_values` WRITE;
+/*!40000 ALTER TABLE `resource_linear_values` DISABLE KEYS */;
+INSERT INTO `resource_linear_values` VALUES
 (1, 2483.5, 2400, 1, 2),
 (2, 5350, 5150, 2, 2),
 (3, 2700, 2500, 1, 2),
@@ -643,142 +504,87 @@ INSERT INTO `resource_linear_values` (`resource_linear_param_id`, `maximal_value
 (7, 102.4, 102.4, 1, 14),
 (8, 102, 100, 2, 14),
 (9, 15, 10, 3, 14);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `resource_parameters`
---
-
-CREATE TABLE IF NOT EXISTS `resource_parameters` (
-  `resource_parameters_id` int(11) NOT NULL AUTO_INCREMENT,
-  `parameter_id` int(11) NOT NULL,
-  `resource_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`resource_parameters_id`),
-  KEY `FK_tc2co2gdknt0kyt43e0wwejh9` (`parameter_id`),
-  KEY `FK_1unvdmfastc818i00xvmglchl` (`resource_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `resource_types`
---
-
-CREATE TABLE IF NOT EXISTS `resource_types` (
-  `resource_type_id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`resource_type_id`),
-  UNIQUE KEY `UK_5fwgdwi603f06mf65x5fhv42a` (`type_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+/*!40000 ALTER TABLE `resource_linear_values` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `resource_types`
 --
 
-INSERT INTO `resource_types` (`resource_type_id`, `type_name`) VALUES
-(1, 'земельний'),
-(2, 'радіочастотний');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `roles`
---
-
-CREATE TABLE IF NOT EXISTS `roles` (
-  `role_id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `type` enum('USER','REGISTRATOR','ADMIN') COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`role_id`),
-  UNIQUE KEY `UK_q9npl2ty4pngm2cussiul2qj5` (`type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+LOCK TABLES `resource_types` WRITE;
+/*!40000 ALTER TABLE `resource_types` DISABLE KEYS */;
+INSERT INTO `resource_types` VALUES 
+(1,'земельний'),
+(2,'радіочастотний');
+/*!40000 ALTER TABLE `resource_types` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`role_id`, `description`, `type`) VALUES
-(1, 'description', 'ADMIN'),
-(2, 'description', 'REGISTRATOR'),
-(3, 'description', 'USER');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tomes`
---
-
-CREATE TABLE IF NOT EXISTS `tomes` (
-  `tome_id` int(11) NOT NULL AUTO_INCREMENT,
-  `identifier` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `registrator_id` int(11) NOT NULL,
-  PRIMARY KEY (`tome_id`),
-  UNIQUE KEY `UK_9p7abcvlsajlte75dt1mfoe7l` (`identifier`),
-  KEY `FK_pnsd367apavsotihxdt51mo7v` (`registrator_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES 
+(1,'description','ADMIN'),
+(2,'description','REGISTRATOR'),
+(3,'description','USER');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `tomes`
 --
 
-INSERT INTO `tomes` (`tome_id`, `identifier`, `registrator_id`) VALUES
-(1, '12345', 2),
-(2, '6789', 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `login` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `middle_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `status` enum('BLOCK','UNBLOCK','INACTIVE') COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `UK_6dotkott2kjsp8vw4d0m25fb7` (`email`),
-  UNIQUE KEY `UK_ow0gan20590jrb00upg3va2fn` (`login`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+LOCK TABLES `tomes` WRITE;
+/*!40000 ALTER TABLE `tomes` DISABLE KEYS */;
+INSERT INTO `tomes` VALUES 
+(1,'12345',2),
+(2,'6789',4);
+/*!40000 ALTER TABLE `tomes` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `first_name`, `last_name`, `login`, `middle_name`, `password`, `role_id`, `status`) VALUES
-(1, 'oless.@gmail.com', 'Олександр', 'Архилюк', 'oleks', 'Олександрович', 'pass1', 1, 'UNBLOCK'),
-(2, 'petro.@gmail.com', 'Петро', 'Петренко', 'petro', 'Петрович', 'pass2', 2, 'UNBLOCK'),
-(3, 'ivan.@gmail.com', 'Юрій', 'Іванов', 'ivan', 'Іванович', 'pass3', 3, 'UNBLOCK'),
-(4, 'vasyl.@gmail.com', 'Василь', 'Василюк', 'vasyl', 'Васильович', 'pass4', 2, 'UNBLOCK'),
-(5, 'oleh.@gmail.com', 'Олег', 'Василюк', 'oleh', 'Олеговчич', 'pass5', 3, 'INACTIVE');
-
---
--- Table structure for table `will_data`
---
-
-CREATE TABLE IF NOT EXISTS `will_data` (
-  `will_id` int(11) NOT NULL AUTO_INCREMENT,
-  `accession_date` datetime NOT NULL,
-  `comment` varchar(255) DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`will_id`),
-  KEY `FK_4pese2ljt9p52v2pyhs4bt3re` (`user_id`),
-  CONSTRAINT `FK_4pese2ljt9p52v2pyhs4bt3re` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES 
+(1,'oless.@gmail.com','Олександр','Архилюк','admin','Олександрович','admin','UNBLOCK',1),
+(2,'petro.@gmail.com','Петро','Петренко','registrator','Петрович','registrator','UNBLOCK',2),
+(3,'ivan.@gmail.com','Юрій','Іванов','user','Іванович','user','UNBLOCK',3),(
+4,'vasyl.@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','UNBLOCK',2),
+(5,'oleh.@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','UNBLOCK',3),
+(6,'andr.@gmail.com','Андрій','Іванов','andr','Петрович','andr','UNBLOCK',3);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `will_data`
 --
+
+LOCK TABLES `will_data` WRITE;
+/*!40000 ALTER TABLE `will_data` DISABLE KEYS */;
 INSERT INTO `will_data` VALUES (1,'2016-01-02 00:00:00','comment',2);
+/*!40000 ALTER TABLE `will_data` ENABLE KEYS */;
+UNLOCK TABLES;
 
-SET FOREIGN_KEY_CHECKS=1;
+--
+-- Dumping events for database 'registrator_db'
+--
 
+--
+-- Dumping routines for database 'registrator_db'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2016-01-13 18:58:01
