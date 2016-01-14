@@ -6,24 +6,11 @@
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<!-- <c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
--->
-
 <div style="text-align: center;">
 	<h4>
 		<spring:message code="label.inquiry.input.pagename" />
 	</h4>
 </div>
-
-
-
-<p>
-		<a href="${base}inquiry/add/addresource"
-		class="btn btn-success" role="button"><spring:message code="label.inquiry.input.pagename"/></a>
-</p> 
 
 			<table id="datatable" class="table display"> 
 			
