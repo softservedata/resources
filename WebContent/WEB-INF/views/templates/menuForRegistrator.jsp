@@ -24,16 +24,26 @@
                         <li><a href="${base}registrator/resource/searchOnMap">
                             <spring:message code="label.menu.searchOnMap" /></a>
                         </li>
+                        <li><a href="${base}registrator/resource/addresource">
+                            <spring:message code="label.menu.addnewresource"/></a>
+                        </li>
                     </ul>
                 </li>
-                <li><a href="${base}registrator/resourcetypes/show-res-types"><spring:message code="label.menu.resourcesTypes" /></a></li> 
-                <li class="dropdown"><a href="#"><spring:message code="label.user.pagename" /></a>
+                <li><a href="${base}registrator/resourcetypes/show-res-types"><spring:message code="label.menu.resourcesTypes" /></a></li>
+
+                <li class="dropdown"><a href="#"><spring:message code="label.menu.users" /></a>
                     <ul class="dropdown_menu">
-                         <li><a href="${base}administrator/users/get-all-users"><spring:message code="label.registrated.pagename" /></a></li>
-                          <li><a href="${base}administrator/users/get-all-inactive-users"><spring:message code="label.inactive.pagename" /></a></li>
+                        <li><a href="${base}administrator/users/get-all-users">
+                            <spring:message code="label.registrated.pagename" /></a></li>
+                        <li><a href="${base}administrator/users/get-all-inactive-users">
+                            <spring:message code="label.inactive.pagename" /></a></li>
+                        <li id="manualreg"><a href="${base}register">
+                            <spring:message code="label.manualregister"/></a></li>
+                        <li><a href="${base}administrator/users/search">
+                            <spring:message code="label.menu.search"/></a>
+
                     </ul>
                 </li>
-                
                 <li class="dropdown"><a href="#"><spring:message code="label.menu.inquiries" /></a>
                     <ul class="dropdown_menu">
                         <li> <a href="${base}inquiry/add/listInquiryUserInput">
@@ -44,13 +54,7 @@
                         </li>
                     </ul>
                 </li>
-                
-                
-                <li><a href="${base}registrator/resource/addresource"><spring:message code="label.menu.addnewresource"/></a>
-                <c:if test="${registrationMethod eq ('MANUAL') || registrationMethod eq ('MIXED')}">
-					 <li id="manualreg"><a href="${base}register"><spring:message code="label.manualregister"/></a></li>
-					</c:if>
-                <li><a href="${base}administrator/users/search" class="glyphicon glyphicon-search"></a>
+
             </ul>
         </div>
     </div>

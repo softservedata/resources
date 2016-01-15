@@ -278,7 +278,10 @@ public class ResourceServiceImpl implements ResourceService {
         Set<String> identifiers = new HashSet<>();
         List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng);
         for (Polygon polygon : polygons) {
-            if(resType.equals(polygon.getResource().getType().getTypeName())){
+            if("all".equals(resType)) {
+                identifiers.add(polygon.getResource().getIdentifier());
+            }
+            else if(resType.equals(polygon.getResource().getType().getTypeName())){
                 identifiers.add(polygon.getResource().getIdentifier());
             }
         }

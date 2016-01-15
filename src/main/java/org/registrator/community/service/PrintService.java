@@ -1,6 +1,11 @@
 package org.registrator.community.service;
 
+import com.itextpdf.text.Document;
+
 public interface PrintService {
 	
-	String printProcuration(Integer inquiryId);
+	Document printProcuration(Integer inquiryId);
+	
+	
+	
 }

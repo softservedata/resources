@@ -1,21 +1,26 @@
 package org.registrator.community.controller.administrator;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.List;
 
+import javax.print.attribute.standard.Media;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.registrator.community.dao.ResourceRepository;
-import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
-import org.registrator.community.entity.DiscreteParameter;
-import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.Tome;
 import org.registrator.community.enumeration.InquiryType;
 import org.registrator.community.service.DiscreteParameterService;
 import org.registrator.community.service.InquiryService;
@@ -26,17 +31,21 @@ import org.registrator.community.service.ResourceTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.FlashMap;
+
+import com.itextpdf.text.Document;
 
 
 @Controller
@@ -146,12 +155,61 @@ public class InquiryController {
         return "showResource";
     }
     
-    @ResponseBody
-    @RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
-    public String printOutputInquiryByIdentifier(@PathVariable("inquiryId") Integer inquiryId) {
-    	String print = printService.printProcuration(inquiryId);	
-    	return print;    
-    }
+ // @ResponseBody
+ 	// @RequestMapping(value = "/printOutput/{inquiryId}", method =
+ 	// RequestMethod.GET)
+ 	// public String printOutputInquiryByIdentifier(@PathVariable("inquiryId")
+ 	// Integer inquiryId) {
+ 	// Document print = printService.printProcuration(inquiryId);
+ 	// return "redirect:/inquiry/add/listInqUserOut";
+ 	// }
+
+ 	
+ 	
+ 	/**
+ 	 * @author Vitalii Horban
+ 	 * generate pdf document on button pressing and open this document in the same inset
+ 	 */
+
+ 	@RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
+ 	public void downloadFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
+ 			throws IOException {
+
+ 		Document print = printService.printProcuration(inquiryId);
+
+ 		File file = null;
+
+ 		// ClassLoader classloader =
+ 		// Thread.currentThread().getContextClassLoader();
+ 		// file = new File(classloader.getResource(INTERNAL_FILE).getFile());
+
+ 		file = new File("D:\\file.pdf");
+
+ 		if (!file.exists()) {
+ 			String errorMessage = "Sorry. The file you are looking for does not exist";
+ 			System.out.println(errorMessage);
+ 			OutputStream outputStream = response.getOutputStream();
+ 			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+ 			outputStream.close();
+ 			return;
+ 		}
+
+ 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+ 		if (mimeType == null) {
+ 			System.out.println("mimetype is not detectable, will take default");
+ 			mimeType = "application/octet-stream";
+ 		}
+
+ 		System.out.println("mimetype : " + mimeType);
+
+ 		response.setContentType(mimeType);
+
+ 		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+ 		response.setContentLength((int) file.length());
+ 		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+ 		FileCopyUtils.copy(inputStream, response.getOutputStream());
+ 	}
+ 	
     
 
 // !!! user can't add resource!!!
@@ -273,4 +331,5 @@ public class InquiryController {
 	
 	
 }
+
 
