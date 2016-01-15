@@ -15,7 +15,6 @@
 <head>
 
 
-
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,26 +25,31 @@
 	type="image/x-icon" />
 <title><tiles:getAsString name="title" /></title>
 
+<!-- JQuery lib-->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
 <!-- Bootstrap -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="${base}resource/css/bootstrap.css">
+<script src="${base}resource/js/bootstrap.min.js"></script>
+
 
 
 <!-- Our own css -->
 <link rel="stylesheet" href="${base}resource/css/system.css">
 
 <!-- DataTables CSS-->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
 
-<%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
 
-<!-- JQuery lib-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 <!-- Bootbox -->
 <script src="${base}resource/js/bootbox.js"></script>
-<!-- Bootstrap -->
-<script src="${base}resource/js/bootstrap.min.js"></script>
+
+
+<%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
+
 
 <!-- DataTables lib -->
 <script
@@ -104,6 +108,7 @@
 			<h3 style="color: white; background-color: blue;">
 				<spring:message code="label.name.part1" />
 			</h3>
+
 			<h3 style="color: white; background-color: blue;">
 				<spring:message code="label.name.part2" />
 			</h3>
@@ -126,14 +131,11 @@
 		</div>
 
 
-
-
-		<img src="resource/img/ukraine_logo.gif" style="margin-left: 113px;"/>
+		<img src="resource/img/ukraine_logo.gif" style="margin-left: 113px;" />
 
 
 		<div class="title">
 			<div class="signin-container">
-
 
 
 				<fieldset id="login_fieldset" class="forms">
@@ -147,8 +149,8 @@
 
 							<div class="form-group">
 								<label for="inputEmail">Login</label> <input
-									class="form-control" id="login" name="login"
-									type="text" placeholder="Username" size="30" autocomplete="on"
+									class="form-control" id="login" name="login" type="text"
+									placeholder="Username" size="30" autocomplete="on"
 									autofocus="autofocus">
 
 							</div>
@@ -162,7 +164,6 @@
 							</div>
 
 
-
 							<div class="checkbox">
 								<label><input type="checkbox"
 									id="_spring_security_remember_me" value="true"
@@ -170,18 +171,14 @@
 							</div>
 							<button type="submit" class="btn btn-primary"
 								style="width: 100px; margin-left: 60px;">Login</button>
-							<a href="${pageContext.request.contextPath}/register" class="btn btn-success"
-								role="button" style="width: 100px;">Register</a>
+							<a href="${pageContext.request.contextPath}/register"
+								class="btn btn-success" role="button" style="width: 100px;">Register</a>
 
 
 						</form:form>
 					</c:if>
 				</fieldset>
 			</div>
-
-
-
-
 
 
 		</div>
@@ -193,7 +190,6 @@
 				<spring:message code="label.copyright" />
 			</p>
 		</div>
-
 
 
 	</c:if>
