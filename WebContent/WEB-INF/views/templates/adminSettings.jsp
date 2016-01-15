@@ -14,30 +14,47 @@
 	<h4>
 		<spring:message code="label.admin.settings.method" />
 	</h4>
-	<p>Виберіть одну з опцій:</p>
-	<form:form id="сhangeReg" method="post" modelAttribute="param"
+	<p>
+		<spring:message code="label.admin.settings.chooseoption" />
+	</p>
+	<form:form id="сhangeReg" method="post" modelAttribute="regMethod"
 		action="settings">
 		<div class="radio">
 			<label><input type="radio" name="optradio" value="personal"
-				required>Особиста реєстрація</label>
+				<c:if test="${ regMethod  == 'PERSONAL'}"> checked="checked" </c:if> />
+				<spring:message code="label.admin.settings.personal" /> </label>
+		</div>
+
+		<div class="radio">
+			<label><input type="radio" name="optradio" value="manual"
+				<c:if test="${ regMethod  == 'MANUAL'}">checked="checked"</c:if> />
+				<spring:message code="label.admin.settings.manual" /> </label>
 		</div>
 		<div class="radio">
-			<label><input type="radio" name="optradio" value="manual">Реєстрація
-				нового користувача здійснюється виключно реєстратором</label>
-		</div>
-		<div class="radio">
-			<label><input type="radio" name="optradio" value="mixed">Обидва
-				способи реєстрації доступні</label>
+			<label><input type="radio" name="optradio" value="mixed"
+				<c:if test="${ regMethod  == 'MIXED'}"> checked="checked" </c:if> />
+				<spring:message code="label.admin.settings.mixed" /> </label>
 		</div>
 		<input type="submit" id="confirmRegistrationMethod"
-			value="Підтвердити" class="btn btn-success" />
+			value="<spring:message code="label.admin.settings.confirm" />"
+			class="btn btn-success" />
 	</form:form>
 </div>
 <script>
-$(document).ready(
-		function() {
-			$("#confirmRegistrationMethod").click(function() {
-				alert("Метод реєстрації буде змінено на вибраний вами");
-			});
-});
+    $("#confirmRegistrationMethod").click(function() {
+
+        var url = "settings"; 
+
+        $.ajax({
+               type: "POST",
+               url: url,
+               data: $("#сhangeReg").serialize(), 
+               success: function(data)
+               {
+            	   bootbox.alert("Метод реєстрації успішно змінено!");
+               }
+             });
+
+        return false; 
+    });
 </script>

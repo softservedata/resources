@@ -10,6 +10,7 @@ import org.registrator.community.entity.Role;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/administrator/users/")
 public class UsersController {
 
+    @Autowired
+    Logger logger;  
+    
     @Autowired
     UserService userService;
 
@@ -83,14 +87,25 @@ public class UsersController {
         return "InActiveUsers";
     }
 
+    /**
+     * Method for showing administrator settings in order to change registration method
+     */
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
     public String showSettings(Model model) {
+        logger.info("begin");
+        model.addAttribute("regMethod", adminSettings.getRegistrationMethod().toString());
+        logger.info("end");
         return "adminSettings";
     }
+    /**
+     * Method for changing administrator settings for one of the possible options
+     */
     @RequestMapping(value = "/settings", method = RequestMethod.POST)
     public String changeSettings(@RequestParam String optradio) {
+        logger.info("begin");
         adminSettings.changeRegMethod(optradio);
-        return "redirect:/";
+        logger.info("end");
+        return "adminSettings";
     }
 
 }

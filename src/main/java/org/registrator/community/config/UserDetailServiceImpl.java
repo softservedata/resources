@@ -34,7 +34,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		org.registrator.community.entity.User userEntity = userRepository.findUserByLogin(login);
 
 		if (userEntity == null){
-			logger.error("User - {} - not found", userEntity.getLogin());
+			logger.error("User - {} - not found");
 			throw new UsernameNotFoundException("Помилка в паролі, чи емейлі");
 		}
 		else{

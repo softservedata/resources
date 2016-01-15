@@ -30,18 +30,22 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
+
 <!-- Our own css -->
 <link rel="stylesheet" href="${base}resource/css/system.css">
 
 <!-- DataTables CSS-->
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
 
 <%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
 
 <!-- JQuery lib-->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Bootbox -->
+<script src="${base}resource/js/bootbox.js"></script>
+<!-- Bootstrap -->
+<script src="${base}resource/js/bootstrap.min.js"></script>
 
 <!-- DataTables lib -->
 <script

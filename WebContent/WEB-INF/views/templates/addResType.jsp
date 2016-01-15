@@ -10,11 +10,7 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<spring:url
-	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
-	var="jqueryJs" />
-<spring:url value="/resource/js/add.js" var="addJs" />
-<script src="${jqueryJs}"></script>
+<spring:url value="/resource/js/addResourceType.js" var="addJs" />
 <script src="${addJs}"></script>
 <h2>
 	<spring:message code="label.restype.add" />
