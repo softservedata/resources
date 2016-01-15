@@ -42,26 +42,21 @@ import org.springframework.web.servlet.FlashMap;
 @Controller
 @RequestMapping(value ="/inquiry/add/")
 public class InquiryController {
-	public static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
-	
+	//public static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
 	@Autowired
-	InquiryService inquiryService;
-		
+	Logger logger;	
 	@Autowired
-	ResourceRepository resourceRepository;
-	
+	InquiryService inquiryService;		
 	@Autowired
-	ResourceTypeService resourceTypeService;
-	
+	ResourceRepository resourceRepository;	
 	@Autowired
-	ResourceService resourceService;
-	
+	ResourceTypeService resourceTypeService;	
 	@Autowired
-	DiscreteParameterService discreteParameterService;
-	
+	ResourceService resourceService;	
 	@Autowired
-	LinearParameterService linearParameterService;
-	
+	DiscreteParameterService discreteParameterService;	
+	@Autowired
+	LinearParameterService linearParameterService;	
 	@Autowired
 	PrintService printService;
 	 
@@ -73,12 +68,12 @@ public class InquiryController {
 	 */	
 	@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
 	public String showOutputInquiry(Model model) {
-		logger.info("begin showOutputInquiry");
+		logger.info("begin");
 		List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
 		model.addAttribute("tomes", listTomeDTO);
 		Iterable<Resource> resources = resourceRepository.findAll();
 		model.addAttribute("resources", resources);
-		logger.info("end showOutputInquiry");
+		logger.info("end");
 		return "inquiryAddOut";
 	}
 	
@@ -87,12 +82,12 @@ public class InquiryController {
 	 */
 	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
 	public String addOutputInquiry(InquiryDTO inquiryDTO, HttpSession session) {  			
-		logger.info("begin addOutputInquiry");
+		logger.info("begin");
 		//String userLogin =(String) session.getAttribute("userLogin");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
 		inquiryService.addOutputInquiry(inquiryDTO, userLogin);
-		logger.info("end addOutputInquiry");
+		logger.info("end");
 		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
 	
@@ -102,12 +97,12 @@ public class InquiryController {
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
 	//public String listInqUserOut(Model model, HttpSession session) {
 	public String listInqUserOut(Model model) {	
-		logger.info("begin listInqUserOut");
+		logger.info("begin");
 		//String userLogin =(String) session.getAttribute("userLogin");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
-		logger.info("end listInqUserOut");
+		logger.info("end");
 		return "listInqUserOut";
 	}
 	
@@ -117,12 +112,12 @@ public class InquiryController {
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	//public String listInquiryUserInput(Model model, HttpSession session) {
 	public String listInquiryUserInput(Model model) {
-		logger.info("begin listInqUserInput");
+		logger.info("begin");
 		//String userLogin =(String) session.getAttribute("userLogin");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserInput = inquiryService.listInquiryUser(userLogin, InquiryType.INPUT);
 		model.addAttribute("listInquiryUser", listInquiryUserInput);
-		logger.info("end listInqUserInput");
+		logger.info("end");
 		return "listInquiryUserInput";
 	}
 	
@@ -131,7 +126,9 @@ public class InquiryController {
 	 */
 	@RequestMapping(value = "/delete/{inquiryId}")
 	public String deleteInquiry(@PathVariable Integer inquiryId) {
+		logger.info("begin");
 		inquiryService.removeInquiry(inquiryId);
+		logger.info("end");
 		return "redirect:/inquiry/add/listInqUserOut";
 	}
 	
@@ -142,8 +139,10 @@ public class InquiryController {
      */
     @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
     public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
+    	logger.info("begin");
         ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
         model.addAttribute("resource", resourceDTO);
+        logger.info("end");
         return "showResource";
     }
     

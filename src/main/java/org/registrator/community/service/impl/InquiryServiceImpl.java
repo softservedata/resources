@@ -29,7 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InquiryServiceImpl implements InquiryService{
-	public static final Logger logger = LoggerFactory.getLogger(InquiryServiceImpl.class);	
+	//public static final Logger logger = LoggerFactory.getLogger(InquiryServiceImpl.class);	
+	@Autowired
+	Logger logger;
 	@Autowired
 	InquiryRepository inquiryRepository;
 	@Autowired
@@ -53,8 +55,10 @@ public class InquiryServiceImpl implements InquiryService{
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
 		User registrator = tome.getRegistrator();
 		String resourceIdentifier = inquiryDTO.getResourceIdentifier();
-		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
+		logger.info("try write new line to inquiry_list table");
 		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
+		logger.info("wrote line to inquiry_list table");
 		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;
 	}
@@ -83,7 +87,7 @@ public class InquiryServiceImpl implements InquiryService{
 	@Transactional
 	@Override
 	public List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType){
-		logger.info("begin listInquiryUser");
+		logger.info("begin");
 		List<InquiryListDTO> listInquiryDTO = new ArrayList<InquiryListDTO>();
 		InquiryListDTO inquiryListDTO;
 		User user = userRepository.findUserByLogin(userLogin);
@@ -103,7 +107,7 @@ public class InquiryServiceImpl implements InquiryService{
 			inquiryListDTO.setRegistratorName(registrator.getLastName()+ " " +registrator.getFirstName()+ " " +registrator.getMiddleName());
 			listInquiryDTO.add(inquiryListDTO);
 		}
-		logger.info("end listInquiryUser");
+		logger.info("end");
 		return listInquiryDTO;
 	}
 		
@@ -114,6 +118,7 @@ public class InquiryServiceImpl implements InquiryService{
 	@Override
 	public void removeInquiry (Integer inquiryId){
 		inquiryRepository.delete(inquiryId);
+		logger.info("delete line from inquiry_list table with inqury_id = " + inquiryId);
 	}
 	
 	/**

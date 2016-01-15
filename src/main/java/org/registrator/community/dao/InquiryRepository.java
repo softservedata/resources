@@ -27,4 +27,6 @@ public interface InquiryRepository extends JpaRepository<Inquiry,Integer>{
 			" From Inquiry i" +
 			" Where i.inquiry_list_id = :inquiryId")
 	public Inquiry getOne(@Param("inquiryId")Integer inquiryId);
+	
+	long count();
 }
