@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tableSearchSetting>
+	<tables>
+		<tables tableName="userSearch">
+			<url>getData</url>
+			
+				<column>
+					<type>search</type>
+					<title>Ім'я</title>
+					<data>firstName</data>
+					<searchOperation>
+						<operationType>equal</operationType>
+					</searchOperation>
+				</column>
+				
+				<column>
+					<type>search</type>
+					<title>Прізвище</title>
+					<data>lastName</data>
+					<searchOperation>
+						<operationType>equal</operationType>
+					</searchOperation>
+				</column>
+				
+				<column>
+					<type>search</type>
+					<title>По батькові</title>
+					<data>middleName</data>
+					<searchOperation>
+						<operationType>equal</operationType>
+					</searchOperation>
+				</column>
+				
+				<column>
+					<type>search</type>
+					<title>Електронна пошта</title>
+					<data>email</data>
+					<searchOperation>
+						<operationType>equal</operationType>
+					</searchOperation>
+				</column>
+				
+				<column>
+					<type>search</type>
+					<title>Місто</title>
+					<data>address_city</data>
+					<searchOperation>
+						<operationType>equal</operationType>
+					</searchOperation>
+				</column>
+				
+				<column>
+					<type>button</type>
+					<title>Дії</title>
+					<data>action</data>
+				</column>
+				
+		</tables>
+	</tables>
+</tableSearchSetting>
