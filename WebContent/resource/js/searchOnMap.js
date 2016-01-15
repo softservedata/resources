@@ -568,6 +568,16 @@ $(document).on("click", ".btn-filter", function () {
         }
         $("#dark_bg").hide();
     }
+    else {
+        $("#dark_bg").show();
+        $(this).removeClass("active");
+        for (var i = 0; i < polygons.length; i++) {
+            if (polygons[i].map == null) {
+                polygons[i].setMap(map);
+            }
+        }
+        $("#dark_bg").hide();
+    }
 });
 
 
