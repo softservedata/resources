@@ -34,6 +34,9 @@ public class RegisterController {
     
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm() {
+        if(adminSettings.getRegistrationMethod().toString() == "MANUAL"){
+           return "redirect:/";
+        }
         return "register";
     }
 
