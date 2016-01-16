@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
+
 import org.registrator.community.components.AdminSettings;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
@@ -70,7 +71,7 @@ public class UsersController {
 
 	}
 
-  @RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
+	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
 	public String getAllInactiveUsers(Model model) {
 		List<UserDTO> inactiveUsers = userService.getAllInactiveUsers();
 		model.addAttribute("unregistatedUsers", inactiveUsers);
@@ -88,11 +89,6 @@ public class UsersController {
 		return "InActiveUsers";
 	}
 
-	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-	public String showSettings(Model model) {
-		return "adminSettings";
-	}
-
 	@RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.GET)
 	public ResponseEntity<String> fillModalWindow(Model model) {
 		ResourceNumberDTOJSON resourceNumberDtoJson = new ResourceNumberDTOJSON();
@@ -107,7 +103,7 @@ public class UsersController {
 		userService.createTome(resourceNumberDtoJson);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
-
+	
     @RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
     public String getAllUsers(Model model) {
         List<UserDTO> userDtoList = new ArrayList<UserDTO>();
@@ -115,5 +111,28 @@ public class UsersController {
         model.addAttribute("userDtoList", userDtoList);
         return "RegistratedUsers";
     }
+
+
+
+    /**
+     * Method for showing administrator settings in order to change registration method
+     */
+    @RequestMapping(value = "/settings", method = RequestMethod.GET)
+    public String showSettings(Model model) {
+        logger.info("begin");
+        model.addAttribute("regMethod", adminSettings.getRegistrationMethod().toString());
+        logger.info("end");
+        return "adminSettings";
+    }
+    /**
+     * Method for changing administrator settings for one of the possible options
+     */
+    @RequestMapping(value = "/settings", method = RequestMethod.POST)
+    public String changeSettings(@RequestParam String optradio) {
+        logger.info("begin");
+        adminSettings.changeRegMethod(optradio);
+        logger.info("end");
+        return "adminSettings";
+    }
+
 }
-   

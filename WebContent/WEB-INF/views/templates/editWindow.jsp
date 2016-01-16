@@ -299,15 +299,12 @@
 						<h4 class="modal-title">Введіть дані</h4>
 					</div>
 					<div class="modal-body">
-						<label class="control-label">Номер тому</label> <input
-							id="identifier" name="identifier" placeholder=""
-							class="form-control input-md modal" type="text" required> <label
-							class="control-label">Номер реєстратора</label> <input
-							id="registrator_number" name="registrator_number" placeholder=""
-							class="form-control input-md modal" type="text" required> <label
-							class="control-label">Реєстраційний номер об'єкту</label> <input
-							id="number" name="number" value="${resourceNumberDtoJson.number}"
-							placeholder="" class="form-control input-md modal" type="text" required>
+						<label class="control-label">Номер тому</label> 
+						<input id="identifier" name="identifier" class="form-control input-md" type="text" required> 
+						<label class="control-label">Номер реєстратора</label> 
+						<input id="registrator_number" name="registrator_number" class="form-control input-md" type="text" required> 
+						<label class="control-label">Реєстраційний номер об'єкту</label> 
+						<input id="number" name="number" value="${resourceNumberDtoJson.number}" class="form-control input-md" type="text" required>
 					</div>
 					<div class="modal-footer">
 						<button type="button" id="submit" class="btn btn-primary">
