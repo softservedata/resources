@@ -9,12 +9,16 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<spring:url value="/resource/js/move.js" var="moveJs" />
 
+<spring:url value="/resource/js/changeRole.js" var="moveJs" />
 <script src="${moveJs}"></script>
+<spring:url value="/resource/js/editingUser.js" var="editJs" />
+<script src="${editJs}"></script>
+<spring:url value="/resource/js/userValidate.js" var="validateJs" />
+<script src="${validateJs}"></script>
 
 <div class="container">
-	<form:form id="editWinodow" modelAttribute="userDTO" method="post"
+	<form:form id="editWindow" modelAttribute="userDTO" method="post"
 		action="${base}administrator/users/edit-registrated-user"
 		class="form-horizontal">
 		<fieldset>
@@ -24,55 +28,72 @@
 						<spring:message code="label.user.information" />
 					</legend>
 					<div class="form-group">
-						<label class="col-lg-4 control-label" for="textinput"><spring:message code="label.user.firstname" /></label>
+						<label class="col-lg-4 control-label" for="textinput"><spring:message
+								code="label.user.firstname" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="firstName" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.firstName}" required>
+							<input id="firstName" name="firstName" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.firstName}" readonly>
+							<div class="control-group error">
+								<form:errors path="firstName" cssClass="error" style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.secondname" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="lastName" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.lastName}" required>
+							<input id="lastname" name="lastName" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.lastName}" readonly>
+							<div class="control-group error">
+								<form:errors path="lastName" cssClass="error" style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.middlename" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="middleName" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.middleName}" required>
+							<input id="middlename" name="middleName" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.middleName}" readonly>
+							<div class="control-group error">
+								<form:errors path="middleName" cssClass="black"
+									style="color:red" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-4 control-label" for="textinput"><spring:message code="label.login"/></label>
+						<label class="col-lg-4 control-label" for="textinput"><spring:message
+								code="label.login" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="login" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.login}" readonly>
+							<input id="login" name="login" placeholder="" type="text"
+								class="form-control input-md" value="${userDto.login}" readonly>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.password" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="password" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.password}" required>
+							<input id="password" name="password" placeholder=""
+								class="form-control input-md readonly"  type="text"
+								value="${userDto.password}" readonly>
+							<div class="control-group error">
+								<form:errors path="password" cssClass="error" style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.email" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="email" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.email}" required>
+							<input id="email" name="email" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.email}" readonly>
+							<div class="control-group error">
+								<form:errors path="email" cssClass="error" style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -80,7 +101,7 @@
 								code="label.user.role" /></label>
 						<div class="col-lg-8">
 							<select id="roleId" name="role" class="form-control"
-								style="width: 230px; height: 34px">
+								style="width: 230px; height: 34px" disabled>
 								<c:forEach items="${roleList}" var="role">
 									<c:choose>
 										<c:when test="${userDto.role == role.type}">
@@ -99,7 +120,7 @@
 								code="label.user.status" /></label>
 						<div class="col-lg-8">
 							<select id="userStatusId" name="status" class="form-control"
-								style="width: 230px; height: 34px">
+								style="width: 230px; height: 34px" disabled>
 								<c:forEach items="${userStatusList}" var="userStatus">
 									<c:choose>
 										<c:when test="${userDto.status == userStatus}">
@@ -122,63 +143,91 @@
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.region" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="address.region" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.address.region}" required>
+							<input id="region" name="address.region" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.address.region}" readonly>
+							<div class="control-group error">
+								<form:errors path="address.region" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.city" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="address.city" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.address.city}" required>
+							<input id="city" name="address.city" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.address.city}" readonly>
+							<div class="control-group error">
+								<form:errors path="address.city" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.district" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="address.district" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.address.district}" required>
+							<input id="district" name="address.district" placeholder=""
+								class="form-control input-md readonly"  type="text"
+								value="${userDto.address.district}" readonly>
+							<div class="control-group error">
+								<form:errors path="address.district" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.street" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="address.street" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.address.street}" required>
+							<input id="street" name="address.street" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.address.street}" readonly>
+							<div class="control-group error">
+								<form:errors path="address.street" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.building" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="address.building" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.address.building}" required>
+							<input id="building" name="address.building" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.address.building}" readonly>
+							<div class="control-group error">
+								<form:errors path="address.building" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.flat" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="address.flat" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.address.flat}" required>
+							<input id="flat" name="address.flat" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.address.flat}" readonly>
+							<div class="control-group error">
+								<form:errors path="address.building" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.postcode" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="address.postcode" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.address.postcode}" required>
+							<input id="postcode" name="address.postcode" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.address.postcode}" readonly>
+							<div class="control-group error">
+								<form:errors path="address.postcode" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -190,35 +239,83 @@
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.seria" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="passport.seria" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.passport.seria}" required>
+							<input id="seria" name="passport.seria" placeholder=""
+								class="form-control input-md readonly"  type="text"
+								value="${userDto.passport.seria}" readonly>
+							<div class="control-group error">
+								<form:errors path="passport.seria" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.number" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="passport.number" placeholder=""
-								class="form-control input-md" type="text"
-								value="${userDto.passport.number}" required>
+							<input id="number" name="passport.number" placeholder=""
+								class="form-control input-md readonly" type="text"
+								value="${userDto.passport.number}" readonly>
+							<div class="control-group error">
+								<form:errors path="passport.number" cssClass="error"
+									style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.published" /></label>
 						<div class="col-lg-8">
-							<input id="textinput" name="passport.published_by_data"
-								placeholder="" class="form-control input-md" type="text"
-								value="${userDto.passport.published_by_data}" required>
+							<input id="published" name="passport.published_by_data"
+								placeholder="" class="form-control input-md readonly" type="text"
+								value="${userDto.passport.published_by_data}" readonly>
+							<div class="control-group error">
+								<form:errors path="passport.published_by_data" cssClass="error"
+									style="color:black" />
+							</div>
+
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="wrapper" style="text-align: center">
-				<input type="submit" value=<spring:message code="label.user.button"/> class="btn btn-primary btn-sm">
+				<button type="button" id="edit" class="btn btn-primary">Редагувати</button>
+				<input type="submit" id="ok"
+					value=<spring:message code="label.user.button"/>
+					class="btn btn-primary btn-sm" style="display: none">
 			</div>
 			<p>
 		</fieldset>
 	</form:form>
 </div>
+
+<div class="container">
+	<form:form id="editWinodow" modelAttribute="resourceNumberDtoJson"
+		method="get" action="modal-window" class="form-horizontal">
+		<div id="myModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Введіть дані</h4>
+					</div>
+					<div class="modal-body">
+						<label class="control-label">Номер тому</label> <input
+							id="identifier" name="identifier" placeholder=""
+							class="form-control input-md modal" type="text" required> <label
+							class="control-label">Номер реєстратора</label> <input
+							id="registrator_number" name="registrator_number" placeholder=""
+							class="form-control input-md modal" type="text" required> <label
+							class="control-label">Реєстраційний номер об'єкту</label> <input
+							id="number" name="number" value="${resourceNumberDtoJson.number}"
+							placeholder="" class="form-control input-md modal" type="text" required>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="submit" class="btn btn-primary">
+							Ok</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form:form>
+</div>
+

@@ -2,15 +2,44 @@ package org.registrator.community.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class AddressDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	public static final String ONLY_LITERALS = "[а,б,в,г,ґ,д,е,є,ж,з,и,і,ї,й,к,л,м,н,о,п,р,с,т,у,ф,х,ц,ч,ш,щ,ь,ю,я,А,Б,В,Г,Ґ,Д,Е,Є,Ж,З,И,І,Ї,Й,К,Л,М,Н,О,П,Р,С,Т,У,Ф,Ч,Ц,Ч,Ш,Щ,Ь,Ю,Я,\\s,\\.]+";
+	public static final String ONLY_DIGITS = "[0-9]+";
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Size(min = 5, max = 5, message = "Поштовий індекс повиннен містити 5 цифер")
+	@Pattern(regexp = ONLY_DIGITS, message = "Цифри лише від 0 до 9")
 	private String postcode;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String region;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String district;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String city;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Pattern(regexp = ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String street;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Pattern(regexp = ONLY_DIGITS+"|"+ONLY_DIGITS + ONLY_LITERALS, message = "Приклад: 5 або 5а")
 	private String building;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Pattern(regexp = ONLY_DIGITS+"|"+ONLY_DIGITS + ONLY_LITERALS, message = "Приклад: 2 або 2б")
 	private String flat;
 
 	public AddressDTO(String postcode, String region, String district, String city, String street, String building,

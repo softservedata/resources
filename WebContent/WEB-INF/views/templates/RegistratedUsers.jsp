@@ -9,7 +9,9 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
+<spring:url value="/resource/js/changeStatus.js" var="moveJs" />
 
+<script src="${moveJs}"></script>
 
 <div style="text-align: center;">
 	<h4>
