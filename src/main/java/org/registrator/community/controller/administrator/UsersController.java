@@ -30,17 +30,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/administrator/users/")
 public class UsersController {
 
-	@Autowired
-	Logger logger;
+    @Autowired
+    Logger logger;  
+    
+    @Autowired
+    UserService userService;
+    
+    @Autowired
+    AdminSettings adminSettings;
 
-	@Autowired
-	UserService userService;
-
-	@Autowired
-	AdminSettings adminSettings;
-
-	@Autowired
-	RoleService roleService;
+    @Autowired
+    RoleService roleService;
 
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
 	public String fillInEditWindow(@RequestParam("login") String login, Model model) {
@@ -70,7 +70,7 @@ public class UsersController {
 
 	}
 
-	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
+  @RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
 	public String getAllInactiveUsers(Model model) {
 		List<UserDTO> inactiveUsers = userService.getAllInactiveUsers();
 		model.addAttribute("unregistatedUsers", inactiveUsers);
@@ -108,4 +108,12 @@ public class UsersController {
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
+    @RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
+    public String getAllUsers(Model model) {
+        List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+        userDtoList = userService.getAllRegistratedUsers();
+        model.addAttribute("userDtoList", userDtoList);
+        return "RegistratedUsers";
+    }
 }
+   
