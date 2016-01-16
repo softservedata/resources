@@ -9,89 +9,23 @@
 <c:set var="base"
     value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<spring:url value="/resource/js/addArea.js" var="addAreaJs" />
-<spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
-    var="autocompleteJs" />
-<spring:url value="/resource/js/descriptionAutocomplete.js"
-    var="descAutocomplete" />
-<spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
-
-<script src="${autocompleteJs}"></script>
-<script src="${descAutocomplete}"></script>
-<script src="${addAreaJs}"></script>
-<link rel="stylesheet" type="text/css" href="${suggestionCss}">
-<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
-
-
-<script src=" http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.js"></script>
-<script> 
-$(document).ready(function() {
-	$( "#datepicker" ).datepicker({ dateFormat: 'dd.mm.yy' });
-	
-     if( "${user.willDocument}" === "") {
-        $('#will').attr('disabled', 'disabled');        
-    }
-    if( "${user.passport}" === "") {
-        $('#pass').attr('disabled', 'disabled');        
-    } 
-    
-    if( "${user.otherDocuments}" === "") {
-        $('#otherDocs').attr('disabled', '');       
-    } 
-    
-    
-    $(".checkbox input").click(function(){
-        $("#reasonInclusion").text('');
-        $(".checkbox :checked").each(function(){
-            var id =  $(this).attr('id');
-             if(id === "pass") {                 
-                 var seria = "${user.passport.seria} " + "${user.passport.number}";
-                 var name = "${user.firstName} " + "${user.middleName} " +"${user.lastName}";
-                 var published ="${user.passport.published_by_data}";
-                 var passportInfo = "паспорт громадянина України " 
-                     + seria +", виданий на ім’я " + name + " " + published;               
-                if("${user.passport.comment}" !== "") {
-                    var comment ="${user.passport.comment}";
-                    passportInfo = passportInfo + "; " + comment;
-                }
-                $("#reasonInclusion").append(passportInfo + ";\n");
-            }
-            if(id === "will") {
-                var date = '${user.willDocument.accessionDate}';
-                var stringDate = $.datepicker.formatDate('dd.mm.yy', new Date(date));
-                var willDocument = "документ волевиявлення від " + stringDate;
-                if("${user.willDocument.comment}" !== "") {
-                    var comment ="${user.willDocument.comment}";
-                    willDocument = willDocument + "; " + comment;
-                }
-                $("#reasonInclusion").append( willDocument+ ";\n");                
-            }
-            if(id === "otherDocs") {
-                var docs = '${user.otherDocuments}';
-                $("#reasonInclusion").append(docs + ";\n");                
-            }
-             else if(id === "tytul"){
-                 var inputString = "титул власності на природні ресурси України від 02 квітня 2015 року;";
-                 $("#reasonInclusion").append( inputString + "\n");
-             }
-             else if(id === "delivery"){
-                 var inputDelivery = "доручення;";
-                 $("#reasonInclusion").append(inputDelivery + "\n");                
-            }
-        });
-   });        
-
-});
-</script>
-
-
-
 <div class="container">
     <h2>
         <spring:message code="label.resource.add" />
     </h2>
     <form:form method="POST" action="addresource"
         modelAttribute="newresource" class="form-horizontal">
+        
+        <!-- select co-owner -->
+        <div class="form-group">
+            <label class="control-label col-sm-3"><spring:message
+                    code="label.resource.co-owner.select" />:</label>
+            <div class="col-sm-3">
+            <input class="form-control" id="owner_search" type="text" value="">
+            </div>
+        </div>
+
+        <!-- add resource description -->
         <div class="form-group">
             <label class="control-label col-sm-3"><spring:message
                     code="label.resource.description" />:</label>
@@ -100,6 +34,8 @@ $(document).ready(function() {
                     value="${newresource.description}">
             </div>
         </div>
+        
+        <!-- select resource type -->
         <div class="form-group">
             <label class="control-label col-sm-3"><spring:message
                     code="label.resource.type" />:</label>
@@ -115,7 +51,11 @@ $(document).ready(function() {
                 </select>
             </div>
         </div>
+        
+        <!-- input of selected type parameters  -->
         <div id="typeParameters"></div>
+        
+        <!-- registration number of resource-->
         <div class="form-group">
             <label class="control-label col-sm-3"><spring:message
                     code="label.resource.identifier" />:</label>
@@ -127,6 +67,8 @@ $(document).ready(function() {
                 <form:errors path="identifier" cssClass="error" style="color:red" />
             </div>
         </div>
+        
+        <!-- reasonInclusion -->
         <div class="form-group">
             <label class="control-label col-sm-3"><spring:message
                     code="label.resource.reasonInclusion" />:</label>
@@ -134,17 +76,21 @@ $(document).ready(function() {
                 <textarea id="reasonInclusion" class="form-control" rows="5"
                     name="reasonInclusion" required>${newresource.reasonInclusion}</textarea>
             </div>
-            <div class="checkbox">
-                <label><input id="pass" type="checkbox">паспорт</label><br />
-                <label><input id="will" type="checkbox">волевиявлення
-                    людини</label><br /> 
-                <label><input id="otherDocs" type="checkbox">інші документи</label><br /> 
-                    
-                    <label><input id="tytul" type="checkbox">титул
-                    власності</label><br /> <label><input id="delivery"
-                    type="checkbox">доручення</label>
-            </div>
-        </div>
+			<div class="checkbox">
+				<label><input id="pass" type="checkbox" disabled>
+				<spring:message code="label.resource.pass" /></label><br /> <label><input
+					id="will" type="checkbox" disabled>
+				<spring:message code="label.resource.willDocumant" /></label><br /> <label><input
+					id="otherDocs" type="checkbox" disabled>
+				<spring:message code="label.resource.otherDocuments" /></label><br /> <label><input
+					id="tytul" type="checkbox" disabled>
+				<spring:message code="label.resource.propertyTilel" /></label><br /> <label><input
+					id="delivery" type="checkbox">
+				<spring:message code="label.resource.assignment" /></label>
+			</div>
+		</div>
+        
+         <!-- reasonInclusion -->
         <div class="form-group">
             <label class="control-label col-sm-3"><spring:message
                     code="label.resource.date" />:</label>
@@ -156,23 +102,17 @@ $(document).ready(function() {
                 <form:errors path="date" cssClass="error" style="color:red" />
             </div>
         </div>
-        <div class="form-group ">
+        <!-- fill tome identifier -->
+<%--         <div class="form-group ">
             <label class="control-label col-sm-3"><spring:message
-                    code="label.resource.registrator" />(<spring:message
-                    code="label.resource.tome" />):</label>
+                    code="label.resource.tome" />:</label>
             <div class="col-sm-3">
-                <select name="tomeIdentifier" class="form-control" required>
-                    <option value=""><spring:message
-                            code="label.resource.registrator.select" />:
-                    </option>
-                    <c:forEach items="${tomes}" var="tome">
-                        <option value="${tome.identifier}">${tome.registrator.lastName}
-                            ${tome.registrator.middleName} ${tome.registrator.firstName}
-                            (номер тому: ${tome.identifier})</option>
-                    </c:forEach>
-                </select>
+                <input class="form-control" name="tomeIdentifier" required readonly
+                    value="${tome.identifier}">
             </div>
-        </div>
+        </div> --%>
+ 
+        <!-- Coordinates -->
         <legend>
             <spring:message code="label.resource.coordinates" />
         </legend>
@@ -185,6 +125,9 @@ $(document).ready(function() {
 
         <div id="map_canvas" class="container"
             style="height: 500px; padding: 20px 0px;"></div>
+        <div class="col-sm-12">
+            <button id="addPointsFromMap" class="btn btn-primary" type="button" style="margin-top: 10px;">Додати координати з мапи</button>
+        </div>
 
          <div class="form-group">
             <label class="control-label col-sm-1"><spring:message
@@ -279,3 +222,23 @@ $(document).ready(function() {
     <script type="text/javascript"
         src="${base}resource/js/addResourceOnMap.js"></script>
 </div>
+
+<spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
+    var="autocompleteJs" />
+<spring:url value="/resource/js/lib/jquery-ui.datepscker.min.js"
+    var="datepickerJs" />
+<spring:url value="/resource/js/descriptionAutocomplete.js"
+    var="descAutocomplete" />
+<spring:url value="/resource/js/ownerControl.js"
+    var="ownerControl" />
+<spring:url value="/resource/js/addArea.js" var="addAreaJs" />
+<spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
+
+<script src="${datepickerJs}"></script>
+<script src="${autocompleteJs}"></script>
+<script src="${descAutocomplete}"></script>
+<script src="${ownerControl}"></script>
+<script src="${addAreaJs}"></script>
+<link rel="stylesheet" type="text/css" href="${suggestionCss}">
+<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">

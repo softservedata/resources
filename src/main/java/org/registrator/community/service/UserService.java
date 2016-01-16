@@ -21,9 +21,9 @@ public interface UserService {
 	void changeUserRole(String login, Integer role_id);
 
 	List<UserStatus> fillInUserStatusforRegistratedUsers();
-	
-	 List<UserStatus> fillInUserStatusforInactiveUsers();
-	
+
+	List<UserStatus> fillInUserStatusforInactiveUsers();
+
 	List<UserDTO> getUserDtoList();
 
 	UserDTO getUserDto(String login);
@@ -39,9 +39,12 @@ public interface UserService {
 	boolean checkUsernameNotExistInDB(String username);
 
 	UserDTO editUserInformation(UserDTO userDto);
-	
+
 	void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson);
+
 	void createTome(ResourceNumberDTOJSON resourseNumberDtoJson);
+
+	List<UserDTO> getUserBySearchTag(String searchTag);
 
 	// boolean recoverUsersPassword(String email, String usersCaptchaAnswer,
 	// String captchaFileName);

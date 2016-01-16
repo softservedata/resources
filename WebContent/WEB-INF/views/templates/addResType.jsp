@@ -10,11 +10,7 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-<spring:url
-	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
-	var="jqueryJs" />
-<spring:url value="/resource/js/add.js" var="addJs" />
-<script src="${jqueryJs}"></script>
+<spring:url value="/resource/js/addResourceType.js" var="addJs" />
 <script src="${addJs}"></script>
 <h2>
 	<spring:message code="label.restype.add" />
@@ -22,15 +18,16 @@
 
 <form:form method="POST" action="addrestype" modelAttribute="newrestype"
 	class="form-horizontal">
+	
 	<form:errors path="typeName" cssClass="error" style="color:red" />
 	<div class="form-group">
 		<label class="control-label col-sm-2"><spring:message
 				code="label.restype.title" />:</label>
 		<div class="col-sm-2">
-
 			<input class="form-control" name="typeName" value="${typeName}"
 				placeholder="Введіть назву тут" required>
 		</div>
+	
 	</div>
 	<div class="form-inline">
 		<button type="button" id="clickmeshow" class="btn btn-primary">

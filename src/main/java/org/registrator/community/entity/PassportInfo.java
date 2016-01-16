@@ -29,7 +29,7 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 	private Integer number;
 
 	@Column(name = "published_by_data", nullable = false)
-	private String published_by_data;
+	private String publishedByData;
 
 	@Column(name = "comment")
 	private String comment;
@@ -38,11 +38,11 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 
 	}
 
-	public PassportInfo(User user, String seria, Integer number, String published_by_data) {
+	public PassportInfo(User user, String seria, Integer number, String publishedByData) {
 		this.user = user;
 		this.seria = seria;
 		this.number = number;
-		this.published_by_data = published_by_data;
+		this.publishedByData = publishedByData;
 	}
 
 	public Integer getPassportId() {
@@ -78,11 +78,11 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 	}
 
 	public String getPublishedByData() {
-		return published_by_data;
+		return publishedByData;
 	}
 
-	public void setPublishedByData(String published_by_data) {
-		this.published_by_data = published_by_data;
+	public void setPublishedByData(String publishedByData) {
+		this.publishedByData = publishedByData;
 	}
 
 	public String getComment() {
@@ -95,7 +95,7 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 
 	@Override
 	public int compareTo(PassportInfo passport) {
-		if(this.seria.equals(passport.seria) && (this.number.equals(passport.number) && (this.published_by_data.equals(passport.published_by_data)))) {
+		if(this.seria.equals(passport.seria) && (this.number.equals(passport.number) && (this.publishedByData.equals(passport.publishedByData)))) {
 			return 0;
 		} else {
 			return 1;

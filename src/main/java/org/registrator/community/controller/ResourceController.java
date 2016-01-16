@@ -9,18 +9,16 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
-import org.registrator.community.dto.validator.ResourceDTOValidator;
 import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceDiscreteValue;
 import org.registrator.community.entity.ResourceLinearValue;
 import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.Tome;
+import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
@@ -29,6 +27,7 @@ import org.registrator.community.service.impl.DiscreteParameterServiceImpl;
 import org.registrator.community.service.impl.LinearParameterServiceImpl;
 import org.registrator.community.service.impl.ResourceDiscreteValueServiceImpl;
 import org.registrator.community.service.impl.ResourceLinearValueServiceImpl;
+import org.registrator.community.validator.ResourceDTOValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import com.google.gson.Gson;
 
@@ -57,10 +57,6 @@ public class ResourceController {
     @Autowired
     ResourceTypeService resourceTypeService;
 
-    // to delete
-    @Autowired
-    TomeRepository tomeRepository;
-
     @Autowired
     DiscreteParameterServiceImpl discreteParameterService;
 
@@ -76,8 +72,6 @@ public class ResourceController {
     @Autowired
     UserService userService;
     
-    
-
     /**
      * Method for loading form for input the parameter of resource (with
      * existing resource types and registrator)
@@ -85,13 +79,12 @@ public class ResourceController {
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
     public String addResourceForm(Model model, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDTO user = userService.getUserDto(auth.getName());
-        session.setAttribute("user", user);
+        User registrator = userService.getUserByLogin(auth.getName());
+        Set<User> owners = registrator.getOwners();
+        model.addAttribute("owners", owners);
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-        List<Tome> tomes = tomeRepository.findAll();
         ResourceDTO newresource = new ResourceDTO();
         model.addAttribute("listOfResourceType", listOfResourceType);
-        model.addAttribute("tomes", tomes);
         model.addAttribute("newresource", newresource);
         return "addResource";
     }
@@ -123,7 +116,9 @@ public class ResourceController {
             model.addAttribute("newresource", resourceDTO);
             return "addResource";
         } else {
-            resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User registrator = userService.getUserByLogin(auth.getName());
+            resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE, registrator);
             model.addAttribute("resource", resourceDTO);
             return "showResource";
         }
@@ -343,5 +338,21 @@ public class ResourceController {
     public String searchOnMap(Model model) {
         return "searchOnMap";
     }
+    
+
+    @ResponseBody
+    @RequestMapping(value = "/owners", method = RequestMethod.GET)
+    public List<UserDTO> getOwnersSuggestions(@RequestParam("ownerDesc")String ownerDesc) {
+        List<UserDTO> userList = userService.getUserBySearchTag(ownerDesc);
+        return userList;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/getOwnerInfo", method = RequestMethod.GET)
+    public UserDTO getOwnerInfo(@RequestParam("ownerLogin")String ownerLogin) {
+        return userService.getUserDto(ownerLogin);
+    }
+    
+
 
 }

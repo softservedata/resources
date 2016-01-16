@@ -35,6 +35,7 @@ import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceDiscreteValue;
 import org.registrator.community.entity.ResourceLinearValue;
 import org.registrator.community.entity.ResourceType;
+import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,24 +73,18 @@ public class ResourceServiceImpl implements ResourceService {
    
     @Override
     @Transactional
-    public ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus) {
+    public ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus, User registrator) {
         Resource resourceEntity = new Resource();
         resourceEntity.setIdentifier(resourceDTO.getIdentifier());
         resourceEntity.setDescription(resourceDTO.getDescription());
         resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
-        resourceEntity.setTome(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()));
-        resourceEntity.setRegistrator(tomeRepository.findTomeByIdentifier(resourceDTO.getTomeIdentifier()).getRegistrator());
+        resourceEntity.setTome(tomeRepository.findTomeByRegistrator(registrator));
+        resourceEntity.setRegistrator(registrator);
         resourceEntity.setStatus(resourceStatus);
         ResourceType resourceType = resourceTypeRepository.findByName(resourceDTO.getResourceType().getTypeName());
         resourceEntity.setType(resourceType);
         resourceEntity.setDate(resourceDTO.getDate());
         resourceEntity = resourceRepository.save(resourceEntity);
-
-//        Setter for resourceDTO???
-        resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() +
-                resourceEntity.getRegistrator().getMiddleName() +
-                resourceEntity.getRegistrator().getLastName());
-
         List<Area> areas = new ArrayList<Area>();
         for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
 
@@ -167,7 +162,8 @@ public class ResourceServiceImpl implements ResourceService {
             }
             discreteValueRepository.save(resourceDiscreteValues);
         }
-        return resourceDTO;
+        
+        return findByIdentifier(resourceEntity.getIdentifier());
     }
 
     @Override
@@ -192,8 +188,8 @@ public class ResourceServiceImpl implements ResourceService {
         resourceDTO.setDate(resourceEntity.getDate());
         resourceDTO.setIdentifier(resourceEntity.getIdentifier());
         resourceDTO.setReasonInclusion(resourceEntity.getReasonInclusion());
-        resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() +
-                resourceEntity.getRegistrator().getMiddleName() +resourceEntity.getRegistrator().getLastName());
+        resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() + " " +
+                resourceEntity.getRegistrator().getMiddleName() + " " + resourceEntity.getRegistrator().getLastName());
         resourceDTO.setTomeIdentifier(resourceEntity.getTome().getIdentifier());
         resourceDTO.setResourceType(resourceEntity.getType());
 
@@ -282,7 +278,10 @@ public class ResourceServiceImpl implements ResourceService {
         Set<String> identifiers = new HashSet<>();
         List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng);
         for (Polygon polygon : polygons) {
-            if(resType.equals(polygon.getResource().getType().getTypeName())){
+            if("all".equals(resType)) {
+                identifiers.add(polygon.getResource().getIdentifier());
+            }
+            else if(resType.equals(polygon.getResource().getType().getTypeName())){
                 identifiers.add(polygon.getResource().getIdentifier());
             }
         }

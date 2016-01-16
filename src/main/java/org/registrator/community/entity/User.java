@@ -2,8 +2,11 @@ package org.registrator.community.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -73,6 +78,15 @@ public class User implements Serializable {
     @JsonManagedReference
     private List<OtherDocuments> otherDocuments = new ArrayList<OtherDocuments>();
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+    @JoinTable(name="registrator_owner",
+        joinColumns={@JoinColumn(name="owner_id")},
+        inverseJoinColumns={@JoinColumn(name="registrator_id")})
+    private Set<User> registrators = new HashSet<User>();
+ 
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy="registrators")
+    private Set<User> owners = new HashSet<User>();
+    
     public User() {
 
     }
@@ -193,5 +207,20 @@ public class User implements Serializable {
         this.otherDocuments = otherDocuments;
     }
 
+    public Set<User> getRegistrators() {
+        return registrators;
+    }
+
+    public void setRegistrators(Set<User> registrators) {
+        this.registrators = registrators;
+    }
+
+    public Set<User> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(Set<User> owners) {
+        this.owners = owners;
+    }
 }
 

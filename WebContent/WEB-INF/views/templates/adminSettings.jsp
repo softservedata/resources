@@ -10,35 +10,51 @@
 <c:set var="base"
 	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
-
 <div class="container">
 	<h4>
 		<spring:message code="label.admin.settings.method" />
 	</h4>
-	<p>Виберіть одну з опцій:</p>
-
-
-
-	<form:form id="сhangeReg" modelAttribute="userDTO" method="post"
+	<p>
+		<spring:message code="label.admin.settings.chooseoption" />
+	</p>
+	<form:form id="сhangeReg" method="post" modelAttribute="regMethod"
 		action="settings">
+		<div class="radio">
+			<label><input type="radio" name="optradio" value="personal"
+				<c:if test="${ regMethod  == 'PERSONAL'}"> checked="checked" </c:if> />
+				<spring:message code="label.admin.settings.personal" /> </label>
+		</div>
 
 		<div class="radio">
-		
-			<label><input type="radio" name="optradio" value="personalReg">Особиста
-				реєстрація</label>
+			<label><input type="radio" name="optradio" value="manual"
+				<c:if test="${ regMethod  == 'MANUAL'}">checked="checked"</c:if> />
+				<spring:message code="label.admin.settings.manual" /> </label>
 		</div>
 		<div class="radio">
-			<label><input type="radio" name="optradio" value="manualReg">Реєстрація
-				нового користувача здійснюється виключно реєстратором</label>
+			<label><input type="radio" name="optradio" value="mixed"
+				<c:if test="${ regMethod  == 'MIXED'}"> checked="checked" </c:if> />
+				<spring:message code="label.admin.settings.mixed" /> </label>
 		</div>
-		<div class="radio">
-			<label><input type="radio" name="optradio" value="mixedReg">Обидва
-				способи реєстрації доступні</label>
-		</div>
-		<input type="submit" value="Підтвердити" class="btn btn-success" />
+		<input type="submit" id="confirmRegistrationMethod"
+			value="<spring:message code="label.admin.settings.confirm" />"
+			class="btn btn-success" />
 	</form:form>
-
-
-
-
 </div>
+<script>
+    $("#confirmRegistrationMethod").click(function() {
+
+        var url = "settings"; 
+
+        $.ajax({
+               type: "POST",
+               url: url,
+               data: $("#сhangeReg").serialize(), 
+               success: function(data)
+               {
+            	   bootbox.alert("Метод реєстрації успішно змінено!");
+               }
+             });
+
+        return false; 
+    });
+</script>

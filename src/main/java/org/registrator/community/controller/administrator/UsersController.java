@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.registrator.community.components.AdminSettings;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
@@ -12,6 +12,7 @@ import org.registrator.community.entity.Role;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UsersController {
 
 	@Autowired
+	Logger logger;
+
+	@Autowired
 	UserService userService;
+
+	@Autowired
+	AdminSettings adminSettings;
 
 	@Autowired
 	RoleService roleService;
@@ -61,14 +68,6 @@ public class UsersController {
 			return "redirect:/administrator/users/get-all-users";
 		}
 
-	}
-
-	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
-	public String getAllUsers(Model model) {
-		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		userDtoList = userService.getAllRegistratedUsers();
-		model.addAttribute("userDtoList", userDtoList);
-		return "RegistratedUsers";
 	}
 
 	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)

@@ -38,7 +38,7 @@ $(document).ready(function() {
 <body>
 <div id="register_container" class="col-md-4">
   <legend><strong>Зареєструвати нового користувача</strong></legend>
-    <form class="form-horizontal" id="register_form" role="form" method="GET" action="/registrator/register2">
+    <form class="form-horizontal" id="register_form" role="form" method="GET" action="register2">
         <div class="personal_header header"><span><b> ► Особисті дані</b></span>
         </div>
         <div class="personal_content content">
@@ -90,7 +90,7 @@ $(document).ready(function() {
             </p>
              <p>
               <label for="published_by_data">Ким і коли виданий *</label>
-              <input name="published_by_data" type="text" class="form-control login" id="published_by_data" tabindex="100" />
+              <input name="publishedByData" type="text" class="form-control login" id="published_by_data" tabindex="100" />
             </p>
             </div>
             <p>

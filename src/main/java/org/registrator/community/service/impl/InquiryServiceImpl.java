@@ -23,12 +23,15 @@ import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InquiryServiceImpl implements InquiryService{
-	public static final Logger logger = LoggerFactory.getLogger(InquiryServiceImpl.class);	
+	//public static final Logger logger = LoggerFactory.getLogger(InquiryServiceImpl.class);	
+	@Autowired
+	Logger logger;
 	@Autowired
 	InquiryRepository inquiryRepository;
 	@Autowired
@@ -52,8 +55,10 @@ public class InquiryServiceImpl implements InquiryService{
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
 		User registrator = tome.getRegistrator();
 		String resourceIdentifier = inquiryDTO.getResourceIdentifier();
-		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
+		logger.info("try write new line to inquiry_list table");
 		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
+		logger.info("wrote line to inquiry_list table");
 		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;
 	}
@@ -82,20 +87,27 @@ public class InquiryServiceImpl implements InquiryService{
 	@Transactional
 	@Override
 	public List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType){
-		logger.info("begin listInquiryUser");
+		logger.info("begin");
 		List<InquiryListDTO> listInquiryDTO = new ArrayList<InquiryListDTO>();
 		InquiryListDTO inquiryListDTO;
 		User user = userRepository.findUserByLogin(userLogin);
-		List<Inquiry> listInquiry = inquiryRepository.findByUserAndInquiryType(user, inquiryType);
+		//SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		List<Inquiry> listInquiry;
+		if (user.getRole().getType().toString().equals("USER")){
+			listInquiry = inquiryRepository.findByUserAndInquiryType(user, inquiryType);
+		} else {
+			listInquiry = inquiryRepository.findByRegistratorAndInquiryType(user, inquiryType);
+		}
 		for (Inquiry inquiry : listInquiry){
 			inquiryListDTO = new InquiryListDTO(inquiry.getInquiry_list_id(), inquiry.getInquiryType().toString(), 
 						inquiry.getDate(), null, null, inquiry.getResource().getIdentifier(), inquiry.getResource().getStatus());
-			inquiryListDTO.setUserName(user.getLastName()+ " " +user.getFirstName()+ " " +user.getMiddleName());
+			User userFrom =inquiry.getUser();
+			inquiryListDTO.setUserName(userFrom.getLastName()+ " " +userFrom.getFirstName()+ " " +userFrom.getMiddleName());
 			User registrator = inquiry.getRegistrator();
 			inquiryListDTO.setRegistratorName(registrator.getLastName()+ " " +registrator.getFirstName()+ " " +registrator.getMiddleName());
 			listInquiryDTO.add(inquiryListDTO);
 		}
-		logger.info("end listInquiryUser");
+		logger.info("end");
 		return listInquiryDTO;
 	}
 		
@@ -106,6 +118,7 @@ public class InquiryServiceImpl implements InquiryService{
 	@Override
 	public void removeInquiry (Integer inquiryId){
 		inquiryRepository.delete(inquiryId);
+		logger.info("delete line from inquiry_list table with inqury_id = " + inquiryId);
 	}
 	
 	/**
@@ -114,7 +127,7 @@ public class InquiryServiceImpl implements InquiryService{
 	@Transactional
 	@Override
 	public ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin){
-		resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.UNCHECKED);
+/*		resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.UNCHECKED);
 		User user = userRepository.findUserByLogin(userLogin);
 		String tomeIdentifier = resourceDTO.getTomeIdentifier();
 		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
@@ -124,7 +137,8 @@ public class InquiryServiceImpl implements InquiryService{
 		Inquiry inquiry = new Inquiry("INPUT", new Date(), user, registrator, resource);
 		inquiryRepository.saveAndFlush(inquiry);
 		
-		return resourceDTO;
+		return resourceDTO;*/
+	    return null;
 	}
 	
 	

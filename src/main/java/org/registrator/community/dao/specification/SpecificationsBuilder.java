@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.registrator.community.dto.search.SearchColumn;
-import org.registrator.community.entity.User;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
-public class SpecificationsBuilder {
+public class SpecificationsBuilder<T> {
 	
 	private  List<SearchColumn> colums;
 	
@@ -16,22 +15,21 @@ public class SpecificationsBuilder {
 		colums = new ArrayList<SearchColumn>();
     }
 	
-	public Specification<User> build() {
+	public Specification<T> build() {
         if (colums==null && colums.size() == 0) {
             return null;
         }
  
-        List<Specification<User>> specs = new ArrayList<Specification<User>>();
+        List<Specification<T>> specs = new ArrayList<Specification<T>>();
         for (SearchColumn scolumn : colums) {
         	if(scolumn.getSearch().getValue() != null && scolumn.getSearch().getValue()!="" ){
-        		UserSpecification<User> userSpecification =new UserSpecification<User>();
-            	userSpecification.setCriteria(scolumn);
-                specs.add(userSpecification);
-        	}
-        	
+        		BaseSpecification<T> entitySpecification = new BaseSpecification<T>();
+        		entitySpecification.setCriteria(scolumn);
+                specs.add((Specification<T>) entitySpecification);
+        	}	
         }
- 
-        Specification<User> result = specs.get(0);
+		
+        Specification<T> result = specs.get(0);
         for (int i = 1; i < specs.size(); i++) {
             result = Specifications.where(result).and(specs.get(i));
         }
@@ -42,7 +40,7 @@ public class SpecificationsBuilder {
 		return colums;
 	}
 
-	public SpecificationsBuilder setColums(List<SearchColumn> colums) {
+	public SpecificationsBuilder<T> setColums(List<SearchColumn> colums) {
 		this.colums = colums;
 		return this;
 	}
