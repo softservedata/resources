@@ -35,8 +35,7 @@ public class ResourceNumber implements Serializable {
 	public ResourceNumber() {
 	}
 
-	public ResourceNumber(Integer numberId, Integer number, String registraorNumber, User user) {
-		this.numberId = numberId;
+	public ResourceNumber(Integer number, String registraorNumber, User user) {
 		this.number = number;
 		this.registratorNumber = registraorNumber;
 		this.user = user;

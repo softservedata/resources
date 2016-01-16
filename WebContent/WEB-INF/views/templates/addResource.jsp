@@ -125,6 +125,9 @@
 
         <div id="map_canvas" class="container"
             style="height: 500px; padding: 20px 0px;"></div>
+        <div class="col-sm-12">
+            <button id="addPointsFromMap" class="btn btn-primary" type="button" style="margin-top: 10px;">Додати координати з мапи</button>
+        </div>
 
          <div class="form-group">
             <label class="control-label col-sm-1"><spring:message

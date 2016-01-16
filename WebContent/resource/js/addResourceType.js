@@ -11,7 +11,7 @@ $(document).ready(
 								var num = $('.clonedInput').length;
 								var newNum = new Number(num + 1);
 								var newElem = $('#input' + num).clone().val('').attr(
-										'id', 'input' + newNum).removeAttr('value');;
+										'id', 'input' + newNum).removeAttr('value');
 						
 								newElem.children('#myparam0').val('').attr(
 										'name','parameters[' + (newNum - 1)+ '].description');
@@ -20,7 +20,7 @@ $(document).ready(
 								newElem.children('#myparam2').attr(
 										'name','parameters[' + (newNum - 1)+ '].parametersType');
 								$('#input' + num).after(newElem);
-								$('#btnDel').attr('disabled', '');
+								$('#btnDel').removeAttr('disabled');
 
                                 positionFooter();
 							});
@@ -28,7 +28,7 @@ $(document).ready(
 			$('#btnDel').click(function() {
 				var num = $('.clonedInput').length;
 				$('#input' + num).remove();
-				$('#btnAdd').attr('disabled', '');
+				$('#btnAdd').removeAttr('disabled');
 				if (num - 1 == 1)
 					$('#btnDel').attr('disabled', 'disabled');
                 positionFooter();

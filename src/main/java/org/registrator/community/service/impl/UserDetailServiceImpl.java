@@ -34,7 +34,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		org.registrator.community.entity.User userEntity = userRepository.findUserByLogin(login);
 
 		if (userEntity == null){
-			logger.error("User - {} - not found", userEntity.getLogin());
+			logger.error("User - {} - not found");
 			throw new UsernameNotFoundException("Помилка в паролі, чи емейлі");
 		}
 		else{
@@ -47,7 +47,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		return buildUserForAuthentication(userEntity,authorities);
 	}
 	
-	
 	private User buildUserForAuthentication(org.registrator.community.entity.User userEntity, List<GrantedAuthority> authorities) {
 		//return new User(userEntity.getFirstName()+"  "+userEntity.getLastName(), userEntity.getPassword(), true, true, true, true, authorities);
 		
@@ -55,6 +54,5 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		//return new User(userEntity.getLogin(), userRepository.getUsersPasswordHash(userEntity.getPassword()), authorities);
 		return new User(userEntity.getLogin(), userEntity.getPassword(), authorities);
 	}
-		
 	
 }

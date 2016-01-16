@@ -3,7 +3,8 @@ package org.registrator.community.service;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
-import org.registrator.community.dto.UserStatusDTO;
+import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
+import org.registrator.community.dto.JSON.UserStatusDTOJSON;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
@@ -11,7 +12,7 @@ import org.registrator.community.enumeration.UserStatus;
 
 public interface UserService {
 
-	void changeUserStatus(UserStatusDTO userStatusDto);
+	void changeUserStatus(UserStatusDTOJSON userStatusDto);
 
 	List<UserDTO> getAllRegistratedUsers();
 
@@ -19,7 +20,9 @@ public interface UserService {
 
 	void changeUserRole(String login, Integer role_id);
 
-	List<UserStatus> fillInUserStatus(List<UserDTO> userDtoList);
+	List<UserStatus> fillInUserStatusforRegistratedUsers();
+
+	List<UserStatus> fillInUserStatusforInactiveUsers();
 
 	List<UserDTO> getUserDtoList();
 
@@ -36,7 +39,11 @@ public interface UserService {
 	boolean checkUsernameNotExistInDB(String username);
 
 	UserDTO editUserInformation(UserDTO userDto);
-	
+
+	void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson);
+
+	void createTome(ResourceNumberDTOJSON resourseNumberDtoJson);
+
 	List<UserDTO> getUserBySearchTag(String searchTag);
 
 	// boolean recoverUsersPassword(String email, String usersCaptchaAnswer,

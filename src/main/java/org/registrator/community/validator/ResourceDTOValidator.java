@@ -1,4 +1,4 @@
-package org.registrator.community.dto.validator;
+package org.registrator.community.validator;
 
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dto.ResourceDTO;

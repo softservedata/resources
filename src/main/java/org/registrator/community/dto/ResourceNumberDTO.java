@@ -2,14 +2,14 @@ package org.registrator.community.dto;
 
 public class ResourceNumberDTO {
 	private Integer number;
-	private String resourceNumber;
+	private String registratorNumber;
 
 	public ResourceNumberDTO() {
 	}
 
 	public ResourceNumberDTO(Integer number, String resourceNumber) {
 		this.number = number;
-		this.resourceNumber = resourceNumber;
+		this.registratorNumber = resourceNumber;
 	}
 
 	public Integer getNumber() {
@@ -20,12 +20,12 @@ public class ResourceNumberDTO {
 		this.number = number;
 	}
 
-	public String getResourceNumber() {
-		return resourceNumber;
+	public String getRegistratorNumber() {
+		return registratorNumber;
 	}
 
-	public void setResourceNumber(String resourceNumber) {
-		this.resourceNumber = resourceNumber;
+	public void setRegistratorNumber(String resourceNumber) {
+		this.registratorNumber = resourceNumber;
 	}
 
 }
