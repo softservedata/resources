@@ -20,7 +20,6 @@ public class MainPageController {
     /**
      * This method return homepage if credentials are correct according to the
      * method of registration and redirect to login page in other case
-     * 
      * @param model
      * @return homepage
      */
