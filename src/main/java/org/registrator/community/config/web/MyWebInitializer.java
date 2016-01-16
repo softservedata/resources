@@ -21,7 +21,8 @@ public class MyWebInitializer extends
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class[] { SpringRootConfig.class,DevelopmentConfiguration.class
 				,TestingConfiguration.class ,SecurityConfiguration.class
-				,LoggingConfig.class, AdditionalAppConfig.class};
+				,LoggingConfig.class, AdditionalAppConfig.class
+				,AdditionalAppConfig.class};
 	}
 
 	@Override
