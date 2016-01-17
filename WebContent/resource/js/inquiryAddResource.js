@@ -1,28 +1,42 @@
-/*
- $( "select" )
-  .change(function() {
-	 model.setAttribute( "selectedTomeIdentifier","$( "#tomeIdentifier" ).val()"); 
-  });
- */
+
+$(document).on("click","#outputInquiry",function(){
+	$.ajax({
+		url: 	baseUrl.toString() +'/inquiry/add/outputInquiry',
+		type: 	'POST',
+		success: function(response){
+			$('#target').html(response);
+			
+			$('#registratorLogin').change(function(){
+				$('#form').submit();								
+			})			
+		}
+	})	
+})
 
 
-//$(document).ready(
-//		function() {
-//			/* load resource form */
-//				$("#tomeIdentifier").load("/addResource.html")
-//		});
+
+
+/*$(document).on("click","#outputInquiry",function(){
+	$.ajax({
+		url: 	baseUrl.toString() +'/inquiry/add/outputInquiry',
+		type: 	'POST',
+		success: function(response){
+			$('#target').html(response);
 			
-			
-			
-			/* load resource form */
-/*			$("#tomeIdentifier").change(function() {
-				$("#resourceForm").html("")
-				$.post("addResource", {
-					"resourceTypeName" : $("#resourcesTypeSelect").val()},
-					function(data) {
-					$("#typeParameters").html(data);
-					
-				});
-			});
-		});*/
-			
+			$('#registratorLogin').change(function(){
+				$.ajax({
+					url: 	baseUrl.toString() +'/inquiry/add/addOutputInquiry',
+					type: 	'POST',
+					data: {
+						resourceIdentifier : $('#resourceIdentifier').text(),
+						registratorLogin : $('#registratorLogin').val(),
+						success: function(){
+							window.location.href=baseUrl.toString() +'/inquiry/add/listInqUserOut'
+						}
+					}					
+				})								
+			})			
+		}
+	})	
+})
+*/

@@ -5,12 +5,7 @@
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<!-- <c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
--->
-
+<!--
 <div style="text-align: center;">
 	<h4>
 		<spring:message code="label.inquiry.output.pagename" />
@@ -24,7 +19,7 @@
 					<tr>
 						<td><spring:message code="label.resource.registrator" />
 							(<spring:message code="label.resource.tome" />):</td>
-						<td><select name="tomeIdentifier">
+						<td>  <select id="tomeIdentifier" name="tomeIdentifier">
 								<option value=""><spring:message
 										code="label.resource.registrator.select" />:
 								</option>
@@ -50,5 +45,17 @@
 			</table>				
 			<input type="submit"  value="Надіслати запит" class="btn btn-success"/>
 		
-		</form:form>
+		</form:form> -->
+		
+		
+		<select id="registratorLogin" name="registratorLogin"  class="form-control">
+								<option value=""><spring:message
+										code="label.resource.registrator.select" />:
+								</option>
+								<c:forEach items="${registrators}" var="registrator">
+									<option value="${registrator.login}">${registrator.lastName} ${registrator.firstName} 
+										${registrator.middleName} </option>
+								</c:forEach>
+		</select>
+							
 	
