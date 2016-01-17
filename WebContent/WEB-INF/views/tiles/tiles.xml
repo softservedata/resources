@@ -113,7 +113,7 @@
 	</definition>
 
 	<definition name="inquiryAddOut" template="/WEB-INF/views/templates/inquiryAddOut.jsp" >
-	</definition> 
+	</definition>
 
 	<definition name="listInqUserOut" extends="homepage">
 		<put-attribute name="body" type="template"

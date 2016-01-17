@@ -1,4 +1,4 @@
-package org.registrator.community.dto.validator;
+package org.registrator.community.validator;
 import org.registrator.community.dao.ResourceTypeRepository;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,9 @@ public class ResTypeDTOValidator implements Validator {
 		return clazz.equals(ResourceTypeDTO.class);
 	}
 
+	/**
+	 * Validate resource type name
+	 */
 	@Override
 	public void validate(Object target, Errors errors) {
 

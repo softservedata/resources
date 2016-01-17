@@ -18,7 +18,6 @@
 --
 -- Dumping data for table `address`
 --
-
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
 INSERT INTO `address` VALUES 
@@ -312,6 +311,7 @@ UNLOCK TABLES;
 -- Dumping data for table `discrete_parameters`
 --
 
+
 LOCK TABLES `discrete_parameters` WRITE;
 /*!40000 ALTER TABLE `discrete_parameters` DISABLE KEYS */;
 INSERT INTO `discrete_parameters` VALUES 
@@ -327,6 +327,7 @@ UNLOCK TABLES;
 -- Dumping data for table `inquiry_list`
 --
 
+
 LOCK TABLES `inquiry_list` WRITE;
 /*!40000 ALTER TABLE `inquiry_list` DISABLE KEYS */;
 INSERT INTO `inquiry_list` VALUES 
@@ -337,6 +338,7 @@ UNLOCK TABLES;
 --
 -- Dumping data for table `linear_parameters`
 --
+
 
 LOCK TABLES `linear_parameters` WRITE;
 /*!40000 ALTER TABLE `linear_parameters` DISABLE KEYS */;
@@ -368,7 +370,6 @@ INSERT INTO `list_of_resouces` VALUES
 (13, '2016-01-04 00:00:00', 'сад Собору святого Юра', '79000-010', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1),
 (14, '2016-01-05 00:00:00', 'Радіо 24', '79000-1-001', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 4, 2, 2),
 (15, '2016-01-07 00:00:00', 'парк Богданівка', '79000-011', 'паспорт громадянина України КС 2234, виданий на ім’я Олександр Олександрович Архилюк Львівський....;\r\nдоручення;\r\n', 'ACTIVE', 2, 1, 1);
-
 /*!40000 ALTER TABLE `list_of_resouces` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,6 +385,7 @@ UNLOCK TABLES;
 --
 -- Dumping data for table `passport_data`
 --
+
 
 LOCK TABLES `passport_data` WRITE;
 /*!40000 ALTER TABLE `passport_data` DISABLE KEYS */;
@@ -492,6 +494,7 @@ UNLOCK TABLES;
 -- Dumping data for table `resource_linear_values`
 --
 
+
 LOCK TABLES `resource_linear_values` WRITE;
 /*!40000 ALTER TABLE `resource_linear_values` DISABLE KEYS */;
 INSERT INTO `resource_linear_values` VALUES
@@ -510,6 +513,7 @@ UNLOCK TABLES;
 --
 -- Dumping data for table `resource_types`
 --
+
 
 LOCK TABLES `resource_types` WRITE;
 /*!40000 ALTER TABLE `resource_types` DISABLE KEYS */;

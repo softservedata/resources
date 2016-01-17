@@ -17,16 +17,21 @@
 		</h3>
 	</div>
 	<div class="col-md-4">
-		<div class="col-md-7">
+		<div class="col-md-8">
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
-				Welcome : ${pageContext.request.userPrincipal.name} | 
-				<a href="<c:url value="/logout"/>"><font color="black">Logout</font></a>
+				
+				<div class="col-md-7">
+				<label>Welcome, ${pageContext.request.userPrincipal.name}</label>
+				</div>
+				<div class="col-md-5">
+				<a href="<c:url value="/logout"/>" class="btn btn-primary btn-sm" role="button">Logout</a>
+				</div>
 			</c:if>
 
 
 		</div>
-		<div class="col-md-5">
+		<div class="col-md-4">
 			<ul class="languages">
 				<li><a href="?lang=ua"><img
 						src="${base}resource/img/lang/ua.png"></a></li>
