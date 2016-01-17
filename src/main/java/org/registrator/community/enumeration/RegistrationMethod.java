@@ -1,6 +1,7 @@
 package org.registrator.community.enumeration;
 
 public enum RegistrationMethod {
+       
         PERSONAL("PERSONAL"),
         MANUAL("MANUAL"),
         MIXED("MIXED");

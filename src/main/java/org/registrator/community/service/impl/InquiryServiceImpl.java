@@ -3,6 +3,7 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.dao.ResourceRepository;
@@ -12,6 +13,7 @@ import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
+import org.registrator.community.dto.UserNameDTO;
 import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.Tome;
@@ -49,6 +51,18 @@ public class InquiryServiceImpl implements InquiryService{
 	 */
 	@Transactional
 	@Override
+	public Inquiry addOutputInquiry(String resourceIdentifier, String registratorLogin, String userLogin){
+		User user = userRepository.findUserByLogin(userLogin);
+		User registrator = userRepository.findUserByLogin(registratorLogin);		
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
+		logger.info("try write new line to inquiry_list table");
+		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
+		logger.info("wrote line to inquiry_list table");
+		inquiryRepository.saveAndFlush(inquiry);	
+		return inquiry;
+	}
+	/*@Transactional
+	@Override
 	public Inquiry addOutputInquiry(InquiryDTO inquiryDTO, String userLogin){
 		User user = userRepository.findUserByLogin(userLogin);
 		String tomeIdentifier = inquiryDTO.getTomeIdentifier();
@@ -61,7 +75,7 @@ public class InquiryServiceImpl implements InquiryService{
 		logger.info("wrote line to inquiry_list table");
 		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;
-	}
+	}*/
 	
 	/**
 	 * Method for showing form on UI to input the parameters 
@@ -79,6 +93,29 @@ public class InquiryServiceImpl implements InquiryService{
 		}		
 		return aListTomeDTO;
 	}
+	/**
+	 * Method for showing form on UI to input the parameters 
+	 * for inquiry to get the certificate aboute the resource 
+	 * forms List<UserNameDTO> - all registrators linked to logged user to fill inquiryAddOut.jsp.
+	 */	
+	@Override
+	public List<UserNameDTO> listUserNameDTO(String userLogin){	
+		logger.info("begin");
+		User user = userRepository.findUserByLogin(userLogin);
+		Set<User> registrators = user.getRegistrators();
+		logger.info("set of registrators is empty " + registrators.isEmpty());
+		List<UserNameDTO> aListUserNameDTO = new ArrayList<>();
+		UserNameDTO userNameDTO;
+		for (User registrator : registrators){
+			userNameDTO = new UserNameDTO(registrator.getFirstName(), registrator.getLastName(),
+					registrator.getMiddleName(), registrator.getLogin());
+			aListUserNameDTO.add(userNameDTO);
+			logger.info(userNameDTO.toString());
+		}	
+		logger.info("end");
+		return aListUserNameDTO;
+	}
+	
 
 	/**
 	 * Method for showing all output inquiries from logged user on UI 

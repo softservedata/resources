@@ -4,8 +4,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>--%>
-<script src="<c:url value='/resource/js/add.js'/>"></script>
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="base"
+	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
+
+<spring:url
+	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
+	var="jqueryJs" />
+<spring:url value="/resource/js/add.js" var="addJs" />
+<script src="${jqueryJs}"></script>
+<script src="${addJs}"></script>
 <h2>
 	<spring:message code="label.restype.add" />
 </h2>

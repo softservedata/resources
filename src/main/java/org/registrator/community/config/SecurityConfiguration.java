@@ -44,6 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
+                .antMatchers("/registrator/resource/countResources")
+                .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/registrator/resource/**")
                 .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
                 .antMatchers("/registrator/resource/resourceSearch")
@@ -57,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/inquiry/add/listInqUserOut")
                 .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
                 .antMatchers("/registrator/resource/addresource")
-                .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+                .access("hasRole('ROLE_REGISTRATOR')")
                 .antMatchers("/administrator/users/search")
                 .access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/administrator/users/get-all-users").access("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")

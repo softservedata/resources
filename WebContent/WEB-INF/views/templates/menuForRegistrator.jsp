@@ -23,16 +23,11 @@
 
                 <li class="dropdown"><a href="#"><spring:message code="label.menu.users" /></a>
                     <ul class="dropdown_menu">
-                        <li><a href="<c:url value='/administrator/users/get-all-users'/>">
-                            <spring:message code="label.registrated.pagename" /></a></li>
-                        <li><a href="<c:url value='/administrator/users/get-all-inactive-users'/>">
-                            <spring:message code="label.inactive.pagename" /></a></li>
-                        <li id="manualreg"><a href="<c:url value='/register'/>">
-                            <spring:message code="label.manualregister"/></a></li>
-                        <li><a href="<c:url value='/administrator/users/search'/>">
-                            <spring:message code="label.menu.search"/></a>
+                        <li><a href="<c:url value='/administrator/users/get-all-users'/>"><spring:message code="label.registrated.pagename" /></a></li>
+                        <li><a href="<c:url value='/administrator/users/get-all-inactive-users'/>"><spring:message code="label.inactive.pagename" /></a></li>
                     </ul>
                 </li>
+                
                 <li class="dropdown"><a href="#"><spring:message code="label.menu.inquiries" /></a>
                     <ul class="dropdown_menu">
                         <li> <a href="<c:url value='/inquiry/add/listInquiryUserInput'/>">
@@ -43,10 +38,12 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="<c:url value='/registrator/resource/addresource'/>">
-                    <spring:message code="label.menu.addnewresource"/></a>
-                </li>
-
+                
+                <li><a href="<c:url value='/registrator/resource/addresource'/>"><spring:message code="label.menu.addnewresource"/></a>
+                <c:if test="${registrationMethod eq ('MANUAL') || registrationMethod eq ('MIXED')}">
+					 <li id="manualreg"><a href="<c:url value='/register'/>"><spring:message code="label.manualregister"/></a></li>
+					</c:if>
+                <li><a href="<c:url value='/administrator/users/search" class="glyphicon glyphicon-search'/>"></a>
             </ul>
         </div>
     </div>

@@ -12,16 +12,13 @@
 
 
 
-<p>
+<!--  <p>
 	<a href="<c:url value='/inquiry/add/outputInquiry'/>"
 		class="btn btn-success" role="button"><spring:message code="label.inquiry.output.pagename"/></a>
-</p> 
-
-			<table id="datatable" class="table display"> 
-			
+</p>  -->
+			<table id="datatable" class="table display">			
 				<thead>
-					<tr>
-						<th hidden="true"><spring:message code="label.inquiry.inquiryId" /></th>
+					<tr>						
 						<th><spring:message code="label.inquiry.date" /></th>
 						<th><spring:message code="label.inquiry.user" /></th>
 						<th><spring:message code="label.resource.registrator" /></th>
@@ -35,8 +32,7 @@
 					 <c:if test="${not empty listInquiryUserOut}"> 
 					
 						<c:forEach items="${listInquiryUserOut}" var="inquiryUserOut">						
-							<tr>								
-								<td hidden="true"> ${inquiryUserOut.inquiry_list_id}	</td>
+							<tr>
 								<fmt:formatDate value="${inquiryUserOut.date}" pattern="dd.MM.yyyy" var="Date" />
 								<td> ${Date}	</td>
 								<td> ${inquiryUserOut.userName}	</td>
@@ -53,12 +49,9 @@
 									</div>								
 								</td>							
 							</tr>	
-						</c:forEach>
-						
-					 </c:if> 
-					
-				</tbody>
-										   			
+						</c:forEach>						
+					 </c:if> 					
+				</tbody>										   			
 			</table>				
 			
 		

@@ -2,15 +2,31 @@ package org.registrator.community.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class PassportDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Size(min = 2, max = 2, message = "Серія повинна містити лише 2")
+	@Pattern(regexp = AddressDTO.ONLY_LITERALS, message = "Серія повинна містити лише літери від А до Я")
 	private String seria;
-	private Integer number;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Size(min = 6, max = 6, message = "Номер повинен містити лише 6 цифер")
+	private String number;
+	
+	@NotEmpty(message = "Поле є обов'язковим для введення")
+	@Pattern(regexp = AddressDTO.ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String published_by_data;
+	
 	private String comment;
 
-	public PassportDTO(String seria, Integer number, String published_by_data) {
+	public PassportDTO(String seria, String number, String published_by_data) {
 		this.seria = seria;
 		this.number = number;
 		this.published_by_data = published_by_data;
@@ -27,11 +43,11 @@ public class PassportDTO implements Serializable {
 		this.seria = seria;
 	}
 
-	public Integer getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(Integer number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 
@@ -51,10 +67,10 @@ public class PassportDTO implements Serializable {
 		this.comment = comment;
 	}
 
-/*	@Override
-	public String toString() {
-		return "Серія паспорту: " + seria + "\n" + "Номер паспорту: " + number + "\n" + "Виданий: " + published_by_data
-				+ "\n";
-	}*/
+	/*
+	 * @Override public String toString() { return "Серія паспорту: " + seria +
+	 * "\n" + "Номер паспорту: " + number + "\n" + "Виданий: " +
+	 * published_by_data + "\n"; }
+	 */
 
 }

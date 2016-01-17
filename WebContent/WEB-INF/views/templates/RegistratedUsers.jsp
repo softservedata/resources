@@ -3,6 +3,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<script src="<c:url value='/resource/js/changeStatus.js'/>"></script>
+
 <div style="text-align: center;">
 	<h4>
 		<spring:message code="label.registrated.pagename" />

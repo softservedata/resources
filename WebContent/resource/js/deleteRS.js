@@ -1,8 +1,9 @@
 $(function() {
 	$(document).on("click","#deleterestype",
 					function(event) {
-						var conBox = confirm("Ви впевнені, що хочете видалити цей підклас?");
-						if (conBox) {
+		event.preventDefault();
+						bootbox.confirm("Ви впевнені, що хочете видалити цей підклас?",function(result){
+						if (result) {
 							$
 									.ajax({
 										url : $(event.target).attr("href"),
@@ -19,7 +20,8 @@ $(function() {
 													})
 										},
 										error : function() {
-											alert('Цей підклас не може бути видалений, тому що вже існують ресурси даного підкласу')
+											  bootbox.alert("Даний підклас видалити неможливо, " +
+											  		"оскільки уже зареєстровані ресурси даного підкласу");
 										}
 
 									});
@@ -28,21 +30,4 @@ $(function() {
 						}
 						event.preventDefault();
 					});
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});})

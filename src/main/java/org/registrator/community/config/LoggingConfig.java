@@ -12,6 +12,4 @@ public class LoggingConfig {
 	 public Logger logger(){
 		 return LoggerFactory.getLogger("");
 	 }
-	 
-
 }
