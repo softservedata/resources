@@ -51,7 +51,7 @@
 										<c:if test="${role == 'REGISTRATOR'}">	
 											<a href="printOutput/${inquiryUserOut.inquiry_list_id}"
 												class="btn btn-primary" role="button"> 
-												Друкувати витяг</a>	
+												<spring:message code="label.inquiry.printExtract" /></a>	
 										</c:if>
 									</div>								
 								</td>							
