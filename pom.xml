@@ -321,22 +321,22 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven.surefire.plugin.version}</version>
-				<configuration>
-					<systemPropertyVariables>
-						<surefire.reports.directory>
-							${testng.reports.directory}
-						</surefire.reports.directory>
-					</systemPropertyVariables>
-					<suiteXmlFiles>
-						<suiteXmlFile>testng.xml</suiteXmlFile>
-					</suiteXmlFiles>
-					<reportsDirectory>${testng.reports.directory}</reportsDirectory>
-				</configuration>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-surefire-plugin</artifactId> -->
+<!-- 				<version>${maven.surefire.plugin.version}</version> -->
+<!-- 				<configuration> -->
+<!-- 					<systemPropertyVariables> -->
+<!-- 						<surefire.reports.directory> -->
+<!-- 							${testng.reports.directory} -->
+<!-- 						</surefire.reports.directory> -->
+<!-- 					</systemPropertyVariables> -->
+<!-- 					<suiteXmlFiles> -->
+<!-- 						<suiteXmlFile>testng.xml</suiteXmlFile> -->
+<!-- 					</suiteXmlFiles> -->
+<!-- 					<reportsDirectory>${testng.reports.directory}</reportsDirectory> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-surefire-plugin</artifactId>
@@ -348,6 +348,17 @@
 			        <version>2.19.1</version>
 			      </dependency>
 			    </dependencies>
+			    <configuration>
+					<systemPropertyVariables>
+						<surefire.reports.directory>
+							${testng.reports.directory}
+						</surefire.reports.directory>
+					</systemPropertyVariables>
+<!-- 					<suiteXmlFiles> -->
+<!-- 						<suiteXmlFile>testng.xml</suiteXmlFile> -->
+<!-- 					</suiteXmlFiles> -->
+					<reportsDirectory>${testng.reports.directory}</reportsDirectory>
+				</configuration>
 		  	</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
