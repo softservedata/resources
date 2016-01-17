@@ -3,17 +3,11 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<c:set var="req" value="${pageContext.request}"/>
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
-
 
 <fmt:formatDate value="${resource.date}" pattern="dd.MM.yyyy" var="Date" />
 
 <div>	
-	<form:form modelAttribute="resource">
+	<form:form modelAttribute="resource" id="form" action="addOutputInquiry">
 	<c:if test="${empty resource}">
 	 Ресурс із вказаним ідентифікатором не знайдено
 	</c:if>
@@ -30,7 +24,7 @@
 				</tr>
 				<tr>
 					<td><spring:message code="label.resource.identifier" />:</td>
-					<td>${resource.identifier}</td>
+					<td id="resourceIdentifier" >${resource.identifier}</td>
 				</tr>
 				<tr>
 					<td><spring:message code="label.resource.tome" />:</td>
@@ -85,8 +79,28 @@
 					</tr>
 				</c:forEach>
 			</table>
+			
+		<!-- Procuration for an extract from register -->
+			
+			<script type="text/javascript" src="<c:url value='/resource/js/inquiryAddResource.js'/>"></script>
+			<p>			
+				<div class="form-group">
+					<div class="col-sm-5">
+						<div id="outputInquiry" class="btn btn-success" role="button">
+						<spring:message code="label.inquiry.output.pagename"/></div>
+					</div>		
+					<div id="target" class="col-sm-5"></div>
+				
+				</div>
+			
+			<p>  <input type="text" hidden="true" id="resourceIdentifierCopy" name="resourceIdentifier" 
+					value="${resource.identifier}" />
+			</p>
+			
 		</c:if>
 	</form:form>
+<br />
+<p>
 
     <%--Connect Google Maps--%>
 
@@ -103,6 +117,6 @@
         resource.resourceArea.poligons[0].points[0].longitudeSeconds/3600}"/>">
     </div>
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="${base}resource/js/showResourceMap.js"></script>
+    <script type="text/javascript" src="<c:url value='/resource/js/showResourceMap.js'/>"></script>
 
 </div>

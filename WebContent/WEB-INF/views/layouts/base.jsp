@@ -3,11 +3,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
 <!DOCTYPE html>
 <html>
@@ -16,20 +11,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- fav-icon -->
-    <link rel="Shortcut Icon" href="${base}resource/img/maple_leaf.ico" type="image/x-icon"/>
+    <link rel="Shortcut Icon" href="<c:url value='/resource/img/maple_leaf.ico'/>" type="image/x-icon"/>
     <title><tiles:getAsString name="title"/></title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <%--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">--%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
-    <%--<script src="${base}resource/js/lib/jquery-1.11.1.js" type="text/javascript"></script>--%>
-    <script src="${base}resource/js/lib/jquery-validate/jquery.validate.js" type="text/javascript"></script>
-    <%--<script src="${base}resource/js/scripts.js"></script>--%>
-    <%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
+    <%--<script src="<c:url value='/resource/js/lib/jquery-1.11.1.js'/>" type="text/javascript"></script>--%>
+    <script src="<c:url value='/resource/js/lib/jquery-validate/jquery.validate.js'/>" type="text/javascript"></script>
+    <%--<script src="<c:url value='/resource/js/scripts.js'/>"></script>--%>
+    <%--<link rel="stylesheet" href="<c:url value='/resource/css/login.css'/>">--%>
 
     <!-- Our own css -->
-    <link rel="stylesheet" href="${base}resource/css/system.css">
+    <link rel="stylesheet" href="<c:url value='/resource/css/system.css'/>">
 
 <div class="container">
    	<div id="header">

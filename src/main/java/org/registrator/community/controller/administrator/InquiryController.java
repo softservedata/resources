@@ -10,17 +10,21 @@ import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Set;
 
 import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.registrator.community.dao.ResourceRepository;
+import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
+import org.registrator.community.dto.UserNameDTO;
 import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.InquiryType;
 import org.registrator.community.service.DiscreteParameterService;
 import org.registrator.community.service.InquiryService;
@@ -68,6 +72,8 @@ public class InquiryController {
 	LinearParameterService linearParameterService;	
 	@Autowired
 	PrintService printService;
+	@Autowired
+	UserRepository userRepository;
 	 
 	
 	/**
@@ -75,7 +81,21 @@ public class InquiryController {
 	 * for inquiry to get the certificate aboute the resource 
 	 * (with existing registrators and resources).
 	 */	
-	@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/outputInquiry", method = RequestMethod.POST)
+	public String showOutputInquiry(Model model) {
+		logger.info("begin");
+		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+		logger.info("userLogin = " + userLogin);
+		List<UserNameDTO> listUserNameDTO = inquiryService.listUserNameDTO(userLogin);				
+		model.addAttribute("registrators", listUserNameDTO);		
+		logger.info(listUserNameDTO.toString());
+		logger.info("end");
+		return "inquiryAddOut";
+	}
+	
+		
+	/*@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
 	public String showOutputInquiry(Model model) {
 		logger.info("begin");
 		List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
@@ -84,18 +104,18 @@ public class InquiryController {
 		model.addAttribute("resources", resources);
 		logger.info("end");
 		return "inquiryAddOut";
-	}
+	}*/
+	
 	
 	/**
 	 * Method saves the data in the table inquiry_list.
 	 */
-	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
-	public String addOutputInquiry(InquiryDTO inquiryDTO, HttpSession session) {  			
-		logger.info("begin");
-		//String userLogin =(String) session.getAttribute("userLogin");
+	@RequestMapping(value = "get/addOutputInquiry", method = RequestMethod.POST)
+	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  			
+		logger.info("begin");		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
-		inquiryService.addOutputInquiry(inquiryDTO, userLogin);
+		inquiryService.addOutputInquiry(resourceIdentifier, registratorLogin, userLogin);
 		logger.info("end");
 		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
@@ -103,14 +123,15 @@ public class InquiryController {
 	/**
 	 * Method for showing all output inquiries from logged user on UI.
 	 */
-	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
-	//public String listInqUserOut(Model model, HttpSession session) {
+	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
 	public String listInqUserOut(Model model) {	
-		logger.info("begin");
-		//String userLogin =(String) session.getAttribute("userLogin");
+		logger.info("begin");		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+		String role = userRepository.findUserByLogin(userLogin).getRole().getType().toString();
+		logger.info("user role = " + role);
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
+		model.addAttribute("role", role);
 		logger.info("end");
 		return "listInqUserOut";
 	}
@@ -154,17 +175,8 @@ public class InquiryController {
         logger.info("end");
         return "showResource";
     }
-    
- // @ResponseBody
- 	// @RequestMapping(value = "/printOutput/{inquiryId}", method =
- 	// RequestMethod.GET)
- 	// public String printOutputInquiryByIdentifier(@PathVariable("inquiryId")
- 	// Integer inquiryId) {
- 	// Document print = printService.printProcuration(inquiryId);
- 	// return "redirect:/inquiry/add/listInqUserOut";
- 	// }
 
- 	
+    
  	
  	/**
  	 * @author Vitalii Horban
@@ -210,7 +222,7 @@ public class InquiryController {
  		FileCopyUtils.copy(inputStream, response.getOutputStream());
  	}
  	
-    
+}    
 
 // !!! user can't add resource!!!
 //	/**
@@ -258,78 +270,4 @@ public class InquiryController {
 //         return "showResource";
 //    }
 //	
-//    
-    
-    
-    
-	
-	/* proba old
-	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-	public String addResourceForm(Model model, @RequestParam("selectedTomeIdentifier") String selectedTomeIdentifier) {				
-		model.addAttribute("TomeIdentifier", selectedTomeIdentifier);
-		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-		List<Tome> tomes = tomeRepository.findAll();
-		ResourceDTO newresource = new ResourceDTO();
-		model.addAttribute("listOfResourceType", listOfResourceType);
-		model.addAttribute("tomes", tomes);
-		model.addAttribute("newresource", newresource);
-		//
-		if (model.containsAttribute("TomeIdentifier")) {
-		logger.info("contains");}
-		else logger.info("don't");
-		return "addResource";
-		
-		
-		//logger.info("tomeIdentifier = " + selectedTomeIdentifier);
-		//return "redirect:/registrator/resource/addResource";
-	}
-	*/
-		
-	/**
-	 * Method saves the data in the table inquiry_list.
-	 */
-	/*@RequestMapping(value = "/addInputInquiry", method = RequestMethod.POST)
-	public String addInputInquiry(Model model, HttpSession session) {  			
-		logger.info("begin addInputInquiry");
-		String userLogin =(String) session.getAttribute("userLogin");	
-		logger.info("userLogin = " + userLogin);
-		
-		//inquiryService.addOutputInquiry(inquiryDTO, userLogin);
-		logger.info("end addInputInquiry");
-		return  "redirect:/registrator/resource/addResource";	
-	}*/
-	
-	/**
-	 * Method for showing form on UI to input the parameters 
-	 * for inquiry to input the resource 
-	 * (with existing registrators and resources).
-	 */	
-	/*@RequestMapping(value = "/inputInquiry", method = RequestMethod.GET)
-	public String showInputInquiry(Model model) {
-		logger.info("begin showInputInquiry");
-		List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
-		model.addAttribute("tomes", listTomeDTO);
-		//model.addAttribute("selectedTomeIdentifier","");
-		//List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-		//model.addAttribute("listOfResourceType", listOfResourceType);
-		logger.info("end showInputInquiry");
-		return "inquiryAddInput";
-	}
-	*/
-	
-	/*
-	@ResponseBody
-	@RequestMapping(value ="/output/{inquiryListDTO}",method = RequestMethod.GET)
-	public Inquiry testAddOutputInquiry(@PathVariable("inquiryListDTO") String resourceIdentifier){
-		 return inquiryService.testAddOutputInquiry(resourceIdentifier);
-	}
-	
-	@RequestMapping(value="/page/",method=RequestMethod.GET)
-	public String getOutputInquiryPage(){
-		return "inquiryAddOutput";
-	}*/
-	
-	
-}
-
-
+//  

@@ -3,11 +3,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<spring:url
-	value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"
-	var="jqueryJs" />
-<spring:url value="/resource/js/changeStatus.js" var="changeJs" />
-<script src="${changeJs}"></script>
+<%--<spring:url--%>
+	<%--value="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"--%>
+	<%--var="jqueryJs" />--%>
+
+<script src="<c:url value='/resource/js/changeStatus.js'/>"></script>
 
 <div style="text-align: center;">
 	<h4>
