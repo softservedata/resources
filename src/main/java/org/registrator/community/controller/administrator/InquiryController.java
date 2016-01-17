@@ -123,14 +123,15 @@ public class InquiryController {
 	/**
 	 * Method for showing all output inquiries from logged user on UI.
 	 */
-	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)
-	//public String listInqUserOut(Model model, HttpSession session) {
+	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
 	public String listInqUserOut(Model model) {	
-		logger.info("begin");
-		//String userLogin =(String) session.getAttribute("userLogin");
+		logger.info("begin");		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+		String role = userRepository.findUserByLogin(userLogin).getRole().getType().toString();
+		logger.info("user role = " + role);
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
+		model.addAttribute("role", role);
 		logger.info("end");
 		return "listInqUserOut";
 	}
