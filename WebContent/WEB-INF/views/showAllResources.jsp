@@ -1,13 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="req" value="${pageContext.request}"/>
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
-
-<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
-<script type="text/javascript" src="${base}/resource/js/showAllResources.js"></script>
+<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/cssload.css'/>">
+<script type="text/javascript" src="<c:url value='/resource/js/showAllResources.js'/>"></script>
 
 <div>
     <c:if test="${not empty resourceTypes}">

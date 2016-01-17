@@ -3,17 +3,10 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<c:set var="req" value="${pageContext.request}"/>
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-       value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
 
 <!DOCTYPE html>
 <html>
 <head>
-
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,27 +22,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="${base}resource/css/bootstrap.css">
-    <script src="${base}resource/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="<c:url value='/resource/css/bootstrap.css'/>">
+    <script src="<c:url value='/resource/js/bootstrap.min.js'/>"></script>
 
     <%--Bootbox JS--%>
-    <script src="${base}resource/js/bootbox.min.js"></script>
+    <script src="<c:url value='/resource/js/bootbox.min.js'/>"></script>
 
     <!-- Our own css -->
-    <link rel="stylesheet" href="${base}resource/css/system.css">
+    <link rel="stylesheet" href="<c:url value='/resource/css/system.css'/>">
 
     <!-- DataTables CSS-->
     <link rel="stylesheet"
           href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
 
-    <%--<link rel="stylesheet" href="${base}resource/css/login.css">--%>
+    <%--<link rel="stylesheet" href="<c:url value='/resource/css/login.css'/>">--%>
 
     <!-- DataTables lib -->
     <script
             src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 
     <!-- Our JavaScript-->
-    <script src="${base}resource/js/scripts.js"></script>
+    <script src="<c:url value='/resource/js/scripts.js'/>"></script>
 
 
 </head>

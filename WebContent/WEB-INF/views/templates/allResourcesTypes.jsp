@@ -2,18 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
-
-
-<spring:url value="/resource/js/deleteRS.js" var="delJs" />
-
-<script src="${delJs}"></script>
+<script src="<c:url value='/resource/js/deleteRS.js'/>"></script>
 
 <div style="text-align: center;">
 	<h4>
@@ -21,7 +10,7 @@
 	</h4>
 </div>
 <p>
-	<a href="${base}registrator/resourcetypes/addrestype"
+	<a href="<c:url value='/registrator/resourcetypes/addrestype'/>"
 		class="btn btn-success" role="button"><spring:message
 			code="label.restype.add" /></a>
 </p>

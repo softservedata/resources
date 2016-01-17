@@ -1,13 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="req" value="${pageContext.request}"/>
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
-
-<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
-<link rel="stylesheet" type="text/css" href="${base}resource/css/searchOnMap.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/cssload.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/searchOnMap.css'/>">
 
 <div class="container" style="margin-bottom: 25px; line-height: 28px; vertical-align: top;">
     <div class="col-sm-12 controls">
@@ -126,4 +121,4 @@
 <script
         src="http://maps.googleapis.com/maps/api/js?libraries=drawing,places,geometry&sensor=false"></script>
 <script type="text/javascript"
-        src="${base}resource/js/searchOnMap.js"></script>
+        src="<c:url value='/resource/js/searchOnMap.js'/>"></script>

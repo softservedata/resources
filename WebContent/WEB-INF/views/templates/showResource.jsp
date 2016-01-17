@@ -3,12 +3,6 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<c:set var="req" value="${pageContext.request}"/>
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base" value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/"/>
-
 
 <fmt:formatDate value="${resource.date}" pattern="dd.MM.yyyy" var="Date" />
 
@@ -103,6 +97,6 @@
         resource.resourceArea.poligons[0].points[0].longitudeSeconds/3600}"/>">
     </div>
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="${base}resource/js/showResourceMap.js"></script>
+    <script type="text/javascript" src="<c:url value='/resource/js/showResourceMap.js'/>"></script>
 
 </div>

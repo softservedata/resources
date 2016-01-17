@@ -7,18 +7,18 @@
 <c:if test="${not empty Resources}">
     <table id="datatable">
         <thead>
-            <tr>
-                <th>Ідентифікатор</th>
-                <th>Опис</th>
-                <th>Дата</th>
-                <c:forEach items="${Resources[0].resourceDiscrete}" var="resourceDiscrete">
-                    <th>${resourceDiscrete.discreteParameterDescription}, ${resourceDiscrete.discreteParameterUnit}</th>
-                </c:forEach>
-                <c:forEach items="${Resources[0].resourceLinear}" var="resourceLinear">
-                    <th>${resourceLinear.linearParameterDescription}, ${resourceLinear.linearParameterUnit}</th>
-                </c:forEach>
-                <th>Детальніше</th>
-            </tr>
+        <tr>
+            <th>Ідентифікатор</th>
+            <th>Опис</th>
+            <th>Дата</th>
+            <c:forEach items="${Resources[0].resourceDiscrete}" var="resourceDiscrete">
+                <th>${resourceDiscrete.discreteParameterDescription}, ${resourceDiscrete.discreteParameterUnit}</th>
+            </c:forEach>
+            <c:forEach items="${Resources[0].resourceLinear}" var="resourceLinear">
+                <th>${resourceLinear.linearParameterDescription}, ${resourceLinear.linearParameterUnit}</th>
+            </c:forEach>
+            <th>Детальніше</th>
+        </tr>
         </thead>
         <c:forEach items="${Resources}" var="resource">
             <tr <c:if test="${resource.status}"/>>

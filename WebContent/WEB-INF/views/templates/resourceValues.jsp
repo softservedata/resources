@@ -2,13 +2,8 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-
-<spring:url value="/resource/js/addParameterValues.js"
-	var="addParameterValues" />
-<script src="${addParameterValues}"></script>
-
+<script src="<c:url value='/resource/js/addParameterValues.js'/>"></script>
 
 <!-- Showing all discrete parameters for resource type -->
 <c:if test="${not empty discreteParameters}">

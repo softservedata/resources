@@ -2,20 +2,13 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
-
-<spring:url value="/resource/js/move.js" var="moveJs" />
-
-<script src="${moveJs}"></script>
+<script src="<c:url value='/resource/js/move.js'/>"></script>
 
 <div class="container">
+    <c:url value='/administrator/users/edit-registrated-user' var="theAction"/>
 	<form:form id="editWinodow" modelAttribute="userDTO" method="post"
-		action="${base}administrator/users/edit-registrated-user"
+        action="${theAction}"
 		class="form-horizontal">
 		<fieldset>
 			<div class="row">
