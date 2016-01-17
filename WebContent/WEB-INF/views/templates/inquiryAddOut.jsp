@@ -1,25 +1,21 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
-<!--
 <div style="text-align: center;">
-	<h4>
-		<spring:message code="label.inquiry.output.pagename" />
-	</h4>
+    <h4>
+        <spring:message code="label.inquiry.output.pagename"/>
+    </h4>
 </div>
 
- 
 
 		<form:form method="POST" action="addOutputInquiry" >
 			<table class="table display">
 					<tr>
 						<td><spring:message code="label.resource.registrator" />
 							(<spring:message code="label.resource.tome" />):</td>
-						<td>  <select id="tomeIdentifier" name="tomeIdentifier">
+						<td><select name="tomeIdentifier">
 								<option value=""><spring:message
 										code="label.resource.registrator.select" />:
 								</option>
@@ -45,17 +41,5 @@
 			</table>				
 			<input type="submit"  value="Надіслати запит" class="btn btn-success"/>
 		
-		</form:form> -->
-		
-		
-		<select id="registratorLogin" name="registratorLogin"  class="form-control">
-								<option value=""><spring:message
-										code="label.resource.registrator.select" />:
-								</option>
-								<c:forEach items="${registrators}" var="registrator">
-									<option value="${registrator.login}">${registrator.lastName} ${registrator.firstName} 
-										${registrator.middleName} </option>
-								</c:forEach>
-		</select>
-							
+		</form:form>
 	

@@ -4,22 +4,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
-<!-- <c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
--->
-
 <div style="text-align: center;">
 	<h4>
 		<spring:message code="label.inquiry.listInquiryUserOut.pagename" />
 	</h4>
 </div>
 
+
+
 <!--  <p>
-	<a href="${base}inquiry/add/outputInquiry"
+	<a href="<c:url value='/inquiry/add/outputInquiry'/>"
 		class="btn btn-success" role="button"><spring:message code="label.inquiry.output.pagename"/></a>
 </p>  -->
 			<table id="datatable" class="table display">			
