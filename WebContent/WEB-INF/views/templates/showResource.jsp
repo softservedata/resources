@@ -82,7 +82,7 @@
 			
 		<!-- Procuration for an extract from register -->
 			
-			<script type="text/javascript" src="${base}resource/js/inquiryAddResource.js"></script>
+			<script type="text/javascript" src="<c:url value='/resource/js/inquiryAddResource.js'/>"></script>
 			<p>			
 				<div class="form-group">
 					<div class="col-sm-5">
