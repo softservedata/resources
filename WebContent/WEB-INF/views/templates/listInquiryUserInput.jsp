@@ -38,13 +38,14 @@
 								<td hidden="true"> ${inquiryUser.inquiryType}	</td>
 								<td><a href="get/${inquiryUser.resourceIdentifier}"> ${inquiryUser.resourceIdentifier}	</a></td>	
 								<td> ${inquiryUser.resourceStatus}	</td>
-								<td> <div class="block">
-										<!--  <a href="delete/${inquiryUser.inquiry_list_id}"
-											class="btn btn-danger" role="button"> 
-											<spring:message code="label.restype.delete" /></a>	 -->
+								<td> <div class="block">										
 										<a href="printOutput/${inquiryUser.inquiry_list_id}"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
+											
+									<!-- 	<a href="<c:url value='printOutput/${inquiryUser.inquiry_list_id}' />"
+											class="btn btn-primary" role="button"> 
+											<spring:message code="label.inquiry.print" /></a>  -->	
 									</div>								
 								</td>							
 							</tr>	

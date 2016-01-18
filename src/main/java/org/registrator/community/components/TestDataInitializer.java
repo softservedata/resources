@@ -22,10 +22,18 @@ public class TestDataInitializer {
 		Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         
-        Role role = new Role("USER","description");
-        session.persist(role);
+        Role roleUser = new Role("USER","description");
+        session.persist(roleUser);
         
-        session.persist(new User("user","pass",role,"Іван","Головатий","Сергійович","ivan@gmail.com","UNBLOCK"));
+        Role roleAdmin = new Role("ADMIN","description");
+        session.persist(roleAdmin);
+        
+        Role roleRegistrator = new Role("REGISTRATOR","description");
+        session.persist(roleRegistrator);
+        
+        session.persist(new User("user","user",roleUser,"Іван","Головатий","Сергійович","ivan@gmail.com","UNBLOCK"));
+        session.persist(new User("admin","admin",roleAdmin,"Сергій","Головатий","Сергійович","sergey@gmail.com","UNBLOCK"));
+        session.persist(new User("registrator","registrator",roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","UNBLOCK"));
         
         transaction.commit();
 	}

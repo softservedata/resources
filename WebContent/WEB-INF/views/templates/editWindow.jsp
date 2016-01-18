@@ -295,8 +295,12 @@
 						<input id="identifier" name="identifier" class="form-control input-md" type="text" required> 
 						<label class="control-label">Номер реєстратора</label> 
 						<input id="registrator_number" name="registrator_number" class="form-control input-md" type="text" required> 
+						<div class="control-group error">
+								<form:errors path="registrator_number" cssClass="error"
+									style="color:black" />
+							</div>
 						<label class="control-label">Реєстраційний номер об'єкту</label> 
-						<input id="number" name="number" value="${resourceNumberDtoJson.number}" class="form-control input-md" type="text" required>
+						<input id="number" name="number" class="form-control input-md" type="text" required>
 					</div>
 					<div class="modal-footer">
 						<button type="button" id="submit" class="btn btn-primary">
