@@ -178,22 +178,59 @@ public class InquiryController {
 
     
  	
- 	/**
+    /**
  	 * @author Vitalii Horban
- 	 * generate pdf document on button pressing and open this document in the same inset
+ 	 * generate pdf document "mandate to extract" on button pressing and open this document in the same inset
  	 */
 
  	@RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
  	public void downloadFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
  			throws IOException {
 
- 		Document print = printService.printProcuration(inquiryId);
+ 		printService.printProcuration(inquiryId);
 
  		File file = null;
+ 		file = new File("D:\\file.pdf");
 
- 		// ClassLoader classloader =
- 		// Thread.currentThread().getContextClassLoader();
- 		// file = new File(classloader.getResource(INTERNAL_FILE).getFile());
+ 		if (!file.exists()) {
+ 			String errorMessage = "Sorry. The file you are looking for does not exist";
+ 			System.out.println(errorMessage);
+ 			OutputStream outputStream = response.getOutputStream();
+ 			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+ 			outputStream.close();
+ 			return;
+ 		}
+
+ 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+ 		if (mimeType == null) {
+ 			System.out.println("mimetype is not detectable, will take default");
+ 			mimeType = "application/octet-stream";
+ 		}
+
+ 		System.out.println("mimetype : " + mimeType);
+
+ 		response.setContentType(mimeType);
+
+ 		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+ 		response.setContentLength((int) file.length());
+ 		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+ 		FileCopyUtils.copy(inputStream, response.getOutputStream());
+ 	}
+ 	
+ 	
+ 	
+	/**
+ 	 * @author Vitalii Horban
+ 	 * generate pdf document "extract" on button pressing and open this document in the same inset
+ 	 */
+ 	
+ 	@RequestMapping(value = "/printExtract/{inquiryId}", method = RequestMethod.GET)
+ 	public void downloadExtractFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
+ 			throws IOException {
+
+ 		printService.printExtract(inquiryId);
+
+ 		File file = null;
 
  		file = new File("D:\\file.pdf");
 
