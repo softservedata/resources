@@ -40,6 +40,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,6 +124,7 @@ public class InquiryController {
 	/**
 	 * Method for showing all output inquiries from logged user on UI.
 	 */
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
 	public String listInqUserOut(Model model) {	
 		logger.info("begin");		
@@ -139,6 +141,7 @@ public class InquiryController {
 	/**
 	 * Method for showing all input inquiries from logged user on UI.
 	 */
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	//public String listInquiryUserInput(Model model, HttpSession session) {
 	public String listInquiryUserInput(Model model) {

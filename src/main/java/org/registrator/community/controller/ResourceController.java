@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.registrator.community.dto.ResourceDTO;
@@ -30,11 +29,11 @@ import org.registrator.community.service.impl.ResourceLinearValueServiceImpl;
 import org.registrator.community.validator.ResourceDTOValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.context.Theme;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,357 +42,353 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value = "/registrator/resource")
 public class ResourceController {
 
-    @Autowired
-    Logger logger;  
-    
-    @Autowired
-    ResourceDTOValidator validator;
+	@Autowired
+	Logger logger;
 
-    @Autowired
-    ResourceService resourceService;
+	@Autowired
+	ResourceDTOValidator validator;
 
-    @Autowired
-    ResourceTypeService resourceTypeService;
+	@Autowired
+	ResourceService resourceService;
 
-    @Autowired
-    DiscreteParameterServiceImpl discreteParameterService;
+	@Autowired
+	ResourceTypeService resourceTypeService;
 
-    @Autowired
-    LinearParameterServiceImpl linearParameterService;
+	@Autowired
+	DiscreteParameterServiceImpl discreteParameterService;
 
-    @Autowired
-    ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
+	@Autowired
+	LinearParameterServiceImpl linearParameterService;
 
-    @Autowired
-    ResourceLinearValueServiceImpl resourceLinearValueService;
-   
-    @Autowired
-    UserService userService;
-       
-    /**
-     * Method for loading form for input the parameter of resource (with
-     * existing resource types)
-     * @param model
-     * @return addResource.jsp
-     */
-    @RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model) {
+	@Autowired
+	ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
 
-        /* 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User registrator = userService.getUserByLogin(auth.getName());
-        Set<User> owners = registrator.getOwners();
-        model.addAttribute("owners", owners);*/
-        
-        /*load list of resource types on UI form*/
-        List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-        logger.info(listOfResourceType.size() + " resource types was found");
-        model.addAttribute("listOfResourceType", listOfResourceType);
-        ResourceDTO newresource = new ResourceDTO();
-        model.addAttribute("newresource", newresource);
-        return "addResource";
-    }
-    
-   
-    /**
-     * Method save the resource with all parameters from UI in database
-     * @param resourceDTO
-     * @param result
-     * @param model
-     * @return showResource.jsp (addResource.jsp page if resource not valid)
-     */
-    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
-    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
-                              BindingResult result, Model model) {
+	@Autowired
+	ResourceLinearValueServiceImpl resourceLinearValueService;
 
-        /* check if given resourceDTO is valid*/
-        validator.validate(resourceDTO, result);
-        if (result.hasErrors()) { 
-            logger.info("The resoursrDTO is not valid");
-            model.addAttribute("newresource", resourceDTO);
-            return "addResource";
-        } else {
-            
-            /*get the logged registrar by login */
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User registrator = userService.getUserByLogin(auth.getName());
-            logger.info("The logged register is" + registrator.getLastName() + " " + registrator.getFirstName());
-            
-            /*save resourceDTO on servicelayer with status ACTIVE */
-            resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE, registrator);
-            logger.info("Resource was successfully saved");
-            model.addAttribute("resource", resourceDTO);
-            return "showResource";
-        }
-    }
+	@Autowired
+	UserService userService;
 
-   
-    /**
-     * Show the information about resource by identifier
-     * @param identifier
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
-    public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
-        
-        ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
-        model.addAttribute("resource", resourceDTO);
-        return "showResource";
-    }
-    
-    /**
-     * Load the list of all resource parameters of selected resource type
-     * @param typeName
-     * @param model
-     * @return
-     */   
-    @RequestMapping(value = "/getParameters", method = RequestMethod.POST)
-    public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
-        
-        /*find the resource type in database by type name*/
-        ResourceType resType = resourceTypeService.findByName(typeName);
-        
-        /*find the resource parameters on resType*/
-        List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
-        List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
+	/**
+	 * Method for loading form for input the parameter of resource (with
+	 * existing resource types)
+	 * 
+	 * @param model
+	 * @return addResource.jsp
+	 */
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
+	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
+	public String addResourceForm(Model model) {
 
-        model.addAttribute("discreteParameters", discreteParameters);
-        model.addAttribute("linearParameters", linearParameters);
-        return "resourceValues";
-    }
+		/*
+		 * Authentication auth =
+		 * SecurityContextHolder.getContext().getAuthentication(); User
+		 * registrator = userService.getUserByLogin(auth.getName()); Set<User>
+		 * owners = registrator.getOwners(); model.addAttribute("owners",
+		 * owners);
+		 */
 
-    @RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
-    public String showAllResources(Model model) {
-        List<ResourceType> resourceTypes = resourceTypeService.findAll();
-        model.addAttribute("resourceTypes", resourceTypes);
-        return "showAllResources";
-    }
+		/* load list of resource types on UI form */
+		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
+		logger.info(listOfResourceType.size() + " resource types was found");
+		model.addAttribute("listOfResourceType", listOfResourceType);
+		ResourceDTO newresource = new ResourceDTO();
+		model.addAttribute("newresource", newresource);
+		return "addResource";
+	}
 
-    //    @ResponseBody
-    @RequestMapping(value = "/getResourcesByTypeId", method = RequestMethod.POST)
-    public String showAllResourcesByTypeId(@RequestParam("resourceTypeId") Integer i, Model model) {
-        ResourceType type = resourceTypeService.findById(i);
+	/**
+	 * Method save the resource with all parameters from UI in database
+	 * 
+	 * @param resourceDTO
+	 * @param result
+	 * @param model
+	 * @return showResource.jsp (addResource.jsp page if resource not valid)
+	 */
+	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
+	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
+			Model model) {
 
-        List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(type);
-        List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(type);
+		/* check if given resourceDTO is valid */
+		validator.validate(resourceDTO, result);
+		if (result.hasErrors()) {
+			logger.info("The resoursrDTO is not valid");
+			model.addAttribute("newresource", resourceDTO);
+			return "addResource";
+		} else {
 
-        model.addAttribute("discreteParameters", discreteParameters);
-        model.addAttribute("linearParameters", linearParameters);
-        return "parameters";
-    }
+			/* get the logged registrar by login */
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			User registrator = userService.getUserByLogin(auth.getName());
+			logger.info("The logged register is" + registrator.getLastName() + " " + registrator.getFirstName());
 
+			/* save resourceDTO on servicelayer with status ACTIVE */
+			resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE, registrator);
+			logger.info("Resource was successfully saved");
+			model.addAttribute("resource", resourceDTO);
+			return "showResource";
+		}
+	}
 
-    @RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
-    public String resourceSearch(
-            @RequestParam("discreteParametersId") List<Integer> discreteParamsIds,
-            @RequestParam("discreteParametersCompare") List<String> discreteParamsCompares,
-            @RequestParam("discreteParametersValue") List<Double> discreteParamsValues,
-            @RequestParam("linearParametersId") List<Integer> linearParamsIds,
-            @RequestParam("linearParametersValue") List<Double> linearParamsValues,
-            @RequestParam("resourceTypeId") Integer resourceTypeId,
-            Model model) {
+	/**
+	 * Show the information about resource by identifier
+	 * 
+	 * @param identifier
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
+	public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
 
-        /*
-        To send the array from JavaScript we have to put at least 1 element in the array.
-        The next code delete this first element.
-         */
-        discreteParamsIds.remove(0);
-        discreteParamsCompares.remove(0);
-        discreteParamsValues.remove(0);
-        linearParamsIds.remove(0);
-        linearParamsValues.remove(0);
+		ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
+		model.addAttribute("resource", resourceDTO);
+		return "showResource";
+	}
 
-        int countValues = 0;
-        for (Double discreteParamsValue : discreteParamsValues) {
-            if (discreteParamsValue != null) {
-                countValues++;
-            }
-        }
-        for (Double linearParamsValue : linearParamsValues) {
-            if (linearParamsValue != null) {
-                countValues++;
-            }
-        }
+	/**
+	 * Load the list of all resource parameters of selected resource type
+	 * 
+	 * @param typeName
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
+	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
 
-        List<Resource> resultResourceList = new ArrayList<>();
+		/* find the resource type in database by type name */
+		ResourceType resType = resourceTypeService.findByName(typeName);
 
-        if (countValues > 0) {
-            List<Resource> resourceList = new ArrayList<>();
+		/* find the resource parameters on resType */
+		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
+		List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
 
-            List<DiscreteParameter> discreteParameters = new ArrayList<>();
-            for (Integer discreteParamsId : discreteParamsIds) {
-                discreteParameters.add(discreteParameterService.findById(discreteParamsId));
-            }
+		model.addAttribute("discreteParameters", discreteParameters);
+		model.addAttribute("linearParameters", linearParameters);
+		return "resourceValues";
+	}
 
-            List<LinearParameter> linearParameters = new ArrayList<>();
-            for (Integer linearParamsId : linearParamsIds) {
-                linearParameters.add(linearParameterService.findById(linearParamsId));
-            }
+	@RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
+	public String showAllResources(Model model) {
+		List<ResourceType> resourceTypes = resourceTypeService.findAll();
+		model.addAttribute("resourceTypes", resourceTypes);
+		return "showAllResources";
+	}
 
-            List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<>();
-            for (int i = 0; i < discreteParamsValues.size(); i++) {
-                if ("less".equals(discreteParamsCompares.get(i))) {
-                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllBySmallerValueAndDiscreteParameter(
-                            discreteParamsValues.get(i), discreteParameters.get(i)
-                    ));
-                } else if ("greater".equals(discreteParamsCompares.get(i))) {
-                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByBiggerValueAndDiscreteParameter(
-                            discreteParamsValues.get(i), discreteParameters.get(i)
-                    ));
-                } else {
-                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByValueAndDiscreteParameter(
-                            discreteParamsValues.get(i), discreteParameters.get(i)
-                    ));
-                }
-            }
+	// @ResponseBody
+	@RequestMapping(value = "/getResourcesByTypeId", method = RequestMethod.POST)
+	public String showAllResourcesByTypeId(@RequestParam("resourceTypeId") Integer i, Model model) {
+		ResourceType type = resourceTypeService.findById(i);
 
-            List<ResourceLinearValue> resourceLinearValues = new ArrayList<>();
-            for (int i = 0; i < linearParamsValues.size(); i++) {
-                resourceLinearValues.addAll(resourceLinearValueService.findAllByValueAndLinearParameter(linearParamsValues.get(i), linearParameters.get(i)));
-            }
+		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(type);
+		List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(type);
 
-            for (ResourceDiscreteValue resourceDiscreteValue : resourceDiscreteValues) {
-                resourceList.add(resourceDiscreteValue.getResource());
-            }
+		model.addAttribute("discreteParameters", discreteParameters);
+		model.addAttribute("linearParameters", linearParameters);
+		return "parameters";
+	}
 
-            for (ResourceLinearValue resourceLinearValue : resourceLinearValues) {
-                resourceList.add(resourceLinearValue.getResource());
-            }
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+	@RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
+	public String resourceSearch(@RequestParam("discreteParametersId") List<Integer> discreteParamsIds,
+			@RequestParam("discreteParametersCompare") List<String> discreteParamsCompares,
+			@RequestParam("discreteParametersValue") List<Double> discreteParamsValues,
+			@RequestParam("linearParametersId") List<Integer> linearParamsIds,
+			@RequestParam("linearParametersValue") List<Double> linearParamsValues,
+			@RequestParam("resourceTypeId") Integer resourceTypeId, Model model) {
 
-        /*
-        Search which Resources are the same for all search parameters
-         */
-            if (countValues > 1) {
-                for (int i = 0; i < resourceList.size() - 1; i++) {
-                    int k = 0;
-                    for (int j = i + 1; j < resourceList.size(); j++) {
-                        if (resourceList.get(i).getResourcesId() == resourceList.get(j).getResourcesId()) {
-                            k++;
-                        }
-                        if (k == (countValues - 1)) {
-                            resultResourceList.add(resourceList.get(i));
-                        }
-                    }
-                }
-            } else {
-                resultResourceList.addAll(resourceList);
-            }
+		/*
+		 * To send the array from JavaScript we have to put at least 1 element
+		 * in the array. The next code delete this first element.
+		 */
+		discreteParamsIds.remove(0);
+		discreteParamsCompares.remove(0);
+		discreteParamsValues.remove(0);
+		linearParamsIds.remove(0);
+		linearParamsValues.remove(0);
 
-        /*
-        Remove duplicates of Resources
-         */
+		int countValues = 0;
+		for (Double discreteParamsValue : discreteParamsValues) {
+			if (discreteParamsValue != null) {
+				countValues++;
+			}
+		}
+		for (Double linearParamsValue : linearParamsValues) {
+			if (linearParamsValue != null) {
+				countValues++;
+			}
+		}
 
-            for (int i = 0; i < resultResourceList.size() - 1; i++) {
-                for (int j = i + 1; j < resultResourceList.size(); j++) {
-                    if (resultResourceList.get(i).getResourcesId() == resultResourceList.get(j).getResourcesId()) {
-                        resultResourceList.remove(j);
-                        j--;
+		List<Resource> resultResourceList = new ArrayList<>();
 
-                    }
-                }
-            }
-        }
-        else {
-            ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
-            resultResourceList = resourceService.findByType(resourceType);
-        }
-        /*
-        Creating List of ResourceDTO
-         */
-        List<ResourceDTO> resourceDTOs = new ArrayList<>();
+		if (countValues > 0) {
+			List<Resource> resourceList = new ArrayList<>();
 
-        for (Resource resource : resultResourceList) {
-            ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
-            resourceDTOs.add(resourceDTO);
-        }
+			List<DiscreteParameter> discreteParameters = new ArrayList<>();
+			for (Integer discreteParamsId : discreteParamsIds) {
+				discreteParameters.add(discreteParameterService.findById(discreteParamsId));
+			}
 
-        model.addAttribute("Resources", resourceDTOs);
+			List<LinearParameter> linearParameters = new ArrayList<>();
+			for (Integer linearParamsId : linearParamsIds) {
+				linearParameters.add(linearParameterService.findById(linearParamsId));
+			}
 
-        return "resourceSearch";
-    }
+			List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<>();
+			for (int i = 0; i < discreteParamsValues.size(); i++) {
+				if ("less".equals(discreteParamsCompares.get(i))) {
+					resourceDiscreteValues
+							.addAll(resourceDiscreteValueService.findAllBySmallerValueAndDiscreteParameter(
+									discreteParamsValues.get(i), discreteParameters.get(i)));
+				} else if ("greater".equals(discreteParamsCompares.get(i))) {
+					resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByBiggerValueAndDiscreteParameter(
+							discreteParamsValues.get(i), discreteParameters.get(i)));
+				} else {
+					resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByValueAndDiscreteParameter(
+							discreteParamsValues.get(i), discreteParameters.get(i)));
+				}
+			}
 
-    @ResponseBody
-    @RequestMapping(value = "/countResources", method = RequestMethod.POST)
-    public Long countResources() {
-        return resourceService.count();
-    }
+			List<ResourceLinearValue> resourceLinearValues = new ArrayList<>();
+			for (int i = 0; i < linearParamsValues.size(); i++) {
+				resourceLinearValues.addAll(resourceLinearValueService
+						.findAllByValueAndLinearParameter(linearParamsValues.get(i), linearParameters.get(i)));
+			}
 
-    @ResponseBody
-    @RequestMapping(value = "/decs", method = RequestMethod.GET)
-    public Map<String,Set<String>> getDescriptionProposition(@RequestParam("descTag")String descTag) {
-        Map<String,Set<String>> suggestions=new HashMap<String, Set<String>>();
-//        suggestions.put("query", new TreeSet<String>().add("unit"));
-        suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
-        return suggestions;
-    }
+			for (ResourceDiscreteValue resourceDiscreteValue : resourceDiscreteValues) {
+				resourceList.add(resourceDiscreteValue.getResource());
+			}
 
-    @ResponseBody
-    @RequestMapping(value = "/getResourcesByAreaLimits", method = RequestMethod.POST)
-    public String showAllResourcesByAreaLimits(@RequestParam("minLat") Double minLat,
-                                           @RequestParam("maxLat") Double maxLat,
-                                           @RequestParam("minLng") Double minLng,
-                                           @RequestParam("maxLng") Double maxLng,
-                                           @RequestParam("resType") String resType,
-                                           Model model) {
-        Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType);
-        List<PolygonJSON> polygons = new ArrayList<>();
+			for (ResourceLinearValue resourceLinearValue : resourceLinearValues) {
+				resourceList.add(resourceLinearValue.getResource());
+			}
 
-        for (String identifier : identifiers) {
-            polygons.addAll(resourceService.createPolygonJSON(identifier));
-        }
+			/*
+			 * Search which Resources are the same for all search parameters
+			 */
+			if (countValues > 1) {
+				for (int i = 0; i < resourceList.size() - 1; i++) {
+					int k = 0;
+					for (int j = i + 1; j < resourceList.size(); j++) {
+						if (resourceList.get(i).getResourcesId() == resourceList.get(j).getResourcesId()) {
+							k++;
+						}
+						if (k == (countValues - 1)) {
+							resultResourceList.add(resourceList.get(i));
+						}
+					}
+				}
+			} else {
+				resultResourceList.addAll(resourceList);
+			}
 
-        Gson gson = new Gson();
-        return gson.toJson(polygons);
-    }
+			/*
+			 * Remove duplicates of Resources
+			 */
 
-    @ResponseBody
-    @RequestMapping(value = "/getResourcesByPoint", method = RequestMethod.POST)
-    public String showAllResourcesByAreaLimits(@RequestParam("lat") Double lat,
-                                               @RequestParam("lng") Double lng,
-                                               Model model) {
-        Set<String> identifiers = resourceService.getAllByPoint(lat, lng);
-        List<PolygonJSON> polygons = new ArrayList<>();
+			for (int i = 0; i < resultResourceList.size() - 1; i++) {
+				for (int j = i + 1; j < resultResourceList.size(); j++) {
+					if (resultResourceList.get(i).getResourcesId() == resultResourceList.get(j).getResourcesId()) {
+						resultResourceList.remove(j);
+						j--;
 
-        for (String identifier : identifiers) {
-            polygons.addAll(resourceService.createPolygonJSON(identifier));
-        }
+					}
+				}
+			}
+		} else {
+			ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
+			resultResourceList = resourceService.findByType(resourceType);
+		}
+		/*
+		 * Creating List of ResourceDTO
+		 */
+		List<ResourceDTO> resourceDTOs = new ArrayList<>();
 
-        Gson gson = new Gson();
-        return gson.toJson(polygons);
-    }
+		for (Resource resource : resultResourceList) {
+			ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
+			resourceDTOs.add(resourceDTO);
+		}
 
-    @RequestMapping(value = "/searchOnMap", method = RequestMethod.GET)
-    public String searchOnMap(Model model) {
-        return "searchOnMap";
-    }
-    
+		model.addAttribute("Resources", resourceDTOs);
 
-    @ResponseBody
-    @RequestMapping(value = "/owners", method = RequestMethod.GET)
-    public List<UserDTO> getOwnersSuggestions(@RequestParam("ownerDesc")String ownerDesc) {
-        List<UserDTO> userList = userService.getUserBySearchTag(ownerDesc);
-        return userList;
-    }
-    
-    /**
-     * Find the selected owner by login
-     * @param ownerLogin
-     * @return owner
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getOwnerInfo", method = RequestMethod.GET)
-    public UserDTO getOwnerInfo(@RequestParam("ownerLogin")String ownerLogin) {
-        return userService.getUserDto(ownerLogin);
-    }
-    
+		return "resourceSearch";
+	}
 
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
+	@ResponseBody
+	@RequestMapping(value = "/countResources", method = RequestMethod.POST)
+	public Long countResources() {
+		return resourceService.count();
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/decs", method = RequestMethod.GET)
+	public Map<String, Set<String>> getDescriptionProposition(@RequestParam("descTag") String descTag) {
+		Map<String, Set<String>> suggestions = new HashMap<String, Set<String>>();
+		// suggestions.put("query", new TreeSet<String>().add("unit"));
+		suggestions.put("suggestions", resourceService.getDescriptionBySearchTag(descTag));
+		return suggestions;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getResourcesByAreaLimits", method = RequestMethod.POST)
+	public String showAllResourcesByAreaLimits(@RequestParam("minLat") Double minLat,
+			@RequestParam("maxLat") Double maxLat, @RequestParam("minLng") Double minLng,
+			@RequestParam("maxLng") Double maxLng, @RequestParam("resType") String resType, Model model) {
+		Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType);
+		List<PolygonJSON> polygons = new ArrayList<>();
+
+		for (String identifier : identifiers) {
+			polygons.addAll(resourceService.createPolygonJSON(identifier));
+		}
+
+		Gson gson = new Gson();
+		return gson.toJson(polygons);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getResourcesByPoint", method = RequestMethod.POST)
+	public String showAllResourcesByAreaLimits(@RequestParam("lat") Double lat, @RequestParam("lng") Double lng,
+			Model model) {
+		Set<String> identifiers = resourceService.getAllByPoint(lat, lng);
+		List<PolygonJSON> polygons = new ArrayList<>();
+
+		for (String identifier : identifiers) {
+			polygons.addAll(resourceService.createPolygonJSON(identifier));
+		}
+
+		Gson gson = new Gson();
+		return gson.toJson(polygons);
+	}
+
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+	@RequestMapping(value = "/searchOnMap", method = RequestMethod.GET)
+	public String searchOnMap(Model model) {
+		return "searchOnMap";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/owners", method = RequestMethod.GET)
+	public List<UserDTO> getOwnersSuggestions(@RequestParam("ownerDesc") String ownerDesc) {
+		List<UserDTO> userList = userService.getUserBySearchTag(ownerDesc);
+		return userList;
+	}
+
+	/**
+	 * Find the selected owner by login
+	 * 
+	 * @param ownerLogin
+	 * @return owner
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getOwnerInfo", method = RequestMethod.GET)
+	public UserDTO getOwnerInfo(@RequestParam("ownerLogin") String ownerLogin) {
+		return userService.getUserDto(ownerLogin);
+	}
 
 }
