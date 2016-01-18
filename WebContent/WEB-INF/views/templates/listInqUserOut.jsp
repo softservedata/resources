@@ -53,6 +53,21 @@
 												class="btn btn-primary" role="button"> 
 												<spring:message code="label.inquiry.printExtract" /></a>	
 										</c:if>
+								
+								<!--  
+										<c:if test="${role == 'USER'}">
+											<a href="c:url value='delete/${inquiryUserOut.inquiry_list_id}' />"
+												class="btn btn-danger" role="button"> 
+												<spring:message code="label.restype.delete" /></a>
+										</c:if>	
+										<a href="c:url value='printOutput/${inquiryUserOut.inquiry_list_id}' />"
+											class="btn btn-primary" role="button"> 
+											<spring:message code="label.inquiry.print" /></a>
+										<c:if test="${role == 'REGISTRATOR'}">	
+											<a href="c:url value='printOutput/${inquiryUserOut.inquiry_list_id}' />"
+												class="btn btn-primary" role="button"> 
+												<spring:message code="label.inquiry.printExtract" /></a>	
+										</c:if> -->
 									</div>								
 								</td>							
 							</tr>	

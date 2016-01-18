@@ -110,7 +110,7 @@ public class InquiryController {
 	/**
 	 * Method saves the data in the table inquiry_list.
 	 */
-	@RequestMapping(value = "get/addOutputInquiry", method = RequestMethod.POST)
+	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
 	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  			
 		logger.info("begin");		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();

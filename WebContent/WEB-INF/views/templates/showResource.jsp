@@ -6,8 +6,10 @@
 
 <fmt:formatDate value="${resource.date}" pattern="dd.MM.yyyy" var="Date" />
 
+<c:url value="/inquiry/add/addOutputInquiry" var="actionUrl" />
+
 <div>	
-	<form:form modelAttribute="resource" id="form" action="addOutputInquiry">
+	<form:form modelAttribute="resource" id="form" action="${actionUrl}">
 	<c:if test="${empty resource}">
 	 Ресурс із вказаним ідентифікатором не знайдено
 	</c:if>
