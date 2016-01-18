@@ -15,11 +15,14 @@ import org.registrator.community.entity.Area;
 import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.Polygon;
 import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceDiscreteValue;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.InquiryType;
 import org.registrator.community.service.PrintService;
+import org.registrator.community.service.ResourceDiscreteValueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Chunk;
@@ -47,6 +50,10 @@ public class PrintServiceImpl implements PrintService {
 
 	@Autowired
 	AreaRepository areaRepository;
+
+	@Autowired
+	ResourceDiscreteValueService resourceDiscrete;
+
 	/**
 	 * @author Vitalii Horban creates pdf document
 	 *         "Доручення про надання витягу "
@@ -126,7 +133,6 @@ public class PrintServiceImpl implements PrintService {
 		return "UNDEFINED";
 	}
 
-	
 	private Document createMandatToExtractPdf(String destination, String firstName, String lastName, String middleName,
 			String zipcode, String country, String city, String streetName, String streetNumber, String homeNumber,
 			String currentDay, String currentMonth, String currentYear, String registratorFirtstName,
@@ -319,10 +325,8 @@ public class PrintServiceImpl implements PrintService {
 		@SuppressWarnings("unused")
 		ResourceType resType = inquiry.getResource().getType();
 		String reasonForInclusion = inquiry.getResource().getReasonInclusion();
-		Date inquireDate= inquiry.getDate();
+		Date inquireDate = inquiry.getDate();
 
-		
-		
 		List<Polygon> polygon = polygonRepository.findByResource(resource);
 		double totalLongetude = 0;
 		double totalLatitude = 0;
@@ -391,7 +395,6 @@ public class PrintServiceImpl implements PrintService {
 		return document;
 	}
 
-	
 	private Document createExtractPdf(String destination, String objectName, String objectClass, String subObjectClass,
 
 			List<Double> totalCoordinates, String linearObjectSize, String totalSquareOfObject, String weight,
@@ -668,6 +671,318 @@ public class PrintServiceImpl implements PrintService {
 
 		document.close();
 		return document;
+	}
+
+	@Override
+	public Document printProcurationOnSubmitInfo(Integer inquiryId) {
+		Inquiry inquiry = inquiryRepository.getOne(inquiryId);
+		User user = inquiry.getUser();
+		User registrator = inquiry.getRegistrator();
+		Address addressRegistrator = registrator.getAddress().get((registrator.getAddress().size() - 1));
+		String identifier = inquiry.getResource().getIdentifier();
+		Resource resource = inquiry.getResource();
+		ResourceType resType = inquiry.getResource().getType();
+
+		String perimetrOfObject = null;
+		String squireOfObject=null;
+
+		List<ResourceDiscreteValue> resourceValues = resourceDiscrete.findByResource(resource);
+		for (ResourceDiscreteValue r : resourceValues) {
+			if (r.getDiscreteParameter().getDiscreteParameterId() == 2) {
+				squireOfObject = r.getValue().toString();
+			} else if (r.getDiscreteParameter().getDiscreteParameterId() == 1) {
+				perimetrOfObject = r.getValue().toString();
+			}
+		}
+
+		List<Polygon> polygon = polygonRepository.findByResource(resource);
+		List<Double> totalCoordinates = new ArrayList<>();
+
+		for (Polygon p : polygon) {
+			totalCoordinates.add(p.getMaxLat());
+			totalCoordinates.add(p.getMinLat());
+			totalCoordinates.add(p.getMaxLng());
+			totalCoordinates.add(p.getMinLng());
+		}
+
+		Document document = null;
+		if (inquiry.getInquiryType().equals(InquiryType.OUTPUT)) {
+
+			Date currentDate = new Date();
+
+			try {
+				String dateCurrentYear = String.valueOf(currentDate.getYear());
+				char parsedDate[] = dateCurrentYear.toCharArray();
+				dateCurrentYear = "" + parsedDate[1] + parsedDate[2];
+
+				document = createMandatToInput("D:\\file.pdf", user.getFirstName(), user.getLastName(), user.getMiddleName(),
+						String.valueOf(currentDate.getDate()),currentMonth( String.valueOf(currentDate.getMonth())), dateCurrentYear, registrator.getFirstName(),
+						registrator.getLastName(), registrator.getMiddleName(),
+
+						addressRegistrator.getPostCode(), "Україна", addressRegistrator.getCity(), addressRegistrator.getStreet(),
+						String.valueOf(addressRegistrator.getBuilding()),String.valueOf(addressRegistrator.getFlat()), identifier,
+
+						resource.getDescription(), "природний ресурс",
+						String.valueOf(resource.getType().getTypeName()), totalCoordinates,
+						 perimetrOfObject,squireOfObject);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return document;
+	}
+
+	public Document createMandatToInput(String destination, String firstName, String lastName, String middleName,
+			String currentDay, String currentMonth, String currentYear, String registratorFirtstName,
+			String registratorLastName, String registratorMiddleName,
+
+			String registratorZipcode, String registratorCountry, String registratorCity, String registratorStreetName,
+			String registratorStreetNumber, String registratorHomeNumber, String objectNumber,
+
+			String objectName, String objectClass, String subObjectClass, List<Double> totalCoordinates,
+			String perimetrOfObject, String squareOfObject) throws IOException, DocumentException {
+
+		// left, right, top ,buttom
+		Document document = new Document(PageSize.A4, 38f, 38f, 38f, 35f);
+		FileOutputStream fis = new FileOutputStream(destination);
+		PdfWriter pdfwr = PdfWriter.getInstance(document, fis);
+		document.open();
+
+		// звичайний
+		BaseFont timesNewRomanBase = BaseFont.createFont("Times New Roman/TIMES.TTF", BaseFont.IDENTITY_H,
+				BaseFont.EMBEDDED);
+		Font fontTimesNewRomanBase = new Font(timesNewRomanBase);
+		// жирний
+		@SuppressWarnings("unused")
+		BaseFont timesNewRomanFat = BaseFont.createFont("Times New Roman/TIMESBD.TTF", BaseFont.IDENTITY_H,
+				BaseFont.EMBEDDED);
+		Font fontTimesNewRomanFat = new Font(timesNewRomanBase, 14, Font.BOLD);
+
+		// жирний-курсив
+		@SuppressWarnings("unused")
+		BaseFont timesNewRomanFat_Italic = BaseFont.createFont("Times New Roman/TIMESBI.TTF", BaseFont.IDENTITY_H,
+				BaseFont.EMBEDDED);
+		@SuppressWarnings("unused")
+		Font fontTimesNewRomanFat_Italic = new Font(timesNewRomanBase, 9, Font.BOLDITALIC);
+		// курсив
+		@SuppressWarnings("unused")
+		BaseFont timesNewRomanItalic = BaseFont.createFont("Times New Roman/TIMESI.TTF", BaseFont.IDENTITY_H,
+				BaseFont.EMBEDDED);
+		Font fontTimesNewRomanItalic = new Font(timesNewRomanBase, 14, Font.ITALIC);
+
+		// add herb.png image
+		// String imageUrl = "herb.png";
+		URL imageURL = PrintServiceImpl.class.getResource("/images/herb.png");
+		Image image = Image.getInstance(imageURL);
+		image.scaleAbsolute(28f, 39f);
+		image.setAlignment(Element.ALIGN_CENTER);
+		document.add(image);
+
+		Paragraph header = new Paragraph("Народ України", fontTimesNewRomanFat);
+		header.getFont().setSize(14f);
+		header.setAlignment(Element.ALIGN_CENTER);
+		document.add(header);
+
+		Paragraph header2 = new Paragraph("Безпосередня влада народу", fontTimesNewRomanFat);
+		header2.getFont().setSize(17f);
+		header2.setAlignment(Element.ALIGN_CENTER);
+		document.add(header2);
+
+		Paragraph header3 = new Paragraph("Людина як найвища соціальна цінність в Україні", fontTimesNewRomanFat);
+		header3.getFont().setSize(20f);
+		header3.setAlignment(Element.ALIGN_CENTER);
+		document.add(header3);
+
+		Paragraph header4 = new Paragraph("", fontTimesNewRomanBase);
+		header4.add("Адреса для листування : ");
+		header4.add(registratorZipcode + ", ");
+		header4.add(" Україна, ");
+		header4.add("м. " + registratorCity + ", ");
+		header4.add("вул. " + registratorStreetName + " ");
+		header4.add(registratorStreetNumber + "/" + registratorHomeNumber);
+		header4.getFont().setSize(10f);
+		header4.setAlignment(Element.ALIGN_CENTER);
+		document.add(header4);
+
+		Paragraph blank = new Paragraph("   ");
+		blank.getFont().setSize(10f);
+		document.add(blank);
+
+		Paragraph header6 = new Paragraph("", fontTimesNewRomanBase);
+		header6.getFont().setSize(10f);
+		header6.add("«" + currentDay + "»");
+		header6.add(" ");
+		header6.add(currentMonth);
+		header6.add(" ");
+		header6.add(currentYear);
+		header6.add(" року");
+		document.add(header6);
+
+		Paragraph header7 = new Paragraph("Народний реєстратор", fontTimesNewRomanFat);
+		header7.setAlignment(Element.ALIGN_RIGHT);
+		header7.getFont().setSize(12f);
+		document.add(header7);
+
+		Paragraph header8 = new Paragraph("", fontTimesNewRomanFat);
+		header8.setAlignment(Element.ALIGN_RIGHT);
+		String fullRegistratorName = registratorLastName + " " + registratorFirtstName + " " + registratorMiddleName;
+		header8.add(fullRegistratorName);
+		header8.getFont().setSize(12f);
+		document.add(header8);
+
+		Paragraph header9 = new Paragraph("", fontTimesNewRomanBase);
+		header9.setAlignment(Element.ALIGN_RIGHT);
+		header9.add("(вул. " + registratorStreetName);
+		header9.add(registratorStreetNumber + " / " + registratorHomeNumber + ", ");
+		header9.add("м. " + registratorCity + ", " + registratorZipcode + ")");
+		header9.getFont().setSize(12f);
+		document.add(header9);
+
+		document.add(Chunk.NEWLINE);
+		document.add(Chunk.NEWLINE);
+
+		Paragraph header10 = new Paragraph("Доручення", fontTimesNewRomanFat);
+		header10.setAlignment(Element.ALIGN_CENTER);
+		header10.getFont().setSize(22f);
+		document.add(header10);
+
+		Paragraph header11 = new Paragraph("про внесення відомостей до Децентралізованого", fontTimesNewRomanBase);
+		header11.setAlignment(Element.ALIGN_CENTER);
+		header11.getFont().setSize(12f);
+		document.add(header11);
+
+		Paragraph header12 = new Paragraph("майнового реєстру природних ресурсів України (ДМРПРУ)",
+				fontTimesNewRomanBase);
+		header12.setAlignment(Element.ALIGN_CENTER);
+		header12.getFont().setSize(12f);
+		header12.add(new Chunk("Доручення"));
+		document.add(header12);
+
+		document.add(Chunk.NEWLINE);
+
+		Paragraph header13 = new Paragraph("Я, людина ", fontTimesNewRomanBase);
+		header13.setAlignment(Element.ALIGN_LEFT);
+		String fullName = lastName + " " + firstName + " " + middleName;
+		header13.add(fullName);
+		header13.add(" доручаю внести до ДМРПРУ такі відомості: ");
+		header13.getFont().setSize(12f);
+		header13.add("щодо об’єкту з номером ");
+		header13.add(objectNumber);
+		document.add(header13);
+
+		document.add(Chunk.NEWLINE);
+		document.add(Chunk.NEWLINE);
+
+		// Table
+		PdfPTable table = new PdfPTable(2);
+		table.setWidthPercentage(100);
+		Paragraph th = new Paragraph("Найменування об’єкту", fontTimesNewRomanFat);
+		th.getFont().setSize(11f);
+		th.setAlignment(Element.ALIGN_LEFT);
+
+		Paragraph td = new Paragraph(objectName, fontTimesNewRomanItalic);
+		td.getFont().setSize(11f);
+		td.setAlignment(Element.ALIGN_LEFT);
+
+		PdfPCell cell1 = new PdfPCell(th);
+		PdfPCell cell2 = new PdfPCell(td);
+		table.addCell(cell1);
+		table.addCell(cell2);
+
+		th = new Paragraph("Клас об’єкту", fontTimesNewRomanFat);
+		td = new Paragraph(objectClass, fontTimesNewRomanItalic);
+		cell1 = new PdfPCell(th);
+		cell2 = new PdfPCell(td);
+		table.addCell(cell1);
+		table.addCell(cell2);
+
+		th = new Paragraph("Підклас об’єкту", fontTimesNewRomanFat);
+		td = new Paragraph(subObjectClass, fontTimesNewRomanItalic);
+		cell1 = new PdfPCell(th);
+		cell2 = new PdfPCell(td);
+		table.addCell(cell1);
+		table.addCell(cell2);
+
+		th = new Paragraph("Географічні координати кутів (вершин) об’єкту у форматі ГГ°ММ'СС,СС.",
+				fontTimesNewRomanFat);
+		cell1 = new PdfPCell(th);
+		cell1.setMinimumHeight(70);
+		table.addCell(cell1);
+
+		// Neasted table
+		PdfPTable nestedTable = new PdfPTable(4);
+		Paragraph nth = new Paragraph("Північна широта", fontTimesNewRomanBase);
+		nth.getFont().setSize(9);
+		nth.setAlignment(Element.ALIGN_MIDDLE);
+		nestedTable.addCell(nth);
+
+		nth = new Paragraph("Східна довгота", fontTimesNewRomanBase);
+		nestedTable.addCell(nth);
+
+		nth = new Paragraph("Північна широта(продовження)", fontTimesNewRomanBase);
+		nestedTable.addCell(nth);
+
+		nth = new Paragraph("Східна довгота(продовження)", fontTimesNewRomanBase);
+		nestedTable.addCell(nth);
+
+		// empty rows
+
+		for (Double d : totalCoordinates) {
+			td = new Paragraph(String.format("%.4f", d), fontTimesNewRomanItalic);
+			td.getFont().setSize(11f);
+			nestedTable.addCell(td);
+
+		}
+
+		cell2 = new PdfPCell(nestedTable);
+		table.addCell(cell2);
+		// finish of neasted table
+
+		th = new Paragraph("Загальна площа об’єкту, га", fontTimesNewRomanFat);
+		td = new Paragraph(squareOfObject, fontTimesNewRomanItalic);
+		cell1 = new PdfPCell(th);
+		cell2 = new PdfPCell(td);
+		table.addCell(cell1);
+		table.addCell(cell2);
+
+		th = new Paragraph("Периметр об’єкту, м", fontTimesNewRomanFat);
+		td = new Paragraph(perimetrOfObject, fontTimesNewRomanItalic);
+		cell1 = new PdfPCell(th);
+		cell2 = new PdfPCell(td);
+		table.addCell(cell1);
+		table.addCell(cell2);
+
+		document.add(table);
+
+		document.add(Chunk.NEWLINE);
+
+		Paragraph header14 = new Paragraph("Людина ", fontTimesNewRomanBase);
+		header14.setAlignment(Element.ALIGN_LEFT);
+		header14.getFont().setSize(12f);
+		header14.add(Chunk.TABBING);
+		char[] firstNameArray = firstName.toCharArray();
+		char[] lastNameArray = lastName.toCharArray();
+		String firstNameC = "" + firstNameArray[0];
+		String lastNameC = "" + lastNameArray[0];
+		String nameForFooter = lastName + " " + firstNameC.toUpperCase() + ". " + lastNameC.toUpperCase() + ".";
+		header14.add(nameForFooter);
+		header14.add(Chunk.TABBING);
+		header14.add(Chunk.TABBING);
+		header14.add(Chunk.TABBING);
+		header14.add(Chunk.TABBING);
+		header14.add(Chunk.TABBING);
+		header14.add(Chunk.TABBING);
+
+		header14.add("______________(підпис)");
+		document.add(header14);
+
+		document.close();
+	
+	return document;
 	}
 
 }

@@ -259,6 +259,51 @@ public class InquiryController {
  		FileCopyUtils.copy(inputStream, response.getOutputStream());
  	}
  	
+ 	
+ 	
+ 	
+ 	
+ 	/**
+ 	 * @author Vitalii Horban
+ 	 * generate pdf document "ProcurationOnSubmit" on button pressing and open this document in the same inset
+ 	 */
+ 	
+ 	@RequestMapping(value = "/printdata/{inquiryId}", method = RequestMethod.GET)
+ 	public void downloadInfoFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
+ 			throws IOException {
+
+ 		printService.printProcurationOnSubmitInfo(inquiryId);
+
+ 		File file = null;
+
+ 		file = new File("D:\\file.pdf");
+
+ 		if (!file.exists()) {
+ 			String errorMessage = "Sorry. The file you are looking for does not exist";
+ 			System.out.println(errorMessage);
+ 			OutputStream outputStream = response.getOutputStream();
+ 			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+ 			outputStream.close();
+ 			return;
+ 		}
+
+ 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+ 		if (mimeType == null) {
+ 			System.out.println("mimetype is not detectable, will take default");
+ 			mimeType = "application/octet-stream";
+ 		}
+
+ 		System.out.println("mimetype : " + mimeType);
+
+ 		response.setContentType(mimeType);
+
+ 		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+ 		response.setContentLength((int) file.length());
+ 		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+ 		FileCopyUtils.copy(inputStream, response.getOutputStream());
+ 	}
+ 	
+ 	
 }    
 
 // !!! user can't add resource!!!
