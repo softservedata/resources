@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("testing")
 @ContextConfiguration(classes={TestingConfiguration.class})
-public class UserRepositoryJUnitTest {
+public class UserRepositoryTest {
 	
 	@Autowired
 	UserRepository userRepository;
