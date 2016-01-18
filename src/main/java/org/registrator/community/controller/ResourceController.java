@@ -28,11 +28,13 @@ import org.registrator.community.service.impl.LinearParameterServiceImpl;
 import org.registrator.community.service.impl.ResourceDiscreteValueServiceImpl;
 import org.registrator.community.service.impl.ResourceLinearValueServiceImpl;
 import org.registrator.community.validator.ResourceDTOValidator;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.context.Theme;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +50,9 @@ import com.google.gson.Gson;
 @RequestMapping(value = "/registrator/resource")
 public class ResourceController {
 
+    @Autowired
+    Logger logger;  
+    
     @Autowired
     ResourceDTOValidator validator;
 
@@ -71,67 +76,98 @@ public class ResourceController {
    
     @Autowired
     UserService userService;
-    
+       
     /**
      * Method for loading form for input the parameter of resource (with
-     * existing resource types and registrator)
+     * existing resource types)
+     * @param model
+     * @return addResource.jsp
      */
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model, HttpSession session) {
+    public String addResourceForm(Model model) {
+
+        /* 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User registrator = userService.getUserByLogin(auth.getName());
         Set<User> owners = registrator.getOwners();
-        model.addAttribute("owners", owners);
+        model.addAttribute("owners", owners);*/
+        
+        /*load list of resource types on UI form*/
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-        ResourceDTO newresource = new ResourceDTO();
+        logger.info(listOfResourceType.size() + " resource types was found");
         model.addAttribute("listOfResourceType", listOfResourceType);
+        ResourceDTO newresource = new ResourceDTO();
         model.addAttribute("newresource", newresource);
         return "addResource";
     }
     
+   
+    /**
+     * Method save the resource with all parameters from UI in database
+     * @param resourceDTO
+     * @param result
+     * @param model
+     * @return showResource.jsp (addResource.jsp page if resource not valid)
+     */
+    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
+    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
+                              BindingResult result, Model model) {
+
+        /* check if given resourceDTO is valid*/
+        validator.validate(resourceDTO, result);
+        if (result.hasErrors()) { 
+            logger.info("The resoursrDTO is not valid");
+            model.addAttribute("newresource", resourceDTO);
+            return "addResource";
+        } else {
+            
+            /*get the logged registrar by login */
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User registrator = userService.getUserByLogin(auth.getName());
+            logger.info("The logged register is" + registrator.getLastName() + " " + registrator.getFirstName());
+            
+            /*save resourceDTO on servicelayer with status ACTIVE */
+            resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE, registrator);
+            logger.info("Resource was successfully saved");
+            model.addAttribute("resource", resourceDTO);
+            return "showResource";
+        }
+    }
+
+   
+    /**
+     * Show the information about resource by identifier
+     * @param identifier
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
+    public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
+        
+        ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
+        model.addAttribute("resource", resourceDTO);
+        return "showResource";
+    }
     
-    
+    /**
+     * Load the list of all resource parameters of selected resource type
+     * @param typeName
+     * @param model
+     * @return
+     */   
     @RequestMapping(value = "/getParameters", method = RequestMethod.POST)
     public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
+        
+        /*find the resource type in database by type name*/
         ResourceType resType = resourceTypeService.findByName(typeName);
         
+        /*find the resource parameters on resType*/
         List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
         List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
 
         model.addAttribute("discreteParameters", discreteParameters);
         model.addAttribute("linearParameters", linearParameters);
         return "resourceValues";
-    }
-    
-
-    /**
-     * Method save the resource in table list_of resources
-     */
-    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
-    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
-                              BindingResult result, Model model) {
-
-        validator.validate(resourceDTO, result);
-        if (result.hasErrors()) {
-            model.addAttribute("newresource", resourceDTO);
-            return "addResource";
-        } else {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User registrator = userService.getUserByLogin(auth.getName());
-            resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE, registrator);
-            model.addAttribute("resource", resourceDTO);
-            return "showResource";
-        }
-    }
-
-    /**
-     * Show the information about resource by identifier
-     */
-    @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
-    public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
-        ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
-        model.addAttribute("resource", resourceDTO);
-        return "showResource";
     }
 
     @RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
@@ -347,6 +383,11 @@ public class ResourceController {
         return userList;
     }
     
+    /**
+     * Find the selected owner by login
+     * @param ownerLogin
+     * @return owner
+     */
     @ResponseBody
     @RequestMapping(value = "/getOwnerInfo", method = RequestMethod.GET)
     public UserDTO getOwnerInfo(@RequestParam("ownerLogin")String ownerLogin) {

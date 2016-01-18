@@ -46,6 +46,14 @@ var addNewPoint = function(poligonNumber,
 $(document).ready(
 		function() {
 
+			
+			$.post("getParameters", {
+				"resourceTypeName" : $("#resourcesTypeSelect").val()},
+				function(data) {
+				$("#typeParameters").html(data);
+				
+			});	
+			
             /* Switch off form submit on ENTER keypress from every input field */
             $('form').bind("keypress", function(e) {
                 if (e.keyCode == 13) {
@@ -66,6 +74,9 @@ $(document).ready(
 			});
 			
 			$( "#datepicker" ).datepicker({ dateFormat: 'dd.mm.yy' });
+			if ($( "#datepicker" ).val() === "") {
+				$("#datepicker").datepicker("setDate", new Date);
+			}
 			
 			$('#btnAddAreaPoint').click(function() {
                 if ($('#myparam1').val() == 0) {

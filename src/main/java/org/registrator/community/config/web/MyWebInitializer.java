@@ -4,6 +4,7 @@ package org.registrator.community.config.web;
 import javax.servlet.Filter;
 
 import org.registrator.community.config.AdditionalAppConfig;
+import org.registrator.community.config.AspectConfig;
 import org.registrator.community.config.LoggingConfig;
 import org.registrator.community.config.SecurityConfiguration;
 import org.registrator.community.config.root.DevelopmentConfiguration;
@@ -21,13 +22,12 @@ public class MyWebInitializer extends
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class[] { SpringRootConfig.class,DevelopmentConfiguration.class
 				,TestingConfiguration.class ,SecurityConfiguration.class
-				,LoggingConfig.class, AdditionalAppConfig.class
-				,AdditionalAppConfig.class};
+				,LoggingConfig.class, AdditionalAppConfig.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] { SpringWebConfig.class };
+		return new Class[] { SpringWebConfig.class, AspectConfig.class };
 	}
 
 	@Override

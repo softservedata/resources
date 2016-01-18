@@ -20,7 +20,7 @@
 				</tr>
 				<tr>
 					<td><spring:message code="label.resource.type" />:</td>
-					<td>${resource.resourceType.typeName}</td>
+					<td>${resource.resourceType}</td>
 				</tr>
 				<tr>
 					<td><spring:message code="label.resource.identifier" />:</td>
