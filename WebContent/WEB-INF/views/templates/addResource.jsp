@@ -2,12 +2,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-    value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
 
 <div class="container">
     <h2>
@@ -220,25 +214,14 @@
     <script
         src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,places"></script>
     <script type="text/javascript"
-        src="${base}resource/js/addResourceOnMap.js"></script>
+        src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
 </div>
 
-<spring:url value="/resource/js/lib/jquery.autocomplete.min.js"
-    var="autocompleteJs" />
-<spring:url value="/resource/js/lib/jquery-ui.datepscker.min.js"
-    var="datepickerJs" />
-<spring:url value="/resource/js/descriptionAutocomplete.js"
-    var="descAutocomplete" />
-<spring:url value="/resource/js/ownerControl.js"
-    var="ownerControl" />
-<spring:url value="/resource/js/addArea.js" var="addAreaJs" />
-<spring:url value="/resource/css/suggestion.css" var="suggestionCss" />
-
-<script src="${datepickerJs}"></script>
-<script src="${autocompleteJs}"></script>
-<script src="${descAutocomplete}"></script>
-<script src="${ownerControl}"></script>
-<script src="${addAreaJs}"></script>
-<link rel="stylesheet" type="text/css" href="${suggestionCss}">
-<link rel="stylesheet" type="text/css" href="${base}resource/css/cssload.css">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+<script src="<c:url value='/resource/js/lib/jquery-ui.datepscker.min.js'/>"></script>
+<script src="<c:url value='/resource/js/lib/jquery.autocomplete.min.js'/>"></script>
+<script src="<c:url value='/resource/js/descriptionAutocomplete.js'/>"></script>
+<script src="<c:url value='/resource/js/ownerControl.js'/>"></script>
+<script src="<c:url value='/resource/js/addArea.js'/>"></script>
+<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/suggestion.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/cssload.css'/>">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">

@@ -1,10 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <div style="text-align: center;">
 	<h4>
@@ -40,13 +38,14 @@
 								<td hidden="true"> ${inquiryUser.inquiryType}	</td>
 								<td><a href="get/${inquiryUser.resourceIdentifier}"> ${inquiryUser.resourceIdentifier}	</a></td>	
 								<td> ${inquiryUser.resourceStatus}	</td>
-								<td> <div class="block">
-										<!--  <a href="delete/${inquiryUser.inquiry_list_id}"
-											class="btn btn-danger" role="button"> 
-											<spring:message code="label.restype.delete" /></a>	 -->
+								<td> <div class="block">										
 										<a href="printOutput/${inquiryUser.inquiry_list_id}"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
+											
+									<!-- 	<a href="<c:url value='printOutput/${inquiryUser.inquiry_list_id}' />"
+											class="btn btn-primary" role="button"> 
+											<spring:message code="label.inquiry.print" /></a>  -->	
 									</div>								
 								</td>							
 							</tr>	

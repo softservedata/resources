@@ -6,7 +6,7 @@
 
 
 	<div class="signin-container">
-        <img src="resource/img/ukraine_logo.gif" class="login_logo col-md-8">
+        <img src="<c:url value='/resource/img/ukraine_logo.gif'/>" class="login_logo col-md-8">
 		<fieldset id="login_fieldset" class="forms col-md-4">
 
 			<c:if test="${pageContext.request.userPrincipal.name == null}">

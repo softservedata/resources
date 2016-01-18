@@ -4,8 +4,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Edit User Profile</title>
-<link rel="stylesheet" href="${base}resource/css/register.css">
-<script src="${base}resource/js/registration/validate_registration.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<c:url value='/resource/css/register.css'/>">
+<script src="<c:url value='/resource/js/registration/validate_registration.js'/>" type="text/javascript"></script>
 <script type="text/javascript">
 // AJAX request
 $(document).ready(function() {
@@ -38,7 +38,7 @@ $(document).ready(function() {
 <body>
 <div id="register_container" class="col-md-4">
   <legend><strong>Зареєструвати нового користувача</strong></legend>
-    <form class="form-horizontal" id="register_form" role="form" method="GET" action="register2">
+    <form class="form-horizontal" id="register_form" role="form" method="GET" action="<c:url value='/register2'/>">
         <div class="personal_header header"><span><b> ► Особисті дані</b></span>
         </div>
         <div class="personal_content content">

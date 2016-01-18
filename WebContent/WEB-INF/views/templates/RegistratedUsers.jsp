@@ -2,16 +2,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
-
-<spring:url value="/resource/js/changeStatus.js" var="moveJs" />
-
-<script src="${moveJs}"></script>
+<script src="<c:url value='/resource/js/changeStatus.js'/>"></script>
 
 <div style="text-align: center;">
 	<h4>
@@ -43,7 +35,7 @@
 				<td>${user.passport.seria},${user.passport.number},
 					${user.passport.published_by_data}</td>
 				<td><a
-					href="${base}administrator/users/edit-registrated-user/?login=${user.login}"
+					href="<c:url value='/administrator/users/edit-registrated-user/?login=${user.login}'/>"
 					class="btn btn-primary" role="button"><spring:message
 							code="label.restype.edit" /></a></td>
 			</tr>

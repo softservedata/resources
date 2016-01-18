@@ -2,24 +2,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
-
-
-<spring:url value="/resource/js/changeRole.js" var="moveJs" />
-<script src="${moveJs}"></script>
-<spring:url value="/resource/js/editingUser.js" var="editJs" />
-<script src="${editJs}"></script>
-<spring:url value="/resource/js/userValidate.js" var="validateJs" />
-<script src="${validateJs}"></script>
+<script src="<c:url value='/resource/js/move.js'/>"></script>
+<script src="<c:url value='/resource/js/changeRole.js'/>"></script>
+<script src="<c:url value='/resource/js/editingUser.js'/>"></script>
+<script src="<c:url value='/resource/js/userValidate.js'/>"></script>
 
 <div class="container">
-	<form:form id="editWindow" modelAttribute="userDTO" method="post"
-		action="${base}administrator/users/edit-registrated-user"
+    <c:url value='/administrator/users/edit-registrated-user' var="theAction"/>
+	<form:form id="editWinodow" modelAttribute="userDTO" method="post"
+        action="${theAction}"
 		class="form-horizontal">
 		<fieldset>
 			<div class="row">
