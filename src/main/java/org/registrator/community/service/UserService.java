@@ -46,6 +46,4 @@ public interface UserService {
 
 	List<UserDTO> getUserBySearchTag(String searchTag);
 
-	// boolean recoverUsersPassword(String email, String usersCaptchaAnswer,
-	// String captchaFileName);
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.ResourceNumberRepository;
+//import org.registrator.community.dao.ResourceNumberRepository;
 import org.registrator.community.dao.RoleRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
@@ -28,6 +29,7 @@ import org.registrator.community.entity.WillDocument;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,16 +54,34 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	TomeRepository tomeRepository;
+	
+	@Autowired
+	Logger logger;
 
+	
+	/**
+     * Method, which returns user from database by login
+     * @param login
+     * @return User 
+     * 
+     */
 	@Transactional
 	@Override
 	public User getUserByLogin(String login) {
 		return userRepository.findUserByLogin(login);
 	}
 
+	
+	/**
+     * Method, which changes user status
+     * @param userStatusDTO
+     * @return void 
+     * 
+     */
 	@Transactional
 	@Override
 	public void changeUserStatus(UserStatusDTOJSON userStatusDTO) {
+		logger.info("begin");
 		User user = getUserByLogin(userStatusDTO.getLogin());
 		if (userStatusDTO.getStatus().equals(UserStatus.BLOCK.toString())) {
 			user.setStatus(UserStatus.BLOCK);
@@ -77,6 +97,11 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 
+	/**
+     * Method, which retruns all registrated users
+     * @return List<UserDTO>
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserDTO> getAllRegistratedUsers() {
@@ -91,6 +116,12 @@ public class UserServiceImpl implements UserService {
 		return registratedUsers;
 	}
 
+	/**
+     * Method, which changes user role
+     * @param login,role_id
+     * @return void 
+     * 
+     */
 	@Transactional
 	@Override
 	public void changeUserRole(String login, Integer role_id) {
@@ -100,6 +131,12 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 
+	/**
+     * Method, which edits information about user
+     * @param userDto
+     * @return userDTO 
+     * 
+     */
 	@Transactional
 	@Override
 	public UserDTO editUserInformation(UserDTO userDto) {
@@ -129,6 +166,11 @@ public class UserServiceImpl implements UserService {
 		return userDto;
 	}
 
+	/**
+     * Method, which fill in user status for registrateds users
+     * @return List<UserStatus>
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserStatus> fillInUserStatusforRegistratedUsers() {
@@ -138,6 +180,11 @@ public class UserServiceImpl implements UserService {
 		return userStatusList;
 	}
 
+	/**
+     * Method, which fill in user status for inactives users
+     * @return List<UserStatus>
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserStatus> fillInUserStatusforInactiveUsers() {
@@ -148,6 +195,12 @@ public class UserServiceImpl implements UserService {
 		return userStatusList;
 	}
 
+	
+	/**
+     * Method, which gets user list userDto from database
+     * @return userDTO 
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserDTO> getUserDtoList() {
@@ -167,7 +220,13 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDtoList;
 	}
-
+	
+	/**
+     * Method, which gets user userDto from database
+     * @param login
+     * @return userDTO 
+     * 
+     */
 	@Transactional
 	@Override
 	public UserDTO getUserDto(String login) {
@@ -193,10 +252,14 @@ public class UserServiceImpl implements UserService {
 			}
 			userdto.setWillDocument(willDocumentDTO);
 		}
-		//return userdto;
 		return formUserDTO(user);
 	}
 
+	/**
+     * Method, which gets all inactives users
+     * @return List<UserDTO>
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserDTO> getAllInactiveUsers() {
@@ -211,22 +274,6 @@ public class UserServiceImpl implements UserService {
 		}
 		return inactiveUserDtoList;
 	}
-
-	// @Override
-	// @Transactional
-	// // public void registerUser(User user, PassportInfo passport, Address
-	// // address) {
-	// public void registerUser(User user) {
-	//
-	// // by default, every new user is given role "User" and status "Inactive"
-	// // until it's changed by Admin
-	// // Roles map: Admin - 1, Registrator - 2, User - 3
-	// // user.setRoleId(3);
-	// user.setStatus(UserStatus.INACTIVE);
-	// userRepository.saveAndFlush(user);
-	// // passportRepository.saveAndFlush(passport);
-	// // addressRepository.saveAndFlush(address);
-	// }
 
 	@Transactional
 	@Override
@@ -244,6 +291,12 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+     * Method, which checks user status
+     * @param status
+     * @return UserStatus
+     * 
+     */
 	private UserStatus checkUserStatus(String status) {
 		if (status.equals(UserStatus.BLOCK.name())) {
 			return UserStatus.BLOCK;
@@ -254,6 +307,12 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+     * Method, which checks user role
+     * @param role
+     * @return Role
+     * 
+     */
 	private Role checkRole(String role) {
 		List<Role> roleList = roleRepository.findAll();
 		if (role.equals(RoleType.USER.name())) {
@@ -325,6 +384,12 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	/**
+     * Method, which creates resoure number
+     * @param resourseNumberDtoJson
+     * @return void
+     * 
+     */
 	@Transactional
 	@Override
 	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
@@ -336,6 +401,12 @@ public class UserServiceImpl implements UserService {
 		resourceNumberRepository.save(resourceNumber);
 	}
 
+	/**
+     * Method, which creates tome
+     * @param resourseNumberDtoJson
+     * @return void
+     * 
+     */
 	@Transactional
 	@Override
 	public void createTome(ResourceNumberDTOJSON resourseNumberDtoJson) {
