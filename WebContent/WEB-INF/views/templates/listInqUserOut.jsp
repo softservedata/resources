@@ -53,6 +53,11 @@
 												class="btn btn-primary" role="button"> 
 												<spring:message code="label.inquiry.printExtract" /></a>	
 										</c:if>
+										<c:if test="${role == 'USER'}">	
+											<a href="printdata/${inquiryUserOut.inquiry_list_id}"
+												class="btn btn-primary" role="button"> 
+												<spring:message code="label.inquiry.putInfo" /></a>	
+										</c:if>
 								
 								<!--  
 										<c:if test="${role == 'USER'}">

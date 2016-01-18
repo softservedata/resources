@@ -7,5 +7,7 @@ public interface PrintService {
 	Document printProcuration(Integer inquiryId);
 	
 	Document printExtract(Integer inquiryId);
+
+	Document printProcurationOnSubmitInfo(Integer inquiryId);
 	
 }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class ResourceTypeController {
     /**
      * Method for showing all types of resources on UI
      */
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/show-res-types", method = RequestMethod.GET)
     public String showResourceType(Model model) {
         logger.info("begin");
