@@ -22,7 +22,7 @@ $(document).on('change', '#roleId', function() {
 					$('#myModal').modal('hide');
 				},	
 				error: function() {
-					alert("error");
+					bootbox.alert("error");
 			}
 			});
 		})

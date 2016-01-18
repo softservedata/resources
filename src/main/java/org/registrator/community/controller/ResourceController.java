@@ -1,14 +1,11 @@
 package org.registrator.community.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.registrator.community.dto.JSON.ResourseSearchJson;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
@@ -30,18 +27,14 @@ import org.registrator.community.service.impl.ResourceLinearValueServiceImpl;
 import org.registrator.community.validator.ResourceDTOValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.context.Theme;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 import com.google.gson.Gson;
@@ -190,129 +183,80 @@ public class ResourceController {
         return "parameters";
     }
 
-
     @RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
-    public String resourceSearch(
-            @RequestParam("discreteParametersId") List<Integer> discreteParamsIds,
-            @RequestParam("discreteParametersCompare") List<String> discreteParamsCompares,
-            @RequestParam("discreteParametersValue") List<Double> discreteParamsValues,
-            @RequestParam("linearParametersId") List<Integer> linearParamsIds,
-            @RequestParam("linearParametersValue") List<Double> linearParamsValues,
-            @RequestParam("resourceTypeId") Integer resourceTypeId,
-            Model model) {
+    public String resourceSearch(@RequestBody ResourseSearchJson json, Model model) {
+
+        List<Integer> discreteParamsIds = json.getDiscreteParamsIds();
+        List<Double> discreteValues = json.getDiscreteParamsValues();
+        List<String> discreteCompareSign = json.getDiscreteParamsCompares();
+        List<Integer> linearParamsIds = json.getLinearParamsIds();
+        List<Double> linearValues = json.getLinearParamsValues();
+        Integer resourceTypeId = json.getResourceTypeId();
+
+        Set<Resource> resources = new HashSet<>();
+        boolean resourcesEmpty = true;
+        boolean searchEmpty = true;
 
         /*
-        To send the array from JavaScript we have to put at least 1 element in the array.
-        The next code delete this first element.
+         * If user do not enter any search values we should show him all resources of this
+         * resource Type.
          */
-        discreteParamsIds.remove(0);
-        discreteParamsCompares.remove(0);
-        discreteParamsValues.remove(0);
-        linearParamsIds.remove(0);
-        linearParamsValues.remove(0);
-
-        int countValues = 0;
-        for (Double discreteParamsValue : discreteParamsValues) {
-            if (discreteParamsValue != null) {
-                countValues++;
+        for (Double discreteValue : discreteValues) {
+            if ((searchEmpty)&&(discreteValue !=null)) {
+                searchEmpty = false;
             }
         }
-        for (Double linearParamsValue : linearParamsValues) {
-            if (linearParamsValue != null) {
-                countValues++;
+        for (Double linearValue : linearValues) {
+            if ((searchEmpty)&&(linearValue != null)) {
+                searchEmpty = false;
             }
         }
 
-        List<Resource> resultResourceList = new ArrayList<>();
-
-        if (countValues > 0) {
-            List<Resource> resourceList = new ArrayList<>();
-
-            List<DiscreteParameter> discreteParameters = new ArrayList<>();
-            for (Integer discreteParamsId : discreteParamsIds) {
-                discreteParameters.add(discreteParameterService.findById(discreteParamsId));
-            }
-
-            List<LinearParameter> linearParameters = new ArrayList<>();
-            for (Integer linearParamsId : linearParamsIds) {
-                linearParameters.add(linearParameterService.findById(linearParamsId));
-            }
-
-            List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<>();
-            for (int i = 0; i < discreteParamsValues.size(); i++) {
-                if ("less".equals(discreteParamsCompares.get(i))) {
-                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllBySmallerValueAndDiscreteParameter(
-                            discreteParamsValues.get(i), discreteParameters.get(i)
-                    ));
-                } else if ("greater".equals(discreteParamsCompares.get(i))) {
-                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByBiggerValueAndDiscreteParameter(
-                            discreteParamsValues.get(i), discreteParameters.get(i)
-                    ));
-                } else {
-                    resourceDiscreteValues.addAll(resourceDiscreteValueService.findAllByValueAndDiscreteParameter(
-                            discreteParamsValues.get(i), discreteParameters.get(i)
-                    ));
-                }
-            }
-
-            List<ResourceLinearValue> resourceLinearValues = new ArrayList<>();
-            for (int i = 0; i < linearParamsValues.size(); i++) {
-                resourceLinearValues.addAll(resourceLinearValueService.findAllByValueAndLinearParameter(linearParamsValues.get(i), linearParameters.get(i)));
-            }
-
-            for (ResourceDiscreteValue resourceDiscreteValue : resourceDiscreteValues) {
-                resourceList.add(resourceDiscreteValue.getResource());
-            }
-
-            for (ResourceLinearValue resourceLinearValue : resourceLinearValues) {
-                resourceList.add(resourceLinearValue.getResource());
-            }
-
-        /*
-        Search which Resources are the same for all search parameters
-         */
-            if (countValues > 1) {
-                for (int i = 0; i < resourceList.size() - 1; i++) {
-                    int k = 0;
-                    for (int j = i + 1; j < resourceList.size(); j++) {
-                        if (resourceList.get(i).getResourcesId() == resourceList.get(j).getResourcesId()) {
-                            k++;
-                        }
-                        if (k == (countValues - 1)) {
-                            resultResourceList.add(resourceList.get(i));
-                        }
-                    }
-                }
-            } else {
-                resultResourceList.addAll(resourceList);
-            }
-
-        /*
-        Remove duplicates of Resources
-         */
-
-            for (int i = 0; i < resultResourceList.size() - 1; i++) {
-                for (int j = i + 1; j < resultResourceList.size(); j++) {
-                    if (resultResourceList.get(i).getResourcesId() == resultResourceList.get(j).getResourcesId()) {
-                        resultResourceList.remove(j);
-                        j--;
-
-                    }
-                }
-            }
+        if (searchEmpty) {
+            ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
+            resources.addAll(resourceService.findByType(resourceType));
         }
         else {
-            ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
-            resultResourceList = resourceService.findByType(resourceType);
+            if (discreteParamsIds.size() > 0) {
+                for (int i = 0; i < discreteParamsIds.size(); i++) {
+                    if (discreteValues.get(i) != null) {
+                        Set<Resource> foundResources = resourceDiscreteValueService.findResourcesByDiscreteParam(
+                                discreteParamsIds.get(i), discreteCompareSign.get(i), discreteValues.get(i));
+                        if (!resourcesEmpty) {
+                            resources.retainAll(foundResources);
+                        } else {
+                            resources.addAll(foundResources);
+                            resourcesEmpty = false;
+                        }
+                    }
+                }
+            }
+            if (linearParamsIds.size() > 0) {
+                for (int i = 0; i < linearParamsIds.size(); i++) {
+                    if (linearValues.get(i) != null) {
+                        Set<Resource> foundResources = resourceLinearValueService.findResourcesbyLinearParam(
+                                linearParamsIds.get(i), linearValues.get(i));
+                        if (!resourcesEmpty) {
+                            resources.retainAll(foundResources);
+                        } else {
+                            resources.addAll(foundResources);
+                            resourcesEmpty = false;
+                        }
+                    }
+                }
+            }
         }
+
         /*
         Creating List of ResourceDTO
          */
         List<ResourceDTO> resourceDTOs = new ArrayList<>();
 
-        for (Resource resource : resultResourceList) {
-            ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
-            resourceDTOs.add(resourceDTO);
+        for (Resource resource : resources) {
+            if (resourceTypeId == resource.getType().getTypeId()) {
+                ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
+                resourceDTOs.add(resourceDTO);
+            }
         }
 
         model.addAttribute("Resources", resourceDTOs);

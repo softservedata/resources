@@ -21,66 +21,51 @@ $(document).ready(function () {
             });
     });
 
-    //var table = $("#table").DataTable({
-    //    //"bProcessing": true,
-    //    "sAjaxSource": baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
-    //    "fnServerParams": function (aoData) {
-    //        aoData.push({"name": "resourceTypeId", "value": $("#resourcesTypeSelect").val()});
-    //    },
-    //    sServerMethod: 'POST',
-    //    "sAjaxDataProp": "",
-    //    "aoColumns": [
-    //        {"mData": "id"},
-    //        //{"mData": "typeId"},
-    //        {"mData": "identifier"},
-    //        {"mData": "description"},
-    //        //{"mData": "registratorId"},
-    //        {"mData": "date"},
-    //        {"mData": "status"},
-    //        //{"mData": "tomeId"},
-    //        //{"mData": "reasonInclusion"}
-    //    ]
-    //});
-
     $(document).on("click", ".search", function () {
-        var discreteParamId = [-1];
-        var discreteParamCompare = [-1];
-        var discreteParamVal = [-1];
-        var linearParamId = [-1];
-        var linearParamVal = [-1];
+        //var discreteParamId = [-1];
+        //var discreteParamCompare = [-1];
+        //var discreteParamVal = [-1];
+        //var linearParamId = [-1];
+        //var linearParamVal = [-1];
+
+        var json = new Object();
+        json.discreteParamsIds = [];
+        json.discreteParamsCompares = [];
+        json.discreteParamsValues = [];
+        json.linearParamsIds = [];
+        json.linearParamsValues = [];
+        json.resourceTypeId = $("#resourcesTypeSelect").val();
 
         $("#dark_bg").show();
 
         $(".discreteParameter").each(function () {
-            discreteParamId.push($(this).attr("param_id"));
-            discreteParamCompare.push($(this).find(".compare").val());
-            discreteParamVal.push($(this).find(".value").val());
+            json.discreteParamsIds.push($(this).attr("param_id"));
+            json.discreteParamsCompares.push($(this).find(".compare").val());
+            json.discreteParamsValues.push($(this).find(".value").val());
         });
 
         $(".linearParameter").each(function () {
-            linearParamId.push($(this).attr("param_id"));
-            linearParamVal.push($(this).find(".value").val());
+            json.linearParamsIds.push($(this).attr("param_id"));
+            json.linearParamsValues.push($(this).find(".value").val());
         });
 
         $.ajax({
             type: "POST",
             url: baseUrl.toString() + "/registrator/resource/resourceSearch",
-            data: {
-                "discreteParametersId": discreteParamId,
-                "discreteParametersCompare": discreteParamCompare,
-                "discreteParametersValue": discreteParamVal,
-                "linearParametersId": linearParamId,
-                "linearParametersValue": linearParamVal,
-                "resourceTypeId":$("#resourcesTypeSelect").val()
-            },
+            data: JSON.stringify(json),
+            contentType: 'application/json; charset=utf-8',
+            timeout: 60000,
+            dataType: 'html',
             success: function(data){
                 $("#table").html(data);
                 $("#datatable").DataTable();
                 $("#dark_bg").hide();
             },
-            traditional: true
+            error: function () {
+                $("#dark_bg").hide();
+                bootbox.alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
+            }
         });
-
 
 
     })

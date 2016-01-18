@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:if test="${empty Resources}">
     <h4>За Вашим запитом нічого не знайдено.</h4>
@@ -24,11 +25,11 @@
             <tr <c:if test="${resource.status}"/>>
                 <td>${resource.identifier}</td>
                 <td>${resource.description}</td>
-                <td>${resource.date}</td>
+                <td><fmt:formatDate pattern="dd-MM-yyyy" value="${resource.date}" /></td>
                 <c:forEach items="${resource.resourceDiscrete}" var="resourceDiscrete">
                     <td>
-                        <c:forEach items="${resourceDiscrete.values}" var="value">
-                            ${value} <br/>
+                        <c:forEach items="${resourceDiscrete.valueDiscretes}" var="valueDiscrete">
+                                ${valueDiscrete.value} <br/>
                         </c:forEach>
                     </td>
                 </c:forEach>

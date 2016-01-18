@@ -80,7 +80,7 @@ $(document).ready(
 			
 			$('#btnAddAreaPoint').click(function() {
                 if ($('#myparam1').val() == 0) {
-                    alert("Будь ласка, введіть значення координат першої точки.");
+					bootbox.alert("Будь ласка, введіть значення координат першої точки.");
                 }
 				addNewPoint(0,0,0,0.0,0,0,0.0);
 			});
