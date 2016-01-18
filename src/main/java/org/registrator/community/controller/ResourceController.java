@@ -11,8 +11,6 @@ import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceDiscreteValue;
-import org.registrator.community.entity.ResourceLinearValue;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.ResourceStatus;
@@ -27,7 +25,6 @@ import org.registrator.community.validator.ResourceDTOValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -166,6 +163,11 @@ public class ResourceController {
 		return "resourceValues";
 	}
 
+    /**
+     * Send values to resource type select at the page Resource search by parameters
+     * @param model
+     * @return
+     */
 	@RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
 	public String showAllResources(Model model) {
 		List<ResourceType> resourceTypes = resourceTypeService.findAll();
@@ -173,7 +175,13 @@ public class ResourceController {
 		return "showAllResources";
 	}
 
-	// @ResponseBody
+    /**
+     * Depending on chosen resource type store all parameters and send them to view
+     * at the page Resource search by parameters
+     * @param i - Resource type, received from view
+     * @param model
+     * @return
+     */
 	@RequestMapping(value = "/getResourcesByTypeId", method = RequestMethod.POST)
 	public String showAllResourcesByTypeId(@RequestParam("resourceTypeId") Integer i, Model model) {
 		ResourceType type = resourceTypeService.findById(i);
@@ -186,6 +194,12 @@ public class ResourceController {
 		return "parameters";
 	}
 
+    /**
+     * Depending on received parameters create List of resourceDTO and send them to view
+     * @param json - search parameters in JSON format
+     * @param model
+     * @return
+     */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
     @RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
     public String resourceSearch(@RequestBody ResourseSearchJson json, Model model) {
@@ -268,6 +282,11 @@ public class ResourceController {
         return "resourceSearch";
     }
 
+    /**
+     * Count all resources which we have in Database and send them to JS
+     * Shown in footer
+     * @return
+     */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping(value = "/countResources", method = RequestMethod.POST)
@@ -284,12 +303,24 @@ public class ResourceController {
 		return suggestions;
 	}
 
+    /**
+     * Create the Set of resources identifiers depending on received parameters
+     * and generate JSON response
+     * @param minLat - minimum latitude
+     * @param maxLat - maximum latitude
+     * @param minLng - minimum longitude
+     * @param maxLng - maximum longitude
+     * @param resType - resource type id
+     * @param model
+     * @return JSON with information about polygons which can be located
+     * between received coordinates
+     */
 	@ResponseBody
 	@RequestMapping(value = "/getResourcesByAreaLimits", method = RequestMethod.POST)
 	public String showAllResourcesByAreaLimits(@RequestParam("minLat") Double minLat,
 			@RequestParam("maxLat") Double maxLat, @RequestParam("minLng") Double minLng,
 			@RequestParam("maxLng") Double maxLng, @RequestParam("resType") String resType, Model model) {
-		Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType);
+        Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType);
 		List<PolygonJSON> polygons = new ArrayList<>();
 
 		for (String identifier : identifiers) {
@@ -300,6 +331,14 @@ public class ResourceController {
 		return gson.toJson(polygons);
 	}
 
+    /**
+     * Search on map by point
+     * Create set of resource identifiers depending on received point coordinates
+     * @param lat - point latitude
+     * @param lng - point longitude
+     * @param model
+     * @return JSON with information about polygons where received point can be located
+     */
 	@ResponseBody
 	@RequestMapping(value = "/getResourcesByPoint", method = RequestMethod.POST)
 	public String showAllResourcesByAreaLimits(@RequestParam("lat") Double lat, @RequestParam("lng") Double lng,
@@ -315,6 +354,11 @@ public class ResourceController {
 		return gson.toJson(polygons);
 	}
 
+    /**
+     * View for the Search on map page
+     * @param model
+     * @return
+     */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/searchOnMap", method = RequestMethod.GET)
 	public String searchOnMap(Model model) {
