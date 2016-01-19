@@ -172,6 +172,7 @@ public class ResourceController {
      * @param model
      * @return
      */
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/showAllResources", method = RequestMethod.GET)
 	public String showAllResources(Model model) {
 		List<ResourceType> resourceTypes = resourceTypeService.findAll();

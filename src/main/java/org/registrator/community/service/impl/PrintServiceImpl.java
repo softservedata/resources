@@ -42,7 +42,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 @Service
 public class PrintServiceImpl implements PrintService {
 
-	private static Logger LOG=Logger.getLogger(PrintService.class);
+	private static Logger LOG=Logger.getLogger(PrintServiceImpl.class);
 	
 	@Autowired
 	InquiryRepository inquiryRepository;
