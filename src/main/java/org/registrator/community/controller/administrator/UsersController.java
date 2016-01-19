@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-@RequestMapping(value = "/administrator/users/")
+@RequestMapping(value = "/administrator/users/")       
 public class UsersController {
 
 	@Autowired
@@ -175,6 +175,7 @@ public class UsersController {
 	 * Method for showing administrator settings in order to change registration
 	 * method
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String showSettings(Model model) {
 		logger.info("begin");

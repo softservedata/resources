@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 				.failureUrl("/login?error").usernameParameter("login").passwordParameter("password").and().logout()
 				.logoutUrl("/logout").permitAll().logoutSuccessUrl("/login?logout").and().exceptionHandling()
-				.accessDeniedPage("/login").and().authorizeRequests().and().rememberMe()
+				.accessDeniedPage("/denied").and().authorizeRequests().and().rememberMe()
 				.rememberMeParameter("_spring_security_remember_me").tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(87400);
 
