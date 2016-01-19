@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.registrator.community.dao.AreaRepository;
 import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.dao.PolygonRepository;
@@ -42,7 +41,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 @Service
 public class PrintServiceImpl implements PrintService {
 
-//	private static Logger LOG=Logger.getLogger(PrintServiceImpl.class);
+
 	
 	@Autowired
 	InquiryRepository inquiryRepository;
@@ -91,13 +90,11 @@ public class PrintServiceImpl implements PrintService {
 						"Україна", addressRegistrator.getCity(), addressRegistrator.getStreet(),
 						addressRegistrator.getBuilding(), addressRegistrator.getFlat(), identifier);
 			} catch (IOException e) {
-//				LOG.error(e);
+
 			} catch (DocumentException e) {
-//				LOG.error(e);
+
 			}
-		}
-//		LOG.info("<PrintService: printProcuration is executed>");
-		return document;
+		}return document;
 	}
 
 	/**
@@ -386,11 +383,11 @@ public class PrintServiceImpl implements PrintService {
 						dateCurrentYear, String.valueOf(inquireDate.getDay()), String.valueOf(inquireDate.getMonth()),
 						String.valueOf(inquireDate.getMonth()), dateInquireYear);
 			} catch (IOException e) {
-//				LOG.error(e);;
+
 			} catch (DocumentException e) {
-//				LOG.error(e);;
+
 			}
-//			LOG.info("<PrintService: printExtract is executed>");
+
 		}
 
 		return document;
@@ -734,11 +731,13 @@ public class PrintServiceImpl implements PrintService {
 						 perimetrOfObject,squireOfObject);
 
 			} catch (IOException e) {
-//				LOG.error(e);;
+
 			} catch (DocumentException e) {
-//				LOG.error(e);;
+
 			}
-//			LOG.info("<PrintService: printProcurationOnSubmitInfo is executed>");
+			
+		
+		
 		}
 
 		return document;

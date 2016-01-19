@@ -1,19 +1,23 @@
 package org.registrator.community.controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
-import org.registrator.community.dto.JSON.ResourseSearchJson;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
+import org.registrator.community.dto.JSON.ResourseSearchJson;
 import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
-import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.registrator.community.service.UserService;
@@ -30,7 +34,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
