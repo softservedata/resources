@@ -1,4 +1,4 @@
-package org.registrator.community.security;
+/*package org.registrator.community.security;
 
 import org.apache.log4j.Logger;
 import org.junit.Rule;
@@ -102,3 +102,4 @@ public	TestWatcher testWatcher = new TestWatcher() {
 	}
 
 }
+*/

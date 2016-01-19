@@ -26,9 +26,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @Profile("testing")
-@ComponentScan("org.registrator") 
+//@ComponentScan("org.registrator") 
 @EnableJpaRepositories(basePackages="org.registrator.community.dao")
-@org.springframework.context.annotation.Import({ SecurityConfiguration.class })
+//@org.springframework.context.annotation.Import({ SecurityConfiguration.class })
 public class TestingConfiguration {
 	
 	@Bean(initMethod="init")
@@ -40,10 +40,10 @@ public class TestingConfiguration {
 	public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://192.168.195.250/registratortest_db?useUnicode=yes&amp;"
-				+ "characterEncoding=UTF-8&amp;characterSetResults=UTF-8");
-//		dataSource.setUrl("jdbc:mysql://localhost/registratortest_db?useUnicode=yes&amp;"
+//		dataSource.setUrl("jdbc:mysql://192.168.195.250/registratortest_db?useUnicode=yes&amp;"
 //				+ "characterEncoding=UTF-8&amp;characterSetResults=UTF-8");
+		dataSource.setUrl("jdbc:mysql://localhost/registratortest_db?useUnicode=yes&amp;"
+				+ "characterEncoding=UTF-8&amp;characterSetResults=UTF-8");
 		dataSource.setUsername("root");
 		dataSource.setPassword("root");
 		return dataSource;

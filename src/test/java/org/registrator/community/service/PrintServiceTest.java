@@ -1,4 +1,4 @@
-package org.registrator.community.service;
+/*package org.registrator.community.service;
 
 import java.io.File;
 
@@ -86,3 +86,4 @@ public class PrintServiceTest {
 	}
 
 }
+*/
