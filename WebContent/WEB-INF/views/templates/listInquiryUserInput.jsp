@@ -39,10 +39,12 @@
 								<td><a href="get/${inquiryUser.resourceIdentifier}"> ${inquiryUser.resourceIdentifier}	</a></td>	
 								<td> ${inquiryUser.resourceStatus}	</td>
 								<td> <div class="block">										
-										<a href="printOutput/${inquiryUser.inquiry_list_id}"
+										<a href="printdata/${inquiryUser.inquiry_list_id}"
 											class="btn btn-primary" role="button"> 
-											<spring:message code="label.inquiry.print" /></a>
+											<spring:message code="label.inquiry.putInfo" /></a>
 											
+										
+													
 									<!-- 	<a href="<c:url value='printOutput/${inquiryUser.inquiry_list_id}' />"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>  -->	
