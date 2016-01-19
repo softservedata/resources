@@ -56,7 +56,7 @@ public class InquiryServiceImpl implements InquiryService{
 		User registrator = userRepository.findUserByLogin(registratorLogin);		
 		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
 		logger.info("try write new line to inquiry_list table");
-		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
+		Inquiry inquiry = new Inquiry(InquiryType.OUTPUT, new Date(), user, registrator, resource);
 		logger.info("wrote line to inquiry_list table");
 		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;

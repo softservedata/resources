@@ -9,14 +9,17 @@ import org.registrator.community.enumeration.ResourceStatus;
 
 @Entity
 @Table(name = "list_of_resouces")
+@SequenceGenerator(name = "entityIdGenerator", sequenceName = "list_of_resources_id")
 public class Resource implements Serializable {
     
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "resources_id")
-    @GeneratedValue
+    @GeneratedValue(generator = "entityIdGenerator")
+    @Column(name = "id", nullable = false, unique = true)
     private Integer resourcesId;
+    
+    
     
     @ManyToOne
     @JoinColumn(name = "resource_type_id", nullable = false)
@@ -35,8 +38,8 @@ public class Resource implements Serializable {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "status", nullable = false, columnDefinition = "ENUM('ACTIVE', 'UNCHECKED', 'DENIDED', 'OBSOLETE')")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "status_id", nullable = false, unique = false)
+    @Enumerated(EnumType.ORDINAL)
     private ResourceStatus status;
 
     @ManyToOne
@@ -52,13 +55,13 @@ public class Resource implements Serializable {
     }
     
     public Resource(ResourceType type, String identifier, String description, User registrator, Date date,
-            String status, Tome tome, String reasonInclusion) {
+            ResourceStatus status, Tome tome, String reasonInclusion) {
         this.type = type;
         this.identifier = identifier;
         this.description = description;
         this.registrator = registrator;
         this.date = date;
-        this.status = ResourceStatus.valueOf(status.toUpperCase());
+        this.status = status;
         this.tome = tome;
         this.reasonInclusion = reasonInclusion;
     }
@@ -148,7 +151,7 @@ public class Resource implements Serializable {
     }
 
 //    Created for testing
-    @Override
+    /*@Override
     public String toString() {
         return "id: " + getResourcesId()
                 + ",typeId: " + getType().getTypeId()
@@ -159,26 +162,7 @@ public class Resource implements Serializable {
                 + ",status: " + getStatus().toString()
                 + ",tome: " + getTome().getTomeId()
                 + ",reason: " + getReasonInclusion();
-    }
-
-    @Override
-    public int hashCode() {
-        return resourcesId;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Resource other = (Resource) obj;
-        if (resourcesId != other.resourcesId)
-            return false;
-        return true;
-    }
+    }*/
 }
 
 

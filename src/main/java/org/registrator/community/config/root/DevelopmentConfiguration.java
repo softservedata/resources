@@ -1,5 +1,7 @@
 package org.registrator.community.config.root;
 
+import org.registrator.community.components.TestDataInitializer;
+import org.registrator.community.entity.UserStatusEx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,7 +29,15 @@ public class DevelopmentConfiguration {
 
     @Autowired
     private Environment env;
-
+    
+    @Bean(initMethod="init")
+    public TestDataInitializer initTestData() {
+        return new TestDataInitializer();
+    }
+    
+    
+    
+    
     @Bean(name = "datasource")
     public DriverManagerDataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

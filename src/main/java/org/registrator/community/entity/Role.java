@@ -8,18 +8,19 @@ import org.registrator.community.enumeration.RoleType;
 
 @Entity
 @Table(name = "roles")
+@SequenceGenerator(name = "entityIdGenerator", sequenceName = "roles_id")
 public class Role implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "role_id")
-    @GeneratedValue
+	@GeneratedValue(generator = "entityIdGenerator")
+	@Column(name = "id", nullable = false, unique = true)
     private Integer roleId;
-
 	
-    @Column(name = "type", unique = true, nullable = false, columnDefinition = "ENUM('USER','REGISTRATOR','ADMIN')")
-	@Enumerated(EnumType.STRING) 
+
+    @Column(name = "type_id", unique = false, nullable = false)
+	@Enumerated(EnumType.ORDINAL) 
 	private RoleType type;
     
     @Column(name = "description", nullable = false)
@@ -28,8 +29,8 @@ public class Role implements Serializable {
     public Role(){
     }
     
-    public Role(String type, String description) {
-		this.type = RoleType.valueOf(type.toUpperCase());
+    public Role(RoleType type, String description) {
+		this.type = type;
 		this.description = description;
 	}
 
@@ -57,10 +58,10 @@ public class Role implements Serializable {
 		this.description = description;
 	}
     
-	@Override 
+	/*@Override 
 	public String toString() {
 		return  type.toString();
-	}
+	}*/
 }
 
 

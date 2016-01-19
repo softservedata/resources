@@ -9,17 +9,18 @@ import org.registrator.community.enumeration.InquiryType;
 
 @Entity
 @Table(name = "inquiry_list")
+@SequenceGenerator(name = "entityIdGenerator", sequenceName = "inquiry_list_id")
 public class Inquiry implements Serializable {
     
     private static final long serialVersionUID = 1L;    
     
     @Id
-    @Column(name = "inquiry_list_id")
-    @GeneratedValue
+    @GeneratedValue(generator = "entityIdGenerator")
+    @Column(name = "id", nullable = false, unique = true)
     private Integer inquiry_list_id;
 
-    @Column(name = "inquiry_type", nullable = false, columnDefinition = "ENUM('INPUT','OUTPUT')")
-    @Enumerated(EnumType.STRING) 
+    @Column(name = "inquiry_type", nullable = false, unique = false)
+    @Enumerated(EnumType.ORDINAL) 
     private InquiryType inquiryType;
     
     @Column(name = "date", nullable = false)
@@ -41,8 +42,8 @@ public class Inquiry implements Serializable {
         
     }
     
-    public Inquiry(String inquiryType, Date date, User user, User registrator, Resource resource) {
-        this.inquiryType = InquiryType.valueOf(inquiryType.toUpperCase());
+    public Inquiry(InquiryType inquiryType, Date date, User user, User registrator, Resource resource) {
+        this.inquiryType = inquiryType;
         this.date = date;
         this.user = user;
         this.registrator = registrator;
@@ -61,8 +62,8 @@ public class Inquiry implements Serializable {
         return inquiryType;
     }
 
-    public void setInquiryType(String inquiryType) {
-        this.inquiryType = InquiryType.valueOf(inquiryType.toUpperCase());
+    public void setInquiryType(InquiryType inquiryType) {
+        this.inquiryType = inquiryType;
     }
 
     public Date getDate() {

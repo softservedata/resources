@@ -4,10 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<<<<<<< HEAD
-<%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>--%>
-=======
->>>>>>> 45109b82b31bbef06253c8a8373fcbd418c2d2e2
 <script src="<c:url value='/resource/js/addResourceType.js'/>"></script>
 
 <h2>

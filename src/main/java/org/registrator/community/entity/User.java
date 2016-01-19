@@ -19,21 +19,24 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "users")
+@SequenceGenerator(name = "entityIdGenerator", sequenceName = "users_id")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "user_id")
-    @GeneratedValue
+    @GeneratedValue(generator = "entityIdGenerator")
+    @Column(name = "id", nullable = false, unique = true)
     private Integer userId;
 
     @Column(name = "login", unique = true, nullable = false)
@@ -44,6 +47,7 @@ public class User implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
+    /*@Enumerated(EnumType.ORDINAL)*/
     private Role role;
 
     @Column(name = "first_name", nullable = false)
@@ -58,8 +62,8 @@ public class User implements Serializable {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "status", nullable = false, columnDefinition = "ENUM('BLOCK','UNBLOCK','INACTIVE')")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "status_id", nullable = false, unique = false)
+    @Enumerated(EnumType.ORDINAL)
     private UserStatus status;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
@@ -92,7 +96,7 @@ public class User implements Serializable {
     }
 
     public User(String login, String password, Role role, String firstName, String lastName, String middleName,
-            String email, String status) {
+            String email, UserStatus status) {
         this.login = login;
         this.password = password;
         this.role = role;
@@ -100,7 +104,7 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.middleName = middleName;
         this.email = email;
-        this.status = UserStatus.valueOf(status.toUpperCase());
+        this.status = status;
     }
 
     public Integer getUserId() {
