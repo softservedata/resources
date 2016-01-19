@@ -66,7 +66,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
      */
     @Override
     public int delete(ResourceType resourceType) {
-        logger.info("begin");
+        logger.info("begin method for deleting resource type");
         List<Resource> list = resourceService.findByType(resourceType);
         if(list.isEmpty()){
             resourceTypeRepository.delete(resourceType);
@@ -82,9 +82,9 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
      */
     @Override
     public List<ResourceType> findAll() {
-        logger.info("begin");
+        logger.info("start showing all types of resources");
         List<ResourceType> listOfResourceType = resourceTypeRepository.findAll();
-        logger.info("end");
+        logger.info("all types of resources are shown and list contains of: " +listOfResourceType.size() + " types");
         return listOfResourceType;
     }
 
