@@ -101,11 +101,14 @@ public class ResourceController {
 	 * @param model
 	 * @return showResource.jsp (addResource.jsp page if resource not valid)
 	 */
+	//add parameter ownerLogin for adding input inquiry
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
 	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
-			Model model) {
-
+			Model model, String ownerLogin) {
+		
+		logger.info("The ownerLogin is " + ownerLogin);
+		
 		/* check if given resourceDTO is valid */
 		validator.validate(resourceDTO, result);
 		if (result.hasErrors()) {
@@ -120,7 +123,7 @@ public class ResourceController {
 			logger.info("The logged register is" + registrator.getLastName() + " " + registrator.getFirstName());
 
 			/* save resourceDTO on servicelayer with status ACTIVE */
-			resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.ACTIVE, registrator);
+			resourceDTO = resourceService.addNewResource(resourceDTO, ownerLogin, registrator);
 			logger.info("Resource was successfully saved");
 			model.addAttribute("resource", resourceDTO);
 			return "showResource";

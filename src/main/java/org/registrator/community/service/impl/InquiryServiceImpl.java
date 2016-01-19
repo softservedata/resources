@@ -158,31 +158,30 @@ public class InquiryServiceImpl implements InquiryService{
 		logger.info("delete line from inquiry_list table with inqury_id = " + inquiryId);
 	}
 	
-	/**
-	 * Method saves the data in the table inquiry_list.
-	 */
-	@Transactional
-	@Override
-	public ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin){
-/*		resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.UNCHECKED);
-		User user = userRepository.findUserByLogin(userLogin);
-		String tomeIdentifier = resourceDTO.getTomeIdentifier();
-		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
-		User registrator = tome.getRegistrator();
-		String resourceIdentifier = resourceDTO.getIdentifier();
-		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
-		Inquiry inquiry = new Inquiry("INPUT", new Date(), user, registrator, resource);
-		inquiryRepository.saveAndFlush(inquiry);
+	
+	
+//	/**
+//	 * Method saves the data in the table inquiry_list.
+//	 */
+//	@Transactional
+//	@Override
+//	public ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin){
+//		resourceDTO = resourceService.addNewResource(resourceDTO, ResourceStatus.UNCHECKED);
+//		User user = userRepository.findUserByLogin(userLogin);
+//		String tomeIdentifier = resourceDTO.getTomeIdentifier();
+//		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
+//		User registrator = tome.getRegistrator();
+//		String resourceIdentifier = resourceDTO.getIdentifier();
+//		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
+//		Inquiry inquiry = new Inquiry("INPUT", new Date(), user, registrator, resource);
+//		inquiryRepository.saveAndFlush(inquiry);
+//		
+//		return resourceDTO;
+//	    return null;
+//	}
+//	
+	
 		
-		return resourceDTO;*/
-	    return null;
-	}
-	
-	
-	
-	
-	
-	
 /*	@Transactional
 	@Override
 	public Inquiry addOutputInquiry(InquiryListDTO inquiryListDTO){

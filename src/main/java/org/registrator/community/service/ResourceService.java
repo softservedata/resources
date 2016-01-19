@@ -14,7 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface ResourceService {
 	
-	ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus, User registrator);
+	ResourceDTO addNewResource(ResourceDTO resourceDTO, String ownerLogin, User registrator);
 	
 	ResourceDTO findByIdentifier(String identifier);
 

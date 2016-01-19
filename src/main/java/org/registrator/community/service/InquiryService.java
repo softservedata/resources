@@ -21,7 +21,7 @@ public interface InquiryService {
 		
 	void removeInquiry (Integer inquiryId);
 	
-	ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin);
+	//ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin);
 
 }
 
