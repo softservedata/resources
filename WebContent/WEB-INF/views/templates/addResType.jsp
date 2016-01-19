@@ -4,7 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<<<<<<< HEAD
 <%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>--%>
+=======
+>>>>>>> 45109b82b31bbef06253c8a8373fcbd418c2d2e2
 <script src="<c:url value='/resource/js/addResourceType.js'/>"></script>
 
 <h2>
@@ -13,7 +16,7 @@
 
 <form:form method="POST" action="addrestype" modelAttribute="newrestype"
 	class="form-horizontal">
-	
+
 	<form:errors path="typeName" cssClass="error" style="color:red" />
 	<div class="form-group">
 		<label class="control-label col-sm-2"><spring:message
@@ -22,7 +25,7 @@
 			<input class="form-control" name="typeName" value="${typeName}"
 				placeholder="Введіть назву тут" required>
 		</div>
-	
+
 	</div>
 	<div class="form-inline">
 		<button type="button" id="clickmeshow" class="btn btn-primary">
@@ -71,4 +74,3 @@
 	</div>
 
 </form:form>
-

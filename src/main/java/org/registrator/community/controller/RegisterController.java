@@ -32,8 +32,9 @@ public class RegisterController {
     
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm() {
-        if(adminSettings.getRegistrationMethod().toString() == "MANUAL"){
-           return "redirect:/";
+        if ((adminSettings.getRegistrationMethod().toString() == "MANUAL")
+                && (SecurityContextHolder.getContext().getAuthentication().getName() == "anonymousUser")) {
+            return "redirect:/";
         }
         return "register";
     }
@@ -47,18 +48,14 @@ public class RegisterController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(Model model) {
-        model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());
-        
+        model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString()); 
         return "login";
     }
-
-
 
     @RequestMapping(value = "/logout")
     public String logout(Model map, HttpServletRequest req) {
         req.getSession().invalidate();
         SecurityContextHolder.clearContext();
-
         return "redirect:/login";
     }
 

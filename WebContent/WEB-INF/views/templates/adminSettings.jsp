@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<script src="<c:url value='/resource/js/adminSettings.js'/>"></script>
 
 <div class="container">
 	<h4>
@@ -30,24 +31,6 @@
 		</div>
 		<input type="submit" id="confirmRegistrationMethod"
 			value="<spring:message code="label.admin.settings.confirm" />"
-			class="btn btn-success" />
+			class="btn btn-primary" />
 	</form:form>
 </div>
-<script>
-    $("#confirmRegistrationMethod").click(function() {
-
-        var url = "settings"; 
-
-        $.ajax({
-               type: "POST",
-               url: url,
-               data: $("#сhangeReg").serialize(), 
-               success: function(data)
-               {
-            	   bootbox.alert("Метод реєстрації успішно змінено!");
-               }
-             });
-
-        return false; 
-    });
-</script>

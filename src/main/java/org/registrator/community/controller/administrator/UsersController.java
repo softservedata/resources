@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -141,28 +142,35 @@ public class UsersController {
 		return "RegistratedUsers";
 	}
 
-	/**
-	 * Method for showing administrator settings in order to change registration
-	 * method
-	 */
-	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-	public String showSettings(Model model) {
-		logger.info("begin");
-		model.addAttribute("regMethod", adminSettings.getRegistrationMethod().toString());
-		logger.info("end");
-		return "adminSettings";
-	}
 
 	/**
-	 * Method for changing administrator settings for one of the possible
-	 * options
-	 */
+     * Method for showing administrator settings in order to change registration
+     * method
+     * @param model
+     * @return adminSettings.jsp
+     */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/settings", method = RequestMethod.GET)
+    public String showSettings(Model model) {
+        logger.info("begin: show admin settings");
+        model.addAttribute("regMethod", adminSettings.getRegistrationMethod().toString());
+        logger.info("end: admin settings are shown");
+        return "adminSettings";
+    }
+
+	/**
+     * Method for changing administrator settings for one of the possible
+     * options
+     * @param optratio - one of three possible option for changing registration method
+     * @return adminSettings.jsp
+     */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
-	public String changeSettings(@RequestParam String optradio) {
-		logger.info("begin");
-		adminSettings.changeRegMethod(optradio);
-		logger.info("end");
-		return "adminSettings";
-	}
+    public String changeSettings(@RequestParam String optradio) {
+        logger.info("start changing settings");
+        adminSettings.changeRegMethod(optradio);
+        logger.info("settings are successfully changed");
+        return "adminSettings";
+    }
 
 }
