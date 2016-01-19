@@ -101,6 +101,7 @@ public class ResourceController {
 	 * @param model
 	 * @return showResource.jsp (addResource.jsp page if resource not valid)
 	 */
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
 	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
 			Model model) {

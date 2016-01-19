@@ -186,6 +186,8 @@ public class InquiryController {
  	 * generate pdf document "mandate to extract" on button pressing and open this document in the same inset
  	 */
 
+    
+    
  	@RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
  	public void downloadFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
  			throws IOException {

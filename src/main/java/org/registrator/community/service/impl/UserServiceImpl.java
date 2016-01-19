@@ -31,6 +31,7 @@ import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,6 +103,7 @@ public class UserServiceImpl implements UserService {
      * @return List<UserDTO>
      * 
      */
+	
 	@Transactional
 	@Override
 	public List<UserDTO> getAllRegistratedUsers() {
@@ -260,6 +262,7 @@ public class UserServiceImpl implements UserService {
      * @return List<UserDTO>
      * 
      */
+	
 	@Transactional
 	@Override
 	public List<UserDTO> getAllInactiveUsers() {

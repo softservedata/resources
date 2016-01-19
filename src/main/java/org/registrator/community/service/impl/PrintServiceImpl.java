@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.registrator.community.dao.AreaRepository;
 import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.dao.PolygonRepository;
@@ -22,7 +23,6 @@ import org.registrator.community.enumeration.InquiryType;
 import org.registrator.community.service.PrintService;
 import org.registrator.community.service.ResourceDiscreteValueService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Chunk;
@@ -42,6 +42,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 @Service
 public class PrintServiceImpl implements PrintService {
 
+	private static Logger LOG=Logger.getLogger(PrintService.class);
+	
 	@Autowired
 	InquiryRepository inquiryRepository;
 
@@ -61,6 +63,7 @@ public class PrintServiceImpl implements PrintService {
 	@SuppressWarnings("deprecation")
 	@Override
 	public Document printProcuration(Integer inquiryId) {
+		
 		Inquiry inquiry = inquiryRepository.getOne(inquiryId);
 		User user = inquiry.getUser();
 		Address address = user.getAddress().get((user.getAddress().size() - 1));
@@ -73,9 +76,6 @@ public class PrintServiceImpl implements PrintService {
 
 		Document document = null;
 		if (inquiry.getInquiryType().equals(InquiryType.OUTPUT)) {
-			// print = printOutputProcuration(userName, userAddress, date,
-			// registratorName,
-			// registratorAddress, identifier);
 			Date currentDate = new Date();
 
 			try {
@@ -83,7 +83,7 @@ public class PrintServiceImpl implements PrintService {
 				char parsedDate[] = date.toCharArray();
 				date = "" + parsedDate[1] + parsedDate[2];
 
-				document = createMandatToExtractPdf("D:\\file.pdf", user.getFirstName(), user.getLastName(),
+				document = createMandatToExtractPdf("D:\\resourcePDF\file"+inquiryId+".pdf", user.getFirstName(), user.getLastName(),
 						user.getMiddleName(), "79042", "Україна", address.getCity(), address.getStreet(),
 						address.getBuilding(), address.getFlat(), String.valueOf(currentDate.getDate()),
 						currentMonth(String.valueOf(currentDate.getMonth())), date, registrator.getFirstName(),
@@ -91,12 +91,12 @@ public class PrintServiceImpl implements PrintService {
 						"Україна", addressRegistrator.getCity(), addressRegistrator.getStreet(),
 						addressRegistrator.getBuilding(), addressRegistrator.getFlat(), identifier);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.error(e);
 			} catch (DocumentException e) {
-				e.printStackTrace();
+				LOG.error(e);
 			}
 		}
-
+		LOG.info("<PrintService: printProcuration is executed>");
 		return document;
 	}
 
@@ -374,7 +374,7 @@ public class PrintServiceImpl implements PrintService {
 				char parsedDateInquire[] = dateInquireYear.toCharArray();
 				dateInquireYear = "" + parsedDateInquire[1] + parsedDateInquire[2];
 
-				document = createExtractPdf("D:\\file.pdf", resource.getDescription(), "природний ресурс",
+				document = createExtractPdf("D:\\resourcePDF\file"+inquiryId+".pdf", resource.getDescription(), "природний ресурс",
 						String.valueOf(resource.getType().getTypeName()), totalCoordinates, linearSize,
 						"відомості відсутні", "відомості відсутні", "відомості відсутні", "відомості відсутні",
 						reasonForInclusion, registrator.getFirstName(), registrator.getLastName(),
@@ -386,10 +386,11 @@ public class PrintServiceImpl implements PrintService {
 						dateCurrentYear, String.valueOf(inquireDate.getDay()), String.valueOf(inquireDate.getMonth()),
 						String.valueOf(inquireDate.getMonth()), dateInquireYear);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.error(e);;
 			} catch (DocumentException e) {
-				e.printStackTrace();
+				LOG.error(e);;
 			}
+			LOG.info("<PrintService: printExtract is executed>");
 		}
 
 		return document;
@@ -673,6 +674,11 @@ public class PrintServiceImpl implements PrintService {
 		return document;
 	}
 
+
+	/**
+	 * @author Vitalii Horban creates pdf document "Доручення на витяг"
+	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public Document printProcurationOnSubmitInfo(Integer inquiryId) {
 		Inquiry inquiry = inquiryRepository.getOne(inquiryId);
@@ -681,7 +687,7 @@ public class PrintServiceImpl implements PrintService {
 		Address addressRegistrator = registrator.getAddress().get((registrator.getAddress().size() - 1));
 		String identifier = inquiry.getResource().getIdentifier();
 		Resource resource = inquiry.getResource();
-		ResourceType resType = inquiry.getResource().getType();
+		
 
 		String perimetrOfObject = null;
 		String squireOfObject=null;
@@ -711,11 +717,12 @@ public class PrintServiceImpl implements PrintService {
 			Date currentDate = new Date();
 
 			try {
+				
 				String dateCurrentYear = String.valueOf(currentDate.getYear());
 				char parsedDate[] = dateCurrentYear.toCharArray();
 				dateCurrentYear = "" + parsedDate[1] + parsedDate[2];
 
-				document = createMandatToInput("D:\\file.pdf", user.getFirstName(), user.getLastName(), user.getMiddleName(),
+				document = createMandatToInput("D:\\resourcePDF\file"+inquiryId+".pdf", user.getFirstName(), user.getLastName(), user.getMiddleName(),
 						String.valueOf(currentDate.getDate()),currentMonth( String.valueOf(currentDate.getMonth())), dateCurrentYear, registrator.getFirstName(),
 						registrator.getLastName(), registrator.getMiddleName(),
 
@@ -727,16 +734,17 @@ public class PrintServiceImpl implements PrintService {
 						 perimetrOfObject,squireOfObject);
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.error(e);;
 			} catch (DocumentException e) {
-				e.printStackTrace();
+				LOG.error(e);;
 			}
+			LOG.info("<PrintService: printProcurationOnSubmitInfo is executed>");
 		}
 
 		return document;
 	}
 
-	public Document createMandatToInput(String destination, String firstName, String lastName, String middleName,
+	private Document createMandatToInput(String destination, String firstName, String lastName, String middleName,
 			String currentDay, String currentMonth, String currentYear, String registratorFirtstName,
 			String registratorLastName, String registratorMiddleName,
 
@@ -749,6 +757,7 @@ public class PrintServiceImpl implements PrintService {
 		// left, right, top ,buttom
 		Document document = new Document(PageSize.A4, 38f, 38f, 38f, 35f);
 		FileOutputStream fis = new FileOutputStream(destination);
+		@SuppressWarnings("unused")
 		PdfWriter pdfwr = PdfWriter.getInstance(document, fis);
 		document.open();
 

@@ -6,7 +6,9 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 
 import org.registrator.community.components.TestDataInitializer;
+import org.registrator.community.config.SecurityConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -18,10 +20,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+
+
+
 @Configuration
 @EnableTransactionManagement
 @Profile("testing")
+@ComponentScan("org.registrator") 
 @EnableJpaRepositories(basePackages="org.registrator.community.dao")
+@org.springframework.context.annotation.Import({ SecurityConfiguration.class })
 public class TestingConfiguration {
 	
 	@Bean(initMethod="init")
