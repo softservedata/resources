@@ -85,98 +85,98 @@
 
 
 </c:if>
-<c:if test="${pageContext.request.userPrincipal.name == null}">
+<%--<c:if test="${pageContext.request.userPrincipal.name == null}">--%>
 
-    <div class="site-title">
-        <h3 style="color: white; background-color: blue;">
-            <spring:message code="label.name.part1"/>
-        </h3>
+    <%--<div class="site-title">--%>
+        <%--<h3 style="color: white; background-color: blue;">--%>
+            <%--<spring:message code="label.name.part1"/>--%>
+        <%--</h3>--%>
 
-        <h3 style="color: white; background-color: blue;">
-            <spring:message code="label.name.part2"/>
-        </h3>
-    </div>
-
-
-    <div class="lang-container" id="header">
-        <div>
-            <div>
-                <ul class="languages">
-                    <a href="?lang=ua"><img src="resource/img/lang/ua.png"></a>
-                    </li>
-                    <a href="?lang=ru"><img src="resource/img/lang/ru.png"></a>
-                    </li>
-                    <a href="?lang=en"><img src="resource/img/lang/en.png"></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+        <%--<h3 style="color: white; background-color: blue;">--%>
+            <%--<spring:message code="label.name.part2"/>--%>
+        <%--</h3>--%>
+    <%--</div>--%>
 
 
-    <img src="resource/img/ukraine_logo.gif" style="margin-left: 113px;"/>
+    <%--<div class="lang-container" id="header">--%>
+        <%--<div>--%>
+            <%--<div>--%>
+                <%--<ul class="languages">--%>
+                    <%--<a href="?lang=ua"><img src="resource/img/lang/ua.png"></a>--%>
+                    <%--</li>--%>
+                    <%--<a href="?lang=ru"><img src="resource/img/lang/ru.png"></a>--%>
+                    <%--</li>--%>
+                    <%--<a href="?lang=en"><img src="resource/img/lang/en.png"></a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
 
 
-    <div class="title">
-        <div class="signin-container">
+    <%--<img src="resource/img/ukraine_logo.gif" style="margin-left: 113px;"/>--%>
 
 
-            <fieldset id="login_fieldset" class="forms">
-
-                <c:if test="${pageContext.request.userPrincipal.name == null}">
-
-                    <form:form name='loginForm' id="loginForm"
-                               action="${pageContext.request.contextPath}/login" method='POST'>
-
-                        <div style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>
-
-                        <div class="form-group">
-                            <label for="inputEmail">Login</label> <input
-                                class="form-control" id="login" name="login" type="text"
-                                placeholder="Username" size="30" autocomplete="on"
-                                autofocus="autofocus">
-
-                        </div>
+    <%--<div class="title">--%>
+        <%--<div class="signin-container">--%>
 
 
-                        <div class="form-group">
-                            <label for="inputPassword">Password</label> <input
-                                class="form-control" id="password" name="password"
-                                type="password" placeholder="Password" size="30"
-                                autocomplete="on">
-                        </div>
+            <%--<fieldset id="login_fieldset" class="forms">--%>
+
+                <%--<c:if test="${pageContext.request.userPrincipal.name == null}">--%>
+
+                    <%--<form:form name='loginForm' id="loginForm"--%>
+                               <%--action="${pageContext.request.contextPath}/login" method='POST'>--%>
+
+                        <%--<div style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>--%>
+
+                        <%--<div class="form-group">--%>
+                            <%--<label for="inputEmail">Login</label> <input--%>
+                                <%--class="form-control" id="login" name="login" type="text"--%>
+                                <%--placeholder="Username" size="30" autocomplete="on"--%>
+                                <%--autofocus="autofocus">--%>
+
+                        <%--</div>--%>
 
 
-                        <div class="checkbox">
-                            <label><input type="checkbox"
-                                          id="_spring_security_remember_me" value="true"
-                                          name="_spring_security_remember_me"> Remember me</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary"
-                                style="width: 100px; margin-left: 60px;">Login
-                        </button>
-                        <a href="${pageContext.request.contextPath}/register"
-                           class="btn btn-success" role="button" style="width: 100px;">Register</a>
+                        <%--<div class="form-group">--%>
+                            <%--<label for="inputPassword">Password</label> <input--%>
+                                <%--class="form-control" id="password" name="password"--%>
+                                <%--type="password" placeholder="Password" size="30"--%>
+                                <%--autocomplete="on">--%>
+                        <%--</div>--%>
 
 
-                    </form:form>
-                </c:if>
-            </fieldset>
-        </div>
+                        <%--<div class="checkbox">--%>
+                            <%--<label><input type="checkbox"--%>
+                                          <%--id="_spring_security_remember_me" value="true"--%>
+                                          <%--name="_spring_security_remember_me"> Remember me</label>--%>
+                        <%--</div>--%>
+                        <%--<button type="submit" class="btn btn-primary"--%>
+                                <%--style="width: 100px; margin-left: 60px;">Login--%>
+                        <%--</button>--%>
+                        <%--<a href="${pageContext.request.contextPath}/register"--%>
+                           <%--class="btn btn-success" role="button" style="width: 100px;">Register</a>--%>
 
 
-    </div>
+                    <%--</form:form>--%>
+                <%--</c:if>--%>
+            <%--</fieldset>--%>
+        <%--</div>--%>
 
 
-    <div style="margin-top: 91px">
-        <p style="text-align: center">
-            &copy;2015
-            <spring:message code="label.copyright"/>
-        </p>
-    </div>
+    <%--</div>--%>
 
 
-</c:if>
+    <%--<div style="margin-top: 91px">--%>
+        <%--<p style="text-align: center">--%>
+            <%--&copy;2015--%>
+            <%--<spring:message code="label.copyright"/>--%>
+        <%--</p>--%>
+    <%--</div>--%>
 
-</body>
-</html>
+
+<%--</c:if>--%>
+
+<%--</body>--%>
+<%--</html>--%>

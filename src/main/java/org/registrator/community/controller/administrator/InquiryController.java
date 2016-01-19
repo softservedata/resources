@@ -40,6 +40,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,6 +124,7 @@ public class InquiryController {
 	/**
 	 * Method for showing all output inquiries from logged user on UI.
 	 */
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
 	public String listInqUserOut(Model model) {	
 		logger.info("begin");		
@@ -139,6 +141,7 @@ public class InquiryController {
 	/**
 	 * Method for showing all input inquiries from logged user on UI.
 	 */
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	//public String listInquiryUserInput(Model model, HttpSession session) {
 	public String listInquiryUserInput(Model model) {
@@ -178,22 +181,61 @@ public class InquiryController {
 
     
  	
- 	/**
+    /**
  	 * @author Vitalii Horban
- 	 * generate pdf document on button pressing and open this document in the same inset
+ 	 * generate pdf document "mandate to extract" on button pressing and open this document in the same inset
  	 */
 
+    
+    
  	@RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
  	public void downloadFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
  			throws IOException {
 
- 		Document print = printService.printProcuration(inquiryId);
+ 		printService.printProcuration(inquiryId);
 
  		File file = null;
+ 		file = new File("D:\\file.pdf");
 
- 		// ClassLoader classloader =
- 		// Thread.currentThread().getContextClassLoader();
- 		// file = new File(classloader.getResource(INTERNAL_FILE).getFile());
+ 		if (!file.exists()) {
+ 			String errorMessage = "Sorry. The file you are looking for does not exist";
+ 			System.out.println(errorMessage);
+ 			OutputStream outputStream = response.getOutputStream();
+ 			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+ 			outputStream.close();
+ 			return;
+ 		}
+
+ 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+ 		if (mimeType == null) {
+ 			System.out.println("mimetype is not detectable, will take default");
+ 			mimeType = "application/octet-stream";
+ 		}
+
+ 		System.out.println("mimetype : " + mimeType);
+
+ 		response.setContentType(mimeType);
+
+ 		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+ 		response.setContentLength((int) file.length());
+ 		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+ 		FileCopyUtils.copy(inputStream, response.getOutputStream());
+ 	}
+ 	
+ 	
+ 	
+	/**
+ 	 * @author Vitalii Horban
+ 	 * generate pdf document "extract" on button pressing and open this document in the same inset
+ 	 */
+ 	
+ 	@RequestMapping(value = "/printExtract/{inquiryId}", method = RequestMethod.GET)
+ 	public void downloadExtractFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
+ 			throws IOException {
+
+ 		printService.printExtract(inquiryId);
+
+ 		File file = null;
 
  		file = new File("D:\\file.pdf");
 
@@ -221,6 +263,51 @@ public class InquiryController {
  		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
  		FileCopyUtils.copy(inputStream, response.getOutputStream());
  	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	/**
+ 	 * @author Vitalii Horban
+ 	 * generate pdf document "ProcurationOnSubmit" on button pressing and open this document in the same inset
+ 	 */
+ 	
+ 	@RequestMapping(value = "/printdata/{inquiryId}", method = RequestMethod.GET)
+ 	public void downloadInfoFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
+ 			throws IOException {
+
+ 		printService.printProcurationOnSubmitInfo(inquiryId);
+
+ 		File file = null;
+
+ 		file = new File("D:\\file.pdf");
+
+ 		if (!file.exists()) {
+ 			String errorMessage = "Sorry. The file you are looking for does not exist";
+ 			System.out.println(errorMessage);
+ 			OutputStream outputStream = response.getOutputStream();
+ 			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+ 			outputStream.close();
+ 			return;
+ 		}
+
+ 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+ 		if (mimeType == null) {
+ 			System.out.println("mimetype is not detectable, will take default");
+ 			mimeType = "application/octet-stream";
+ 		}
+
+ 		System.out.println("mimetype : " + mimeType);
+
+ 		response.setContentType(mimeType);
+
+ 		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+ 		response.setContentLength((int) file.length());
+ 		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+ 		FileCopyUtils.copy(inputStream, response.getOutputStream());
+ 	}
+ 	
  	
 }    
 

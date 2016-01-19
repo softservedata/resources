@@ -20,7 +20,7 @@ $(document).on('change', '#roleId', function() {
 				
 				success: function() {
 					$('#myModal').modal('hide');
-				},	
+				}
 			});
 		})
 		

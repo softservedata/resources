@@ -9,6 +9,7 @@ import org.registrator.community.entity.User;
 import org.registrator.community.service.search.BaseSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ public class UserSearchController {
 	@Autowired
 	TableSettingsFactory tableSettingsFactory;
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value="search")
 	public String getUserBySearchCriteria(Model model){
 		model.addAttribute("tableSetting", tableSettingsFactory.getTableSetting("userSearch"));

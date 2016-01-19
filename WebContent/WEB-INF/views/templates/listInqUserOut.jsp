@@ -49,11 +49,11 @@
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
 										<c:if test="${role == 'REGISTRATOR'}">	
-											<a href="printOutput/${inquiryUserOut.inquiry_list_id}"
+											<a href="printExtract/${inquiryUserOut.inquiry_list_id}"
 												class="btn btn-primary" role="button"> 
 												<spring:message code="label.inquiry.printExtract" /></a>	
 										</c:if>
-								
+									
 								<!--  
 										<c:if test="${role == 'USER'}">
 											<a href="c:url value='delete/${inquiryUserOut.inquiry_list_id}' />"

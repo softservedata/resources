@@ -4,27 +4,38 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.registrator.community.entity.ResourceType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class ResourceDTO {
     
-    //private ResourceTypeDTO resourceType;
-    private ResourceType resourceType;
+    @NotEmpty(message = "Виберіть тип ресурсу")
+    private String resourceType;
+    
+    @NotEmpty(message = "Поле є обов'язковим для введення")
+    @Pattern(regexp ="\\d+", message = "Ідентифікатор може містити лише цифри від 0 до 9")
     private String identifier;
     
-
+    @Pattern(regexp ="\\p{IsCyrillic}*", message = "Лише літери лише від А до Я ")
     private String description;
+    
     private String registratorName;
     
+    @NotNull(message = "Поле є обов'язковим для введення")
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date date;
+    
     private ResourceStatus status;
+    
+    @NotEmpty(message = "Поле є обов'язковим для введення")
     private String reasonInclusion;
+        
     private String tomeIdentifier;
-    
-    
+        
     private ResourceAreaDTO resourceArea;
     
     private List<ResourceLinearValueDTO> resourceLinear = new ArrayList<ResourceLinearValueDTO>();
@@ -53,17 +64,16 @@ public class ResourceDTO {
     }
     */
     
-    public ResourceType getResourceType() {
-        return resourceType;
-    }
-    
-    public void setResourceType(ResourceType resourceType) {
-        this.resourceType = resourceType;
-    }
-    
-    
     public String getIdentifier() {
         return identifier;
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
     }
 
     public void setIdentifier(String identifier) {

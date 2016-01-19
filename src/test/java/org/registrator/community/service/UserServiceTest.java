@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("testing")
 @ContextConfiguration(classes={TestingConfiguration.class,LoggingConfig.class,SpringRootConfig.class})
-public class UserServiceJUnitTest {
+public class UserServiceTest {
 	
 	@Autowired
 	UserService userService;
