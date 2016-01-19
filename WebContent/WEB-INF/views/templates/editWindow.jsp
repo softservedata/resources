@@ -7,12 +7,13 @@
 <script src="<c:url value='/resource/js/changeRole.js'/>"></script>
 <script src="<c:url value='/resource/js/editingUser.js'/>"></script>
 <script src="<c:url value='/resource/js/userValidate.js'/>"></script>
+<script src="<c:url value='/resource/js/modalWindow.js'/>"></script>
 
 <div class="container">
-    <c:url value='/administrator/users/edit-registrated-user' var="theAction"/>
-	<form:form id="editWinodow" modelAttribute="userDTO" method="post"
-        action="${theAction}"
-		class="form-horizontal">
+	<c:url value='/administrator/users/edit-registrated-user'
+		var="theAction" />
+	<form:form id="editWindow" modelAttribute="userDTO" method="post"
+		action="${theAction}" class="form-horizontal">
 		<fieldset>
 			<div class="row">
 				<div class="col-lg-4">
@@ -27,7 +28,8 @@
 								class="form-control input-md readonly" type="text"
 								value="${userDto.firstName}" readonly>
 							<div class="control-group error">
-								<form:errors path="firstName" cssClass="error" style="color:black" />
+								<form:errors path="firstName" cssClass="error"
+									style="color:black" />
 							</div>
 						</div>
 					</div>
@@ -39,7 +41,8 @@
 								class="form-control input-md readonly" type="text"
 								value="${userDto.lastName}" readonly>
 							<div class="control-group error">
-								<form:errors path="lastName" cssClass="error" style="color:black" />
+								<form:errors path="lastName" cssClass="error"
+									style="color:black" />
 							</div>
 						</div>
 					</div>
@@ -69,10 +72,11 @@
 								code="label.password" /></label>
 						<div class="col-lg-8">
 							<input id="password" name="password" placeholder=""
-								class="form-control input-md readonly"  type="text"
+								class="form-control input-md readonly" type="text"
 								value="${userDto.password}" readonly>
 							<div class="control-group error">
-								<form:errors path="password" cssClass="error" style="color:black" />
+								<form:errors path="password" cssClass="error"
+									style="color:black" />
 							</div>
 						</div>
 					</div>
@@ -104,7 +108,7 @@
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
-							</select>
+							</select></a>
 						</div>
 					</div>
 					<div class="form-group">
@@ -162,7 +166,7 @@
 								code="label.user.district" /></label>
 						<div class="col-lg-8">
 							<input id="district" name="address.district" placeholder=""
-								class="form-control input-md readonly"  type="text"
+								class="form-control input-md readonly" type="text"
 								value="${userDto.address.district}" readonly>
 							<div class="control-group error">
 								<form:errors path="address.district" cssClass="error"
@@ -232,7 +236,7 @@
 								code="label.user.seria" /></label>
 						<div class="col-lg-8">
 							<input id="seria" name="passport.seria" placeholder=""
-								class="form-control input-md readonly"  type="text"
+								class="form-control input-md readonly" type="text"
 								value="${userDto.passport.seria}" readonly>
 							<div class="control-group error">
 								<form:errors path="passport.seria" cssClass="error"
@@ -258,8 +262,9 @@
 								code="label.user.published" /></label>
 						<div class="col-lg-8">
 							<input id="published" name="passport.published_by_data"
-								placeholder="" class="form-control input-md readonly" type="text"
-								value="${userDto.passport.published_by_data}" readonly>
+								placeholder="" class="form-control input-md readonly"
+								type="text" value="${userDto.passport.published_by_data}"
+								readonly>
 							<div class="control-group error">
 								<form:errors path="passport.published_by_data" cssClass="error"
 									style="color:black" />
@@ -291,16 +296,14 @@
 						<h4 class="modal-title">Введіть дані</h4>
 					</div>
 					<div class="modal-body">
-						<label class="control-label">Номер тому</label> 
-						<input id="identifier" name="identifier" class="form-control input-md" type="text" required> 
-						<label class="control-label">Номер реєстратора</label> 
-						<input id="registrator_number" name="registrator_number" class="form-control input-md" type="text" required> 
-						<div class="control-group error">
-								<form:errors path="registrator_number" cssClass="error"
-									style="color:black" />
-							</div>
-						<label class="control-label">Реєстраційний номер об'єкту</label> 
-						<input id="number" name="number" class="form-control input-md" type="text" required>
+						<label class="control-label">Номер тому</label> <input
+							id="identifier" name="identifier" class="form-control input-md"
+							type="text" required> <label class="control-label">Номер
+							реєстратора</label> <input id="registrator_number"
+							name="registrator_number" class="form-control input-md"
+							type="text" required> <label class="control-label">Реєстраційний
+							номер об'єкту</label> <input id="resource_number" name="resource_number"
+							class="form-control input-md" type="text" required>
 					</div>
 					<div class="modal-footer">
 						<button type="button" id="submit" class="btn btn-primary">

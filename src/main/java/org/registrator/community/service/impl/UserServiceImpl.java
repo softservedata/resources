@@ -394,7 +394,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
 		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(Integer.parseInt(resourseNumberDtoJson.getNumber()),
+		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(Integer.parseInt(resourseNumberDtoJson.getResource_number()),
 				resourseNumberDtoJson.getRegistrator_number());
 		ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
 				resourseNumberDto.getRegistratorNumber(), user);

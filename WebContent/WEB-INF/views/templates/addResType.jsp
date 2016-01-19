@@ -5,7 +5,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>--%>
-<script src="<c:url value='/resource/js/add.js'/>"></script>
+<script src="<c:url value='/resource/js/addResourceType.js'/>"></script>
 
 <h2>
 	<spring:message code="label.restype.add" />

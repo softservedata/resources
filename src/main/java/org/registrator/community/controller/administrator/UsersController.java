@@ -13,7 +13,6 @@ import org.registrator.community.entity.Role;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
-//import org.registrator.community.validator.UserValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 @Controller
 @RequestMapping(value = "/administrator/users/")
@@ -45,10 +43,6 @@ public class UsersController {
 	@Autowired
 	RoleService roleService;
 
-//	@Autowired
-//	UserValidator userValidator;
-
-	
 	/**
 	 * Controller for showing information about user
 	 *
@@ -65,7 +59,7 @@ public class UsersController {
 		logger.info("end");
 		return "editWindow";
 	}
-	
+
 	/**
 	 * Controller for editing user information
 	 *
@@ -105,8 +99,7 @@ public class UsersController {
 		logger.info("end");
 		return "InActiveUsers";
 	}
-	
-	
+
 	/**
 	 * Controller for changing user statur for inactive users
 	 *
@@ -120,38 +113,18 @@ public class UsersController {
 		return "InActiveUsers";
 	}
 
-
-	/**
-	 * ???
-	 *
-	 */
-	@RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.GET)
-	public ResponseEntity<String> fillModalWindow(Model model) {
-		logger.info("begin");
-		ResourceNumberDTOJSON resourceNumberDtoJson = new ResourceNumberDTOJSON();
-		model.addAttribute("resourceNumberDtoJson", resourceNumberDtoJson);
-		logger.info("end");
-		return new ResponseEntity<String>(HttpStatus.OK);
-	}
-
 	/**
 	 * Controller for showing modal window
 	 *
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.POST)
-	public ResponseEntity<String> showModalWindow(@RequestBody ResourceNumberDTOJSON resourceNumberDtoJson,
-			BindingResult result) {
-		//userValidator.validate(resourceNumberDtoJson, result);
-//		if(result.hasErrors()){
-//			return new ResponseEntity<String>(HttpStatus.OK);
-//		} else {
-			logger.info("begin");
-			userService.createResourceNumber(resourceNumberDtoJson);
-			userService.createTome(resourceNumberDtoJson);
-			logger.info("end");
-			return new ResponseEntity<String>(HttpStatus.OK);
-	//	}
+	public ResponseEntity<String> showModalWindow(@RequestBody ResourceNumberDTOJSON resourceNumberDtoJson) {
+		logger.info("begin");
+		userService.createResourceNumber(resourceNumberDtoJson);
+		userService.createTome(resourceNumberDtoJson);
+		logger.info("end");
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
 	/**

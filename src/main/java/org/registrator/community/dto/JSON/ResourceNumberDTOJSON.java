@@ -1,9 +1,9 @@
 package org.registrator.community.dto.JSON;
 
 public class ResourceNumberDTOJSON {
-	
+
 	private String login;
-	private String number;
+	private String resource_number;
 	private String registrator_number;
 	private String identifier;
 
@@ -13,14 +13,6 @@ public class ResourceNumberDTOJSON {
 
 	public void setLogin(String login) {
 		this.login = login;
-	}
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
 	}
 
 	public String getRegistrator_number() {
@@ -37,6 +29,14 @@ public class ResourceNumberDTOJSON {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public String getResource_number() {
+		return resource_number;
+	}
+
+	public void setResource_number(String resource_number) {
+		this.resource_number = resource_number;
 	}
 
 }
