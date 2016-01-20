@@ -94,13 +94,13 @@ public class InquiryController {
 	 */
 	@RequestMapping(value = "/outputInquiry", method = RequestMethod.POST)
 	public String showOutputInquiry(Model model) {
-		logger.info("begin");
+		logger.info("begin showOutputInquiry");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
 		List<UserNameDTO> listUserNameDTO = inquiryService.listUserNameDTO(userLogin);				
 		model.addAttribute("registrators", listUserNameDTO);		
 		logger.info(listUserNameDTO.toString());
-		logger.info("end");
+		logger.info("end showOutputInquiry");
 		return "inquiryAddOut";
 	}
 	
@@ -115,53 +115,63 @@ public class InquiryController {
 	 */
 	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
 	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  			
-		logger.info("begin");		
+		logger.info("begin addOutputInquiry, param resourceIdentifier = " + resourceIdentifier +
+				", registratorLogin = "+ registratorLogin);		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
 		inquiryService.addOutputInquiry(resourceIdentifier, registratorLogin, userLogin);
-		logger.info("end");
+		logger.info("end addOutputInquiry");
 		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
 	
 	/**
 	 * Method for showing all output inquiries from logged user on UI.
+	 * 
+	 * @param model - the model
+	 * @return listInqUserOut.jsp
 	 */
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
 	public String listInqUserOut(Model model) {	
-		logger.info("begin");		
+		logger.info("begin listInqUserOut");		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		String role = userService.getUserByLogin(userLogin).getRole().getType().toString();
 		logger.info("user role = " + role);
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
 		model.addAttribute("role", role);
-		logger.info("end");
+		logger.info("end listInqUserOut");
 		return "listInqUserOut";
 	}
 	
 	/**
 	 * Method for showing all input inquiries from logged user on UI.
+	 * 
+	 * @param model - the model
+	 * @return listInquiryUserInput.jsp
 	 */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	public String listInquiryUserInput(Model model) {
-		logger.info("begin");
+		logger.info("begin listInquiryUserInput");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserInput = inquiryService.listInquiryUser(userLogin, InquiryType.INPUT);
 		model.addAttribute("listInquiryUser", listInquiryUserInput);
-		logger.info("end");
+		logger.info("end listInquiryUserInput");
 		return "listInquiryUserInput";
 	}
 	
 	/**
 	 * Method for deleting chosen inquiry by Id.
+	 * 
+	 * @param inquiryId - inquiry identifier.
+	 * @return listInqUserOut.jsp
 	 */
 	@RequestMapping(value = "/delete/{inquiryId}")
 	public String deleteInquiry(@PathVariable Integer inquiryId) {
-		logger.info("begin");
+		logger.info("begin deleteInquiry, param inquiryId = " + inquiryId);
 		inquiryService.removeInquiry(inquiryId);
-		logger.info("end");
+		logger.info("end deleteInquiry");
 		return "redirect:/inquiry/add/listInqUserOut";
 	}
 	
@@ -169,13 +179,16 @@ public class InquiryController {
 	/**
      * Show the information about resource by identifier
      * !copy from ResourceController
+     * 
+     * @param identifier - resource identifier.
+	 * @return showResource.jsp
      */
     @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
     public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
-    	logger.info("begin");
+    	logger.info("begin getResourceByIdentifier, param = " + identifier);
         ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
         model.addAttribute("resource", resourceDTO);
-        logger.info("end");
+        logger.info("end getResourceByIdentifier");
         return "showResource";
     }
 
