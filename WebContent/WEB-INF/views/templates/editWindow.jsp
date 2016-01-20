@@ -7,7 +7,6 @@
 <script src="<c:url value='/resource/js/changeRole.js'/>"></script>
 <script src="<c:url value='/resource/js/editingUser.js'/>"></script>
 <script src="<c:url value='/resource/js/userValidate.js'/>"></script>
-<script src="<c:url value='/resource/js/modalWindow.js'/>"></script>
 
 <div class="container">
 	<c:url value='/administrator/users/edit-registrated-user'
@@ -275,7 +274,7 @@
 				</div>
 			</div>
 			<div class="wrapper" style="text-align: center">
-				<button type="button" id="edit" class="btn btn-primary">Редагувати</button>
+				<button type="button" id="edit" class="btn btn-primary"><spring:message code="label.restype.edit"></spring:message></button>
 				<input type="submit" id="ok"
 					value=<spring:message code="label.user.button"/>
 					class="btn btn-primary btn-sm" style="display: none">
@@ -286,7 +285,7 @@
 </div>
 
 <div class="container">
-	<form:form id="editWinodow" modelAttribute="resourceNumberDtoJson"
+	<form:form id="modalWindow" modelAttribute="resourceNumberDtoJson"
 		method="get" action="modal-window" class="form-horizontal">
 		<div id="myModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
