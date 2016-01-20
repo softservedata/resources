@@ -1,21 +1,26 @@
 package org.registrator.community.controller.administrator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.registrator.community.components.AdminSettings;
+import org.registrator.community.components.TableSettingsFactory;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
+import org.registrator.community.dto.search.TableSearchRequestDTO;
+import org.registrator.community.dto.search.TableSearchResponseDTO;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
+import org.registrator.community.service.search.BaseSearchService;
 //import org.registrator.community.validator.UserValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -44,6 +49,13 @@ public class UsersController {
 
 	@Autowired
 	RoleService roleService;
+	
+	@Autowired
+	@Qualifier("registerUserSearchService")
+	BaseSearchService<User> userSearchService;
+	
+	@Autowired
+	TableSettingsFactory tableSettingsFactory;
 
 //	@Autowired
 //	UserValidator userValidator;
@@ -158,14 +170,31 @@ public class UsersController {
 	 * Controller for get all registrated users
 	 * 
 	 */
+//	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
+//	public String getAllUsers(Model model) {
+//		logger.info("begin");
+//		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+//		userDtoList = userService.getAllRegistratedUsers();
+//		model.addAttribute("userDtoList", userDtoList);
+//		logger.info("end");
+//		return "RegistratedUsers";
+//	}
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
 	public String getAllUsers(Model model) {
 		logger.info("begin");
-		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		userDtoList = userService.getAllRegistratedUsers();
-		model.addAttribute("userDtoList", userDtoList);
-		logger.info("end");
-		return "RegistratedUsers";
+		model.addAttribute("tableSetting", tableSettingsFactory.getTableSetting("registerUser"));
+		return "searchTableTemplate";
+	}
+	
+	/**
+	 * Method for showing administrator settings in order to change registration
+	 * method
+	 */
+	@ResponseBody
+	@RequestMapping(value = "registerUser",method = RequestMethod.POST)
+	public TableSearchResponseDTO getDataFromDataTable(@Valid @RequestBody TableSearchRequestDTO dataTableRequest){
+		TableSearchResponseDTO dto = userSearchService.executeSearchRequest(dataTableRequest);
+		return dto;
 	}
 
 	/**

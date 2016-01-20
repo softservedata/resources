@@ -25,23 +25,16 @@ public class BaseSpecification<T> implements Specification<T>{
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
 			CriteriaBuilder builder) {
 		if (criteria.getSearch().getCompareSign().equalsIgnoreCase("greater")) {
-            return builder.greaterThanOrEqualTo(
-              root.<String> get(criteria.getData()), criteria.getSearch().getValue());
+            return greaterThanOrEqualToBuilder(root, builder);
         } 
         else if (criteria.getSearch().getCompareSign().equalsIgnoreCase("less")) {
-            return builder.lessThanOrEqualTo(
-              root.<String> get(criteria.getData()), criteria.getSearch().getValue());
+            return lessThanOrEqualToBuilder(root, builder);
         } 
         else if (criteria.getSearch().getCompareSign().equalsIgnoreCase("like")) {
-            if (root.get(criteria.getData()).getJavaType() == String.class) {
-                return builder.like(
-                  root.<String>get(criteria.getName()), "%" + criteria.getSearch().getValue() + "%");
-            }
-            return builder.lessThanOrEqualTo(getPathFromRoot( root)
-                    , criteria.getSearch().getValue());
+                return likeBuilder(root, builder);
         }
         else if (criteria.getSearch().getCompareSign().equalsIgnoreCase("equal")){
-        	return builder.equal(getPathFromRoot(root), criteria.getSearch().getValue());
+        	return equalBuilder(root, builder);
         }
         return null;
 	}
@@ -52,5 +45,26 @@ public class BaseSpecification<T> implements Specification<T>{
 			return root.join(pathParameters[0]).get(pathParameters[1]);
 		}
 		return root.get(criteria.getData());
+	}
+
+	private Predicate equalBuilder(Root<T> root, CriteriaBuilder builder) {
+		return builder.equal(getPathFromRoot(root), criteria.getSearch().getValue());
+	}
+
+	private Predicate likeBuilder(Root<T> root, CriteriaBuilder builder) {
+		return builder.like(
+		  root.<String>get(criteria.getName()), "%" + criteria.getSearch().getValue() + "%");
+	}
+
+	private Predicate lessThanOrEqualToBuilder(Root<T> root,
+			CriteriaBuilder builder) {
+		return builder.lessThanOrEqualTo(
+		  root.<String> get(criteria.getData()), criteria.getSearch().getValue());
+	}
+	
+	private Predicate greaterThanOrEqualToBuilder(Root<T> root,
+			CriteriaBuilder builder) {
+		return builder.greaterThanOrEqualTo(
+		  root.<String> get(criteria.getData()), criteria.getSearch().getValue());
 	}
 }

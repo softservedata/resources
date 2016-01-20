@@ -19,6 +19,12 @@ public class TableSetting {
 	@XmlElement(required=true)
 	private String url;
 	
+	@XmlElement(required=false)
+	private String script;
+	
+	@XmlElement(required=false)
+	private String tableTitle;
+	
 	@XmlElement(name="column")
 	private List<TableColumnSetting> columnsSetting = new ArrayList<TableColumnSetting>();
 
@@ -49,5 +55,20 @@ public class TableSetting {
 	public String getTableName() {
 		return tableName;
 	}
-	
+
+	public String getScript() {
+		return script;
+	}
+
+	public void setScript(String script) {
+		this.script = script;
+	}
+
+	public String getTableTitle() {
+		return tableTitle;
+	}
+
+	public void setTableTitle(String tableTitle) {
+		this.tableTitle = tableTitle;
+	}
 }
