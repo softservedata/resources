@@ -48,6 +48,7 @@ public class UsersController {
 	 * Controller for showing information about user
 	 *
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
 	public String fillInEditWindow(@RequestParam("login") String login, Model model) {
 		logger.info("begin");
@@ -65,6 +66,7 @@ public class UsersController {
 	 * Controller for editing user information
 	 *
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.POST)
 	public String editRegistratedUser(@Valid @ModelAttribute("userDTO") UserDTO userDto, BindingResult result,
 			Model model) {
@@ -88,6 +90,7 @@ public class UsersController {
 	 * Controller for showing all inactive user
 	 *
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
 	public String getAllInactiveUsers(Model model) {
 		logger.info("begin");
@@ -105,6 +108,7 @@ public class UsersController {
 	 * Controller for changing user statur for inactive users
 	 *
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	@ResponseBody
 	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.POST)
 	public String changeStatus(@RequestBody UserStatusDTOJSON userStatusDto) {
@@ -118,6 +122,7 @@ public class UsersController {
 	 * Controller for showing modal window
 	 *
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	@ResponseBody
 	@RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.POST)
 	public ResponseEntity<String> showModalWindow(@RequestBody ResourceNumberDTOJSON resourceNumberDtoJson) {
@@ -132,6 +137,7 @@ public class UsersController {
 	 * Controller for get all registrated users
 	 * 
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
 	public String getAllUsers(Model model) {
 		logger.info("begin");

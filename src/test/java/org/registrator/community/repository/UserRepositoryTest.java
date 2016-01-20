@@ -27,6 +27,5 @@ public class UserRepositoryTest {
 		System.out.println(user.getPassword());
 		
 		Assert.assertEquals("Compare user.mail", "ivan@gmail.com",user.getEmail());
-//        assertTrue("True",true);
     }
 }
