@@ -10,6 +10,12 @@ import org.registrator.community.enumeration.InquiryType;
 
 import java.util.List;
 
+/**
+ * Interface for work with procurations of entering data into the register
+ *(input inquiry) and with procurations for an extract from register (output inquiry).
+ * @author Ann
+ *
+ */
 public interface InquiryService {
 	
 	Inquiry addOutputInquiry(String resourceIdentifier, String registratorLogin, String userLogin);
@@ -21,7 +27,7 @@ public interface InquiryService {
 		
 	void removeInquiry (Integer inquiryId);
 	
-	ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin);
+	//ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin);
 
 }
 

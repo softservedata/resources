@@ -32,6 +32,7 @@ import org.registrator.community.service.LinearParameterService;
 import org.registrator.community.service.PrintService;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
+import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itextpdf.text.Document;
 
 
+/**
+ *Class controller works with procurations of entering data into the register
+ *(input inquiry) and with procurations for an extract from register (output inquiry).
+ *@author Ann
+ *
+ */
 @Controller
 @RequestMapping(value ="/inquiry/add/")
 public class InquiryController {
@@ -74,15 +81,17 @@ public class InquiryController {
 	@Autowired
 	PrintService printService;
 	@Autowired
-	UserRepository userRepository;
+	UserService userService;
 	 
 	
 	/**
 	 * Method for showing form on UI to input the parameters 
 	 * for inquiry to get the certificate aboute the resource 
-	 * (with existing registrators and resources).
-	 */	
-	
+	 * (with existing registrators and resources).	
+	 *  
+	 * @param model - the model
+	 * @return inquiryAddOut.jsp
+	 */
 	@RequestMapping(value = "/outputInquiry", method = RequestMethod.POST)
 	public String showOutputInquiry(Model model) {
 		logger.info("begin");
@@ -95,21 +104,14 @@ public class InquiryController {
 		return "inquiryAddOut";
 	}
 	
-		
-	/*@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
-	public String showOutputInquiry(Model model) {
-		logger.info("begin");
-		List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
-		model.addAttribute("tomes", listTomeDTO);
-		Iterable<Resource> resources = resourceRepository.findAll();
-		model.addAttribute("resources", resources);
-		logger.info("end");
-		return "inquiryAddOut";
-	}*/
-	
+
 	
 	/**
 	 * Method saves the data in the table inquiry_list.
+	 *
+	 * @param resourceIdentifier - identifier of the resource.
+	 * @param registratorLogin - login of chosen registrator.
+	 * @return listInqUserOut.jsp
 	 */
 	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
 	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  			
@@ -129,7 +131,7 @@ public class InquiryController {
 	public String listInqUserOut(Model model) {	
 		logger.info("begin");		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-		String role = userRepository.findUserByLogin(userLogin).getRole().getType().toString();
+		String role = userService.getUserByLogin(userLogin).getRole().getType().toString();
 		logger.info("user role = " + role);
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
@@ -143,10 +145,8 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
-	//public String listInquiryUserInput(Model model, HttpSession session) {
 	public String listInquiryUserInput(Model model) {
 		logger.info("begin");
-		//String userLogin =(String) session.getAttribute("userLogin");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserInput = inquiryService.listInquiryUser(userLogin, InquiryType.INPUT);
 		model.addAttribute("listInquiryUser", listInquiryUserInput);
@@ -358,3 +358,14 @@ public class InquiryController {
 //    }
 //	
 //  
+
+/*@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
+	public String showOutputInquiry(Model model) {
+	logger.info("begin");
+	List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
+	model.addAttribute("tomes", listTomeDTO);
+	Iterable<Resource> resources = resourceRepository.findAll();
+	model.addAttribute("resources", resources);
+	logger.info("end");
+	return "inquiryAddOut";
+}*/

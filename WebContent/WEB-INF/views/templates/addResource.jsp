@@ -26,6 +26,14 @@
 				<input class="form-control" id="owner_search" type="text" value="">
 			</div>
 		</div>
+		
+		<!-- login of the selected co-owner -->
+		<div class="form-group"  hidden="true"> 
+			<label class="control-label col-sm-3">login:</label>
+			<div class="col-sm-3">
+				<input class="form-control" id="owner_login" type="text" value="" name="ownerLogin">
+			</div>
+		</div>
 
 		<!-- add resource description -->
 		<div class="form-group">

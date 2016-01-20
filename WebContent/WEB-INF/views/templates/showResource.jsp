@@ -88,7 +88,7 @@
 			<p>			
 				<div class="form-group">
 					<div class="col-sm-5">
-						<div id="outputInquiry" class="btn btn-success" role="button">
+						<div id="outputInquiry" class="btn btn-success" role="button" style="margin-bottom:10px">
 						<spring:message code="label.inquiry.output.pagename"/></div>
 					</div>		
 					<div id="target" class="col-sm-5"></div>

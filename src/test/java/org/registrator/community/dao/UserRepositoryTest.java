@@ -1,5 +1,4 @@
-package org.registrator.community.repository;
-
+package org.registrator.community.dao;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
