@@ -11,11 +11,6 @@
 </div>
 
 
-
-<!--  <p>
-	<a href="<c:url value='/inquiry/add/outputInquiry'/>"
-		class="btn btn-success" role="button"><spring:message code="label.inquiry.output.pagename"/></a>
-</p>  -->
 			<table id="datatable" class="table display">			
 				<thead>
 					<tr>						
@@ -49,11 +44,26 @@
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
 										<c:if test="${role == 'REGISTRATOR'}">	
-											<a href="printOutput/${inquiryUserOut.inquiry_list_id}"
+											<a href="printExtract/${inquiryUserOut.inquiry_list_id}"
 												class="btn btn-primary" role="button"> 
 												<spring:message code="label.inquiry.printExtract" /></a>	
 										</c:if>
 								
+									</div>								
+								</td>							
+							</tr>	
+						</c:forEach>						
+					 </c:if> 					
+				</tbody>										   			
+			</table>	
+				
+<script type="text/javascript">
+<!--
+$("#datatable").DataTable();
+//-->
+</script>
+
+	
 								<!--  
 										<c:if test="${role == 'USER'}">
 											<a href="c:url value='delete/${inquiryUserOut.inquiry_list_id}' />"
@@ -67,14 +77,4 @@
 											<a href="c:url value='printOutput/${inquiryUserOut.inquiry_list_id}' />"
 												class="btn btn-primary" role="button"> 
 												<spring:message code="label.inquiry.printExtract" /></a>	
-										</c:if> -->
-									</div>								
-								</td>							
-							</tr>	
-						</c:forEach>						
-					 </c:if> 					
-				</tbody>										   			
-			</table>	
-	<!--  <div id="role">${role} </div>		-->	
-			
-		
+										</c:if> -->		

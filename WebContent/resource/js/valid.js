@@ -1,13 +1,13 @@
 $(function() {
 	$(Document).on("click","#valid",
 					function(event) {
-		alert("checking");
+						bootbox.alert("checking");
 })
 .ajax({
 	url : $(event.target).attr("href"),
 
 	error : function() {
-		alert('checking');
+		bootbox.alert('checking');
 	}
 
 });

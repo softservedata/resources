@@ -9,16 +9,17 @@ import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.ResourceStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 
 public interface ResourceService {
 	
-	ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus, User registrator);
+	ResourceDTO addNewResource(ResourceDTO resourceDTO, String ownerLogin, User registrator);
 	
 	ResourceDTO findByIdentifier(String identifier);
 
     List<Resource> findByType (ResourceType type);
-
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
     long count();
     
     Set<String> getDescriptionBySearchTag(String searchTag);

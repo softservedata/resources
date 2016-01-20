@@ -160,6 +160,25 @@ public class Resource implements Serializable {
                 + ",tome: " + getTome().getTomeId()
                 + ",reason: " + getReasonInclusion();
     }
+
+    @Override
+    public int hashCode() {
+        return resourcesId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Resource other = (Resource) obj;
+        if (resourcesId != other.resourcesId)
+            return false;
+        return true;
+    }
 }
 
 

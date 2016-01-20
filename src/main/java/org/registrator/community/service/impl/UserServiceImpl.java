@@ -31,6 +31,7 @@ import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,16 +85,20 @@ public class UserServiceImpl implements UserService {
 		logger.info("begin");
 		User user = getUserByLogin(userStatusDTO.getLogin());
 		if (userStatusDTO.getStatus().equals(UserStatus.BLOCK.toString())) {
+			logger.info("set user status to" + UserStatus.BLOCK);
 			user.setStatus(UserStatus.BLOCK);
 		} else {
 			if (userStatusDTO.getStatus().equals(UserStatus.UNBLOCK.toString())) {
+				logger.info("set user status to" + UserStatus.UNBLOCK);
 				user.setStatus(UserStatus.UNBLOCK);
 			} else {
 				if (userStatusDTO.getStatus().equals(UserStatus.INACTIVE.toString())) {
+					logger.info("set user status to" + UserStatus.INACTIVE);
 					user.setStatus(UserStatus.INACTIVE);
 				}
 			}
 		}
+		logger.info("Save user in data base");
 		userRepository.save(user);
 	}
 
@@ -102,14 +107,16 @@ public class UserServiceImpl implements UserService {
      * @return List<UserDTO>
      * 
      */
+	
 	@Transactional
 	@Override
 	public List<UserDTO> getAllRegistratedUsers() {
 		List<UserDTO> userList = getUserDtoList();
 		List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
-
+		
 		for (UserDTO user : userList) {
 			if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
+				logger.info("User is registrated");
 				registratedUsers.add(user);
 			}
 		}
@@ -127,7 +134,9 @@ public class UserServiceImpl implements UserService {
 	public void changeUserRole(String login, Integer role_id) {
 		User user = getUserByLogin(login);
 		Role role = roleRepository.findOne(String.valueOf(role_id));
+		logger.info("user role is"+ role.getType().name());
 		user.setRole(role);
+		logger.info("save user role");
 		userRepository.save(user);
 	}
 
@@ -148,6 +157,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(userDto.getPassword());
 		user.setRole(checkRole(userDto.getRole()));
 		user.setStatus(checkUserStatus(userDto.getStatus()));
+		logger.info("edit user in data base");
 		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
 				Integer.parseInt(userDto.getPassport().getNumber()), userDto.getPassport().getPublished_by_data());
 		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
@@ -155,12 +165,15 @@ public class UserServiceImpl implements UserService {
 				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
 		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
 		if (result != 0) {
+			logger.info("save address");
 			addressRepository.save(address);
 		}
 		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
 		if (result != 0) {
+			logger.info("save passport");
 			passportRepository.save(passport);
 		}
+		logger.info("save all changes");
 		userRepository.save(user);
 
 		return userDto;
@@ -260,6 +273,7 @@ public class UserServiceImpl implements UserService {
      * @return List<UserDTO>
      * 
      */
+	
 	@Transactional
 	@Override
 	public List<UserDTO> getAllInactiveUsers() {
@@ -394,7 +408,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
 		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(Integer.parseInt(resourseNumberDtoJson.getNumber()),
+		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(Integer.parseInt(resourseNumberDtoJson.getResource_number()),
 				resourseNumberDtoJson.getRegistrator_number());
 		ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
 				resourseNumberDto.getRegistratorNumber(), user);

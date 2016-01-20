@@ -1,12 +1,18 @@
 package org.registrator.community.components;
 
+import java.util.Date;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
+import org.registrator.community.enumeration.ResourceStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +39,17 @@ public class TestDataInitializer {
         
         session.persist(new User("user","user",roleUser,"Іван","Головатий","Сергійович","ivan@gmail.com","UNBLOCK"));
         session.persist(new User("admin","admin",roleAdmin,"Сергій","Головатий","Сергійович","sergey@gmail.com","UNBLOCK"));
-        session.persist(new User("registrator","registrator",roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","UNBLOCK"));
+        
+        User registrator = new User("registrator","registrator",roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","UNBLOCK");
+        session.persist(registrator);
+        
+        ResourceType land = new ResourceType("земельний");
+        session.persist(land);  
+        
+        Tome tome = new Tome(registrator, "12345");
+        session.persist(tome);
+           
+        session.persist(new Resource(land, "111111", "ліс", registrator, new Date(), "active", tome, "підстава на внесення"));
         
         transaction.commit();
 	}

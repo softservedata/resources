@@ -37,7 +37,7 @@
 				<td><a
 					href="<c:url value='/administrator/users/edit-registrated-user/?login=${user.login}'/>"
 					class="btn btn-primary" role="button"><spring:message
-							code="label.restype.edit" /></a></td>
+							code="label.user.more" /></a></td>
 			</tr>
 		</c:forEach>
 	</c:if>
