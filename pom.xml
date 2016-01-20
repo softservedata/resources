@@ -107,6 +107,13 @@
 			<version>${org.hibernate.version}</version>
 		</dependency>
 
+		<!-- Mailer -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.5.1</version>
+		</dependency>
+
 		<!-- - - - Web - - - -->
 		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>servlet-api</artifactId> 
 			<version>${javax.servlet.api.version}</version> <scope>provided</scope> </dependency> -->

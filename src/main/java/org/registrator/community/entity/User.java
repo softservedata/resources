@@ -222,5 +222,10 @@ public class User implements Serializable {
     public void setOwners(Set<User> owners) {
         this.owners = owners;
     }
+
+    public void setPasswordHash(String passwordHash){
+        this.password = passwordHash;
+    }
+
 }
 
