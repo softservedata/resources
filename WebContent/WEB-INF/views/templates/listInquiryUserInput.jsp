@@ -41,11 +41,10 @@
 								<td> <div class="block">										
 										<a href="printdata/${inquiryUser.inquiry_list_id}"
 											class="btn btn-primary" role="button"> 
-											<spring:message code="label.inquiry.putInfo" /></a>
-											
-										
-													
-									<!-- 	<a href="<c:url value='printOutput/${inquiryUser.inquiry_list_id}' />"
+											<spring:message code="label.inquiry.print" /></a>
+																		
+												
+									<!-- 	<a href="<c:url value='printdata/${inquiryUser.inquiry_list_id}' />"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>  -->	
 									</div>								
@@ -58,7 +57,12 @@
 				</tbody>
 										   			
 			</table>				
-
+				
+<script type="text/javascript">
+<!--
+$("#datatable").DataTable();
+//-->
+</script>
 
 
 		

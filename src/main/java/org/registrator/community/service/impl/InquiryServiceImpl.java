@@ -29,9 +29,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service class implements InquiryService interface.
+ * Works with procurations of entering data into the register
+ *(input inquiry) and with procurations for an extract from register (output inquiry).
+ * @author Ann
+ *
+ */
 @Service
 public class InquiryServiceImpl implements InquiryService{
-	//public static final Logger logger = LoggerFactory.getLogger(InquiryServiceImpl.class);	
+	
 	@Autowired
 	Logger logger;
 	@Autowired
@@ -61,21 +68,7 @@ public class InquiryServiceImpl implements InquiryService{
 		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;
 	}
-	/*@Transactional
-	@Override
-	public Inquiry addOutputInquiry(InquiryDTO inquiryDTO, String userLogin){
-		User user = userRepository.findUserByLogin(userLogin);
-		String tomeIdentifier = inquiryDTO.getTomeIdentifier();
-		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
-		User registrator = tome.getRegistrator();
-		String resourceIdentifier = inquiryDTO.getResourceIdentifier();
-		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
-		logger.info("try write new line to inquiry_list table");
-		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
-		logger.info("wrote line to inquiry_list table");
-		inquiryRepository.saveAndFlush(inquiry);	
-		return inquiry;
-	}*/
+	
 	
 	/**
 	 * Method for showing form on UI to input the parameters 
@@ -93,6 +86,7 @@ public class InquiryServiceImpl implements InquiryService{
 		}		
 		return aListTomeDTO;
 	}
+	
 	/**
 	 * Method for showing form on UI to input the parameters 
 	 * for inquiry to get the certificate aboute the resource 
@@ -128,7 +122,7 @@ public class InquiryServiceImpl implements InquiryService{
 		List<InquiryListDTO> listInquiryDTO = new ArrayList<InquiryListDTO>();
 		InquiryListDTO inquiryListDTO;
 		User user = userRepository.findUserByLogin(userLogin);
-		//SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		
 		List<Inquiry> listInquiry;
 		if (user.getRole().getType().toString().equals("USER")){
 			listInquiry = inquiryRepository.findByUserAndInquiryType(user, inquiryType);
@@ -180,29 +174,23 @@ public class InquiryServiceImpl implements InquiryService{
 //	    return null;
 //	}
 //	
-	
-		
-/*	@Transactional
+	/*@Transactional
 	@Override
-	public Inquiry addOutputInquiry(InquiryListDTO inquiryListDTO){
-		User user = userRepository.findUserByLogin(inquiryListDTO.getUserLogin());
-		User registrator = userRepository.findUserByLogin(inquiryListDTO.getRegistratorLogin());
-		String identifier = inquiryListDTO.getResource().getIdentifier();
-		Resource resource = resourceRepository.findResourceByIdentifier(identifier); // findByIdentifier
-		Inquiry inquiry = new Inquiry(inquiryListDTO.getInquiryType(), inquiryListDTO.getDate(), user, registrator, resource);
-		inquiryRepository.save(inquiry);	
+	public Inquiry addOutputInquiry(InquiryDTO inquiryDTO, String userLogin){
+		User user = userRepository.findUserByLogin(userLogin);
+		String tomeIdentifier = inquiryDTO.getTomeIdentifier();
+		Tome tome = tomeRepository.findTomeByIdentifier(tomeIdentifier);
+		User registrator = tome.getRegistrator();
+		String resourceIdentifier = inquiryDTO.getResourceIdentifier();
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
+		logger.info("try write new line to inquiry_list table");
+		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
+		logger.info("wrote line to inquiry_list table");
+		inquiryRepository.saveAndFlush(inquiry);	
 		return inquiry;
-	}
-	
-	public Inquiry testAddOutputInquiry(String resourceIdentifier){
-			//Resource resource = resourceRepository.findOne(resourceIdentifier); // findByIdentifier
-		ResourceDTO resourceDTO = new ResourceDTO();
-		resourceDTO.setIdentifier(resourceIdentifier);		
-		InquiryListDTO inquiryListDTO = new InquiryListDTO("OUTPUT", new Date(), "ivan", "petro", resourceDTO);
-		return addOutputInquiry(inquiryListDTO);				
 	}*/
-	
-	
+		
+
 }
 
 
