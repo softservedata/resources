@@ -1,9 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%-- <%@ taglib prefix="spring" uri="http://www.springframework.org/tags”%>  --%>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Login Page for Examples</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-<script type="text/javascript" src="${base}resource/js/lib/captcha.js"></script>
+<script type="text/javascript" src="<c:url value='/resource/js/lib/captcha.js'/>"></script>
 <script type="text/javascript">
 $(function () {
     var captcha = new CAPTCHA({
@@ -36,7 +36,7 @@ fieldset {
 <!-- <div name="sendPassInfo"> -->
 In order to get your new password, type below your email, given while registration, and letter with recovery code will be sent
 <div class="passwordRecoveryContainer">
-    <form id="passwordRecoveryForm" method="GET" action='${pageContext.request.contextPath}/send_password' >
+    <form id="passwordRecoveryForm" method="GET" action="<c:url value='/send_password'/>" >
 		<p><label for="email">Your email:
 		<input type="text" name="email" class="sendpass">
         <p><input type="submit" class="button" id="submit" name="submit" value="Відправити" disabled>
@@ -50,10 +50,10 @@ In order to get your new password, type below your email, given while registrati
 
 </hr>
 <div id="haveCodeLinkContainer">
-<p><a id="haveCodeLink" href="/recovery/code">Already have a recovery code?</a></p>
+<p><a id="haveCodeLink" href="<c:url value='/recovery/code'/>">Already have a recovery code?</a></p>
 </div>
 <div id="contactAdminContainer">
-<p>Don’t remember your registered email or have any other issues with login? <a href="/help" id="forgottenEmailLink">Contact Administrator</a>
+<p>Don’t remember your registered email or have any other issues with login? <a href="<c:url value='/help'/>" id="forgottenEmailLink">Contact Administrator</a>
 </div>
 </body>
 </html>

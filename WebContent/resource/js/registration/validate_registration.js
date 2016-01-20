@@ -117,7 +117,7 @@ function validateInputFields(){
 $('#submit').click(function () {
     var valid = $("input").valid();
     if(valid == false){
-        alert('Please, fill in required fields');
+      bootbox.alert('Please, fill in required fields');
         validateInputFields();
     }
 });

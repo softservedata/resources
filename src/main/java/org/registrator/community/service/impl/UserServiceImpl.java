@@ -6,6 +6,7 @@ import java.util.List;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.ResourceNumberRepository;
+//import org.registrator.community.dao.ResourceNumberRepository;
 import org.registrator.community.dao.RoleRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
@@ -28,7 +29,9 @@ import org.registrator.community.entity.WillDocument;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.UserService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,54 +55,97 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	TomeRepository tomeRepository;
+	
+	@Autowired
+	Logger logger;
 
+	
+	/**
+     * Method, which returns user from database by login
+     * @param login
+     * @return User 
+     * 
+     */
 	@Transactional
 	@Override
 	public User getUserByLogin(String login) {
 		return userRepository.findUserByLogin(login);
 	}
 
+	
+	/**
+     * Method, which changes user status
+     * @param userStatusDTO
+     * @return void 
+     * 
+     */
 	@Transactional
 	@Override
 	public void changeUserStatus(UserStatusDTOJSON userStatusDTO) {
+		logger.info("begin");
 		User user = getUserByLogin(userStatusDTO.getLogin());
 		if (userStatusDTO.getStatus().equals(UserStatus.BLOCK.toString())) {
+			logger.info("set user status to" + UserStatus.BLOCK);
 			user.setStatus(UserStatus.BLOCK);
 		} else {
 			if (userStatusDTO.getStatus().equals(UserStatus.UNBLOCK.toString())) {
+				logger.info("set user status to" + UserStatus.UNBLOCK);
 				user.setStatus(UserStatus.UNBLOCK);
 			} else {
 				if (userStatusDTO.getStatus().equals(UserStatus.INACTIVE.toString())) {
+					logger.info("set user status to" + UserStatus.INACTIVE);
 					user.setStatus(UserStatus.INACTIVE);
 				}
 			}
 		}
+		logger.info("Save user in data base");
 		userRepository.save(user);
 	}
 
+	/**
+     * Method, which retruns all registrated users
+     * @return List<UserDTO>
+     * 
+     */
+	
 	@Transactional
 	@Override
 	public List<UserDTO> getAllRegistratedUsers() {
 		List<UserDTO> userList = getUserDtoList();
 		List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
-
+		
 		for (UserDTO user : userList) {
 			if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
+				logger.info("User is registrated");
 				registratedUsers.add(user);
 			}
 		}
 		return registratedUsers;
 	}
 
+	/**
+     * Method, which changes user role
+     * @param login,role_id
+     * @return void 
+     * 
+     */
 	@Transactional
 	@Override
 	public void changeUserRole(String login, Integer role_id) {
 		User user = getUserByLogin(login);
 		Role role = roleRepository.findOne(String.valueOf(role_id));
+		logger.info("user role is"+ role.getType().name());
 		user.setRole(role);
+		logger.info("save user role");
 		userRepository.save(user);
 	}
 
+	/**
+     * Method, which edits information about user
+     * @param userDto
+     * @return userDTO 
+     * 
+     */
 	@Transactional
 	@Override
 	public UserDTO editUserInformation(UserDTO userDto) {
@@ -111,6 +157,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(userDto.getPassword());
 		user.setRole(checkRole(userDto.getRole()));
 		user.setStatus(checkUserStatus(userDto.getStatus()));
+		logger.info("edit user in data base");
 		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
 				Integer.parseInt(userDto.getPassport().getNumber()), userDto.getPassport().getPublished_by_data());
 		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
@@ -118,17 +165,25 @@ public class UserServiceImpl implements UserService {
 				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
 		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
 		if (result != 0) {
+			logger.info("save address");
 			addressRepository.save(address);
 		}
 		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
 		if (result != 0) {
+			logger.info("save passport");
 			passportRepository.save(passport);
 		}
+		logger.info("save all changes");
 		userRepository.save(user);
 
 		return userDto;
 	}
 
+	/**
+     * Method, which fill in user status for registrateds users
+     * @return List<UserStatus>
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserStatus> fillInUserStatusforRegistratedUsers() {
@@ -138,6 +193,11 @@ public class UserServiceImpl implements UserService {
 		return userStatusList;
 	}
 
+	/**
+     * Method, which fill in user status for inactives users
+     * @return List<UserStatus>
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserStatus> fillInUserStatusforInactiveUsers() {
@@ -148,6 +208,12 @@ public class UserServiceImpl implements UserService {
 		return userStatusList;
 	}
 
+	
+	/**
+     * Method, which gets user list userDto from database
+     * @return userDTO 
+     * 
+     */
 	@Transactional
 	@Override
 	public List<UserDTO> getUserDtoList() {
@@ -167,7 +233,13 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDtoList;
 	}
-
+	
+	/**
+     * Method, which gets user userDto from database
+     * @param login
+     * @return userDTO 
+     * 
+     */
 	@Transactional
 	@Override
 	public UserDTO getUserDto(String login) {
@@ -193,10 +265,15 @@ public class UserServiceImpl implements UserService {
 			}
 			userdto.setWillDocument(willDocumentDTO);
 		}
-		//return userdto;
 		return formUserDTO(user);
 	}
 
+	/**
+     * Method, which gets all inactives users
+     * @return List<UserDTO>
+     * 
+     */
+	
 	@Transactional
 	@Override
 	public List<UserDTO> getAllInactiveUsers() {
@@ -211,22 +288,6 @@ public class UserServiceImpl implements UserService {
 		}
 		return inactiveUserDtoList;
 	}
-
-	// @Override
-	// @Transactional
-	// // public void registerUser(User user, PassportInfo passport, Address
-	// // address) {
-	// public void registerUser(User user) {
-	//
-	// // by default, every new user is given role "User" and status "Inactive"
-	// // until it's changed by Admin
-	// // Roles map: Admin - 1, Registrator - 2, User - 3
-	// // user.setRoleId(3);
-	// user.setStatus(UserStatus.INACTIVE);
-	// userRepository.saveAndFlush(user);
-	// // passportRepository.saveAndFlush(passport);
-	// // addressRepository.saveAndFlush(address);
-	// }
 
 	@Transactional
 	@Override
@@ -244,6 +305,12 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+     * Method, which checks user status
+     * @param status
+     * @return UserStatus
+     * 
+     */
 	private UserStatus checkUserStatus(String status) {
 		if (status.equals(UserStatus.BLOCK.name())) {
 			return UserStatus.BLOCK;
@@ -254,6 +321,12 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+     * Method, which checks user role
+     * @param role
+     * @return Role
+     * 
+     */
 	private Role checkRole(String role) {
 		List<Role> roleList = roleRepository.findAll();
 		if (role.equals(RoleType.USER.name())) {
@@ -325,17 +398,29 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	/**
+     * Method, which creates resoure number
+     * @param resourseNumberDtoJson
+     * @return void
+     * 
+     */
 	@Transactional
 	@Override
 	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
 		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(Integer.parseInt(resourseNumberDtoJson.getNumber()),
+		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(Integer.parseInt(resourseNumberDtoJson.getResource_number()),
 				resourseNumberDtoJson.getRegistrator_number());
 		ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
 				resourseNumberDto.getRegistratorNumber(), user);
 		resourceNumberRepository.save(resourceNumber);
 	}
 
+	/**
+     * Method, which creates tome
+     * @param resourseNumberDtoJson
+     * @return void
+     * 
+     */
 	@Transactional
 	@Override
 	public void createTome(ResourceNumberDTOJSON resourseNumberDtoJson) {

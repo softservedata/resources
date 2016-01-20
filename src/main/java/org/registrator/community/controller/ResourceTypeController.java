@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +28,13 @@ public class ResourceTypeController {
     /**
      * Method for showing all types of resources on UI
      */
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/show-res-types", method = RequestMethod.GET)
     public String showResourceType(Model model) {
-        logger.info("begin");
+        logger.info("begin method for showing all types of resources");
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
         model.addAttribute("listOfResourceType", listOfResourceType);
-        logger.info("end");
+        logger.info("end method for showing all types of resources");
         return "allResourcesTypes";
     }
 
@@ -48,10 +50,11 @@ public class ResourceTypeController {
      * type has at least one resource we will get bad_request and it will not be
      * deleted nor from UI by Ajax neither from database
      */
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/delete/{typeId}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<String> deleteResourceType(@PathVariable Integer typeId) {
-        logger.info("begin");
+        logger.info("begin method for deleting chosen resource type with its parameters");
         int check = resourceTypeService.delete(resourceTypeService.findById(typeId));
         if (check != -1) {
             logger.info("end: cannot delete resource type");

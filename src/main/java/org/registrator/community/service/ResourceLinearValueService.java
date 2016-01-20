@@ -5,6 +5,7 @@ import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceLinearValue;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Oleksiy on 24.12.2015.
@@ -15,4 +16,6 @@ public interface ResourceLinearValueService {
     List<ResourceLinearValue> findAllByLinearParameter (LinearParameter linearParameter);
 
     List<ResourceLinearValue> findAllByValueAndLinearParameter (Double d, LinearParameter linearParameter);
+
+    Set<Resource> findResourcesbyLinearParam(Integer linearParamId, Double searchValue);
 }

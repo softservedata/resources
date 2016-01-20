@@ -3,22 +3,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
+<script src="<c:url value='/resource/js/addResourceType.js'/>"></script>
 
-<spring:url value="/resource/js/addResourceType.js" var="addJs" />
-<script src="${addJs}"></script>
 <h2>
 	<spring:message code="label.restype.add" />
 </h2>
 
 <form:form method="POST" action="addrestype" modelAttribute="newrestype"
 	class="form-horizontal">
-	
+
 	<form:errors path="typeName" cssClass="error" style="color:red" />
 	<div class="form-group">
 		<label class="control-label col-sm-2"><spring:message
@@ -27,7 +21,7 @@
 			<input class="form-control" name="typeName" value="${typeName}"
 				placeholder="Введіть назву тут" required>
 		</div>
-	
+
 	</div>
 	<div class="form-inline">
 		<button type="button" id="clickmeshow" class="btn btn-primary">
@@ -76,4 +70,3 @@
 	</div>
 
 </form:form>
-

@@ -1,14 +1,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="req" value="${pageContext.request}" />
-<c:set var="url">${req.requestURL}</c:set>
-<c:set var="base"
-	value="${fn:substring(url, 0, fn:length(url) - fn:length(req.requestURI))}${req.contextPath}/" />
-
+<c:if test="${not empty tableSetting.script}">
+	<script src="<c:url value='/resource/js/${tableSetting.script}.js'/>"></script>
+</c:if>
 <div class="container">
+
+	<c:if test="${not empty tableSetting.tableTitle}">
+	
+		<div style="text-align: center;">
+			<h4>
+				${tableSetting.tableTitle}
+			</h4>
+		</div>
+	
+	</c:if>
+
 	<div class="dataTable_wrapper">
          <table class="table table-striped table-bordered table-hover" id="example">
 			<thead>
@@ -26,7 +34,15 @@
 <!-- 		        				<span class="col-xs-2"> -->
 <!-- 		        					<select class="form-control"> -->
 <%-- 		        						<c:forEach items="${columnSetting.searchType}" var="searchType"> --%>
-<%-- 		        							<option value="${searchType}">${searchType}</option> --%>
+		        							
+<%-- 		        							<c:if test="${searchType eq 'equal'}"> --%>
+<%-- 												<option value="${searchType}">==</option> --%>
+<%-- 											</c:if> --%>
+											
+<%-- 											<c:if test="${searchType eq 'like'}"> --%>
+<%-- 												<option value="${searchType}">%%</option> --%>
+<%-- 											</c:if> --%>
+	
 <%-- 				                        </c:forEach> --%>
 <!-- 	                    			</select> -->
 <!-- 	                			</span> -->
@@ -54,7 +70,8 @@ jQuery(document).ready(function($) {
 		oTable = $('#example').DataTable({
     	
 		"searching": false,
-		"bSort" : false,
+// 		"bSort" : false,
+		"bSort" : true,
 		"bDestroy": true,
     	"oLanguage": {   
             "sEmptyTable": "В таблиці немає даних",
@@ -74,6 +91,7 @@ jQuery(document).ready(function($) {
               "sZeroRecords": "Нічого не знайдено"
             },
         "serverSide": true,
+//         "aoColumnDefs" : [
         "aoColumns" : [        
 						<c:forEach items="${tableSetting.columnsSetting}" var="columnSetting" varStatus="status">
 							<c:if test="${columnSetting.type eq 'search'}">
@@ -83,13 +101,22 @@ jQuery(document).ready(function($) {
 						        },
 							</c:if>
 						    <c:if test="${columnSetting.type eq 'button'}">
-							    {   "sTitle" : "${columnSetting.title}",
+						    {
+							       	   "sTitle" : "${columnSetting.title}",
 					                   "mData" : "action",
-					                   "sClass" : "center",
-					                   "sClass": "action",
+// 					                   "sClass" : "center",
+// 					                   "sClass": "action",
 					                   "bSortable": false,
-					                   	"sWidth": "15%",
-					                   "sDefaultContent" :   '<button class="btn btn-primary">Edit</button>'
+// 					                   	"sWidth": "15%",
+					                   	"mRender": function ( data, type, full ) {
+					                        return '<a href="edit-registrated-user/?login='+full["login"]+'" class="btn btn-primary"'+
+					                        		'role="button">Редагувати</a>';}
+					                        ,
+// 					                   	"mRender": function(data, type, full) {
+// 					                   	    return '<a class="btn btn-info btn-sm" href=#/' + full[1] + '>' + data + '</a>';
+// 					                   	  }
+// 					                   "sDefaultContent" :   '<button id="action" class="btn btn-primary">Редагувати</button>'
+					                	   
 					            },
 							</c:if>
 						</c:forEach>

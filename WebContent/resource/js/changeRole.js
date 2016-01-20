@@ -7,7 +7,7 @@ $(document).on('change', '#roleId', function() {
 		$('#submit').click(function() {
 			var json = {
 				"login" : $("#login").val(),
-				"number" : $("#number").val(),
+				"resource_number" : $("#resource_number").val(),
 				"identifier" : $("#identifier").val(),
 				"registrator_number" : $("#registrator_number").val()
 			};
@@ -20,10 +20,7 @@ $(document).on('change', '#roleId', function() {
 				
 				success: function() {
 					$('#myModal').modal('hide');
-				},	
-				error: function() {
-					alert("error");
-			}
+				}
 			});
 		})
 		
