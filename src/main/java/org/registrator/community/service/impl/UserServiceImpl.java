@@ -3,6 +3,7 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.ResourceNumberRepository;
@@ -28,16 +29,19 @@ import org.registrator.community.entity.User;
 import org.registrator.community.entity.WillDocument;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
+import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	@Autowired
 	UserRepository userRepository;
 
@@ -340,33 +344,55 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+	 * register user service: accepts 'registrationForm' with fields, needed to store data in Users, Address and Passport_Data tables
+	 * By default, every new user is given role "User" and status "Inactive" until it's changed by Admin
+	 * @param registrationForm
+     */
 	@Override
 	@Transactional
-	public void registerUser(User user, PassportInfo passport, Address address) {
-		// by default, every new user is given role "User" and status "Inactive"
-		// until it's changed by Admin
-		// Roles map: Admin - 1, Registrator - 2, User - 3
-		// user.setRoleId(3);
-		// user.setStatus(UserStatus.INACTIVE);
-		// user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() +
-		// user.getPassword()));
+	public void registerUser(RegistrationForm registrationForm) {
 
+//		if (this.userRepository.findUserByLogin(registrationForm.getLogin()) != null) {
+//			return UserService.ERR_DUP_USER;
+//		}
+//		if (this.userRepository.findUserByEmail(registrationForm.getEmail()) != null) {
+//			return UserService.ERR_DUP_EMAIL;
+//		}
+		User user = new User();
+		user.setLogin(registrationForm.getLogin());
+		user.setEmail(registrationForm.getEmail());
+		user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + registrationForm.getPassword()));
+		user.setFirstName(registrationForm.getFirstName());
+		user.setLastName(registrationForm.getLastName());
+		user.setMiddleName(registrationForm.getMiddleName());
+		user.setRole(roleRepository.findRoleByType(RoleType.USER));
+		user.setStatus(UserStatus.INACTIVE);
 
-//		user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + user.getPassword()));
+		userRepository.saveAndFlush(user);
+		log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());
 
-        user.setRole(roleRepository.findRoleByType(RoleType.USER));
-        user.setStatus(UserStatus.INACTIVE);
-        userRepository.saveAndFlush(user);
+		if (userRepository.findUserByLogin(user.getLogin()) != null) {
+			// insert user's passport data into "passport_data" table
+			PassportInfo passport = new PassportInfo();
+			passport.setUser(user);
+			passport.setSeria(registrationForm.getSeria());
+			passport.setNumber(Integer.parseInt(registrationForm.getNumber()));
+			passport.setPublishedByData(registrationForm.getPublishedByData());
 
-        if (userRepository.findUserByLogin(user.getLogin()) != null) {
-            // // insert user's address records into "address" table
-            address.setUser(user);
-            addressRepository.saveAndFlush(address);
-            // // insert user's passport data into "passport_data" table
-            passport.setUser(user);
-            //passport.setPublishedByData("РВУ ЛМУ України");
-            passportRepository.saveAndFlush(passport);
-        }
+			passportRepository.saveAndFlush(passport);
+			log.info("Inserted passport data for user '{0}', passport_data_id = ", user.getLogin(), passport.getPassportId());
+
+			// insert user's address records into "address" table
+
+//			Address address = new Address();
+//			//
+//			address.setUser(user);
+//			address.setBuilding();
+//			addressRepository.saveAndFlush(address);
+
+		}
+		
 	}
 
 	// @Transactional

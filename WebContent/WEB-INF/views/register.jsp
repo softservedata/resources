@@ -1,11 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Edit User Profile</title>
-<link rel="stylesheet" href="<c:url value='/resource/css/register.css'/>">
-<script src="<c:url value='/resource/js/registration/validate_registration.js'/>" type="text/javascript"></script>
+<link rel="stylesheet" href="${base}resource/css/register.css">
+<link rel="stylesheet" href="${base}resource/css/bootstrap.css">
 <script type="text/javascript">
 // AJAX request
 $(document).ready(function() {
@@ -33,181 +33,112 @@ $(document).ready(function() {
         })}})
 });
 </script>
-
+<style>
+input.error {
+    border-style: solid;
+    border-color: #ff0000;
+}
+span.error {
+color: red;
+}
+</style>
 </head>
 <body>
-<div id="register_container" class="col-md-4">
-  <legend><strong>Зареєструвати нового користувача</strong></legend>
-    <form class="form-horizontal" id="register_form" role="form" method="GET" action="<c:url value='/register2'/>">
-        <div class="personal_header header"><span><b> ► Особисті дані</b></span>
+<p><p><p><p><p>
+<legend><strong>Зареєструвати нового користувача</strong></legend>
+<div id="register_container" style="margin-top: 91px" class="col-md-4">
+<!--   <c:url var="addAction" value="${base}/register"></c:url> -->
+   	<sf:form action="${pageContext.request.contextPath}/register" class="form-horizontal" role="form" modelAttribute="registrationForm" method="POST" name="registrationForm">
+    	<div class="form-group">
+       <div class="personal_header header"><span><b> ► <spring:message code="label.user.information" /></b></span>
         </div>
         <div class="personal_content content">
-            <p>
-              <label for="first_name">Ім'я *</label>
-              <input name="firstName" type="text" class="form-control login" id="first_name" tabindex="100" />
-            </p>
-            <p>
-              <label for="lastname">Прізвище *</label>
-              <input name="lastName" type="text" class="form-control login" id="lastname" tabindex="100" />
-            </p>
-            <p>
-              <label for="middle_name">По батькові *</label>
-              <input name="middleName" type="text" class="form-control login" id="middlename" tabindex="100" />
-            </p>
-            <p>
-              <label for="login">Логін *</label>
-              <input name="login" type="text" class="form-control login" id="login" tabindex="100" />
-            </p>
-            <p>
-              <label for="password">Password *</label>
-              <input id="password" name="password" type="password" class="form-control login" tabindex="100"/>
-            </p>
-            <p>
-              <label for="confirm_password">Confirm password *</label>
-              <input id="confirm_password" name="confirm_password" type="password" class="form-control login" tabindex="100"/>
-            </p>
-            <p>
-              <label for="email">Електронна адреса *</label>
-              <input name="email" type="text" class="form-control login" id="email" tabindex="100" />
-            </p>
-            <p>
-              <label for="date_of_birth">Дата народження (у форматі рррр-мм-дд)</label>
-              <input name="date_of_birth" type="text" class="form-control login" id="date_of_birth" tabindex="100" />
-            </p>
+      <!-- In case you want to see all the error message on the top of the form, uncomment below line:
+      		  <sf:errors path="*" element="div" cssClass="errors" /> -->       
+              <label for="firstName"><spring:message code="label.user.firstname" /></label> *
+              <input name="firstName" type="text" class="form-control login" id="firstName" value="${registrationForm.firstName}" />
+              <sf:errors path="firstName" class="error" /></br>
+
+              <label for="lastName" ><spring:message code="label.user.secondname" /></label> *
+              <input name="lastName" type="text" class="form-control login" id="lastName" value="${registrationForm.lastName}" />
+              <sf:errors path="lastName" class="error" /></br>
+
+              <label for="middleName"><spring:message code="label.user.middlename" /></label> *
+              <input name="middleName" type="text" class="form-control login" id="middleName" />
+              <sf:errors path="middleName" class="error" /></br>
+
+              <label for="email"><spring:message code="label.user.email" /></label> *
+              <input name="email" type="text" class="form-control login" id="email"/>
+              <sf:errors path="email" class="error" /></br>
+
+              <label for="login" ><spring:message code="label.login" /></label> *
+              <input name="login" type="text" class="form-control login" id="login"/>
+              <sf:errors path="login" class="error" /></br>
+
+              <label for="password" ><spring:message code="label.password" /></label> *
+              <input name="password" type="password" class="form-control login" id="password" type="password"/>
+              <sf:errors path="password" class="error" /></br>
+
+              <label for="confirmPassword" >Confirm password *</label>
+              <input name="confirmPassword" type="password" class="form-control login" id="confirmPassword" type="password"/>
+              <sf:errors path="confirmPassword" class="error" /></br>
             </div>
-            <p>
-            <div class="passport_header header"><span><b> ► Паспортні дані</b></span>
+             <p>
+            <div class="passport_header header"><span><b> ► <spring:message code="label.user.passportinfo" /></b></span>
 
             </div>
             <div class="passport_content content">
-            <p>
-              <label for="passport_seria">Паспорт (серія) *</label>
-              <input name="seria" type="text" class="form-control login" id="passport_seria" tabindex="100" />
-            </p>
-             <p>
-              <label for="passport_number">Паспорт (номер) *</label>
-              <input name="number" type="text" class="form-control login" id="passport_number" tabindex="100" />
-            </p>
-             <p>
-              <label for="published_by_data">Ким і коли виданий *</label>
-              <input name="publishedByData" type="text" class="form-control login" id="published_by_data" tabindex="100" />
-            </p>
+              <label for="passport_seria"><spring:message code="label.user.seria" /></label> *
+              <input name="seria" type="text" class="form-control login" id="passport_seria"/>
+              <sf:errors path="seria" class="error" /></br>
+
+              <label for="passport_number"><spring:message code="label.user.number" /></label> *
+              <input name="number" type="text" class="form-control login" id="passport_number"/>
+              <sf:errors path="number" class="error" /></br>
+
+              <label for="published_by_data"><spring:message code="label.user.published" /></label> *
+              <input name="publishedByData" type="text" class="form-control login" id="published_by_data" />
+              <sf:errors path="publishedByData" class="error" /></br>
             </div>
             <p>
-            <div class="address_header header"><span><b> ► Адреса</b></span></div>
+<%--             <div class="address_header header"><span><b> ► Адреса</b></span></div>
             <div class="address_content content">
-              <label for="city">Місто *</label>
-              <input name="city" type="text" class="form-control login" id="city" tabindex="100" />
-            </p>
+                <label for="city">Місто *</label>
+                <input name="city" type="text" class="form-control login" id="city" />
+               <sf:errors path="city" class="error" /></br>
+
+                <label for="region">Область *</label>
+                <input name="region" type="text" class="form-control login" id="region" />
+                <sf:errors path="region" class="error" /></br>
+
+                <label for="district">Район</label>
+                <input name="district" type="text" class="form-control login" id="district"/>
+                <sf:errors path="district" class="error" /></br>
+
+                <label for="street">Вулиця *</label>
+                <input name="street" type="text" class="form-control login" id="street"/>
+                <sf:errors path="street" class="error" /></br>
+
+                <label for="building">Будинок *</label>
+                <input name="building" type="text" class="form-control login" id="building"/>
+                <sf:errors path="building" class="error" /></br>
+
+                <label for="flat">Номер квартири</label>
+                <input name="flat" type="text" class="form-control login" id="flat"/>
+                <sf:errors path="flat" class="error" /></br>
+
+                <label for="postcode">Поштовий код *</label>
+                <input name="postCode" type="text" class="form-control login" id="postcode"/>
+                <sf:errors path="postCode" class="error" /></br>--%>
+            </div> 
             <p>
-              <label for="region">Область *</label>
-              <input name="region" type="text" class="form-control login" id="region" tabindex="100" />
+            <sf:button class="btn btn-success" type="submit" id="submit">Надіслати</sf:button>
+            <sf:button class="btn btn-success" type="reset" onclick="location.replace('register');">Очистити форму</sf:button>
             </p>
-             <p>
-              <label for="district">Район</label>
-              <input name="district" type="text" class="form-control login" id="district" tabindex="100" />
-            </p>
-            <p>
-              <label for="street">Вулиця *</label>
-              <input name="street" type="text" class="form-control login" id="street" tabindex="100" />
-            </p>
-            <p>
-              <label for="building">Будинок *</label>
-              <input name="building" type="text" class="form-control login" id="building" tabindex="100" />
-            </p>
-            <p>
-              <label for="flat">Номер квартири</label>
-              <input name="flat" type="text" class="form-control login" id="flat" tabindex="100" />
-            </p>
-            <p>
-              <label for="postcode">Поштовий код *</label>
-              <input name="postCode" type="text" class="form-control login" id="postcode" tabindex="100" />
-            </p>
-            </div>
-<!--             <div id="captcha">
-            <p><label>Введіть символи</label>
-            </div> -->
-            <p><p>
-            <button class="btn btn-success" type="submit" id="submit">Надіслати</button>
-            <button class="btn btn-success" type="reset" onclick="location.reload();">Очистити форму</button>
-    </form>
-<p>Поля, позначені зірочкою (*), є обов'язковими для заповнення
+   </sf:form>
+<p>Поля, позначені зірочкою (*), є обов'язковими для заповнення   
+</div>
+
+<script src="${base}resource/js/registration/validate_registration.js" type="text/javascript"></script>
+
 </body>
-
-<!--
-ru:
-
-register.required_fields = Поля отмеченные * обязательны к заполнению
-register.form.title = РЕГИСТРАЦИОННАЯ ИНФОРМАЦИЯ
-register.user.firstname = Имя *
-register.user.lastname = Фамилия *
-register.user.middlename = Отчество *
-register.user.username = Логин (only Latin letters are accepted)*
-register.user.password = Пароль *
-register.user.confirm_password = Подтвержение пароля *
-register.user.email = Email *
-register.user.date_of_birth = Дата рождения (гггг-мм-дд)
-register.user.passport = Серия паспорта *
-register.user.passport_number = Номер паспорта *
-register.user.city = Город (посёлок) *
-register.user.street = Улица *
-register.user.flat = Квартира
-register.user.district = Район
-register.user.postcode = Почтовый код *
-register.user.building = Дом *
-register.user.region = Область *
-register.submit = Отправить
-register.reset = Очистить форму
-register.alert.required_fields_missed = Пожалуйста заполните обязательные поля
-register.user.
-
-
-
-en:
-register.required_fields = Fields, marked with (*), are mandatory
-register.form.title = REGISTRATION FORM
-register.user.firstname = First Name *
-register.user.lastname = Last Name *
-register.user.middlename = Middle Name *
-register.user.username = Login (username) *
-register.user.password = Password *
-register.user.confirm_password = Confirm password *
-register.user.email = Email *
-register.user.date_of_birth = Data of birth (yyyy-mm-dd)
-register.user.passport = Passport () *
-register.user.passport_number = Passport number *
-register.user.city = City (town, village) *
-register.user.street = Street *
-register.user.flat = Appartment
-register.user.district = District
-register.user.postcode = Postcode *
-register.user.building = Building number *
-register.user.region = Region *
-register.submit = Submit
-register.reset = Reset
-register.alert.required_fields_missed = Please fill in required fields
-
-ua:
-register.required_fields = Поля, позначені зірочкою (*), є обов'язковими для заповнення
-register.form.title = РЕЄСТРАЦІЙНА ФОРМА
-register.user.firstname = Ім'я *
-register.user.lastname = Прізвище *
-register.user.middlename = По батькові *
-register.user.username = Логін (дозволяється використовувати лише латинські символи) *
-register.user.password = Пароль *
-register.user.confirm_password = Підтвердити пароль *
-register.user.email = Електронна адреса *
-register.user.date_of_birth = Дата народження (у форматі рррр-мм-дд)
-register.user.passport = Серія паспорта *
-register.user.passport_number = Номер паспорта *
-register.user.city = Місто (селище, село) *
-register.user.street = Вулиця *
-register.user.flat = Квартира
-register.user.district = Район ("-" якщо немає)
-register.user.postcode = Поштовий код *
-register.user.building = Номер будинку *
-register.user.region = Область *
-register.submit = Надіслати
-register.reset = Очистити форму
-register.alert.required_fields_missed = Будь ласка заповніть обов'язкові поля
--->

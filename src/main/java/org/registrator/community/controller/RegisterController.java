@@ -8,6 +8,7 @@ import org.registrator.community.components.AdminSettings;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
+import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -29,9 +31,12 @@ public class RegisterController {
 
     @Autowired
     AdminSettings adminSettings;
-    
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String showNewUserRegisterForm() {
+    public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
+        model.addAttribute("registrationForm", new RegistrationForm());
+        log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
+
         if ((adminSettings.getRegistrationMethod().toString() == "MANUAL")
                 && (SecurityContextHolder.getContext().getAuthentication().getName() == "anonymousUser")) {
             return "redirect:/";
@@ -39,10 +44,16 @@ public class RegisterController {
         return "register";
     }
 
-    @RequestMapping(value = "/register2", method = RequestMethod.GET)
-    public String processNewUserData(@Valid User user, @Valid PassportInfo passport, @Valid Address address, BindingResult result) {
-        userService.registerUser(user, passport, address);
-        log.info("Successfully registered new user: " + user.getUserId());
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String processNewUserData(@Valid RegistrationForm registrationForm, Errors result) {
+        if (result.hasErrors()) {
+            log.warn("Registration form sent to server with following errors: \n" + result.getFieldErrors()
+                    + "\n Error messages displayed to user.");
+            return "register";
+        }
+        userService.registerUser(registrationForm);
+
+        log.info("Successfully registered new user: " + registrationForm.getLogin());
         return "thanks-for-registration";
     }
 
