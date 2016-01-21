@@ -35,34 +35,33 @@ public class TestingConfiguration {
 	}
 
 	@Bean(name = "datasource")
-	public DriverManagerDataSource dataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://192.168.195.250/registratortest_db?useUnicode=yes&amp;"
-				+ "characterEncoding=UTF-8&amp;characterSetResults=UTF-8");
-		// dataSource.setUrl("jdbc:mysql://localhost/registratortest_db?useUnicode=yes&amp;"
-		// + "characterEncoding=UTF-8&amp;characterSetResults=UTF-8");
-		dataSource.setUsername("root");
-		dataSource.setPassword("root");
-		return dataSource;
-	}
+    public DriverManagerDataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(org.hsqldb.jdbcDriver.class.getName());
+        dataSource.setUrl("jdbc:hsqldb:mem:mydb");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("jdbc:hsqldb:mem:mydb");
+        return dataSource;
+    }
 
-	@Bean(name = "entityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
-		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactoryBean.setDataSource(dataSource);
-		entityManagerFactoryBean.setPackagesToScan(new String[] { "org.registrator.community.entity" });
-		entityManagerFactoryBean.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
-		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-		Map<String, Object> jpaProperties = new HashMap<String, Object>();
-		jpaProperties.put("hibernate.hbm2ddl.auto", "create");
-		jpaProperties.put("hibernate.show_sql", "true");
-		jpaProperties.put("hibernate.format_sql", "true");
-		jpaProperties.put("hibernate.use_sql_comments", "true");
-		jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-		entityManagerFactoryBean.setJpaPropertyMap(jpaProperties);
-		return entityManagerFactoryBean;
-	}
+    @Bean(name = "entityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
+
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(dataSource);
+        entityManagerFactoryBean.setPackagesToScan(new String[]{"org.registrator.community.entity"});
+        entityManagerFactoryBean.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        Map<String, Object> jpaProperties = new HashMap<String, Object>();
+        jpaProperties.put("hibernate.hbm2ddl.auto", "create-drop");
+        jpaProperties.put("hibernate.show_sql", "true");
+        jpaProperties.put("hibernate.format_sql", "true");
+        jpaProperties.put("hibernate.use_sql_comments", "true");
+        entityManagerFactoryBean.setJpaPropertyMap(jpaProperties);
+
+        return entityManagerFactoryBean;
+    }
 
 	@Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory,

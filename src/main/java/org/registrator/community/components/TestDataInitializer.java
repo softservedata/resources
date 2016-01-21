@@ -13,7 +13,7 @@ import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
-import org.registrator.community.enumeration.ResourceStatus;
+import org.registrator.community.enumeration.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,16 +27,20 @@ public class TestDataInitializer {
 		
 		SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
 		Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+		
+        Transaction roleTransaction = session.beginTransaction();
         
-        Role roleUser = new Role("USER","description");
+        Role roleUser = new Role(RoleType.USER,"description");
         session.persist(roleUser);
         
-        Role roleAdmin = new Role("ADMIN","description");
+        Role roleAdmin = new Role(RoleType.ADMIN,"description");
         session.persist(roleAdmin);
         
-        Role roleRegistrator = new Role("REGISTRATOR","description");
+        Role roleRegistrator = new Role(RoleType.REGISTRATOR,"description");
         session.persist(roleRegistrator);
+        
+        roleTransaction.commit();
+        Transaction userTransaction = session.beginTransaction();
         
         User user = new User("user","user",roleUser,"Іван","Головатий","Сергійович","ivan@gmail.com","UNBLOCK");
         session.persist(user);
@@ -45,19 +49,31 @@ public class TestDataInitializer {
         User registrator = new User("registrator","registrator",roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","UNBLOCK");
         session.persist(registrator);
         
+        userTransaction.commit();
+        Transaction resourceTypeTransaction = session.beginTransaction();
+        
         ResourceType land = new ResourceType("земельний");
-        session.persist(land);  
+        session.persist(land);
+        
+        resourceTypeTransaction.commit();
+        Transaction tomeTransaction = session.beginTransaction();
         
         Tome tome = new Tome(registrator, "12345");
         session.persist(tome);
         
+        tomeTransaction.commit();
+        Transaction resourceTransaction = session.beginTransaction();
+        
         Resource resource = new Resource(land, "111111", "ліс", registrator, new Date(), "active", tome, "підстава на внесення");
         session.persist(resource);
+        
+        resourceTransaction.commit();
+        Transaction inquiryTransaction = session.beginTransaction();
         
         Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
         session.persist(inquiry);
         
-        transaction.commit();
+        inquiryTransaction.commit();
 	}
 
 }
