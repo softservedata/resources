@@ -9,11 +9,13 @@ import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
+import org.registrator.community.forms.RegistrationForm;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
 
 	void changeUserStatus(UserStatusDTOJSON userStatusDto);
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	List<UserDTO> getAllRegistratedUsers();
 
 	User getUserByLogin(String login);
@@ -27,10 +29,10 @@ public interface UserService {
 	List<UserDTO> getUserDtoList();
 
 	UserDTO getUserDto(String login);
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
 	List<UserDTO> getAllInactiveUsers();
 
-	void registerUser(User user, PassportInfo passport, Address address);
+	void registerUser(RegistrationForm registrationForm);
 
 	int updateUser(User user);
 

@@ -18,7 +18,7 @@ public class Inquiry implements Serializable {
     @GeneratedValue
     private Integer inquiry_list_id;
 
-    @Column(name = "inquiry_type", nullable = false, columnDefinition = "ENUM('INPUT','OUTPUT')")
+    @Column(name = "inquiry_type", nullable = false)
     @Enumerated(EnumType.STRING) 
     private InquiryType inquiryType;
     

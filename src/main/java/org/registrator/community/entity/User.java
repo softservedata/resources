@@ -58,7 +58,7 @@ public class User implements Serializable {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "status", nullable = false, columnDefinition = "ENUM('BLOCK','UNBLOCK','INACTIVE')")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
@@ -222,5 +222,9 @@ public class User implements Serializable {
     public void setOwners(Set<User> owners) {
         this.owners = owners;
     }
-}
 
+    public void setPasswordHash(String passwordHash){
+        this.password = passwordHash;
+    }
+
+}

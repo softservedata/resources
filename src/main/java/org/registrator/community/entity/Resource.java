@@ -35,7 +35,7 @@ public class Resource implements Serializable {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "status", nullable = false, columnDefinition = "ENUM('ACTIVE', 'UNCHECKED', 'DENIDED', 'OBSOLETE')")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ResourceStatus status;
 

@@ -18,7 +18,7 @@ public class Role implements Serializable {
     private Integer roleId;
 
 	
-    @Column(name = "type", unique = true, nullable = false, columnDefinition = "ENUM('USER','REGISTRATOR','ADMIN')")
+    @Column(name = "type", unique = true, nullable = false)
 	@Enumerated(EnumType.STRING) 
 	private RoleType type;
     
@@ -28,8 +28,8 @@ public class Role implements Serializable {
     public Role(){
     }
     
-    public Role(String type, String description) {
-		this.type = RoleType.valueOf(type.toUpperCase());
+    public Role(RoleType type, String description) {
+		this.type = type;
 		this.description = description;
 	}
 

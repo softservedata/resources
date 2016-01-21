@@ -17,7 +17,6 @@ public class XmlAnalyzerUtil {
 			JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.marshal(object, new FileOutputStream(filePath));
-			marshaller.marshal(object, System.out);
 			
 		} catch (JAXBException e) {
 			e.printStackTrace();
@@ -28,15 +27,16 @@ public class XmlAnalyzerUtil {
 	
 	@SuppressWarnings("unchecked")
 	public <T> T unmarshal(Class<T> clazz,String filePath){
+
 		try{
 			JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			return (T)  unmarshaller.unmarshal(getClass().getClassLoader()
-		            .getResourceAsStream(filePath));
-			
+			           .getResourceAsStream(filePath));
+				
 		} catch (JAXBException e) {
 			e.printStackTrace();
-		} 	
+		} 
 		return null;
 	}
 	

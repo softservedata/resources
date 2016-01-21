@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 
@@ -32,6 +33,7 @@ public class DataTableSettingsAdapter extends XmlAdapter<DataTableSettingsAdapte
 	}
 	
 	static class TableSettings {
+		@XmlElement(name="table")
 		public List<TableSetting> tables = new ArrayList<TableSetting>();
 	}
 

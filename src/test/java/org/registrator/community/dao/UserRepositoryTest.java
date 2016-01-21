@@ -1,5 +1,4 @@
-package org.registrator.community.repository;
-
+package org.registrator.community.dao;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
@@ -27,6 +26,5 @@ public class UserRepositoryTest {
 		System.out.println(user.getPassword());
 		
 		Assert.assertEquals("Compare user.mail", "ivan@gmail.com",user.getEmail());
-//        assertTrue("True",true);
     }
 }

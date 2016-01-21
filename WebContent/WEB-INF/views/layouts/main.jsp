@@ -20,6 +20,7 @@
 
     <!-- JQuery lib-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<c:url value='/resource/css/bootstrap.css'/>">

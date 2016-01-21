@@ -4,18 +4,18 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<c:set var="newresource" value="${newresource}" scope="session" />
+
 <c:if test="${!empty newresource.date}">
 	<fmt:formatDate value="${newresource.date}" pattern="dd.MM.yyyy"
 		var="FormatedDate" />
 </c:if>
 
-
-
 <div class="container">
 	<h2>
 		<spring:message code="label.resource.add" />
 	</h2>
-	<form:form method="POST" action="addresource"
+	<form:form id="addResource" method="POST" action="addresource"
 		modelAttribute="newresource" class="form-horizontal">
 
 		<!-- select co-owner -->
@@ -24,6 +24,14 @@
 					code="label.resource.co-owner.select" />:</label>
 			<div class="col-sm-3">
 				<input class="form-control" id="owner_search" type="text" value="">
+			</div>
+		</div>
+		
+		<!-- login of the selected co-owner -->
+		<div class="form-group"  hidden="true"> 
+			<label class="control-label col-sm-3">login:</label>
+			<div class="col-sm-3">
+				<input class="form-control" id="owner_login" type="text" value="" name="ownerLogin">
 			</div>
 		</div>
 

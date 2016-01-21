@@ -1,6 +1,7 @@
 package org.registrator.community.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,7 @@ import javax.transaction.Transactional;
 
 import org.registrator.community.dao.AreaRepository;
 import org.registrator.community.dao.DiscreteParameterRepository;
+import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.dao.LinearParameterRepository;
 import org.registrator.community.dao.PolygonRepository;
 import org.registrator.community.dao.ResourceDiscreteValueRepository;
@@ -16,6 +18,7 @@ import org.registrator.community.dao.ResourceLinearValueRepository;
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.ResourceTypeRepository;
 import org.registrator.community.dao.TomeRepository;
+import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
@@ -28,6 +31,7 @@ import org.registrator.community.dto.JSON.PointJSON;
 import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.entity.Area;
 import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.Inquiry;
 import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Polygon;
 import org.registrator.community.entity.Resource;
@@ -73,7 +77,11 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     DiscreteParameterRepository discreteParameterRepository;
-
+    
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+	InquiryRepository inquiryRepository;
 
     /**
      * Method parse the resourceDTO into entity objects and save them into
@@ -85,7 +93,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     @Transactional
-    public ResourceDTO addNewResource(ResourceDTO resourceDTO, ResourceStatus resourceStatus, User registrator) {
+    public ResourceDTO addNewResource(ResourceDTO resourceDTO, String ownerLogin, User registrator) {
         logger.info("Method addNewResource");
         Resource resourceEntity = new Resource();
 
@@ -95,7 +103,7 @@ public class ResourceServiceImpl implements ResourceService {
         resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
         resourceEntity.setTome(tomeRepository.findTomeByRegistrator(registrator));
         resourceEntity.setRegistrator(registrator);
-        resourceEntity.setStatus(resourceStatus);
+        resourceEntity.setStatus(ResourceStatus.ACTIVE);
         ResourceType resourceType = resourceTypeRepository.findByName(resourceDTO.getResourceType());
         resourceEntity.setType(resourceType);
         resourceEntity.setDate(resourceDTO.getDate());
@@ -183,6 +191,11 @@ public class ResourceServiceImpl implements ResourceService {
             }
             discreteValueRepository.save(resourceDiscreteValues);
         }
+        
+        //save data in the table inquiry_list
+        User user = userRepository.findUserByLogin(ownerLogin);
+        Inquiry inquiry = new Inquiry("INPUT", resourceDTO.getDate(), user, registrator, resourceEntity);
+		inquiryRepository.saveAndFlush(inquiry);
 
         return findByIdentifier(resourceEntity.getIdentifier());
     }

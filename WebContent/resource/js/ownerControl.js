@@ -21,6 +21,8 @@ $('#owner_search').autocomplete({
             type: "GET",
             success: function(data){
             	reasonInclusionControl(data);
+            	// for input inquiry
+            	$("#owner_login").val(data.login);
             }
         });
     }

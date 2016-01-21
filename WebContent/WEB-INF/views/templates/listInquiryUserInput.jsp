@@ -39,11 +39,12 @@
 								<td><a href="get/${inquiryUser.resourceIdentifier}"> ${inquiryUser.resourceIdentifier}	</a></td>	
 								<td> ${inquiryUser.resourceStatus}	</td>
 								<td> <div class="block">										
-										<a href="printOutput/${inquiryUser.inquiry_list_id}"
+										<a href="printdata/${inquiryUser.inquiry_list_id}"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
-											
-									<!-- 	<a href="<c:url value='printOutput/${inquiryUser.inquiry_list_id}' />"
+																		
+												
+									<!-- 	<a href="<c:url value='printdata/${inquiryUser.inquiry_list_id}' />"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>  -->	
 									</div>								
@@ -56,7 +57,12 @@
 				</tbody>
 										   			
 			</table>				
-
+				
+<script type="text/javascript">
+<!--
+$("#datatable").DataTable();
+//-->
+</script>
 
 
 		
