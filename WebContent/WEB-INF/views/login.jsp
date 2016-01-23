@@ -17,36 +17,44 @@
 					<div style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>
 
 					<div class="form-group">
-						<label for="inputEmail">Login</label>
+						<label for="inputEmail"><spring:message
+                    code="label.login" /></label>
 						<input class="form-control"
 							id="login" name="login" type="text"
-							placeholder="Username" size="30" autocomplete="on"
+							placeholder=<spring:message
+                    code="label.login" /> size="30" autocomplete="on"
 							autofocus="autofocus">
 
 					</div>
 
 
 					<div class="form-group">
-						<label for="inputPassword">Password</label>
+						<label for="inputPassword"><spring:message
+                    code="label.password" /></label>
 						<input
 							class="form-control" id="password" name="password"
-							type="password" placeholder="Password" size="30"
+							type="password" placeholder=<spring:message
+                    code="label.password" /> size="30"
 							autocomplete="on">
 					</div>
 
 
 
 					<div class="checkbox">
-						<label><input type="checkbox" id="_spring_security_remember_me" value="true" name="_spring_security_remember_me"> Remember me</label>
+						<label><input type="checkbox" id="_spring_security_remember_me" value="true" name="_spring_security_remember_me">
+						 <spring:message code="label.rememberMe" /></label>
 					</div>
+					
+					<div class="form-group" align="center" >
 					<button type="submit" class="btn btn-primary"
-						style="width: 100px; margin-left: 60px;">Login</button>
+						style="width: 100px;"><spring:message code="label.signIn" /></button>
 					
 					
 					<c:if test="${registrationMethod eq ('PERSONAL') || registrationMethod eq ('MIXED')}">
 					<a href="${pageContext.request.contextPath}/register" class="btn btn-success"
-						role="button" style="width: 100px;">Register</a>
+						role="button" ><spring:message code="label.register" /></a>
 					</c:if>
+					</div>
 				</form:form>
 			</c:if>
 		</fieldset>

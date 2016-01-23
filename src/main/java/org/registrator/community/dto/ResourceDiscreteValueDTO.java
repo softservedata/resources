@@ -3,11 +3,16 @@ package org.registrator.community.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 public class ResourceDiscreteValueDTO {
     
+    
+    @Valid
     private List<ValueDiscreteDTO> valueDiscretes = new ArrayList<ValueDiscreteDTO>();
  
     private String discreteParameterDescription;
+    
     private String discreteParameterUnit;
     
     public ResourceDiscreteValueDTO() {

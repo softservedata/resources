@@ -106,11 +106,11 @@
 				<label><input id="pass" type="checkbox" disabled> <spring:message
 						code="label.resource.pass" /></label><br /> <label><input
 					id="will" type="checkbox" disabled> <spring:message
-						code="label.resource.willDocumant" /></label><br /> <label><input
+						code="label.resource.willDocument" /></label><br /> <label><input
 					id="otherDocs" type="checkbox" disabled> <spring:message
 						code="label.resource.otherDocuments" /></label><br /> <label><input
 					id="tytul" type="checkbox" disabled> <spring:message
-						code="label.resource.propertyTilel" /></label><br /> <label><input
+						code="label.resource.propertyTitle" /></label><br /> <label><input
 					id="delivery" type="checkbox"> <spring:message
 						code="label.resource.assignment" /></label>
 			</div>
@@ -147,15 +147,14 @@
 
 		<%--Container for Google map--%>
 		<p>
-			<i>Щоб виділити на мапі область, оберіть інструмент "Намалювати
-				фігуру" в верхній частині мапи.</i>
+			<i><spring:message code="label.resource.coordinates.message" /></i>
 		</p>
 
 		<div id="map_canvas" class="container"
 			style="height: 500px; padding: 20px 0px;"></div>
 		<div class="col-sm-12">
 			<button id="addPointsFromMap" class="btn btn-primary" type="button"
-				style="margin-top: 10px;">Додати координати з мапи</button>
+				style="margin-top: 10px;"><spring:message code="label.resource.coordinates.addFromMap" /></button>
 		</div>
 
 		<div class="form-group">

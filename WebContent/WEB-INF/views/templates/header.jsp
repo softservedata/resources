@@ -16,11 +16,12 @@
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 				
 				<div class="col-md-7">
-				<label>Welcome, ${pageContext.request.userPrincipal.name}</label>
+				<label>${pageContext.request.userPrincipal.name}</label>
 				</div>
 				<div class="col-md-5">
-				<a href="<c:url value="/logout"/>" class="btn btn-primary btn-sm" role="button">Logout</a>
+				<a href="<c:url value="/logout"/>" class="btn btn-primary btn-sm" role="button"><spring:message code="label.signOut" /></a>
 				</div>
+				
 			</c:if>
 
 
