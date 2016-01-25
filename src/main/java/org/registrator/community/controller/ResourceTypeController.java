@@ -1,8 +1,6 @@
 package org.registrator.community.controller;
 
 import java.util.List;
-
-import org.registrator.community.components.AdminSettings;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.service.ResourceTypeService;
 import org.slf4j.Logger;
@@ -29,7 +27,7 @@ public class ResourceTypeController {
     /**
      * Method for showing all types of resources on UI
      */
-    @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/show-res-types", method = RequestMethod.GET)
     public String showResourceType(Model model) {
         logger.info("begin method for showing all types of resources");

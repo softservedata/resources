@@ -333,15 +333,12 @@ public class UserServiceImpl implements UserService {
      */
 	private Role checkRole(String role) {
 		List<Role> roleList = roleRepository.findAll();
-		if (role.equals(RoleType.USER.name())) {
-			return roleList.get(2);
-		} else {
-			if (role.equals(RoleType.REGISTRATOR.name())) {
-				return roleList.get(1);
-			} else {
-				return roleList.get(0);
-			}
-		}
+		switch(role){
+		case "USER": return roleList.get(2); 
+		case "REGISTRATOR": return roleList.get(1);
+		case "COMMISSIONER": return roleList.get(3);
+		default: return roleList.get(0);
+		}	
 	}
 
 	/**

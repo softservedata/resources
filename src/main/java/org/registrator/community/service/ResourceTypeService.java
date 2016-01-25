@@ -14,7 +14,7 @@ public interface ResourceTypeService{
 	boolean delete(ResourceType resourceType);
 	
 	ResourceType findByName(String name);
-	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	List<ResourceType> findAll();
 	
 	ResourceTypeDTO editResourceType(ResourceTypeDTO resourceTypeDTO);

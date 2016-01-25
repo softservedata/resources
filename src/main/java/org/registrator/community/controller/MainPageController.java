@@ -34,7 +34,6 @@ public class MainPageController {
 			logger.info("end: incorrect credentials");
 			return "redirect:/login";
 		} else {
-			/*model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());*/
 			session.setAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());
 			logger.info("end: correct credentials");
 			return "homepage";
