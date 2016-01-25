@@ -125,7 +125,7 @@
 <p>
     <input id="gmaps-input" class="controls gmap-input"
            style="width: 300px;" type="text"
-           placeholder="Пошук на мапі">
+           placeholder=<spring:message code="label.menu.searchOnMap"/>>
 </p>
 
 <%--AJAX Loader on the dark display--%>

@@ -243,7 +243,7 @@
 		<div class="button">
 			<input type="submit" class="btn btn-success"
 				value=<spring:message code="label.save"/>>
-			<button type="reset" class="btn btn-default" id="hahaha">
+			<button type="reset" class="btn btn-default">
 				<spring:message code="label.clearall" />
 			</button>
 		</div>
@@ -252,11 +252,10 @@
 	<%--Scripts for Google Map--%>
 	<p>
 		<input id="gmaps-input" class="controls gmap-input"
-			style="width: 300px;" type="text" placeholder="Пошук на мапі">
+			style="width: 300px;" type="text" placeholder=<spring:message code="label.menu.searchOnMap"/>>
 	</p>
 	<p>
-		<a id="gmaps-show-res" class="controls gmap-button">Показати
-			ресурси</a>
+		<a id="gmaps-show-res" class="controls gmap-button"><spring:message code="label.showResources"/></a>
 	</p>
 
 	<%--AJAX Loader on the dark display--%>

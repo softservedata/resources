@@ -188,7 +188,7 @@ function getResources() {
         },
         error: function () {
             $("#dark_bg").hide();
-            bootbox.alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
+            bootbox.alert(jQuery.i18n.prop('msg.error'));
         }
     });
     //return dfd.done();
@@ -199,7 +199,7 @@ $("#gmaps-show-res").click(function () {
 
     if (resType == "") {
         $("#resourcesTypeSelect").focus();
-        bootbox.alert("Будь ласка, оберіть підклас об'єкту.");
+        bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         return false;
     }
     getResources();
@@ -212,7 +212,7 @@ $("#addPointsFromMap").click(function () {
 
     if (resType == "") {
         $("#resourcesTypeSelect").focus();
-        bootbox.alert("Будь ласка, оберіть підклас об'єкту.");
+        bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         return false;
     }
 
@@ -308,11 +308,11 @@ $("#addPointsFromMap").click(function () {
             });
         }
         else {
-            bootbox.alert("Ресурси перетинаються!");
+            bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
         }
     }
     else {
-        bootbox.alert("Намалюйте хоч один полігон на мапі.");
+        bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
     }
 });
 
