@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -35,10 +36,14 @@ public class ResourceDTO {
     private String reasonInclusion;
         
     private String tomeIdentifier;
-        
+    
+    @Valid
     private ResourceAreaDTO resourceArea;
     
+    @Valid
     private List<ResourceLinearValueDTO> resourceLinear = new ArrayList<ResourceLinearValueDTO>();
+    
+    @Valid
     private List<ResourceDiscreteValueDTO> resourceDiscrete = new ArrayList<ResourceDiscreteValueDTO>();
     
     public ResourceDTO() {

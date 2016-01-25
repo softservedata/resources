@@ -45,7 +45,7 @@ color: red;
 </head>
 <body>
 <p><p><p><p><p>
-<legend><strong>Зареєструвати нового користувача</strong></legend>
+<legend><strong><spring:message code="label.manualregister" /></strong></legend>
 <div id="register_container" style="margin-top: 91px" class="col-md-4">
 <!--   <c:url var="addAction" value="${base}/register"></c:url> -->
    	<sf:form action="${pageContext.request.contextPath}/register" class="form-horizontal" role="form" modelAttribute="registrationForm" method="POST" name="registrationForm">
@@ -79,7 +79,7 @@ color: red;
               <input name="password" type="password" class="form-control login" id="password" type="password"/>
               <sf:errors path="password" class="error" /></br>
 
-              <label for="confirmPassword" >Confirm password *</label>
+              <label for="confirmPassword" ><spring:message code="label.confirmPassword" /> *</label>
               <input name="confirmPassword" type="password" class="form-control login" id="confirmPassword" type="password"/>
               <sf:errors path="confirmPassword" class="error" /></br>
             </div>
@@ -132,11 +132,11 @@ color: red;
                 <sf:errors path="postCode" class="error" /></br>--%>
             </div> 
             <p>
-            <sf:button class="btn btn-success" type="submit" id="submit">Надіслати</sf:button>
-            <sf:button class="btn btn-success" type="reset" onclick="location.replace('register');">Очистити форму</sf:button>
+            <sf:button class="btn btn-success" type="submit" id="submit"><spring:message code="label.send" /></sf:button>
+            <sf:button class="btn btn-success" type="reset" onclick="location.replace('register');"><spring:message code="label.clearall" /></sf:button>
             </p>
    </sf:form>
-<p>Поля, позначені зірочкою (*), є обов'язковими для заповнення   
+<p><spring:message code="label.msg.required" /> 
 </div>
 
 <script src="${base}resource/js/registration/validate_registration.js" type="text/javascript"></script>

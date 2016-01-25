@@ -2,7 +2,7 @@ $(function() {
 	$(document).on("click","#deleterestype",
 					function(event) {
 		event.preventDefault();
-						bootbox.confirm("Ви впевнені, що хочете видалити цей підклас?",function(result){
+						bootbox.confirm(jQuery.i18n.prop('msg.confirmDelete'),function(result){
 						if (result) {
 							$
 									.ajax({

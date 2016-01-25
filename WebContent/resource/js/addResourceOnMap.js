@@ -62,26 +62,6 @@ function initialize() {
     });
 
 
-    //var drawingManager = new google.maps.drawing.DrawingManager({
-    //    drawingControl: true,
-    //    drawingControlOptions: {
-    //        position: google.maps.ControlPosition.TOP_CENTER,
-    //        drawingModes: [google.maps.drawing.OverlayType.POLYGON]
-    //    },
-    //    //drawingMode: google.maps.drawing.OverlayType.POLYGON,
-    //    polygonOptions: {
-    //        fillColor: '#008000',
-    //        fillOpacity: 0.4,
-    //        strokeColor: "#006400",
-    //        strokeWeight: 3,
-    //        clickable: false,
-    //        zIndex: 1,
-    //        editable: true
-    //    }
-    //});
-
-    //drawingManager.setMap(map);
-
     // Create the search box and link it to the UI element.
     var input = document.getElementById('gmaps-input');
     var button = document.getElementById('gmaps-show-res');
@@ -217,8 +197,8 @@ function getResources() {
             //$("#dark_bg").hide();
         },
         error: function () {
-            //$("#dark_bg").hide();
-            bootbox.alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
+            $("#dark_bg").hide();
+            bootbox.alert(jQuery.i18n.prop('msg.error'));
         }
     });
     //return dfd.done();
@@ -244,7 +224,7 @@ function intersectionCheck(polygon){
 
     if (resType == "") {
         $("#resourcesTypeSelect").focus();
-        bootbox.alert("Будь ласка, оберіть підклас об'єкту.");
+        bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         $("#dark_bg").hide();
         return true;
     }
@@ -306,7 +286,7 @@ function intersectionCheck(polygon){
         polygon.setEditable(false);
     }
     else {
-        bootbox.alert("Ресурси перетинаються!");
+        bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
     }
     $("#dark_bg").hide();
     return intersection;
@@ -317,7 +297,7 @@ $("#gmaps-show-res").click(function () {
 
     if (resType == "") {
         $("#resourcesTypeSelect").focus();
-        bootbox.alert("Будь ласка, оберіть підклас об'єкту.");
+        bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         return false;
     }
     getResources();
@@ -342,8 +322,6 @@ $("#addPointsFromMap").click(function () {
                     var end = String(pointsArray[j]).length;
                     var latitude = Number(String(pointsArray[j]).slice(1, delimiter));
                     var longitude = Number(String(pointsArray[j]).slice(delimiter + 1, end - 1));
-                    //var latitude = Number(pointsArray[j].lat());
-                    //var longitude = Number(pointsArray[j].lng());
 
                     var latitudeDegrees = Math.floor(latitude);
                     var latitudeMinutes = Math.floor((latitude - latitudeDegrees) * 60);
@@ -355,7 +333,6 @@ $("#addPointsFromMap").click(function () {
                     addNewPoint(i,
                         latitudeDegrees, latitudeMinutes, latitudeSeconds,
                         longitudeDegrees, longitudeMinutes, longitudeSeconds);
-
                 }
                 newPolygons[i].setOptions({fillColor: "#003400"});
 
@@ -380,7 +357,7 @@ $("#addPointsFromMap").click(function () {
         $(".toggle a").addClass("inactiveLink");
     }
     else {
-        bootbox.alert("Намалюйте хоч один полігон на мапі.");
+        bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
     }
 });
 
@@ -414,7 +391,7 @@ $("#cp-wrap").on("click", "a", function(){
                 }
             }
             else {
-                bootbox.alert("Будь ласка, додайте полігон");
+                bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
             }
         }
         else {

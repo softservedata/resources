@@ -106,11 +106,11 @@
 				<label><input id="pass" type="checkbox" disabled> <spring:message
 						code="label.resource.pass" /></label><br /> <label><input
 					id="will" type="checkbox" disabled> <spring:message
-						code="label.resource.willDocumant" /></label><br /> <label><input
+						code="label.resource.willDocument" /></label><br /> <label><input
 					id="otherDocs" type="checkbox" disabled> <spring:message
 						code="label.resource.otherDocuments" /></label><br /> <label><input
 					id="tytul" type="checkbox" disabled> <spring:message
-						code="label.resource.propertyTilel" /></label><br /> <label><input
+						code="label.resource.propertyTitle" /></label><br /> <label><input
 					id="delivery" type="checkbox"> <spring:message
 						code="label.resource.assignment" /></label>
 			</div>
@@ -170,8 +170,7 @@
 			style="height: 500px; padding: 20px 0px;"></div>
 		<div class="col-sm-12">
 			<button id="addPointsFromMap" class="btn btn-primary" type="button"
-				style="margin-top: 10px;"><spring:message
-                    code="label.addCoordsFromMap" /></button>
+                    style="margin-top: 10px;"><spring:message code="label.resource.coordinates.addFromMap" /></button>
 			<%--<button id="show_UA" class="btn btn-primary" type="button"--%>
 					<%--style="margin-top: 10px;">Show Ukraine</button>--%>
 		</div>
@@ -271,7 +270,7 @@
     <%--Search on the map--%>
 	<p>
 		<input id="gmaps-input" class="controls gmap-input"
-			style="width: 300px;" type="text" placeholder="<spring:message code="label.searchOnMap" />">
+			style="width: 300px;" type="text" placeholder=<spring:message code="label.menu.searchOnMap"/>>
 	</p>
 
     <%--Search existing resources on the map--%>
