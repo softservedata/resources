@@ -381,7 +381,7 @@ public class ResourceController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/owners", method = RequestMethod.GET)
+	@RequestMapping(value = "/owners", method = RequestMethod.POST)
 	public List<UserDTO> getOwnersSuggestions(@RequestParam("ownerDesc") String ownerDesc) {
 		List<UserDTO> userList = userService.getUserBySearchTag(ownerDesc);
 		return userList;

@@ -292,16 +292,20 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Введіть дані</h4>
+						<h4 class="modal-title"><spring:message
+                                code="label.registrator.enterData" /></h4>
 					</div>
 					<div class="modal-body">
-						<label class="control-label">Номер тому</label> <input
+						<label class="control-label"><spring:message
+                                code="label.registrator.tomeNumber" /></label> <input
 							id="identifier" name="identifier" class="form-control input-md"
-							type="text" required> <label class="control-label">Номер
-							реєстратора</label> <input id="registrator_number"
+							type="text" required> <label class="control-label"><spring:message
+                                code="label.registrator.registratorNumber" /></label> 
+                                <input id="registrator_number"
 							name="registrator_number" class="form-control input-md"
-							type="text" required> <label class="control-label">Реєстраційний
-							номер об'єкту</label> <input id="resource_number" name="resource_number"
+							type="text" required> <label class="control-label"><spring:message
+                                code="label.registrator.objectIdentifier" /></label> 
+                                <input id="resource_number" name="resource_number"
 							class="form-control input-md" type="text" required>
 					</div>
 					<div class="modal-footer">
