@@ -130,7 +130,7 @@ public class InquiryController {
 	 * @param model - the model
 	 * @return listInqUserOut.jsp
 	 */
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
 	public String listInqUserOut(Model model) {	
 		logger.info("begin listInqUserOut");		
@@ -150,7 +150,7 @@ public class InquiryController {
 	 * @param model - the model
 	 * @return listInquiryUserInput.jsp
 	 */
-	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	public String listInquiryUserInput(Model model) {
 		logger.info("begin listInquiryUserInput");

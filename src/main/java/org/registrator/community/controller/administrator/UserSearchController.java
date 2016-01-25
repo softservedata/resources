@@ -29,7 +29,7 @@ public class UserSearchController {
 	@Autowired
 	TableSettingsFactory tableSettingsFactory;
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value="search")
 	public String getUserBySearchCriteria(Model model){
 		model.addAttribute("tableSetting", tableSettingsFactory.getTableSetting("userSearch"));

@@ -1,5 +1,7 @@
 package org.registrator.community.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.registrator.community.components.AdminSettings;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,15 @@ public class MainPageController {
 	 * @return homepage
 	 */
 	@RequestMapping("/")
-	public String welcome(Model model) {
+	public String welcome(Model model, HttpSession session) {
 		logger.info("begin");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (("anonymousUser").equals(auth.getName())) {
 			logger.info("end: incorrect credentials");
 			return "redirect:/login";
 		} else {
-			model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());
+			/*model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());*/
+			session.setAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString());
 			logger.info("end: correct credentials");
 			return "homepage";
 		}

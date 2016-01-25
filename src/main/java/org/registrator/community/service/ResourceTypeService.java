@@ -11,10 +11,10 @@ public interface ResourceTypeService{
     
 	ResourceType addResourceType (ResourceType resourceType);
 	
-	int delete(ResourceType resourceType);
+	boolean delete(ResourceType resourceType);
 	
 	ResourceType findByName(String name);
-	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
 	List<ResourceType> findAll();
 	
 	ResourceTypeDTO editResourceType(ResourceTypeDTO resourceTypeDTO);

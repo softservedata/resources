@@ -65,16 +65,16 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
      * or 0: if we can delete type of resource from DB
      */
     @Override
-    public int delete(ResourceType resourceType) {
+    public boolean delete(ResourceType resourceType) {
         logger.info("begin method for deleting resource type");
         List<Resource> list = resourceService.findByType(resourceType);
         if(list.isEmpty()){
             resourceTypeRepository.delete(resourceType);
             logger.info("end: return 0 if list is empty");
-            return 0;
+            return true;
         }
         logger.info("end: return -1 if list isn't empty");
-        return -1;
+        return false;
     }
     /**
      * Find all types of resources 
