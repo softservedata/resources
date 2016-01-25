@@ -1,7 +1,7 @@
 var map;
 var polygons = [];
 var newPolygons = [];
-var bounds = new google.maps.LatLngBounds();
+var PS = null;
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -35,32 +35,61 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), mapProp);
 
-    var drawingManager = new google.maps.drawing.DrawingManager({
-        drawingControl: true,
-        drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: [google.maps.drawing.OverlayType.POLYGON]
+    //Drawing of the snappable polygon. External plugin
+    var polystyle = {
+                fillColor: '#008000',
+                fillOpacity: 0.4,
+                strokeColor: "#006400",
+                strokeWeight: 3,
+                clickable: false,
+                zIndex: 1
+    };
+
+    PS = PolySnapper({
+        map: map,
+        threshold: 20,
+        key: 'shift',
+        keyRequired: true,
+        polygons: polygons,
+        polystyle: polystyle,
+        //hidePOI: true,
+        onEnabled: function(){
+            console.log("enabled")
         },
-        //drawingMode: google.maps.drawing.OverlayType.POLYGON,
-        polygonOptions: {
-            fillColor: '#008000',
-            fillOpacity: 0.4,
-            strokeColor: "#006400",
-            strokeWeight: 3,
-            clickable: false,
-            zIndex: 1,
-            editable: true
+        onDisabled: function(){
+            console.log("disabled")
         }
     });
 
-    drawingManager.setMap(map);
+
+    //var drawingManager = new google.maps.drawing.DrawingManager({
+    //    drawingControl: true,
+    //    drawingControlOptions: {
+    //        position: google.maps.ControlPosition.TOP_CENTER,
+    //        drawingModes: [google.maps.drawing.OverlayType.POLYGON]
+    //    },
+    //    //drawingMode: google.maps.drawing.OverlayType.POLYGON,
+    //    polygonOptions: {
+    //        fillColor: '#008000',
+    //        fillOpacity: 0.4,
+    //        strokeColor: "#006400",
+    //        strokeWeight: 3,
+    //        clickable: false,
+    //        zIndex: 1,
+    //        editable: true
+    //    }
+    //});
+
+    //drawingManager.setMap(map);
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('gmaps-input');
     var button = document.getElementById('gmaps-show-res');
+    var drawing = document.getElementById('cp-wrap');
     var searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(button);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(drawing);
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function () {
@@ -120,17 +149,17 @@ function initialize() {
         map.fitBounds(bounds);
     });
 
-    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-        drawingManager.setDrawingMode(null);
-        var polygon = event.overlay;
-        var vertices = polygon.getPath();
-        newPolygons.push(polygon);
-
-        for (var i = 0; i < vertices.getLength(); i++) {
-            bounds.extend(vertices.getAt(i));
-        }
-
-    });
+    //google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+    //    drawingManager.setDrawingMode(null);
+    //    var polygon = event.overlay;
+    //    var vertices = polygon.getPath();
+    //    newPolygons.push(polygon);
+    //
+    //    for (var i = 0; i < vertices.getLength(); i++) {
+    //        bounds.extend(vertices.getAt(i));
+    //    }
+    //
+    //});
 
 }
 
@@ -148,7 +177,7 @@ function getResources() {
         polygons = [];
     }
 
-    $("#dark_bg").show();
+    //$("#dark_bg").show();
     $.ajax({
         data: {
             "minLat": minLat,
@@ -179,19 +208,108 @@ function getResources() {
                     strokeWeight: 2, // Ширина обводки
                     fillColor: "#0000FF", // Цвет заливки
                     fillOpacity: 0.3, // Прозрачность заливки
+                    snapable: true,
                     map: map
                 });
                 polygons.push(polygon);
             }
             //console.log("Find " + polygons.length + " polygons");
-            $("#dark_bg").hide();
+            //$("#dark_bg").hide();
         },
         error: function () {
-            $("#dark_bg").hide();
+            //$("#dark_bg").hide();
             bootbox.alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
         }
     });
     //return dfd.done();
+}
+
+
+//Function which checks does the new polygon intersect other polygons
+//At the moment we check only do the point of one polygon inside of the other one.
+
+function intersectionCheck(polygon){
+
+    $("#dark_bg").show();
+
+    var intersection = false;
+    var point;
+    var i, j, k;
+    var isWithinPolygon;
+    var vertices;
+    var sameVertice = false;
+    var verticesPoly;
+    var resType = $("#resourcesTypeSelect").val();
+    var bounds = new google.maps.LatLngBounds();
+
+    if (resType == "") {
+        $("#resourcesTypeSelect").focus();
+        bootbox.alert("Будь ласка, оберіть підклас об'єкту.");
+        $("#dark_bg").hide();
+        return true;
+    }
+
+    vertices = polygon.getPath();
+    for (i = 0; i < vertices.getLength(); i++) {
+        bounds.extend(vertices.getAt(i));
+    }
+
+    map.fitBounds(bounds);
+
+    getResources();
+
+    for (i = 0; i < vertices.getLength(); i++) {
+        point = vertices.getAt(i);
+        for (j = 0; j < polygons.length; j++) {
+            isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygons[j]);
+            if (isWithinPolygon) {
+                sameVertice = false;
+                verticesPoly = polygons[j].getPath();
+                for (k = 0; k < verticesPoly.getLength(); k++) {
+                    if ((point != verticesPoly.getAt(k)) && (!sameVertice)) {
+                        sameVertice = true;
+                    }
+                }
+                if (!sameVertice) {
+                    intersection = true;
+                    polygons[j].setOptions({fillColor: "#FF0000"});
+                }
+
+            }
+        }
+    }
+
+    for (i = 0; i < polygons.length; i++) {
+        verticesPoly = polygons[i].getPath();
+        for (j = 0; j < verticesPoly.getLength(); j++) {
+            point = verticesPoly.getAt(j);
+            for (k = 0; k < newPolygons.length; k++) {
+                isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygon);
+                if (isWithinPolygon) {
+                    sameVertice = false;
+                    for (var l = 0; l < vertices.getLength(); l++) {
+                        if ((point != vertices.getAt(l)) && (!sameVertice)) {
+                            sameVertice = true;
+                        }
+                    }
+                    if (!sameVertice) {
+                        intersection = true;
+                        polygons[i].setOptions({fillColor: "#FF0000"});
+                    }
+                }
+            }
+        }
+    }
+
+    if (!intersection) {
+        newPolygons.push(polygon);
+        polygon.setEditable(false);
+    }
+    else {
+        bootbox.alert("Ресурси перетинаються!");
+    }
+    $("#dark_bg").hide();
+    return intersection;
 }
 
 $("#gmaps-show-res").click(function () {
@@ -208,68 +326,14 @@ $("#gmaps-show-res").click(function () {
 
 //Add coordinates from map and verify them
 $("#addPointsFromMap").click(function () {
-    var resType = $("#resourcesTypeSelect").val();
-
-    if (resType == "") {
-        $("#resourcesTypeSelect").focus();
-        bootbox.alert("Будь ласка, оберіть підклас об'єкту.");
-        return false;
-    }
 
     if (newPolygons.length > 0) {
 
         var area = new Number();
         var perimeter = new Number();
-        var intersection = false;
-
-        map.fitBounds(bounds);
-
-
-        //Below we check does the new polygon intersect other polygons
-        //At the moment we check only do the point of one polygon inside the other one.
-
-        getResources();
-        //console.log("polygons: " + polygons.length);
-        if (polygons.length > 0) {
-            for (var i = 0; i < newPolygons.length; i++) {
-
-                //console.log("Check started!");
-                var vertices = newPolygons[i].getPath();
-                for (var j = 0; j < vertices.getLength(); j++) {
-                    var point = vertices.getAt(j);
-                    //console.log("Point: " + point);
-                    for (var k = 0; k < polygons.length; k++) {
-                        var isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygons[k]);
-                        if (isWithinPolygon) {
-                            //console.log("Point inside!!!!");
-                            intersection = true;
-                            polygons[k].setOptions({fillColor: "#FF0000"});
-                        }
-                    }
-                }
-            }
-            for (var i = 0; i < polygons.length; i++) {
-
-                var vertices = polygons[i].getPath();
-                for (var j = 0; j < vertices.getLength(); j++) {
-                    var point = vertices.getAt(j);
-                    //console.log("Point: " + point);
-                    for (var k = 0; k < newPolygons.length; k++) {
-                        var isWithinPolygon = google.maps.geometry.poly.containsLocation(point, newPolygons[k]);
-                        if (isWithinPolygon) {
-                            //console.log("Point inside!!!!");
-                            intersection = true;
-                            polygons[i].setOptions({fillColor: "#FF0000"});
-
-                        }
-                    }
-                }
-            }
-        }
 
         //If user entered the correct polygon and it doesn't intersect with existing polygons
         //we add points coordinates to inputs and deny to edit entered polygon.
-        if (!intersection) {
             for (var i = 0; i < newPolygons.length; i++) {
 
                 var pointsArray = newPolygons[i].getPath().getArray();
@@ -278,6 +342,8 @@ $("#addPointsFromMap").click(function () {
                     var end = String(pointsArray[j]).length;
                     var latitude = Number(String(pointsArray[j]).slice(1, delimiter));
                     var longitude = Number(String(pointsArray[j]).slice(delimiter + 1, end - 1));
+                    //var latitude = Number(pointsArray[j].lat());
+                    //var longitude = Number(pointsArray[j].lng());
 
                     var latitudeDegrees = Math.floor(latitude);
                     var latitudeMinutes = Math.floor((latitude - latitudeDegrees) * 60);
@@ -289,12 +355,16 @@ $("#addPointsFromMap").click(function () {
                     addNewPoint(i,
                         latitudeDegrees, latitudeMinutes, latitudeSeconds,
                         longitudeDegrees, longitudeMinutes, longitudeSeconds);
+
                 }
-                newPolygons[i].setEditable(false);
+                newPolygons[i].setOptions({fillColor: "#003400"});
 
                 //Calculation of area and perimeter of all new polygons.
                 area += Number(google.maps.geometry.spherical.computeArea(newPolygons[i].getPath()));
                 perimeter += Number(google.maps.geometry.spherical.computeLength(newPolygons[i].getPath()));
+
+                //Coordinates added, if we want we can delete the polygon from the array.
+                //newPolygons.splice(i,1);
             }
 
             //Adding area and perimeter values to input fields
@@ -306,10 +376,8 @@ $("#addPointsFromMap").click(function () {
                     $(this).siblings("div").children("input:first").val((perimeter).toFixed(1));
                 }
             });
-        }
-        else {
-            bootbox.alert("Ресурси перетинаються!");
-        }
+        //We make the link "Add polygon" inactive
+        $(".toggle a").addClass("inactiveLink");
     }
     else {
         bootbox.alert("Намалюйте хоч один полігон на мапі.");
@@ -317,3 +385,75 @@ $("#addPointsFromMap").click(function () {
 });
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+//importScripts(baseUrl.toString()+"/resources/js/ukraineCoord.js");
+
+
+//attach the click handlers to the button. #cp-wrap is never added or removed
+//from the DOM, so its safe to bind the listeners to it.
+$("#cp-wrap").on("click", "a", function(){
+
+    var inactive = $(this).hasClass("inactiveLink");
+
+    if(!inactive) {
+
+        var action = $(this).data("action");
+
+        if (action == 'new') {
+            PS.enable();
+            $(this).closest(".toggle").removeClass("active");
+            $(this).closest(".toggle").siblings("span").addClass("active");
+        }
+        else if (action == 'save') {
+            if(PS.polygon().getPath().length > 2) {
+                var intersection = intersectionCheck(PS.polygon());
+                if (!intersection) {
+                    PS.save();
+                    $(this).closest(".toggle").removeClass("active");
+                    $(this).closest(".toggle").siblings("span").addClass("active");
+                }
+            }
+            else {
+                bootbox.alert("Будь ласка, додайте полігон");
+            }
+        }
+        else {
+            PS.disable();
+            $(this).closest(".toggle").removeClass("active");
+            $(this).closest(".toggle").siblings("span").addClass("active");
+        }
+    }
+    else {
+        bootbox.alert("Точки вже додано. Додавання нових полігонів заборонено.");
+    }
+
+});
+
+$(document).on("click", "#mapManual", function(){
+    var spoiler = $(this).siblings(".spoiler");
+    var icon = $(this).find(".glyphicon");
+    if (!($(this).hasClass("active"))) {
+        spoiler.slideDown(200);
+        $(this).addClass("active");
+        icon.each(function(){
+            if($(this).hasClass("hidden")) {
+                $(this).removeClass("hidden");
+            }
+            else {
+                $(this).addClass("hidden");
+            }
+        });
+    }
+    else {
+        spoiler.slideUp(200);
+        $(this).removeClass("active");
+        icon.each(function(){
+            if($(this).hasClass("hidden")) {
+                $(this).removeClass("hidden");
+            }
+            else {
+                $(this).addClass("hidden");
+            }
+        });
+    }
+});

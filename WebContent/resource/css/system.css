@@ -99,3 +99,33 @@ body {
     padding: 3px 5px;
     font-size: 15px;
 }
+
+#cp-wrap .toggle{
+    display: none;
+    margin: 10px 10px 0 0;
+    width: 200px;
+}
+
+#cp-wrap .active {
+    display: block;
+}
+
+#cp-wrap .toggle .controls{
+    position: relative;
+    display: inline-block;
+    margin: 0;
+}
+
+#mapManual {
+    font-style: italic;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.spoiler {
+    display: none;
+    font-size: 13px;
+    font-style: italic;
+    color: #373737;
+    text-align: justify;
+}
