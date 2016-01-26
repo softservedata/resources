@@ -1,14 +1,12 @@
 package org.registrator.community.service;
 
-import org.registrator.community.dto.InquiryDTO;
+import java.util.List;
+
 import org.registrator.community.dto.InquiryListDTO;
-import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserNameDTO;
 import org.registrator.community.entity.Inquiry;
 import org.registrator.community.enumeration.InquiryType;
-
-import java.util.List;
 
 /**
  * Interface for work with procurations of entering data into the register

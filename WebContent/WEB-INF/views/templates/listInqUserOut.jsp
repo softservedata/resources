@@ -36,15 +36,15 @@
 								<td><a href="get/${inquiryUserOut.resourceIdentifier}"> ${inquiryUserOut.resourceIdentifier}	</a></td>	
 								<td> <div class="block">
 										<c:if test="${role == 'USER'}">
-											<a href="delete/${inquiryUserOut.inquiry_list_id}"
+											<a href="delete/${inquiryUserOut.inquiryId}"
 												class="btn btn-danger" role="button"> 
 												<spring:message code="label.restype.delete" /></a>
 										</c:if>	
-										<a href="printOutput/${inquiryUserOut.inquiry_list_id}"
+										<a href="printOutput/${inquiryUserOut.inquiryId}"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
 										<c:if test="${role == 'REGISTRATOR'}">	
-											<a href="printExtract/${inquiryUserOut.inquiry_list_id}"
+											<a href="printExtract/${inquiryUserOut.inquiryId}"
 												class="btn btn-primary" role="button"> 
 												<spring:message code="label.inquiry.printExtract" /></a>	
 										</c:if>
@@ -66,15 +66,15 @@ $("#datatable").DataTable();
 	
 								<!--  
 										<c:if test="${role == 'USER'}">
-											<a href="c:url value='delete/${inquiryUserOut.inquiry_list_id}' />"
+											<a href="c:url value='delete/${inquiryUserOut.inquiryId}' />"
 												class="btn btn-danger" role="button"> 
 												<spring:message code="label.restype.delete" /></a>
 										</c:if>	
-										<a href="c:url value='printOutput/${inquiryUserOut.inquiry_list_id}' />"
+										<a href="c:url value='printOutput/${inquiryUserOut.inquiryId}' />"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
 										<c:if test="${role == 'REGISTRATOR'}">	
-											<a href="c:url value='printOutput/${inquiryUserOut.inquiry_list_id}' />"
+											<a href="c:url value='printOutput/${inquiryUserOut.inquiryId}' />"
 												class="btn btn-primary" role="button"> 
 												<spring:message code="label.inquiry.printExtract" /></a>	
 										</c:if> -->		
