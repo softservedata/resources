@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.registrator.community.components.TestDataInitializer;
+import org.registrator.community.init.TestDataInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

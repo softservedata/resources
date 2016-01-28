@@ -28,9 +28,4 @@ public class SpringRootConfig {
         return transactionManager;
     }
     
-    @Bean(name = "mailSender")
-    public MailSender mailSender(){
-    	JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    	return mailSender;
-    }
 }
