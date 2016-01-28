@@ -11,24 +11,23 @@ import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-
 public interface ResourceService {
-	
+
 	ResourceDTO addNewResource(ResourceDTO resourceDTO, String ownerLogin, User registrator);
-	
+
 	ResourceDTO findByIdentifier(String identifier);
 
-    List<Resource> findByType (ResourceType type);
-    @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
-    long count();
-    
-    Set<String> getDescriptionBySearchTag(String searchTag);
+	List<Resource> findByType(ResourceType type);
 
-    Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType);
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
+	long count();
 
-    Set<String> getAllByPoint(Double lat, Double lng);
+	Set<String> getDescriptionBySearchTag(String searchTag);
 
-    List<PolygonJSON> createPolygonJSON (String identifier);
-    
+	Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType);
+
+	Set<String> getAllByPoint(Double lat, Double lng);
+
+	List<PolygonJSON> createPolygonJSON(String identifier);
+
 }
-

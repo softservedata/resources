@@ -116,7 +116,7 @@ public class ResourceController {
 	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
 	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
 			Model model, String ownerLogin) {
-		
+ 
 		logger.info("The ownerLogin is " + ownerLogin);
 		
 		/* check if given resourceDTO is valid */
