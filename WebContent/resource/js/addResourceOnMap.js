@@ -236,9 +236,10 @@ function intersectionCheck(polygon){
 
     map.fitBounds(bounds);
 
-    getResources();
+    getResources();   
 
-    for (i = 0; i < vertices.getLength(); i++) {
+
+   for (i = 0; i < vertices.getLength(); i++) {
         point = vertices.getAt(i);
         for (j = 0; j < polygons.length; j++) {
             isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygons[j]);
@@ -434,3 +435,4 @@ $(document).on("click", "#mapManual", function(){
         });
     }
 });
+
