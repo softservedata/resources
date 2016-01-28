@@ -50,10 +50,12 @@ public class ResourceDiscreteValueServiceImpl implements ResourceDiscreteValueSe
     }
 
     @Override
-    public Set<Resource> findResourcesByDiscreteParam(Integer discreteParameterId, String compareSign, Double searchValue) {
+    public Set<String> findResourcesByDiscreteParam(Integer discreteParameterId,
+                                                    String compareSign,
+                                                    Double searchValue) {
         DiscreteParameter discreteParameter = discreteParameterRepository.findByDiscreteParameterId(discreteParameterId);
         Set<ResourceDiscreteValue> values = new HashSet<>();
-        Set<Resource> resources = new HashSet<>();
+        Set<String> identifiers = new HashSet<>();
 
         if ("less".equals(compareSign)) {
             values.addAll(findAllBySmallerValueAndDiscreteParameter(searchValue, discreteParameter));
@@ -64,9 +66,32 @@ public class ResourceDiscreteValueServiceImpl implements ResourceDiscreteValueSe
         }
 
         for (ResourceDiscreteValue value : values) {
-            resources.add(value.getResource());
+            identifiers.add(value.getResource().getIdentifier());
         }
 
-        return resources;
+        return identifiers;
+    }
+
+    @Override
+    public Set<String> findResourcesByParamsList(List<Integer> paramsId,
+                                                 List<String> compareSign,
+                                                 List<Double> searchValue) {
+        Set<String> identifiers = new HashSet<>();
+        for (int i = 0; i < paramsId.size(); i++) {
+            if (searchValue.get(i) != null) {
+                Set<String> foundResources = findResourcesByDiscreteParam(
+                        paramsId.get(i),
+                        compareSign.get(i),
+                        searchValue.get(i));
+                if (identifiers.size() > 0) {
+                    identifiers.retainAll(foundResources);
+                } else {
+                    identifiers.addAll(foundResources);
+                }
+            }
+        }
+
+        return identifiers;
     }
 }
+

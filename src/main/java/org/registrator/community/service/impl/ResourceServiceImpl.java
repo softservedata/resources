@@ -1,5 +1,6 @@
 package org.registrator.community.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.ResourceTypeRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
+import org.registrator.community.dto.JSON.ResourseSearchJson;
 import org.registrator.community.dto.PointAreaDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.dto.ResourceAreaDTO;
@@ -77,6 +79,12 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     DiscreteParameterRepository discreteParameterRepository;
+
+    @Autowired
+    ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
+
+    @Autowired
+    ResourceLinearValueServiceImpl resourceLinearValueService;
     
     @Autowired
     UserRepository userRepository;
@@ -328,7 +336,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType) {
-        // List<ResourceDTO> resourcesDTO = new ArrayList<>();
         Set<String> identifiers = new HashSet<>();
         List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng);
         for (Polygon polygon : polygons) {
@@ -338,23 +345,48 @@ public class ResourceServiceImpl implements ResourceService {
                 identifiers.add(polygon.getResource().getIdentifier());
             }
         }
-        // for (Resource resource : resources) {
-        // resourcesDTO.add(findByIdentifier(resource.getIdentifier()));
-        // }
         return identifiers;
     }
 
     @Override
     public Set<String> getAllByPoint(Double lat, Double lng) {
         Set<String> identifiers = new HashSet<>();
-        // Set<Resource> resources = new HashSet<>();
         List<Polygon> polygons = polygonRepository.findByPoint(lat, lng);
         for (Polygon polygon : polygons) {
             identifiers.add(polygon.getResource().getIdentifier());
         }
-        // for (Resource resource : resources) {
-        // resourcesDTO.add(findByIdentifier(resource.getIdentifier()));
-        // }
+        return identifiers;
+    }
+
+    @Override
+    public Set<String> getAllByParameters(ResourseSearchJson parameters) {
+        Set<String> identifiers = new HashSet<>();
+        Set<String> identifiersDiscrete = new HashSet<>();
+        Set<String> identifiersLinear = new HashSet<>();
+
+        if (parameters.getDiscreteParamsIds().size() > 0) {
+            identifiersDiscrete.addAll(resourceDiscreteValueService.
+                    findResourcesByParamsList(parameters.getDiscreteParamsIds(),
+                    parameters.getDiscreteParamsCompares(), parameters.getDiscreteParamsValues()));
+            if (identifiers.size() > 0) {
+                identifiers.retainAll(identifiersDiscrete);
+            }
+            else {
+                identifiers.addAll(identifiersDiscrete);
+            }
+        }
+        if (parameters.getLinearParamsIds().size() > 0) {
+            identifiersLinear.addAll(resourceLinearValueService.
+                    findResourcesByLinParamList(parameters.getLinearParamsIds(),
+                    parameters.getLinearParamsValues()));
+            if (identifiers.size() > 0) {
+                identifiers.retainAll(identifiersLinear);
+            }
+            else {
+                identifiers.addAll(identifiersLinear);
+            }
+        }
+
         return identifiers;
     }
 
@@ -381,6 +413,7 @@ public class ResourceServiceImpl implements ResourceService {
             polygonJSON.setResourceDescription(resource.getDescription());
             polygonJSON.setIdentifier(resource.getIdentifier());
             polygonJSON.setResourceType(resource.getType().getTypeName());
+            polygonJSON.setDate(new SimpleDateFormat("dd.MM.yyyy").format(resource.getDate()));
             polygonJSON.setPoints(points);
 
             polygonsJSON.add(polygonJSON);

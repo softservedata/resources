@@ -215,86 +215,86 @@ public class ResourceController {
      * @param model
      * @return
      */
+    @ResponseBody
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
     @RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
     public String resourceSearch(@RequestBody ResourseSearchJson json, Model model) {
 
-        List<Integer> discreteParamsIds = json.getDiscreteParamsIds();
-        List<Double> discreteValues = json.getDiscreteParamsValues();
-        List<String> discreteCompareSign = json.getDiscreteParamsCompares();
-        List<Integer> linearParamsIds = json.getLinearParamsIds();
-        List<Double> linearValues = json.getLinearParamsValues();
-        Integer resourceTypeId = json.getResourceTypeId();
+        Set<String> identifiers = resourceService.getAllByParameters(json);
+        List<PolygonJSON> polygons = new ArrayList<>();
 
-        Set<Resource> resources = new HashSet<>();
-        boolean resourcesEmpty = true;
-        boolean searchEmpty = true;
-
-        /*
-         * If user do not enter any search values we should show him all resources of this
-         * resource Type.
-         */
-        for (Double discreteValue : discreteValues) {
-            if ((searchEmpty)&&(discreteValue !=null)) {
-                searchEmpty = false;
-            }
-        }
-        for (Double linearValue : linearValues) {
-            if ((searchEmpty)&&(linearValue != null)) {
-                searchEmpty = false;
-            }
+        for (String identifier : identifiers) {
+            polygons.addAll(resourceService.createPolygonJSON(identifier));
         }
 
-        if (searchEmpty) {
-            ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
-            resources.addAll(resourceService.findByType(resourceType));
-        }
-        else {
-            if (discreteParamsIds.size() > 0) {
-                for (int i = 0; i < discreteParamsIds.size(); i++) {
-                    if (discreteValues.get(i) != null) {
-                        Set<Resource> foundResources = resourceDiscreteValueService.findResourcesByDiscreteParam(
-                                discreteParamsIds.get(i), discreteCompareSign.get(i), discreteValues.get(i));
-                        if (!resourcesEmpty) {
-                            resources.retainAll(foundResources);
-                        } else {
-                            resources.addAll(foundResources);
-                            resourcesEmpty = false;
-                        }
-                    }
-                }
-            }
-            if (linearParamsIds.size() > 0) {
-                for (int i = 0; i < linearParamsIds.size(); i++) {
-                    if (linearValues.get(i) != null) {
-                        Set<Resource> foundResources = resourceLinearValueService.findResourcesbyLinearParam(
-                                linearParamsIds.get(i), linearValues.get(i));
-                        if (!resourcesEmpty) {
-                            resources.retainAll(foundResources);
-                        } else {
-                            resources.addAll(foundResources);
-                            resourcesEmpty = false;
-                        }
-                    }
-                }
-            }
-        }
-
-        /*
-        Creating List of ResourceDTO
-         */
-        List<ResourceDTO> resourceDTOs = new ArrayList<>();
-
-        for (Resource resource : resources) {
-            if (resourceTypeId == resource.getType().getTypeId()) {
-                ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
-                resourceDTOs.add(resourceDTO);
-            }
-        }
-
-        model.addAttribute("Resources", resourceDTOs);
-
-        return "resourceSearch";
+        Gson gson = new Gson();
+        return gson.toJson(polygons);
+//
+//        List<Integer> discreteParamsIds = json.getDiscreteParamsIds();
+//        List<Double> discreteValues = json.getDiscreteParamsValues();
+//        List<String> discreteCompareSign = json.getDiscreteParamsCompares();
+//        List<Integer> linearParamsIds = json.getLinearParamsIds();
+//        List<Double> linearValues = json.getLinearParamsValues();
+//        Integer resourceTypeId = json.getResourceTypeId();
+//
+//        Set<Resource> resources = new HashSet<>();
+//        boolean resourcesEmpty = true;
+//        boolean searchEmpty = true;
+//
+//        /*
+//         * If user do not enter any search values we should show him all resources of this
+//         * resource Type.
+//         */
+//        for (Double discreteValue : discreteValues) {
+//            if ((searchEmpty)&&(discreteValue !=null)) {
+//                searchEmpty = false;
+//            }
+//        }
+//        for (Double linearValue : linearValues) {
+//            if ((searchEmpty)&&(linearValue != null)) {
+//                searchEmpty = false;
+//            }
+//        }
+//
+//        if (searchEmpty) {
+//            ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
+//            resources.addAll(resourceService.findByType(resourceType));
+//        }
+//        else {
+//            if (discreteParamsIds.size() > 0) {
+//                for (int i = 0; i < discreteParamsIds.size(); i++) {
+//                    if (discreteValues.get(i) != null) {
+//                        Set<Resource> foundResources = resourceDiscreteValueService.findResourcesByDiscreteParam(
+//                                discreteParamsIds.get(i), discreteCompareSign.get(i), discreteValues.get(i));
+//                        if (!resourcesEmpty) {
+//                            resources.retainAll(foundResources);
+//                        } else {
+//                            resources.addAll(foundResources);
+//                            resourcesEmpty = false;
+//                        }
+//                    }
+//                }
+//            }
+//            if (linearParamsIds.size() > 0) {
+//
+//            }
+//        }
+//
+//        /*
+//        Creating List of ResourceDTO
+//         */
+//        List<ResourceDTO> resourceDTOs = new ArrayList<>();
+//
+//        for (Resource resource : resources) {
+//            if (resourceTypeId == resource.getType().getTypeId()) {
+//                ResourceDTO resourceDTO = resourceService.findByIdentifier(resource.getIdentifier());
+//                resourceDTOs.add(resourceDTO);
+//            }
+//        }
+//
+//        model.addAttribute("Resources", resourceDTOs);
+//
+//        return "resourceSearch";
     }
 
     /**
@@ -377,7 +377,9 @@ public class ResourceController {
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/searchOnMap", method = RequestMethod.GET)
 	public String searchOnMap(Model model) {
-		return "searchOnMap";
+        List<ResourceType> resourceTypes = resourceTypeService.findAll();
+        model.addAttribute("resourceTypes", resourceTypes);
+        return "searchOnMap";
 	}
 
 	@ResponseBody

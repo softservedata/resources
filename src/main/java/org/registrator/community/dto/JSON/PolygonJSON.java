@@ -11,6 +11,7 @@ public class PolygonJSON {
     private String resourceDescription;
     private String identifier;
     private String resourceType;
+    private String date;
     private List<PointJSON> points;
 
     public String getResourceDescription() {
@@ -35,6 +36,14 @@ public class PolygonJSON {
 
     public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public List<PointJSON> getPoints() {

@@ -38,35 +38,6 @@
                     <input type="text" class="form-control value"/>
                 </span>
                 <label class="col-md-1">${linearParameter.unitName}</label>
-                <%--<label class="col-md-1">${linearParameter.description}:</label>--%>
-                <%--<span class="col-md-5">--%>
-                    <%--<span class="col-md-2"> початок </span>--%>
-                    <%--<span class="col-md-2">--%>
-                        <%--<select class="form-control">--%>
-                            <%--<option value="less"> <</option>--%>
-                            <%--<option value="equal" selected> =</option>--%>
-                            <%--<option value="greater"> ></option>--%>
-                        <%--</select>--%>
-                    <%--</span>--%>
-                    <%--<span class="col-md-6">--%>
-                        <%--<input type="text" class="form-control"/>--%>
-                    <%--</span>--%>
-                    <%--<label class="col-md-2">${linearParameter.unitName}</label>--%>
-                <%--</span>--%>
-                <%--<span class="col-md-5 col-md-offset-1">--%>
-                    <%--<span class="col-md-2"> кінець </span>--%>
-                    <%--<span class="col-md-2">--%>
-                        <%--<select class="form-control">--%>
-                            <%--<option value="less"> <</option>--%>
-                            <%--<option value="equal" selected> =</option>--%>
-                            <%--<option value="greater"> ></option>--%>
-                        <%--</select>--%>
-                    <%--</span>--%>
-                    <%--<span class="col-md-6">--%>
-                        <%--<input type="text" class="form-control"/>--%>
-                    <%--</span>--%>
-                    <%--<label class="col-md-2">${linearParameter.unitName}</label>--%>
-                <%--</span>--%>
             </div>
         </c:forEach>
     </div>

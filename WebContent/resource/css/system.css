@@ -129,3 +129,7 @@ body {
     color: #373737;
     text-align: justify;
 }
+
+.searchDiv {
+    margin-top: 15px;
+}
