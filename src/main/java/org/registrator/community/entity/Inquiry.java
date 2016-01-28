@@ -16,7 +16,7 @@ public class Inquiry implements Serializable {
     @Id
     @Column(name = "inquiry_list_id")
     @GeneratedValue
-    private Integer inquiry_list_id;
+    private Integer inquiryId;
 
     @Column(name = "inquiry_type", nullable = false)
     @Enumerated(EnumType.STRING) 
@@ -49,12 +49,12 @@ public class Inquiry implements Serializable {
         this.resource = resource;
     }
 
-    public Integer getInquiry_list_id() {
-        return inquiry_list_id;
+    public Integer getInquiryId() {
+        return inquiryId;
     }
 
-    public void setInquiry_list_id(Integer inquiry_list_id) {
-        this.inquiry_list_id = inquiry_list_id;
+    public void setInquiryId(Integer inquiryId) {
+        this.inquiryId = inquiryId;
     }
 
     public InquiryType getInquiryType() {

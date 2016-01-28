@@ -54,5 +54,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		tokenRepositoryImpl.setDataSource(dataSource);
 		return tokenRepositoryImpl;
 	}
-
 }

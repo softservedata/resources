@@ -358,7 +358,7 @@ function searchOnMapByPoint(latLng, marker) {
                 return "#" + color;
             }
 
-            var infoWindowContent = "<table id='infowindow_table'><tr><th>Опис</th><th>Підклас</th><th></th></tr>";
+            var infoWindowContent = "<table id='infowindow_table'><tr><th>"+ jQuery.i18n.prop('msg.description') +"</th><th>"+ jQuery.i18n.prop('msg.subclass') +"</th><th></th></tr>";
             var contentString = "";
 
             var color = "#000000";
@@ -397,7 +397,7 @@ function searchOnMapByPoint(latLng, marker) {
                     contentString += "<tr>" +
                         "<td>" + data[i].resourceDescription + "</td>" +
                         "<td>" + data[i].resourceType + "</td>" +
-                        "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + data[i].identifier + "'><i>Детальніше</i></a> </td>" +
+                        "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + data[i].identifier + "'><i>"+ jQuery.i18n.prop('msg.more')+ "</i></a> </td>" +
                         "</tr>";
                     polygon.setMap(map);
                 }
@@ -410,7 +410,8 @@ function searchOnMapByPoint(latLng, marker) {
                 map.fitBounds(bounds);
             }
             else {
-                infoWindowContent = "<div>В цій точці ще нема зареєстрованих ресурсів</div>"
+                infoWindowContent = jQuery.i18n.prop('msg.noResources');
+                	//"<div>В цій точці ще нема зареєстрованих ресурсів</div>"
             }
 
             var infowindow = new google.maps.InfoWindow({
@@ -423,7 +424,7 @@ function searchOnMapByPoint(latLng, marker) {
         },
         error: function () {
             $("#dark_bg").hide();
-            bootbox.alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
+            bootbox.alert(jQuery.i18n.prop('msg.error'));
         }
     });
 }
@@ -537,7 +538,7 @@ function searchOnMapByArea(rectangle) {
         },
         error: function () {
             $("#dark_bg").hide();
-            bootbox.alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
+            bootbox.alert(jQuery.i18n.prop('msg.error'));
         }
     });
 }

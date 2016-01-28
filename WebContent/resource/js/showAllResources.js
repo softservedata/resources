@@ -63,7 +63,7 @@ $(document).ready(function () {
             },
             error: function () {
                 $("#dark_bg").hide();
-                bootbox.alert("При запиті до серверу виникла помилка, спробуйте ще раз через кілька хвилин.");
+                bootbox.alert(jQuery.i18n.prop('msg.error'));
             }
         });
 

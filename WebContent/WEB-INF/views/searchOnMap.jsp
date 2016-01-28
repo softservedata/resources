@@ -1,87 +1,118 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/cssload.css'/>">
 <link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/searchOnMap.css'/>">
 
 <div class="container" style="margin-bottom: 25px; line-height: 28px; vertical-align: top;">
     <div class="col-sm-12 controls">
-        <span id="searchByPointButton" class="btn btn-primary toggle-button col-sm-3"><h4>Пошук за координатою</h4></span>
-        <span id="searchByAreaButton" class="btn btn-primary toggle-button col-sm-3"><h4>Пошук по області</h4></span>
+        <span id="searchByPointButton" class="btn btn-primary toggle-button col-sm-3"><h4><spring:message
+                    code="label.search.byCoordinate" /></h4></span>
+        <span id="searchByAreaButton" class="btn btn-primary toggle-button col-sm-3"><h4><spring:message
+                    code="label.search.byRegion" /></h4></span>
     </div>
     <div id="searchByPointDiv" class="col-sm-12 searchDiv">
         <p>
-            Введіть координату, або поставте маркер на мапі:
+            <spring:message
+                    code="label.search.byCoordinate.massage" />:
         </p>
 
         <div class="col-sm-5" style="padding-bottom: 5px;">
-            <label class="col-sm-3" style="padding-top: 6px; margin: 0;">Широта: </label>
-            <input type="text" class="latitudeDegrees form-control" placeholder="Градуси"
+            <label class="col-sm-3" style="padding-top: 6px; margin: 0;"><spring:message
+                    code="label.resource.latitude" />: </label>
+            <input type="text" class="latitudeDegrees form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.degrees" />
                    style="width: 90px; display: inline-block;"> °
-            <input type="text" class="latitudeMinutes form-control" placeholder="Мінути"
+            <input type="text" class="latitudeMinutes form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.minutes" />
                    style="width: 75px;display: inline-block;"> '
-            <input type="text" class="latitudeSeconds form-control" placeholder="Секунди"
+            <input type="text" class="latitudeSeconds form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.seconds" />
                    style="width: 125px;display: inline-block;"> "
         </div>
         <div class="col-sm-5" style="padding-bottom: 5px;">
-            <label class="col-sm-3" style="padding-top: 6px; margin: 0;">Довгота: </label>
-            <input type="text" class="longitudeDegrees form-control" placeholder="Градуси"
+            <label class="col-sm-3" style="padding-top: 6px; margin: 0;"><spring:message
+                    code="label.resource.longitude" />: </label>
+            <input type="text" class="longitudeDegrees form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.degrees" />
                    style="width: 90px; display: inline-block;"> °
-            <input type="text" class="longitudeMinutes form-control" placeholder="Мінути"
+            <input type="text" class="longitudeMinutes form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.minutes" />
                    style="width: 75px;display: inline-block;"> '
-            <input type="text" class="longitudeSeconds form-control" placeholder="Секунди"
+            <input type="text" class="longitudeSeconds form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.seconds" />
                    style="width: 125px;display: inline-block;"> "
         </div>
         <div class="col-sm-2">
-            <button id="searchOnMapButton" class="btn btn-success">Пошук</button>
+            <button id="searchOnMapButton" class="btn btn-success"><spring:message
+                    code="label.menu.search" /></button>
         </div>
     </div>
     <div id="searchByAreaDiv" class="col-sm-12 searchDiv">
         <p>
-            Введіть координати протилежних вершин прямокутника, або оберіть область на мапі:
+            <spring:message
+                    code="label.search.byRegion.massage" />:
         </p>
         <div id="first_point" >
             <div class="col-sm-5" style="padding-bottom: 5px;">
-                <label class="col-sm-3" style="padding-top: 6px; margin: 0;">Широта: </label>
-                <input type="text" class="latitudeDegrees form-control" placeholder="Градуси"
+                <label class="col-sm-3" style="padding-top: 6px; margin: 0;"><spring:message
+                    code="label.resource.latitude" />: </label>
+                <input type="text" class="latitudeDegrees form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.degrees" />
                        style="width: 90px; display: inline-block;"> °
-                <input type="text" class="latitudeMinutes form-control" placeholder="Мінути"
+                <input type="text" class="latitudeMinutes form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.minutes" />
                        style="width: 75px;display: inline-block;"> '
-                <input type="text" class="latitudeSeconds form-control" placeholder="Секунди"
+                <input type="text" class="latitudeSeconds form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.seconds" />
                        style="width: 125px;display: inline-block;"> "
             </div>
             <div class="col-sm-5" style="padding-bottom: 5px;">
-                <label class="col-sm-3" style="padding-top: 6px; margin: 0;">Довгота: </label>
-                <input type="text" class="longitudeDegrees form-control" placeholder="Градуси"
+                <label class="col-sm-3" style="padding-top: 6px; margin: 0;"><spring:message
+                    code="label.resource.longitude" />: </label>
+                <input type="text" class="longitudeDegrees form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.degrees" />
                        style="width: 90px; display: inline-block;"> °
-                <input type="text" class="longitudeMinutes form-control" placeholder="Мінути"
+                <input type="text" class="longitudeMinutes form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.minutes" />
                        style="width: 75px;display: inline-block;"> '
-                <input type="text" class="longitudeSeconds form-control" placeholder="Секунди"
+                <input type="text" class="longitudeSeconds form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.seconds" />
                        style="width: 125px;display: inline-block;"> "
             </div>
         </div>
         <div id="second_point">
             <div class="col-sm-5" style="padding-bottom: 5px;">
-                <label class="col-sm-3" style="padding-top: 6px; margin: 0;">Широта: </label>
-                <input type="text" class="latitudeDegrees form-control" placeholder="Градуси"
+                <label class="col-sm-3" style="padding-top: 6px; margin: 0;"><spring:message
+                    code="label.resource.latitude" />: </label>
+                <input type="text" class="latitudeDegrees form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.degrees" />
                        style="width: 90px; display: inline-block;"> °
-                <input type="text" class="latitudeMinutes form-control" placeholder="Мінути"
+                <input type="text" class="latitudeMinutes form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.minutes" />
                        style="width: 75px;display: inline-block;"> '
-                <input type="text" class="latitudeSeconds form-control" placeholder="Секунди"
+                <input type="text" class="latitudeSeconds form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.seconds" />
                        style="width: 125px;display: inline-block;"> "
             </div>
             <div class="col-sm-5" style="padding-bottom: 5px;">
-                <label class="col-sm-3" style="padding-top: 6px; margin: 0;">Довгота: </label>
-                <input type="text" class="longitudeDegrees form-control" placeholder="Градуси"
+                <label class="col-sm-3" style="padding-top: 6px; margin: 0;"><spring:message
+                    code="label.resource.longitude" />: </label>
+                <input type="text" class="longitudeDegrees form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.degrees" />
                        style="width: 90px; display: inline-block;"> °
-                <input type="text" class="longitudeMinutes form-control" placeholder="Мінути"
+                <input type="text" class="longitudeMinutes form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.minutes" />
                        style="width: 75px;display: inline-block;"> '
-                <input type="text" class="longitudeSeconds form-control" placeholder="Секунди"
+                <input type="text" class="longitudeSeconds form-control" placeholder=<spring:message
+                    code="label.resource.coordinates.seconds" />
                        style="width: 125px;display: inline-block;"> "
             </div>
         </div>
         <div class="col-sm-2">
-            <button id="searchOnMapButton_area" class="btn btn-success">Пошук</button>
+            <button id="searchOnMapButton_area" class="btn btn-success"><spring:message
+                    code="label.menu.search" /></button>
         </div>
     </div>
 </div>
@@ -94,7 +125,7 @@
 <p>
     <input id="gmaps-input" class="controls gmap-input"
            style="width: 300px;" type="text"
-           placeholder="Пошук на мапі">
+           placeholder=<spring:message code="label.menu.searchOnMap"/>>
 </p>
 
 <%--AJAX Loader on the dark display--%>

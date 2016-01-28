@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/cssload.css'/>">
 <script type="text/javascript" src="<c:url value='/resource/js/showAllResources.js'/>"></script>
@@ -7,7 +8,7 @@
 <div>
     <c:if test="${not empty resourceTypes}">
         <div style="padding-bottom: 15px;">
-            <label class="">Оберіть підклас об'єкту: </label>
+            <label class=""><spring:message code="label.resource.selectType" />:</label>
             <select id="resourcesTypeSelect" class="form-control" style="width:auto; display: inline">
                 <c:forEach items="${resourceTypes}" var="resourceType">
                     <option value="${resourceType.typeId}">${resourceType.typeName}</option>

@@ -1,7 +1,6 @@
 package org.registrator.community.config.root;
 
 import org.registrator.community.init.FirstTimeDeploy;
-import org.registrator.community.init.TestDataInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

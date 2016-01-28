@@ -19,7 +19,7 @@
 	<table id="datatable" class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr id="myTable">
-				<th>Login</th>
+				<th><spring:message code="label.login" /></th>
 				<th><spring:message code="label.user.secondname" /></th>
 				<th><spring:message code="label.user.firstname" /></th>
 				<th><spring:message code="label.user.middlename" /></th>

@@ -3,9 +3,11 @@ jQuery(document).ready(function($) {
 $('#owner_search').autocomplete({
     serviceUrl: 'owners',
     paramName: "ownerDesc",
-    delimiter: ",",    minChars: 2,
+    delimiter: ",",
+    minChars: 2,
     autoSelectFirst: true,
     deferRequestBy: 100,
+    type: "POST",
     transformResult: function(response) {
     	return {
     		suggestions: $.map($.parseJSON(response), function(item) {

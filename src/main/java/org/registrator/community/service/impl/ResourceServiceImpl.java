@@ -45,6 +45,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+
 @Service
 public class ResourceServiceImpl implements ResourceService {
 
@@ -95,100 +97,35 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     public ResourceDTO addNewResource(ResourceDTO resourceDTO, String ownerLogin, User registrator) {
         logger.info("Method addNewResource");
-        Resource resourceEntity = new Resource();
+        logger.info("Owner Login -" + ownerLogin);
+        logger.info("Registrator Login -" + registrator.getLogin());
 
         /* form the resource entity and save in into database */
-        resourceEntity.setIdentifier(resourceDTO.getIdentifier());
-        resourceEntity.setDescription(resourceDTO.getDescription());
-        resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
-        resourceEntity.setTome(tomeRepository.findTomeByRegistrator(registrator));
-        resourceEntity.setRegistrator(registrator);
-        resourceEntity.setStatus(ResourceStatus.ACTIVE);
-        ResourceType resourceType = resourceTypeRepository.findByName(resourceDTO.getResourceType());
-        resourceEntity.setType(resourceType);
-        resourceEntity.setDate(resourceDTO.getDate());
+        Resource resourceEntity = parseToResourseEntity(resourceDTO, registrator);                 
         resourceEntity = resourceRepository.save(resourceEntity);
 
         /* save list of area points */
-        List<Area> areas = new ArrayList<Area>();
         for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
 
-            Polygon polygonEntity = new Polygon();
-            Double minLat = 90.0;
-            Double maxLat = -90.0;
-            Double minLng = 180.0;
-            Double maxLng = -180.0;
-
-            for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
-                if (minLat > point.getDecimalLatitude()) {
-                    minLat = point.getDecimalLatitude();
-                }
-                if (maxLat < point.getDecimalLatitude()) {
-                    maxLat = point.getDecimalLatitude();
-                }
-                if (minLng > point.getDecimalLongitude()) {
-                    minLng = point.getDecimalLongitude();
-                }
-                if (maxLng < point.getDecimalLongitude()) {
-                    maxLng = point.getDecimalLongitude();
-                }
-            }
-
-            polygonEntity.setMinLat(minLat);
-            polygonEntity.setMaxLat(maxLat);
-            polygonEntity.setMinLng(minLng);
-            polygonEntity.setMaxLng(maxLng);
-            polygonEntity.setResource(resourceEntity);
+            Polygon polygonEntity = getPolygonEntity(resourceEntity, poligonAreaDTO);
 
             polygonEntity = polygonRepository.save(polygonEntity);
 
-            for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
-                Area area = new Area();
-                area.setPolygon(polygonEntity);
-                area.setOrderNumber(point.getOrderNumber());
-                area.setLatitude(point.getDecimalLatitude());
-                area.setLongitude(point.getDecimalLongitude());
-                areas.add(area);
-            }
+            List<Area> areas = parseToAreaList(poligonAreaDTO, polygonEntity);
+            areaRepository.save(areas);
         }
-        areaRepository.save(areas);
-
-        List<ResourceLinearValue> resourceLinearValues = new ArrayList<ResourceLinearValue>();
-        List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<ResourceDiscreteValue>();
-
-        /* save list of resource linear values if exist */
+       
+        /* save list of resource linear values if exist*/ 
         if (!resourceDTO.getResourceLinear().isEmpty()) {
             logger.info("save linear values of resource");
-            for (ResourceLinearValueDTO linValueDTO : resourceDTO.getResourceLinear()) {
-                LinearParameter linParameter = linearParameterRepository
-                        .findByResourceAndName(linValueDTO.getLinearParameterDescription(), resourceType);
-                for (SegmentLinearDTO segment : linValueDTO.getSegments()) {
-                    ResourceLinearValue linearValue = new ResourceLinearValue();
-                    linearValue.setResource(resourceEntity);
-                    linearValue.setLinearParameter(linParameter);
-                    linearValue.setMinValue(segment.getBegin());
-                    linearValue.setMaxValue(segment.getEnd());
-                    resourceLinearValues.add(linearValue);
-                }
-            }
+            List<ResourceLinearValue> resourceLinearValues = parseToLinearValueList(resourceDTO, resourceEntity);
             linearValueRepository.save(resourceLinearValues);
         }
 
         /* save list of resource discrete values if exist */
         if (!resourceDTO.getResourceDiscrete().isEmpty()) {
             logger.info("save discrete values of resource");
-            for (ResourceDiscreteValueDTO discValueDTO : resourceDTO.getResourceDiscrete()) {
-                DiscreteParameter discreteParameter = discreteParameterRepository
-                        .findByResourceAndName(discValueDTO.getDiscreteParameterDescription(), resourceType);
-                for (ValueDiscreteDTO valueDiscrete : discValueDTO.getValueDiscretes()) {
-                    ResourceDiscreteValue discreteValue = new ResourceDiscreteValue();
-                    discreteValue.setResource(resourceEntity);
-                    discreteValue.setDiscreteParameter(discreteParameter);
-                    discreteValue.setValue(valueDiscrete.getValue());
-                    discreteValue.setComment(valueDiscrete.getComment());
-                    resourceDiscreteValues.add(discreteValue);
-                }
-            }
+            List<ResourceDiscreteValue> resourceDiscreteValues = parseToDiscreteValueList(resourceDTO, resourceEntity);
             discreteValueRepository.save(resourceDiscreteValues);
         }
         
@@ -199,6 +136,8 @@ public class ResourceServiceImpl implements ResourceService {
 
         return findByIdentifier(resourceEntity.getIdentifier());
     }
+
+
 
     /**
      * Find the resource with given identifier and form resourceDTO object
@@ -388,4 +327,102 @@ public class ResourceServiceImpl implements ResourceService {
         }
         return polygonsJSON;
     }
+    
+    private List<Area> parseToAreaList(PoligonAreaDTO poligonAreaDTO, Polygon polygonEntity) {
+        List<Area> areas = new ArrayList<Area>();
+        for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
+            Area area = new Area();
+            area.setPolygon(polygonEntity);
+            area.setOrderNumber(point.getOrderNumber());
+            area.setLatitude(point.getDecimalLatitude());
+            area.setLongitude(point.getDecimalLongitude());
+            areas.add(area);
+        }
+        return areas;
+    }
+
+
+    private Polygon getPolygonEntity(Resource resourceEntity, PoligonAreaDTO poligonAreaDTO) {
+        Polygon polygonEntity = new Polygon();
+        Double minLat = 90.0;
+        Double maxLat = -90.0;
+        Double minLng = 180.0;
+        Double maxLng = -180.0;
+
+        for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
+            if (minLat > point.getDecimalLatitude()) {
+                minLat = point.getDecimalLatitude();
+            }
+            if (maxLat < point.getDecimalLatitude()) {
+                maxLat = point.getDecimalLatitude();
+            }
+            if (minLng > point.getDecimalLongitude()) {
+                minLng = point.getDecimalLongitude();
+            }
+            if (maxLng < point.getDecimalLongitude()) {
+                maxLng = point.getDecimalLongitude();
+            }
+        }
+
+        polygonEntity.setMinLat(minLat);
+        polygonEntity.setMaxLat(maxLat);
+        polygonEntity.setMinLng(minLng);
+        polygonEntity.setMaxLng(maxLng);
+        polygonEntity.setResource(resourceEntity);
+        
+        return polygonEntity;
+    }
+
+
+    private List<ResourceDiscreteValue> parseToDiscreteValueList(ResourceDTO resourceDTO, Resource resourceEntity) {
+        List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<ResourceDiscreteValue>();
+        for (ResourceDiscreteValueDTO discValueDTO : resourceDTO.getResourceDiscrete()) {
+            DiscreteParameter discreteParameter = discreteParameterRepository
+                    .findByResourceAndName(discValueDTO.getDiscreteParameterDescription(), resourceEntity.getType());
+            for (ValueDiscreteDTO valueDiscrete : discValueDTO.getValueDiscretes()) {
+                ResourceDiscreteValue discreteValue = new ResourceDiscreteValue();
+                discreteValue.setResource(resourceEntity);
+                discreteValue.setDiscreteParameter(discreteParameter);
+                discreteValue.setValue(valueDiscrete.getValue());
+                discreteValue.setComment(valueDiscrete.getComment());
+                resourceDiscreteValues.add(discreteValue);
+            }
+        }
+        return resourceDiscreteValues;
+    }
+
+
+    private List<ResourceLinearValue> parseToLinearValueList(ResourceDTO resourceDTO, Resource resourceEntity) {
+        List<ResourceLinearValue> resourceLinearValues = new ArrayList<ResourceLinearValue>();
+        for (ResourceLinearValueDTO linValueDTO : resourceDTO.getResourceLinear()) {
+            LinearParameter linParameter = linearParameterRepository
+                    .findByResourceAndName(linValueDTO.getLinearParameterDescription(), resourceEntity.getType());
+            for (SegmentLinearDTO segment : linValueDTO.getSegments()) {
+                ResourceLinearValue linearValue = new ResourceLinearValue();
+                linearValue.setResource(resourceEntity);
+                linearValue.setLinearParameter(linParameter);
+                linearValue.setMinValue(segment.getBegin());
+                linearValue.setMaxValue(segment.getEnd());
+                resourceLinearValues.add(linearValue);
+            }
+        }
+        return resourceLinearValues;
+    }
+
+
+    private Resource parseToResourseEntity(ResourceDTO resourceDTO, User registrator) {
+        Resource resourceEntity = new Resource();
+        resourceEntity.setIdentifier(resourceDTO.getIdentifier());
+        resourceEntity.setDescription(resourceDTO.getDescription());
+        resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
+        resourceEntity.setTome(tomeRepository.findTomeByRegistrator(registrator));
+        resourceEntity.setRegistrator(registrator);
+        resourceEntity.setStatus(ResourceStatus.ACTIVE);
+        ResourceType resourceType = resourceTypeRepository.findByName(resourceDTO.getResourceType());
+        resourceEntity.setType(resourceType);
+        resourceEntity.setDate(resourceDTO.getDate());
+        return resourceEntity;
+    }
+
+    
 }

@@ -2,7 +2,7 @@
 $(document).on("click","#outputInquiry",function(){
 	$.ajax({
 		url: 	baseUrl.toString() +'/inquiry/add/outputInquiry',
-		type: 	'POST',
+		type: 	'GET',
 		success: function(response){
 			$('#target').html(response);
 			

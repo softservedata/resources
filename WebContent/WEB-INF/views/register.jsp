@@ -35,110 +35,212 @@ $(document).ready(function() {
 </script>
 <style>
 input.error {
-    border-style: solid;
-    border-color: #ff0000;
+	border-style: solid;
+	border-color: #ff0000;
 }
+
 span.error {
-color: red;
+	color: red;
 }
 </style>
 </head>
 <body>
-<p><p><p><p><p>
-<legend><strong>Зареєструвати нового користувача</strong></legend>
-<div id="register_container" style="margin-top: 91px" class="col-md-4">
-<!--   <c:url var="addAction" value="${base}/register"></c:url> -->
-   	<sf:form action="${pageContext.request.contextPath}/register" class="form-horizontal" role="form" modelAttribute="registrationForm" method="POST" name="registrationForm">
-    	<div class="form-group">
-       <div class="personal_header header"><span><b> ► <spring:message code="label.user.information" /></b></span>
-        </div>
-        <div class="personal_content content">
-      <!-- In case you want to see all the error message on the top of the form, uncomment below line:
-      		  <sf:errors path="*" element="div" cssClass="errors" /> -->       
-              <label for="firstName"><spring:message code="label.user.firstname" /></label> *
-              <input name="firstName" type="text" class="form-control login" id="firstName" value="${registrationForm.firstName}" />
-              <sf:errors path="firstName" class="error" /></br>
+	<p>
+	<p>
+	<p>
+	<p>
+	<p>
+		<strong><spring:message code="label.manualregister" /></strong>
+	<div id="register_container" style="margin-top: 91px">
+		<sf:form action="${pageContext.request.contextPath}/register"
+			class="form-horizontal" role="form" modelAttribute="registrationForm"
+			method="POST" name="registrationForm">
+			<div class="form-group">
+				<div class="personal_header col-lg-4">
+					<legend><spring:message code="label.user.information" /></legend>
+					<!-- <div class="personal_header header"><span><b> ► <spring:message code="label.user.information" /></b></span>
+        <div class="personal_content content">-->
+					<!-- In case you want to see all the error message on the top of the form, uncomment below line:
+      		  <sf:errors path="*" element="div" cssClass="errors" /> -->
+					<label class="col-lg-4 control-label" for="firstName"><spring:message
+							code="label.user.firstname" /> *</label>
+					<div class="col-lg-8">
+						<input name="firstName" type="text" class="form-control login"
+							id="firstName" value="${registrationForm.firstName}" />
+						<sf:errors path="firstName" class="error" />
+						</br>
+					</div>
 
-              <label for="lastName" ><spring:message code="label.user.secondname" /></label> *
-              <input name="lastName" type="text" class="form-control login" id="lastName" value="${registrationForm.lastName}" />
-              <sf:errors path="lastName" class="error" /></br>
+					<label class="col-lg-4 control-label" for="lastName"><spring:message
+							code="label.user.secondname" />*</label>
+					<div class="col-lg-8">
+						<input name="lastName" type="text" class="form-control login"
+							id="lastName" value="${registrationForm.lastName}" />
+						<sf:errors path="lastName" class="error" />
+						</br>
+					</div>
 
-              <label for="middleName"><spring:message code="label.user.middlename" /></label> *
-              <input name="middleName" type="text" class="form-control login" id="middleName" />
-              <sf:errors path="middleName" class="error" /></br>
+					<label class="col-lg-4 control-label" for="middleName"><spring:message
+							code="label.user.middlename" /> *</label>
+					<div class="col-lg-8">
+						<input name="middleName" type="text" class="form-control login"
+							id="middleName" value="${registrationForm.middleName}" />
+						<sf:errors path="middleName" class="error" />
+						</br>
+					</div>
 
-              <label for="email"><spring:message code="label.user.email" /></label> *
-              <input name="email" type="text" class="form-control login" id="email"/>
-              <sf:errors path="email" class="error" /></br>
+					<label class="col-lg-4 control-label" for="email"><spring:message
+							code="label.user.email" /> *</label>
+					<div class="col-lg-8">
+						<input name="email" type="text" class="form-control login"
+							id="email" value="${registrationForm.email}" />
+						<sf:errors path="email" class="error" />
+						</br>
+					</div>
 
-              <label for="login" ><spring:message code="label.login" /></label> *
-              <input name="login" type="text" class="form-control login" id="login"/>
-              <sf:errors path="login" class="error" /></br>
+					<label class="col-lg-4 control-label" for="login"><spring:message
+							code="label.login" /> *</label>
+					<div class="col-lg-8">
+						<input name="login" type="text" class="form-control login"
+							id="login" value="${registrationForm.login}" />
+						<sf:errors path="login" class="error" />
+						</br>
+					</div>
 
-              <label for="password" ><spring:message code="label.password" /></label> *
-              <input name="password" type="password" class="form-control login" id="password" type="password"/>
-              <sf:errors path="password" class="error" /></br>
+					<label class="col-lg-4 control-label" for="password"><spring:message
+							code="label.password" /> *</label>
+					<div class="col-lg-8">
+						<input name="password" type="password" class="form-control login"
+							id="password" type="password" />
+						<sf:errors path="password" class="error" />
+						</br>
+					</div>
 
-              <label for="confirmPassword" >Confirm password *</label>
-              <input name="confirmPassword" type="password" class="form-control login" id="confirmPassword" type="password"/>
-              <sf:errors path="confirmPassword" class="error" /></br>
-            </div>
-             <p>
-            <div class="passport_header header"><span><b> ► <spring:message code="label.user.passportinfo" /></b></span>
+					<label class="col-lg-4 control-label" for="confirmPassword"><spring:message
+							code="label.confirmPassword" /> *</label>
+					<div class="col-lg-8">
+						<input name="confirmPassword" type="password"
+							class="form-control login" id="confirmPassword" type="password" />
+						<sf:errors path="confirmPassword" class="error" />
+						</br>
+					</div>
+				</div>
+				<!--<div class="address_header header"><span><b> ► Адреса</b></span></div>
+            <div class="address_content content">-->
+				<div class="address_header col-lg-4">
+					<legend><spring:message code="label.user.addressinfo" /></legend>
+					<label class="col-lg-4 control-label" for="city"><spring:message
+							code="label.user.city" /> *</label>
+					<div class="col-lg-8">
+						<input name="city" type="text" class="form-control login"
+							id="city" value="${registrationForm.city}" />
+						<sf:errors path="city" class="error" />
+						</br>
+					</div>
 
-            </div>
-            <div class="passport_content content">
-              <label for="passport_seria"><spring:message code="label.user.seria" /></label> *
-              <input name="seria" type="text" class="form-control login" id="passport_seria"/>
-              <sf:errors path="seria" class="error" /></br>
+					<label class="col-lg-4 control-label" for="region"><spring:message
+							code="label.user.region" /> *</label>
+					<div class="col-lg-8">
+						<input name="region" type="text" class="form-control login"
+							id="region" value="${registrationForm.region}" />
+						<sf:errors path="region" class="error" />
+						</br>
+					</div>
 
-              <label for="passport_number"><spring:message code="label.user.number" /></label> *
-              <input name="number" type="text" class="form-control login" id="passport_number"/>
-              <sf:errors path="number" class="error" /></br>
+					<label class="col-lg-4 control-label" for="district"><spring:message
+							code="label.user.district" /> </label>
+					<div class="col-lg-8">
+						<input name="district" type="text" class="form-control login"
+							id="district" value="${registrationForm.district}" />
+						<sf:errors path="district" class="error" />
+						</br>
+					</div>
 
-              <label for="published_by_data"><spring:message code="label.user.published" /></label> *
-              <input name="publishedByData" type="text" class="form-control login" id="published_by_data" />
-              <sf:errors path="publishedByData" class="error" /></br>
-            </div>
-            <p>
-<%--             <div class="address_header header"><span><b> ► Адреса</b></span></div>
-            <div class="address_content content">
-                <label for="city">Місто *</label>
-                <input name="city" type="text" class="form-control login" id="city" />
-               <sf:errors path="city" class="error" /></br>
+					<label class="col-lg-4 control-label" for="street"><spring:message
+							code="label.user.street" /> *</label>
+					<div class="col-lg-8">
+						<input name="street" type="text" class="form-control login"
+							id="street" value="${registrationForm.street}" />
+						<sf:errors path="street" class="error" />
+						</br>
+					</div>
 
-                <label for="region">Область *</label>
-                <input name="region" type="text" class="form-control login" id="region" />
-                <sf:errors path="region" class="error" /></br>
+					<label class="col-lg-4 control-label" for="building"><spring:message
+							code="label.user.building" /> *</label>
+					<div class="col-lg-8">
+						<input name="building" type="text" class="form-control login"
+							id="building" value="${registrationForm.building}" />
+						<sf:errors path="building" class="error" />
+						</br>
+					</div>
 
-                <label for="district">Район</label>
-                <input name="district" type="text" class="form-control login" id="district"/>
-                <sf:errors path="district" class="error" /></br>
+					<label class="col-lg-4 control-label" for="flat"><spring:message
+							code="label.user.flat" /> </label>
+					<div class="col-lg-8">
+						<input name="flat" type="text" class="form-control login"
+							id="flat" value="${registrationForm.flat}" />
+						<sf:errors path="flat" class="error" />
+						</br>
+					</div>
 
-                <label for="street">Вулиця *</label>
-                <input name="street" type="text" class="form-control login" id="street"/>
-                <sf:errors path="street" class="error" /></br>
+					<label class="col-lg-4 control-label" for="postcode"><spring:message
+							code="label.user.postcode" /> *</label>
+					<div class="col-lg-8">
+						<input name="postcode" type="text" class="form-control login"
+							id="postcode" value="${registrationForm.postcode}" />
+						<sf:errors path="postcode" class="error" />
+						</br>
+					</div>
+				</div>
+			<!--<div class="passport_header header"><span><b> ► <spring:message code="label.user.passportinfo" /></b></span>
+             </div>
+             <div class="passport_content content">-->
+				<div class="passport_header col-lg-4">
+					<legend><spring:message code="label.user.passportinfo" /></legend>
 
-                <label for="building">Будинок *</label>
-                <input name="building" type="text" class="form-control login" id="building"/>
-                <sf:errors path="building" class="error" /></br>
+					<label class="col-lg-4 control-label" for="passport_seria"><spring:message
+							code="label.user.seria" /> *</label>
+					<div class="col-lg-8">
+						<input name="seria" type="text" class="form-control login"
+							id="passport_seria" value="${registrationForm.seria}" />
+						<sf:errors path="seria" class="error" />
+						</br>
+					</div>
 
-                <label for="flat">Номер квартири</label>
-                <input name="flat" type="text" class="form-control login" id="flat"/>
-                <sf:errors path="flat" class="error" /></br>
+					<label class="col-lg-4 control-label" for="passport_number"><spring:message
+							code="label.user.number" /> *</label>
+					<div class="col-lg-8">
+						<input name="number" type="text" class="form-control login"
+							id="passport_number" value="${registrationForm.number}" />
+						<sf:errors path="number" class="error" />
+						</br>
+					</div>
 
-                <label for="postcode">Поштовий код *</label>
-                <input name="postCode" type="text" class="form-control login" id="postcode"/>
-                <sf:errors path="postCode" class="error" /></br>--%>
-            </div> 
-            <p>
-            <sf:button class="btn btn-success" type="submit" id="submit">Надіслати</sf:button>
-            <sf:button class="btn btn-success" type="reset" onclick="location.replace('register');">Очистити форму</sf:button>
-            </p>
-   </sf:form>
-<p>Поля, позначені зірочкою (*), є обов'язковими для заповнення   
-</div>
-
+					<label class="col-lg-4 control-label" for="published_by_data"><spring:message
+							code="label.user.published" /> *</label>
+					<div class="col-lg-8">
+						<input name="publishedByData" type="text"
+							class="form-control login" id="published_by_data"
+							value="${registrationForm.publishedByData}" />
+						<sf:errors path="publishedByData" class="error" />
+						</br>
+					</div>
+				</div>
+			<!-- </div> -->
+			<p>
+	</div>
+	<p>
+		<sf:button class="btn btn-success" type="submit" id="submit">
+			<spring:message code="label.send" />
+		</sf:button>
+		<sf:button class="btn btn-success" type="reset"
+			onclick="location.replace('register');">
+			<spring:message code="label.clearall" />
+		</sf:button>
+	</p>
+	</sf:form>
+		<p>
+	<spring:message code="label.msg.required" />
+</div>	
 <script src="${base}resource/js/registration/validate_registration.js" type="text/javascript"></script>
-
 </body>
