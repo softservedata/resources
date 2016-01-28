@@ -17,5 +17,7 @@ public interface ResourceLinearValueService {
 
     List<ResourceLinearValue> findAllByValueAndLinearParameter (Double d, LinearParameter linearParameter);
 
-    Set<Resource> findResourcesbyLinearParam(Integer linearParamId, Double searchValue);
+    Set<String> findResourcesbyLinearParam(Integer linearParamId, Double searchValue);
+
+    Set<String> findResourcesByLinParamList (List<Integer> paramIds, List<Double> searchValues);
 }

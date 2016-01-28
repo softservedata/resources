@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    var getUrl = window.location;
-    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+    //var getUrl = window.location;
+    //var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
     $.post(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
         {"resourceTypeId": $("#resourcesTypeSelect").val()},
@@ -10,7 +10,6 @@ $(document).ready(function () {
         });
 
     $("#resourcesTypeSelect").change(function () {
-        //table.ajax.reload(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId");
         $("#dark_bg").show();
         $.post(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
             {"resourceTypeId": $("#resourcesTypeSelect").val()},
@@ -22,11 +21,6 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".search", function () {
-        //var discreteParamId = [-1];
-        //var discreteParamCompare = [-1];
-        //var discreteParamVal = [-1];
-        //var linearParamId = [-1];
-        //var linearParamVal = [-1];
 
         var json = new Object();
         json.discreteParamsIds = [];
@@ -55,10 +49,11 @@ $(document).ready(function () {
             data: JSON.stringify(json),
             contentType: 'application/json; charset=utf-8',
             timeout: 60000,
-            dataType: 'html',
+            dataType: 'json',
             success: function(data){
-                $("#table").html(data);
-                $("#datatable").DataTable();
+                createDataTable(data);
+                //$("#table").html(data);
+                //$("#datatable").DataTable();
                 $("#dark_bg").hide();
             },
             error: function () {

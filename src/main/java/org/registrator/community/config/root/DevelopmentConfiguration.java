@@ -1,8 +1,8 @@
 package org.registrator.community.config.root;
 
+import org.registrator.community.init.FirstTimeDeploy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -27,6 +27,11 @@ public class DevelopmentConfiguration {
 
     @Autowired
     private Environment env;
+    
+    @Bean(initMethod = "init")
+    public FirstTimeDeploy firstTimeDeploy(){
+    	return new FirstTimeDeploy();
+    }
 
     @Bean(name = "datasource")
     public DriverManagerDataSource dataSource(){

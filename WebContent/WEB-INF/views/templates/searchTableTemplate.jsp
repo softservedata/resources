@@ -11,7 +11,7 @@
 	
 		<div style="text-align: center;">
 			<h4>
-				${tableSetting.tableTitle}
+				<spring:message code="${tableSetting.tableTitle}" />
 			</h4>
 		</div>
 	
@@ -22,7 +22,8 @@
 			<thead>
 				<tr>
 					<c:forEach items="${tableSetting.columnsSetting}" var="columnSetting">
-						<th>${columnSetting.title}</th>
+						<th><spring:message code="${columnSetting.title}" /></th>
+<%-- 						<th>${columnSetting.title}"</th> --%>
 					</c:forEach>
 	           </tr>
 			</thead>
@@ -47,7 +48,8 @@
 <!-- 	                    			</select> -->
 <!-- 	                			</span> -->
 	                			<div class="col-md-12">
-		        					<input id="inputIndex${status.count-1}" class="form-control"  type="text" placeholder="${columnSetting.title}" />
+		        					<input id="inputIndex${status.count-1}" class="form-control"  type="text" placeholder="<spring:message code="${columnSetting.title}" />" />
+<%-- 										<input id="inputIndex${status.count-1}" class="form-control"  type="text" placeholder="${columnSetting.title}" /> --%>
 		        				</div>
 	        				</th>
 	        			</c:if>
@@ -96,13 +98,13 @@ jQuery(document).ready(function($) {
 						<c:forEach items="${tableSetting.columnsSetting}" var="columnSetting" varStatus="status">
 							<c:if test="${columnSetting.type eq 'search'}">
 								{
-						            "sTitle" : "${columnSetting.title}",
+						            "sTitle" : "<spring:message code="${columnSetting.title}" />",
 						            "mData" : "${columnSetting.data}"
 						        },
 							</c:if>
 						    <c:if test="${columnSetting.type eq 'button'}">
 						    {
-							       	   "sTitle" : "${columnSetting.title}",
+							       	   "sTitle" : "<spring:message code="${columnSetting.title}" />",
 					                   "mData" : "action",
 // 					                   "sClass" : "center",
 // 					                   "sClass": "action",

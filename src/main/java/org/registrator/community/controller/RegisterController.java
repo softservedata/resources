@@ -5,9 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.registrator.community.components.AdminSettings;
-import org.registrator.community.entity.Address;
-import org.registrator.community.entity.PassportInfo;
-import org.registrator.community.entity.User;
 import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;

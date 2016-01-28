@@ -14,13 +14,13 @@ public class RegistrationForm {
 
     @NotNull
     @Size(min=5, max=16, message="Логін повинен містити від {min} до {max} символів")
-    @Pattern(regexp = "(?=.*[a-zA-Z])[a-zA-Z0-9].{5,16}",message = "Логін може складатись лише з латинських літер і/або цифр")
+    @Pattern(regexp = "[a-zA-Z0-9].{4,16}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
     private String login;
 
     @NotNull
     @Size(min=6, max=20, message="Пароль повинен містити від {min} до {max} символів")
 //    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль може складатись лише з латинських літер (великих і малих) і/або цифр")
-    @Pattern(regexp = "(?=.*[a-zA-Z])[a-zA-Z0-9].{6,20}",message = "lower/uppercase letter and at least one digit")
+    @Pattern(regexp = "(?=.*[a-zA-Z])[a-zA-Z0-9].{5,20}",message = "Пароль повинен складатись з латинських літер (великих і малих) і хоча б однієї цифри")
 //    @Pattern(regexp = "((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})+ ",message = "at least one Upper and Lower character + at least one digit and special symbol. Password length: 6 - 20")
     private String password;
 
@@ -36,24 +36,44 @@ public class RegistrationForm {
 //    @Size(min=4, max=30, message="{lastName.size}")
     private String lastName;
 
-    @NotEmpty
+    @NotNull
     @Size(min=4, max=30, message="Поле повинне містити від {min} до {max} символів")
     private String middleName;
 
-    @NotEmpty
+    @NotNull
     @Email(message = "Введена вами e-mail адреса невірна")
     private String email;
 
-    @NotEmpty
-    @Pattern(regexp = "(?=.*[a-zA-Z]).{2}",message = "Серія паспорту складається із двох букв")
+    @NotNull
+    @Size(min=2, max=2, message = "Серія паспорту складається із двох букв")
     private String seria;
 
-    @NotEmpty
+    @NotNull
     @Pattern(regexp = "(?=.*[0-9]).{6}", message = "Поле повинне містити 6 цифр")
     private String number;
 
-    @NotEmpty
+    @NotNull
     private String publishedByData;
+
+    @NotNull
+    private String postcode;
+
+    @NotNull
+    private String region;
+
+    private String district;
+
+    @NotNull
+    private String city;
+
+    @NotNull
+    private String street;
+
+    @NotNull
+    private String building;
+
+    private String flat;
+
 
     @AssertTrue(message = "Введене вами підтвердження паролю невірне")
     private boolean isValidConfirmPassword(){
@@ -143,6 +163,62 @@ public class RegistrationForm {
 
     public void setPublishedByData(String publishedByData) {
         this.publishedByData = publishedByData;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public String getFlat() {
+        return flat;
+    }
+
+    public void setFlat(String flat) {
+        this.flat = flat;
     }
 }
 

@@ -40,15 +40,34 @@ public class ResourceLinearValueServiceImpl implements ResourceLinearValueServic
     }
 
     @Override
-    public Set<Resource> findResourcesbyLinearParam(Integer linearParamId, Double searchValue) {
+    public Set<String> findResourcesbyLinearParam(Integer linearParamId, Double searchValue) {
         LinearParameter linearParameter = linearParameterRepository.findByLinearParameterId(linearParamId);
         List<ResourceLinearValue> values = findAllByValueAndLinearParameter(searchValue,linearParameter);
-        Set<Resource> resources = new HashSet<>();
+        Set<String> resources = new HashSet<>();
 
         for (ResourceLinearValue value : values) {
-            resources.add(value.getResource());
+            resources.add(value.getResource().getIdentifier());
         }
 
         return resources;
+    }
+
+    @Override
+    public Set<String> findResourcesByLinParamList (List<Integer> paramIds, List<Double> searchValues) {
+        Set<String> identifiers = new HashSet<>();
+
+        for (int i = 0; i < paramIds.size(); i++) {
+            if (searchValues.get(i) != null) {
+                Set<String> foundResources = findResourcesbyLinearParam(
+                        paramIds.get(i), searchValues.get(i));
+                if (identifiers.size() > 0) {
+                    identifiers.retainAll(foundResources);
+                } else {
+                    identifiers.addAll(foundResources);
+                }
+            }
+        }
+
+        return identifiers;
     }
 }

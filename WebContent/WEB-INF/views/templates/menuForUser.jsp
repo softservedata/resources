@@ -11,16 +11,8 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="<c:url value='/'/>" class="glyphicon glyphicon-home"></a></li>
-                <li class="dropdown"><a href="#"><spring:message code="label.menu.resources" /></a>
-                    <ul class="dropdown_menu">
-                        <li><a href="<c:url value='/registrator/resource/showAllResources'/>">
-                            <spring:message code="label.menu.searchByParameters" /></a>
-                        </li>
-                        <li><a href="<c:url value='/registrator/resource/searchOnMap'/>">
-                            <spring:message code="label.menu.searchOnMap" /></a>
-                        </li>
-                    </ul>
-                </li>
+                <li class="dropdown"><a href="<c:url value='/registrator/resource/searchOnMap'/>">
+                    <spring:message code="label.menu.resources" /></a></li>
                 <li class="dropdown"><a href="#"><spring:message code="label.menu.inquiries" /></a>
                 		 <ul class="dropdown_menu">
                 			<li> <a href="<c:url value='/inquiry/add/listInqUserOut'/>">
