@@ -190,7 +190,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'oless@gmail.com','Олександр','Архилюк','admin','Олександрович','$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC','UNBLOCK',1),(2,'petro@gmail.com','Петро','Петренко','registrator','Петрович','$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm','UNBLOCK',2),(3,'ivan@gmail.com','Юрій','Іванов','user','Іванович','$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.','UNBLOCK',3),(4,'vasyl@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','UNBLOCK',2),(5,'oleh@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','INACTIVE',3),(6,'andr@gmail.com','Андрій','Іванов','commissioner','Петрович','commissioner','INACTIVE',4);
+INSERT INTO `users` VALUES (1,'oless@gmail.com','Олександр','Архилюк','admin','Олександрович','$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC','UNBLOCK',1),(2,'petro@gmail.com','Петро','Петренко','registrator','Петрович','$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm','UNBLOCK',2),(3,'ivan@gmail.com','Юрій','Іванов','user','Іванович','$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.','UNBLOCK',3),(4,'vasyl@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','UNBLOCK',2),(5,'oleh@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','INACTIVE',3),(6,'andr@gmail.com','Андрій','Іванов','commissioner','Петрович','$2a$10$JUp23T7bbFnzdqAJGrAq8Of.e3TUtw/32GtWbV8Cs8005ctg8.zyu','INACTIVE',4);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

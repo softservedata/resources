@@ -36,6 +36,9 @@ public class FirstTimeDeploy {
 	        Role roleRegistrator = new Role(RoleType.REGISTRATOR,"description");
 	        session.persist(roleRegistrator);
 	        
+	        Role roleCommissioner = new Role(RoleType.COMMISSIONER,"description");
+	        session.persist(roleCommissioner);
+	        
 	        roleTransaction.commit();
 	        Transaction userTransaction = session.beginTransaction();
 	        
