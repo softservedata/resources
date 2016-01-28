@@ -22,7 +22,6 @@ public class FirstTimeDeploy {
 		SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
 		Session session = sessionFactory.openSession();
 		long userCount = (long)session.createQuery("select count(u) from User u").uniqueResult();
-		System.out.println("In the init and userCount="+userCount);
 		if(userCount==0){
 			
 	        Transaction roleTransaction = session.beginTransaction();

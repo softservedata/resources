@@ -44,9 +44,6 @@ public class XmlAnalyzerUtil {
 	
 	
 	public boolean isDocumentValib(String fileName,String schemaName){
-		String lanquage = XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
-		@SuppressWarnings("unused")
-		SchemaFactory schemaFactory = SchemaFactory.newInstance(lanquage) ;
 		return false;
 	}
 }
