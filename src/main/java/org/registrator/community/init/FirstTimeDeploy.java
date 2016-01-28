@@ -41,10 +41,11 @@ public class FirstTimeDeploy {
 	        session.persist(roleCommissioner);
 	        
 	        roleTransaction.commit();
-	        Transaction userTransaction = session.beginTransaction();
-	        
+ 
+            Transaction userTransaction = session.beginTransaction();
 	        User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
-	        		roleAdmin,"Адміністратор","Адміністратор","Адміністратор","admin@admin.com","UNBLOCK");
+	        		roleAdmin,"Адміністратор","Адміністратор","Адміністратор","admin@admin.com","UNBLOCK","+380500000000");
+
 	        session.persist(admin);
 	        
 	        userTransaction.commit();
