@@ -18,5 +18,6 @@ public interface ResourceDiscreteValueService {
     List<ResourceDiscreteValue> findAllByValueAndDiscreteParameter (Double d, DiscreteParameter discreteParameter);
     List<ResourceDiscreteValue> findAllByBiggerValueAndDiscreteParameter (Double d, DiscreteParameter discreteParameter);
     List<ResourceDiscreteValue> findAllBySmallerValueAndDiscreteParameter (Double d, DiscreteParameter discreteParameter);
-    Set<Resource> findResourcesByDiscreteParam(Integer discreteParameterId, String compareSign, Double searchValue);
+    Set<String> findResourcesByDiscreteParam(Integer discreteParameterId, String compareSign, Double searchValue);
+    Set<String> findResourcesByParamsList(List<Integer> paramsId, List<String> compareSign, List<Double> searchValue);
 }

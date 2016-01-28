@@ -34,6 +34,7 @@ import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +64,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	Logger logger;
 
+
+	@Autowired
+	private PasswordEncoder  userPasswordEncoder;
+
+	
 	/**
 	 * Method, which returns user from database by login
 	 * 
@@ -388,7 +394,7 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setLogin(registrationForm.getLogin());
 		user.setEmail(registrationForm.getEmail());
-		user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + registrationForm.getPassword()));
+		user.setPasswordHash(userPasswordEncoder.encode(registrationForm.getPassword()));
 		user.setFirstName(registrationForm.getFirstName());
 		user.setLastName(registrationForm.getLastName());
 		user.setMiddleName(registrationForm.getMiddleName());

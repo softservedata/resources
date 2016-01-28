@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ResourceNumberRepository extends JpaRepository<ResourceNumber, String> {
+    
+    @Query("select r from ResourceNumber r where r.user =:user")
+    public ResourceNumber findResourceNumberByUser(@Param("user") User user);
 
 }

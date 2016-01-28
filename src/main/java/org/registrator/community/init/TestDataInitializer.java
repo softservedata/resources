@@ -1,4 +1,4 @@
-package org.registrator.community.components;
+package org.registrator.community.init;
 
 import java.util.Date;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class TestDataInitializer {
 	
 	@Autowired
-	EntityManagerFactory entityManagerFactory;
+	private EntityManagerFactory entityManagerFactory;
 	
 	public void init(){
 		
@@ -42,11 +42,16 @@ public class TestDataInitializer {
         roleTransaction.commit();
         Transaction userTransaction = session.beginTransaction();
         
-        User user = new User("user","user",roleUser,"Іван","Головатий","Сергійович","ivan@gmail.com","UNBLOCK");
+        User user = new User("user","$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.",
+        		roleUser,"Іван","Головатий","Сергійович","ivan@gmail.com","UNBLOCK");
         session.persist(user);
-        session.persist(new User("admin","admin",roleAdmin,"Сергій","Головатий","Сергійович","sergey@gmail.com","UNBLOCK"));
         
-        User registrator = new User("registrator","registrator",roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","UNBLOCK");
+        User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
+        		roleAdmin,"Сергій","Головатий","Сергійович","sergey@gmail.com","UNBLOCK");
+        session.persist(admin);
+        
+        User registrator = new User("registrator","$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm",
+        		roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","UNBLOCK");
         session.persist(registrator);
         
         userTransaction.commit();

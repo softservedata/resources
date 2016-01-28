@@ -19,7 +19,7 @@
     <title><tiles:getAsString name="title"/></title>
 
     <!-- JQuery lib-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="<c:url value='/resource/js/lib/jquery-1.12.0.min.js'/>"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 
     <!-- Bootstrap -->
@@ -30,10 +30,9 @@
     <script src="<c:url value='/resource/js/lib/bootbox.js'/>"></script>
 
     <!-- DataTables lib -->
-    <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+    <script src="<c:url value='/resource/js/lib/jquery.dataTables.min.js'/>"></script>
     <!-- DataTables CSS-->
-    <link rel="stylesheet"
-          href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="<c:url value='/resource/css/jquery.dataTables.min.css'/>">
 
     <!-- Our JavaScript-->
     <script src="<c:url value='/resource/js/scripts.js'/>"></script>
