@@ -67,12 +67,6 @@ public class RegisterController {
         return "redirect:/login";
     }
 
-    // Password Recovery
-    @RequestMapping(value = "/send-password", method = RequestMethod.GET)
-    public String showPasswordRecoveryForm() {
-        return "password_recovery";
-    }
-
     // Frequently Asked Questions (FAQ)
     @RequestMapping(value = "/faq", method = RequestMethod.GET)
     public String showFAQpage() {
