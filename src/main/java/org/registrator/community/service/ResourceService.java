@@ -33,5 +33,7 @@ public interface ResourceService {
 
     List<PolygonJSON> createPolygonJSON (String identifier);
     
+    String getRegistrationNumber(String login);
+    
 }
 

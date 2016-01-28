@@ -99,6 +99,8 @@ public class ResourceController {
 		logger.info(listOfResourceType.size() + " resource types was found");
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		ResourceDTO newresource = new ResourceDTO();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        newresource.setIdentifier(resourceService.getRegistrationNumber(auth.getName()));
 		model.addAttribute("newresource", newresource);
 		return "addResource";
 	}

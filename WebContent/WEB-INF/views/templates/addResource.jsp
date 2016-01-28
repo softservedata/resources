@@ -83,7 +83,7 @@
 					code="label.resource.identifier" />:</label>
 			<div class="col-sm-3">
 				<input class="form-control" name="identifier"
-					value="${newresource.identifier}">
+					value="${newresource.identifier}" readonly>
 				<div class="control-group error">
 					<form:errors path="identifier" cssClass="error" style="color:red" />
 				</div>
