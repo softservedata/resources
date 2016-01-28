@@ -30,7 +30,7 @@
 					
 						<c:forEach items="${listInquiryUser}" var="inquiryUser">						
 							<tr>								
-								<td hidden="true"> ${inquiryUser.inquiry_list_id}	</td>
+								<td hidden="true"> ${inquiryUser.inquiryId}	</td>
 								<fmt:formatDate value="${inquiryUser.date}" pattern="dd.MM.yyyy" var="Date" />
 								<td> ${Date}	</td>
 								<td> ${inquiryUser.userName}	</td>
@@ -39,12 +39,12 @@
 								<td><a href="get/${inquiryUser.resourceIdentifier}"> ${inquiryUser.resourceIdentifier}	</a></td>	
 								<td> ${inquiryUser.resourceStatus}	</td>
 								<td> <div class="block">										
-										<a href="printdata/${inquiryUser.inquiry_list_id}"
+										<a href="printdata/${inquiryUser.inquiryId}"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>
 																		
 												
-									<!-- 	<a href="<c:url value='printdata/${inquiryUser.inquiry_list_id}' />"
+									<!-- 	<a href="<c:url value='printdata/${inquiryUser.inquiryId}' />"
 											class="btn btn-primary" role="button"> 
 											<spring:message code="label.inquiry.print" /></a>  -->	
 									</div>								

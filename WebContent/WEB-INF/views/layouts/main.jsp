@@ -65,6 +65,10 @@
                     <tiles:insertAttribute name="menuForUser" role="USER"/>
 
                 </div>
+                 <div class="col-md-12" id="menuForCommissioner">
+                    <tiles:insertAttribute name="menuForCommissioner" role="COMMISSIONER"/>
+
+                </div>
             </div>
         </div>
         <div class="row">

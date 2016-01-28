@@ -34,6 +34,7 @@ import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +63,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	Logger logger;
+
+	@Autowired
+	private PasswordEncoder  userPasswordEncoder;
 
 	
 	/**
@@ -333,15 +337,12 @@ public class UserServiceImpl implements UserService {
      */
 	private Role checkRole(String role) {
 		List<Role> roleList = roleRepository.findAll();
-		if (role.equals(RoleType.USER.name())) {
-			return roleList.get(2);
-		} else {
-			if (role.equals(RoleType.REGISTRATOR.name())) {
-				return roleList.get(1);
-			} else {
-				return roleList.get(0);
-			}
-		}
+		switch(role){
+		case "USER": return roleList.get(2); 
+		case "REGISTRATOR": return roleList.get(1);
+		case "COMMISSIONER": return roleList.get(3);
+		default: return roleList.get(0);
+		}	
 	}
 
 	/**
@@ -362,7 +363,7 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setLogin(registrationForm.getLogin());
 		user.setEmail(registrationForm.getEmail());
-		user.setPasswordHash(DigestUtils.md5Hex(user.getUserId() + registrationForm.getPassword()));
+		user.setPasswordHash(userPasswordEncoder.encode(registrationForm.getPassword()));
 		user.setFirstName(registrationForm.getFirstName());
 		user.setLastName(registrationForm.getLastName());
 		user.setMiddleName(registrationForm.getMiddleName());
@@ -381,16 +382,21 @@ public class UserServiceImpl implements UserService {
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
 			passportRepository.saveAndFlush(passport);
-			log.info("Inserted passport data for user '{0}', passport_data_id = ", user.getLogin(), passport.getPassportId());
+			log.info("Inserted passport data for user {0}, passport_data_id = {1}", user.getLogin(), passport.getPassportId());
 
 			// insert user's address records into "address" table
+			Address address = new Address();
+			address.setUser(user);
+			address.setCity(registrationForm.getCity());
+			address.setRegion(registrationForm.getRegion());
+			address.setDistrict(registrationForm.getDistrict());
+			address.setStreet(registrationForm.getStreet());
+			address.setBuilding(registrationForm.getBuilding());
+			address.setFlat(registrationForm.getFlat());
+			address.setPostCode(registrationForm.getPostcode());
 
-//			Address address = new Address();
-//			//
-//			address.setUser(user);
-//			address.setBuilding();
-//			addressRepository.saveAndFlush(address);
-
+			addressRepository.saveAndFlush(address);
+			log.info("Inserted address data for user {0}, address_id = {1}", user.getLogin(), address.getAddressId());
 		}
 		
 	}
@@ -506,17 +512,4 @@ public class UserServiceImpl implements UserService {
        
         return userdto;
     }
-	
-    
-    
-    // @Override
-	// public boolean recoverUsersPassword(String email, String
-	// usersCaptchaAnswer, String captchaFileName) {
-	// if(validateUsersEmail(email) && validateCaptchaCode(captchaFileName)){
-	// return true;
-	// }
-	// return false; //- "There is no such email in the DB" or "Entered captcha
-	// code is incorrect"
-	// }
-
 }

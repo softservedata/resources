@@ -20,7 +20,7 @@ public interface ResourceService {
 	ResourceDTO findByIdentifier(String identifier);
 
     List<Resource> findByType (ResourceType type);
-    @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     long count();
     
     Set<String> getDescriptionBySearchTag(String searchTag);

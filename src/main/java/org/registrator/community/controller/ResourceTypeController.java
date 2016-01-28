@@ -1,7 +1,6 @@
 package org.registrator.community.controller;
 
 import java.util.List;
-
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.service.ResourceTypeService;
 import org.slf4j.Logger;
@@ -24,7 +23,7 @@ public class ResourceTypeController {
     Logger logger;
     @Autowired
     ResourceTypeService resourceTypeService;
-
+    
     /**
      * Method for showing all types of resources on UI
      */
@@ -55,8 +54,8 @@ public class ResourceTypeController {
     @ResponseBody
     public ResponseEntity<String> deleteResourceType(@PathVariable Integer typeId) {
         logger.info("begin method for deleting chosen resource type with its parameters");
-        int check = resourceTypeService.delete(resourceTypeService.findById(typeId));
-        if (check != -1) {
+        boolean isDeleted = resourceTypeService.delete(resourceTypeService.findById(typeId));
+        if (isDeleted) {
             logger.info("end: cannot delete resource type");
             return new ResponseEntity<String>(HttpStatus.OK);
         }

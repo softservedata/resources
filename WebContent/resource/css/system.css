@@ -12,13 +12,13 @@ body {
     display: flex;
 }
 
-#menubaruser, #menubarreg, #menubaradmin {
+#menubaruser, #menubarreg, #menubaradmin, #menubarcom{
     height: 40px;
     line-height: 40px;
     vertical-align: middle;
 }
 
-#menubaruser li, #menubarreg li, #menubaradmin li{
+#menubaruser li, #menubarreg li, #menubaradmin li, #menubarcom li{
     padding-left: 7px;
 }
 

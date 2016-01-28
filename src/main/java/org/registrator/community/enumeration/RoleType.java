@@ -3,7 +3,8 @@ package org.registrator.community.enumeration;
 public enum RoleType{
     USER("USER"),
     REGISTRATOR("REGISTRATOR"),
-    ADMIN("ADMIN");
+    ADMIN("ADMIN"),
+    COMMISSIONER("COMMISSIONER");
     
     private final String TYPE;
     

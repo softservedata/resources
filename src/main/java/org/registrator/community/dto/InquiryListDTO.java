@@ -14,7 +14,7 @@ public class InquiryListDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer inquiry_list_id;
+	private Integer inquiryId;
 	private String inquiryType;
 	private Date date;
 	private String userName;
@@ -25,9 +25,9 @@ public class InquiryListDTO implements Serializable {
 	public InquiryListDTO() {
 	}
 
-	public InquiryListDTO(Integer inquiry_list_id, String inquiryType, Date date, String userName,
+	public InquiryListDTO(Integer inquiryId, String inquiryType, Date date, String userName,
 			String registratorName, String resourceIdentifier, ResourceStatus resourceStatus) {
-		this.inquiry_list_id = inquiry_list_id;
+		this.inquiryId = inquiryId;
 		this.inquiryType = inquiryType;
 		this.date = date;
 		this.userName = userName;
@@ -36,12 +36,12 @@ public class InquiryListDTO implements Serializable {
 		this.resourceStatus = resourceStatus;
 	}
 
-	public Integer getInquiry_list_id() {
-		return inquiry_list_id;
+	public Integer getInquiryId() {
+		return inquiryId;
 	}
 
-	public void setInquiry_list_id(Integer inquiry_list_id) {
-		this.inquiry_list_id = inquiry_list_id;
+	public void setInquiryId(Integer inquiryId) {
+		this.inquiryId = inquiryId;
 	}
 
 	public String getInquiryType() {

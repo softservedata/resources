@@ -42,8 +42,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		}
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_"+ userEntity.getRole()));
-
+		authorities.add(new SimpleGrantedAuthority("ROLE_"+ userEntity.getRole().getType()));
+		
+		
 		return buildUserForAuthentication(userEntity,authorities);
 	}
 	

@@ -3,44 +3,25 @@ package org.registrator.community.controller.administrator;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Set;
 
-import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.registrator.community.dao.ResourceRepository;
-import org.registrator.community.dao.UserRepository;
-import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserNameDTO;
-import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.InquiryType;
-import org.registrator.community.service.DiscreteParameterService;
 import org.registrator.community.service.InquiryService;
-import org.registrator.community.service.LinearParameterService;
 import org.registrator.community.service.PrintService;
 import org.registrator.community.service.ResourceService;
-import org.registrator.community.service.ResourceTypeService;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -49,9 +30,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.itextpdf.text.Document;
 
 
 /**
@@ -63,25 +41,17 @@ import com.itextpdf.text.Document;
 @Controller
 @RequestMapping(value ="/inquiry/add/")
 public class InquiryController {
-	//public static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
+	
 	@Autowired
-	Logger logger;	
+	private Logger logger;	
 	@Autowired
-	InquiryService inquiryService;		
+	private InquiryService inquiryService;		
 	@Autowired
-	ResourceRepository resourceRepository;	
+	private ResourceService resourceService;			
 	@Autowired
-	ResourceTypeService resourceTypeService;	
+	private PrintService printService;
 	@Autowired
-	ResourceService resourceService;	
-	@Autowired
-	DiscreteParameterService discreteParameterService;	
-	@Autowired
-	LinearParameterService linearParameterService;	
-	@Autowired
-	PrintService printService;
-	@Autowired
-	UserService userService;
+	private UserService userService;
 	 
 	
 	/**
@@ -92,7 +62,8 @@ public class InquiryController {
 	 * @param model - the model
 	 * @return inquiryAddOut.jsp
 	 */
-	@RequestMapping(value = "/outputInquiry", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
 	public String showOutputInquiry(Model model) {
 		logger.info("begin showOutputInquiry");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -113,6 +84,7 @@ public class InquiryController {
 	 * @param registratorLogin - login of chosen registrator.
 	 * @return listInqUserOut.jsp
 	 */
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
 	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  			
 		logger.info("begin addOutputInquiry, param resourceIdentifier = " + resourceIdentifier +
@@ -130,7 +102,7 @@ public class InquiryController {
 	 * @param model - the model
 	 * @return listInqUserOut.jsp
 	 */
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
 	public String listInqUserOut(Model model) {	
 		logger.info("begin listInqUserOut");		
@@ -150,7 +122,7 @@ public class InquiryController {
 	 * @param model - the model
 	 * @return listInquiryUserInput.jsp
 	 */
-	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	public String listInquiryUserInput(Model model) {
 		logger.info("begin listInquiryUserInput");
@@ -167,6 +139,7 @@ public class InquiryController {
 	 * @param inquiryId - inquiry identifier.
 	 * @return listInqUserOut.jsp
 	 */
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/delete/{inquiryId}")
 	public String deleteInquiry(@PathVariable Integer inquiryId) {
 		logger.info("begin deleteInquiry, param inquiryId = " + inquiryId);
@@ -183,6 +156,7 @@ public class InquiryController {
      * @param identifier - resource identifier.
 	 * @return showResource.jsp
      */
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
     @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
     public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
     	logger.info("begin getResourceByIdentifier, param = " + identifier);
@@ -200,7 +174,7 @@ public class InquiryController {
  	 */
 
     
-    
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
  	@RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
  	public void downloadFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
  			throws IOException {
@@ -241,7 +215,7 @@ public class InquiryController {
  	 * @author Vitalii Horban
  	 * generate pdf document "extract" on button pressing and open this document in the same inset
  	 */
- 	
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
  	@RequestMapping(value = "/printExtract/{inquiryId}", method = RequestMethod.GET)
  	public void downloadExtractFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
  			throws IOException {
@@ -285,7 +259,7 @@ public class InquiryController {
  	 * @author Vitalii Horban
  	 * generate pdf document "ProcurationOnSubmit" on button pressing and open this document in the same inset
  	 */
- 	
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
  	@RequestMapping(value = "/printdata/{inquiryId}", method = RequestMethod.GET)
  	public void downloadInfoFile(HttpServletResponse response, @PathVariable("inquiryId") Integer inquiryId)
  			throws IOException {

@@ -28,7 +28,7 @@ public class InquiryRepositoryTest {
 	@Test
     public void testGetOne(){
 		Inquiry inquiry = inquiryRepository.findOne(1);
-		Assert.assertTrue(inquiry.getInquiry_list_id() == 1);
+		Assert.assertTrue(inquiry.getInquiryId() == 1);
 	}
 	
 	// test method getOne - get inquiry by inquiryId that does not exist

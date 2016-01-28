@@ -9,9 +9,7 @@ import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
-import org.registrator.community.dto.InquiryDTO;
 import org.registrator.community.dto.InquiryListDTO;
-import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserNameDTO;
 import org.registrator.community.entity.Inquiry;
@@ -19,13 +17,10 @@ import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.InquiryType;
-import org.registrator.community.enumeration.ResourceStatus;
+import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.service.InquiryService;
-import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,17 +35,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryServiceImpl implements InquiryService{
 	
 	@Autowired
-	Logger logger;
+	private Logger logger;
 	@Autowired
-	InquiryRepository inquiryRepository;
+	private InquiryRepository inquiryRepository;
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	@Autowired
-	ResourceRepository resourceRepository;
+	private ResourceRepository resourceRepository;
 	@Autowired
-	TomeRepository tomeRepository;
-	@Autowired
-    ResourceService resourceService;
+	private TomeRepository tomeRepository;
+	
 
 	
 	/**
@@ -113,7 +107,9 @@ public class InquiryServiceImpl implements InquiryService{
 
 	/**
 	 * Method for showing all output inquiries from logged user on UI 
-	 * forms List<InquiryListDTO> to fill listInqUserOut.jsp.
+	 * (if role of logged user is USER)
+	 * or for showing all inquiries to registator of type inquiryType
+	 * forms List<InquiryListDTO> to fill listInqUserOut.jsp or listInquiryUserInput.jsp.
 	 */
 	@Transactional
 	@Override
@@ -124,13 +120,13 @@ public class InquiryServiceImpl implements InquiryService{
 		User user = userRepository.findUserByLogin(userLogin);
 		
 		List<Inquiry> listInquiry;
-		if (user.getRole().getType().toString().equals("USER")){
+		if (user.getRole().getType().equals(RoleType.USER)){		
 			listInquiry = inquiryRepository.findByUserAndInquiryType(user, inquiryType);
 		} else {
 			listInquiry = inquiryRepository.findByRegistratorAndInquiryType(user, inquiryType);
 		}
 		for (Inquiry inquiry : listInquiry){
-			inquiryListDTO = new InquiryListDTO(inquiry.getInquiry_list_id(), inquiry.getInquiryType().toString(), 
+			inquiryListDTO = new InquiryListDTO(inquiry.getInquiryId(), inquiry.getInquiryType().toString(), 
 						inquiry.getDate(), null, null, inquiry.getResource().getIdentifier(), inquiry.getResource().getStatus());
 			User userFrom =inquiry.getUser();
 			inquiryListDTO.setUserName(userFrom.getLastName()+ " " +userFrom.getFirstName()+ " " +userFrom.getMiddleName());
