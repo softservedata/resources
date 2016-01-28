@@ -66,19 +66,19 @@
 								class="form-control input-md" value="${userDto.login}" readonly>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="textinput"><spring:message
-								code="label.password" /></label>
-						<div class="col-lg-8">
-							<input id="password" name="password" placeholder=""
-								class="form-control input-md readonly" type="text"
-								value="${userDto.password}" readonly>
-							<div class="control-group error">
-								<form:errors path="password" cssClass="error"
-									style="color:black" />
-							</div>
-						</div>
-					</div>
+<!-- 					<div class="form-group"> -->
+<%-- 						<label class="col-lg-4 control-label" for="textinput"><spring:message --%>
+<%-- 								code="label.password" /></label> --%>
+<!-- 						<div class="col-lg-8"> -->
+<!-- 							<input id="password" name="password" placeholder="" -->
+<!-- 								class="form-control input-md readonly" type="text" -->
+<%-- 								value="${userDto.password}" readonly> --%>
+<!-- 							<div class="control-group error"> -->
+<%-- 								<form:errors path="password" cssClass="error" --%>
+<%-- 									style="color:black" /> --%>
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.email" /></label>
