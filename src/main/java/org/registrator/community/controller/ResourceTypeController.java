@@ -22,16 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ResourceTypeController {
 
     @Autowired
-    Logger logger;
+    private Logger logger;
     @Autowired
-    ResourceTypeService resourceTypeService;
+    private ResourceTypeService resourceTypeService;
     
     /**
      * Method for showing all types of resources on UI
      */
-    
-   
-
     
     @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/show-res-types", method = RequestMethod.GET)

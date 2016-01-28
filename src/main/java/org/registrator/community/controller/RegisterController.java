@@ -24,10 +24,10 @@ public class RegisterController {
 
     private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    AdminSettings adminSettings;
+    private AdminSettings adminSettings;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {

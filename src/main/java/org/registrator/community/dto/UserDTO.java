@@ -49,6 +49,10 @@ public class UserDTO implements Serializable {
 	private WillDocumentDTO willDocument;
 	private List<String> otherDocuments;
 
+    private String territorialCommunity;
+    
+    private String phoneNumber;
+
 	public UserDTO(String firstName, String lastName, String middleName, String role, String login, String password,
 			String email, String status, AddressDTO address, PassportDTO passport) {
 		this.firstName = firstName;
@@ -61,13 +65,31 @@ public class UserDTO implements Serializable {
 		this.status = status;
 		this.address = address;
 		this.passport = passport;
+	/*	this.territorialCommunity = territorialCommunity;
+		this.phoneNumber = phoneNumber;*/
 	}
 
 	public UserDTO() {
 
 	}
 
-	public String getFirstName() {
+	public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getTerritorialCommunity() {
+        return territorialCommunity;
+    }
+
+    public void setTerritorialCommunity(String territorialCommunity) {
+        this.territorialCommunity = territorialCommunity;
+    }
+
+    public String getFirstName() {
 		return firstName;
 	}
 
@@ -177,7 +199,7 @@ public class UserDTO implements Serializable {
 		result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n" + "Роль:  " + getRole()
 				+ "\n" + "Логін: " + login + "\n" + "Пароль: " + password + "\n" + "Пошта: " + email + "\n" + "Статус: "
 				+ status + "\n" + "Паспортні дані:" + passport.toString() + "\n" + "Адреса: " + address.toString()
-				+ "\n");
+				+ "\n" + "Номер телефону: " + phoneNumber + "\n" + "Громада: " + territorialCommunity+ "\n");
 		return result;
 	}
 }

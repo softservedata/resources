@@ -38,29 +38,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UsersController {
 
 	@Autowired
-	Logger logger;
+	private Logger logger;
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Autowired
-	AdminSettings adminSettings;
+	private AdminSettings adminSettings;
 
 	@Autowired
-	RoleService roleService;
+	private RoleService roleService;
 
 	@Autowired
 	@Qualifier("registerUserSearchService")
-	BaseSearchService<User> userSearchService;
+	private BaseSearchService<User> userSearchService;
 
 	@Autowired
-	TableSettingsFactory tableSettingsFactory;
+	private TableSettingsFactory tableSettingsFactory;
 
 	/**
 	 * Controller for showing information about user
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
 	public String fillInEditWindow(@RequestParam("login") String login, Model model) {
 		logger.info("begin");
@@ -78,7 +78,7 @@ public class UsersController {
 	 * Controller for editing user information
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.POST)
 	public String editRegistratedUser(@Valid @ModelAttribute("userDTO") UserDTO userDto, BindingResult result,
 			Model model) {
@@ -106,7 +106,7 @@ public class UsersController {
 	 * Controller for showing all inactive user
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
 	public String getAllInactiveUsers(Model model) {
 		logger.info("begin");
@@ -124,7 +124,7 @@ public class UsersController {
 	 * Controller for changing user statur for inactive users
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@ResponseBody
 	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.POST)
 	public String changeStatus(@RequestBody UserStatusDTOJSON userStatusDto) {
@@ -138,7 +138,7 @@ public class UsersController {
 	 * Controller for showing modal window
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@ResponseBody
 	@RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.POST)
 	public ResponseEntity<String> showModalWindow(@RequestBody ResourceNumberDTOJSON resourceNumberDtoJson) {
@@ -153,7 +153,7 @@ public class UsersController {
 	 * Controller for get all registrated users
 	 * 
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
 	public String getAllUsers(Model model) {
 		logger.info("begin");
@@ -162,7 +162,7 @@ public class UsersController {
 		return "searchTableTemplate";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@ResponseBody
 	@RequestMapping(value = "registerUser", method = RequestMethod.POST)
 	public TableSearchResponseDTO getDataFromDataTable(@Valid @RequestBody TableSearchRequestDTO dataTableRequest) {

@@ -170,5 +170,14 @@
 	
 	<definition name="accessDenied" template="/WEB-INF/views/accessDenied.jsp">	
 	</definition>
+	
+	<definition name="stress" 
+	extends="homepage">
+	
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/stress.jsp" />
+	</definition>
+	
+	
 
 </tiles-definitions>

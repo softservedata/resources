@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class EditResTypeController {
 
     @Autowired
-    ResourceTypeService resourceTypeService;
+    private ResourceTypeService resourceTypeService;
 
     @RequestMapping(value = "/edit/{typeId}", method = RequestMethod.GET)
     public String addResourceEditTypeForm(@PathVariable ("typeId") Integer typeId, Model model) {

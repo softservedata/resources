@@ -5,6 +5,9 @@ import javax.persistence.EntityManagerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.LinearParameter;
+import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.RoleType;
@@ -39,10 +42,10 @@ public class FirstTimeDeploy {
 	        session.persist(roleCommissioner);
 	        
 	        roleTransaction.commit();
-	        Transaction userTransaction = session.beginTransaction();
-	        
+ 
+            Transaction userTransaction = session.beginTransaction();
 	        User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
-	        		roleAdmin,"Admin","Admin","Admin","admin@admin.com","UNBLOCK");
+	        		roleAdmin,"Admin","Admin","Admin","admin@admin.com","UNBLOCK","+380500000000");
 	        session.persist(admin);
 	        
 	        userTransaction.commit();

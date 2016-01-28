@@ -44,25 +44,25 @@ public class UserServiceImpl implements UserService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	RoleRepository roleRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	PassportRepository passportRepository;
+	private PassportRepository passportRepository;
 
 	@Autowired
-	AddressRepository addressRepository;
+	private AddressRepository addressRepository;
 
 	@Autowired
-	ResourceNumberRepository resourceNumberRepository;
+	private ResourceNumberRepository resourceNumberRepository;
 
 	@Autowired
-	TomeRepository tomeRepository;
+	private TomeRepository tomeRepository;
 
 	@Autowired
-	Logger logger;
+	private Logger logger;
 
 
 	@Autowired
