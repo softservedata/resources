@@ -10,8 +10,8 @@
 			<ul class="nav navbar-nav">
 				<li><a href="<c:url value='/'/>"
 					class="glyphicon glyphicon-home"></a></li>
-				<li class="dropdown"><a href="#"><spring:message
-							code="label.menu.users" /></a>
+				<li class="dropdown"><a href="#" class="not-active">
+					<spring:message code="label.menu.users" /></a>
 					<ul class="dropdown_menu">
 						<li><a href="<c:url value='/administrator/users/get-all-users'/>"><spring:message
 									code="label.registrated.pagename" /></a></li>

@@ -13,7 +13,7 @@
                 <li><a href="<c:url value='/registrator/resourcetypes/show-res-types'/>">
                     <spring:message code="label.menu.resourcesTypes" /></a></li>
                 
-                <li class="dropdown"><a href="#"><spring:message code="label.menu.inquiries" /></a>
+                <li class="dropdown"><a href="#" class="not-active"><spring:message code="label.menu.inquiries" /></a>
                     <ul class="dropdown_menu">
                         <li> <a href="<c:url value='/inquiry/add/listInquiryUserInput'/>">
                             <spring:message code="label.menu.inquiries.input" /></a>

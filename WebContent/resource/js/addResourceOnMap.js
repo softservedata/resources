@@ -2,6 +2,7 @@ var map;
 var polygons = [];
 var newPolygons = [];
 var PS = null;
+var resType = $("#resourcesTypeSelect").val();
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -144,7 +145,7 @@ function initialize() {
 }
 
 function getResources() {
-    var resType = $("#resourcesTypeSelect").val();
+    //var resType = $("#resourcesTypeSelect").val();
     var maxLat = map.getBounds().getNorthEast().lat();
     var minLat = map.getBounds().getSouthWest().lat();
     var maxLng = map.getBounds().getNorthEast().lng();
@@ -220,7 +221,7 @@ function intersectionCheck(polygon){
     var vertices;
     var sameVertice = false;
     var verticesPoly;
-    var resType = $("#resourcesTypeSelect").val();
+    //var resType = $("#resourcesTypeSelect").val();
     var bounds = new google.maps.LatLngBounds();
 
     if (resType == "") {
@@ -303,8 +304,6 @@ function intersectionCheck(polygon){
 }
 
 $("#gmaps-show-res").click(function () {
-    var resType = $("#resourcesTypeSelect").val();
-
     if (resType == "") {
         $("#resourcesTypeSelect").focus();
         bootbox.alert(jQuery.i18n.prop('msg.selectType'));

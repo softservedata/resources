@@ -337,4 +337,18 @@ public class ResourceController {
 		return userService.getUserDto(ownerLogin);
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/showAllResources", method = RequestMethod.POST)
+	public String showAllResources(@RequestParam("resType") Integer resType) {
+		ResourceType resourceType = resourceTypeService.findById(resType);
+		List<Resource> resources = resourceService.findByType(resourceType);
+		List<PolygonJSON> polygons = new ArrayList<>();
+
+		for (Resource resource: resources) {
+			polygons.addAll(resourceService.createPolygonJSON(resource.getIdentifier()));
+		}
+
+		Gson gson = new Gson();
+		return gson.toJson(polygons);
+	}
 }
