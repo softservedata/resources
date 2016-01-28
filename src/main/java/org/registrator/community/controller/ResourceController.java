@@ -99,6 +99,8 @@ public class ResourceController {
 		logger.info(listOfResourceType.size() + " resource types was found");
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		ResourceDTO newresource = new ResourceDTO();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        newresource.setIdentifier(resourceService.getRegistrationNumber(auth.getName()));
 		model.addAttribute("newresource", newresource);
 		return "addResource";
 	}
@@ -116,7 +118,7 @@ public class ResourceController {
 	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
 	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
 			Model model, String ownerLogin) {
-		
+ 
 		logger.info("The ownerLogin is " + ownerLogin);
 		
 		/* check if given resourceDTO is valid */

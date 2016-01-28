@@ -26,13 +26,13 @@ public class FirstTimeDeploy {
 			
 	        Transaction roleTransaction = session.beginTransaction();
 	        System.out.println("In the init and if");
-	        Role roleUser = new Role(RoleType.USER,"description");
+	        Role roleUser = new Role(RoleType.ADMIN,"description");
 	        session.persist(roleUser);
 	        
-	        Role roleAdmin = new Role(RoleType.ADMIN,"description");
+	        Role roleAdmin = new Role(RoleType.REGISTRATOR,"description");
 	        session.persist(roleAdmin);
 	        
-	        Role roleRegistrator = new Role(RoleType.REGISTRATOR,"description");
+	        Role roleRegistrator = new Role(RoleType.USER,"description");
 	        session.persist(roleRegistrator);
 	        
 	        Role roleCommissioner = new Role(RoleType.COMMISSIONER,"description");
