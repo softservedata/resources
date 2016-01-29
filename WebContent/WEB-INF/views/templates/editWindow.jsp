@@ -54,7 +54,7 @@
 								value="${userDto.middleName}" readonly>
 							<div class="control-group error">
 								<form:errors path="middleName" cssClass="black"
-									style="color:red" />
+									style="color:black" />
 							</div>
 						</div>
 					</div>
