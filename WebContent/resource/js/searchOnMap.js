@@ -1,6 +1,8 @@
 var map;
 var markers = [];
 var rectangles = [];
+var polygons = [];
+var oTable = null;
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -212,109 +214,6 @@ function initialize() {
     });
 }
 
-$("#searchOnMapButton").click(function () {
-    var latitudeDegrees = Number($(".latitudeDegrees").val());
-    var latitudeMinutes = Number($(".latitudeMinutes").val());
-    var latitudeSeconds = Number($(".latitudeSeconds").val());
-
-    var longitudeDegrees = Number($(".longitudeDegrees").val());
-    var longitudeMinutes = Number($(".longitudeMinutes").val());
-    var longitudeSeconds = Number($(".longitudeSeconds").val());
-
-    var searchLat = latitudeDegrees + latitudeMinutes / 60 + latitudeSeconds / 3600;
-    var searchLng = longitudeDegrees + longitudeMinutes / 60 + longitudeSeconds / 3600;
-
-    var myLatLng = new google.maps.LatLng(searchLat, searchLng);
-
-    // Clear out the old markers.
-    markers.forEach(function (marker) {
-        marker.setMap(null);
-    });
-    markers = [];
-
-    var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map
-    });
-
-    markers.push(marker);
-
-    searchOnMapByPoint(myLatLng, marker);
-});
-
-$("#searchOnMapButton_area").click(function () {
-    var firstLatDeg = Number($("#first_point").find(".latitudeDegrees").val());
-    var firstLatMin = Number($("#first_point").find(".latitudeMinutes").val());
-    var firstLatSec = Number($("#first_point").find(".latitudeSeconds").val());
-    var firstLngDeg = Number($("#first_point").find(".longitudeDegrees").val());
-    var firstLngMin = Number($("#first_point").find(".longitudeMinutes").val());
-    var firstLngSec = Number($("#first_point").find(".longitudeSeconds").val());
-
-    var secondLatDeg = Number($("#second_point").find(".latitudeDegrees").val());
-    var secondLatMin = Number($("#second_point").find(".latitudeMinutes").val());
-    var secondLatSec = Number($("#second_point").find(".latitudeSeconds").val());
-    var secondLngDeg = Number($("#second_point").find(".longitudeDegrees").val());
-    var secondLngMin = Number($("#second_point").find(".longitudeMinutes").val());
-    var secondLngSec = Number($("#second_point").find(".longitudeSeconds").val());
-
-    var firstLat = firstLatDeg + firstLatMin / 60 + firstLatSec / 3600;
-    var firstLng = firstLngDeg + firstLngMin / 60 + firstLngSec / 3600;
-
-    var secondLat = secondLatDeg + secondLatMin / 60 + secondLatSec / 3600;
-    var secondLng = secondLngDeg + secondLngMin / 60 + secondLngSec / 3600;
-
-    var north;
-    var south;
-    var east;
-    var west;
-
-    if (firstLat > secondLat) {
-        north = firstLat;
-        south = secondLat;
-    }
-    else {
-        north = secondLat;
-        south = firstLat;
-    }
-
-    if (firstLng > secondLng) {
-        east = firstLng;
-        west = secondLng;
-    }
-    else {
-        east = secondLng;
-        west = firstLng;
-    }
-
-    // Clear out the old rectangles.
-    rectangles.forEach(function (rectangle) {
-        rectangle.setMap(null);
-    });
-    rectangles = [];
-
-    var rectangle = new google.maps.Rectangle({
-        fillColor: '#008000',
-        fillOpacity: 0,
-        strokeColor: "#FF0000",
-        strokeWeight: 1,
-        strokeOpacity: 0.5,
-        clickable: false,
-        zIndex: 1,
-        bounds: {
-            north: north,
-            south: south,
-            east: east,
-            west: west
-        }
-    });
-
-    rectangle.setMap(map);
-    rectangles.push(rectangle);
-
-    searchOnMapByArea(rectangle);
-});
-var polygons = [];
-
 function searchOnMapByPoint(latLng, marker) {
 
     map.setCenter(latLng);
@@ -330,12 +229,17 @@ function searchOnMapByPoint(latLng, marker) {
         polygons = [];
     }
 
+    if (oTable != null) {
+        oTable.destroy();
+    }
+
     $("#dark_bg").show();
     $.ajax({
         data: {
             "lat": lat,
             "lng": lng
         },
+        //async: false,
         type: "POST",
         url: baseUrl.toString() + "/registrator/resource/getResourcesByPoint",
         timeout: 20000,
@@ -401,6 +305,9 @@ function searchOnMapByPoint(latLng, marker) {
                         "</tr>";
                     polygon.setMap(map);
                 }
+                else {
+                    data.splice(i,1);
+                }
             }
 
 
@@ -411,7 +318,6 @@ function searchOnMapByPoint(latLng, marker) {
             }
             else {
                 infoWindowContent = jQuery.i18n.prop('msg.noResources');
-                	//"<div>В цій точці ще нема зареєстрованих ресурсів</div>"
             }
 
             var infowindow = new google.maps.InfoWindow({
@@ -419,6 +325,8 @@ function searchOnMapByPoint(latLng, marker) {
             });
 
             infowindow.open(map, marker);
+
+            createDataTable(data);
 
             $("#dark_bg").hide();
         },
@@ -532,6 +440,9 @@ function searchOnMapByArea(rectangle) {
                 resTypeFilter += '<button class="btn btn-default btn-filter">' + resTypes[i] + '</button>';
             }
 
+            map.fitBounds(bounds);
+            createDataTable(data);
+
             $("#resTypeFilter").html(resTypeFilter);
 
             $("#dark_bg").hide();
@@ -543,6 +454,148 @@ function searchOnMapByArea(rectangle) {
     });
 }
 
+function createDataTable (json) {
+
+    console.log("datatable creates...");
+    if (json.length > 0) {
+        var url = baseUrl.toString() + "/registrator/resource/get/";
+
+        var description = jQuery.i18n.prop('msg.description');
+        var type = jQuery.i18n.prop('msg.subclass');
+        var identifier = jQuery.i18n.prop('msg.identifier');
+        var date = jQuery.i18n.prop('msg.date');
+        var details = jQuery.i18n.prop('msg.more');
+
+        $("#searchResult").html('<table id="datatable"></table>');
+        oTable = $('#datatable').DataTable({
+            "aaData": json,
+            "aoColumns": [
+                {"sTitle": description, "mData": "resourceDescription"},
+                {"sTitle": type, "mData": "resourceType"},
+                {"sTitle": identifier, "mData": "identifier"},
+                {"sTitle": date, "mData": "date"},
+                {"sTitle": details, "mData": null}
+            ],
+            "aoColumnDefs": [       //Adding URL to the last column
+                {
+                    "aTargets": [4], // Column to target
+                    "mRender": function (json) {
+                        return '<a href="' +url + json.identifier + '">'+details+'</a>';
+                    }
+                }
+            ]
+        });
+    }
+    else {
+        $('#searchResult').html(jQuery.i18n.prop('msg.resourcesNotFound'));
+    }
+}
+
+$("#searchOnMapButton").click(function () {
+    var latitudeDegrees = Number($(".latitudeDegrees").val());
+    var latitudeMinutes = Number($(".latitudeMinutes").val());
+    var latitudeSeconds = Number($(".latitudeSeconds").val());
+
+    var longitudeDegrees = Number($(".longitudeDegrees").val());
+    var longitudeMinutes = Number($(".longitudeMinutes").val());
+    var longitudeSeconds = Number($(".longitudeSeconds").val());
+
+    var searchLat = latitudeDegrees + latitudeMinutes / 60 + latitudeSeconds / 3600;
+    var searchLng = longitudeDegrees + longitudeMinutes / 60 + longitudeSeconds / 3600;
+
+    var myLatLng = new google.maps.LatLng(searchLat, searchLng);
+
+    // Clear out the old markers.
+    markers.forEach(function (marker) {
+        marker.setMap(null);
+    });
+    markers = [];
+
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map
+    });
+
+    markers.push(marker);
+
+    searchOnMapByPoint(myLatLng, marker);
+});
+
+$("#searchOnMapButton_area").click(function () {
+    var firstPoint = $("#first_point");
+    var secondPoint = $("#second_point");
+
+    var firstLatDeg = Number(firstPoint.find(".latitudeDegrees").val());
+    var firstLatMin = Number(firstPoint.find(".latitudeMinutes").val());
+    var firstLatSec = Number(firstPoint.find(".latitudeSeconds").val());
+    var firstLngDeg = Number(firstPoint.find(".longitudeDegrees").val());
+    var firstLngMin = Number(firstPoint.find(".longitudeMinutes").val());
+    var firstLngSec = Number(firstPoint.find(".longitudeSeconds").val());
+
+    var secondLatDeg = Number(secondPoint.find(".latitudeDegrees").val());
+    var secondLatMin = Number(secondPoint.find(".latitudeMinutes").val());
+    var secondLatSec = Number(secondPoint.find(".latitudeSeconds").val());
+    var secondLngDeg = Number(secondPoint.find(".longitudeDegrees").val());
+    var secondLngMin = Number(secondPoint.find(".longitudeMinutes").val());
+    var secondLngSec = Number(secondPoint.find(".longitudeSeconds").val());
+
+    var firstLat = firstLatDeg + firstLatMin / 60 + firstLatSec / 3600;
+    var firstLng = firstLngDeg + firstLngMin / 60 + firstLngSec / 3600;
+
+    var secondLat = secondLatDeg + secondLatMin / 60 + secondLatSec / 3600;
+    var secondLng = secondLngDeg + secondLngMin / 60 + secondLngSec / 3600;
+
+    var north;
+    var south;
+    var east;
+    var west;
+
+    if (firstLat > secondLat) {
+        north = firstLat;
+        south = secondLat;
+    }
+    else {
+        north = secondLat;
+        south = firstLat;
+    }
+
+    if (firstLng > secondLng) {
+        east = firstLng;
+        west = secondLng;
+    }
+    else {
+        east = secondLng;
+        west = firstLng;
+    }
+
+    // Clear out the old rectangles.
+    rectangles.forEach(function (rectangle) {
+        rectangle.setMap(null);
+    });
+    rectangles = [];
+
+    var rectangle = new google.maps.Rectangle({
+        fillColor: '#008000',
+        fillOpacity: 0,
+        strokeColor: "#FF0000",
+        strokeWeight: 1,
+        strokeOpacity: 0.5,
+        clickable: false,
+        zIndex: 1,
+        bounds: {
+            north: north,
+            south: south,
+            east: east,
+            west: west
+        }
+    });
+
+    rectangle.setMap(map);
+    rectangles.push(rectangle);
+
+    searchOnMapByArea(rectangle);
+});
+
 $(".toggle-button").click(function () {
     if (!$(this).hasClass("active")) {
         $(this).siblings().removeClass("active");
@@ -552,7 +605,8 @@ $(".toggle-button").click(function () {
         $(".searchDiv").hide();
         $("#" + id + "Div").show();
     }
-})
+});
+
 $(document).on("click", ".btn-filter", function () {
     if (!$(this).hasClass("active")) {
         $("#dark_bg").show();
@@ -580,6 +634,91 @@ $(document).on("click", ".btn-filter", function () {
         $("#dark_bg").hide();
     }
 });
+$(document).ready(function () {
+    $.post(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
+        {"resourceTypeId": $("#resourcesTypeSelect").val()},
+        function (data) {
+            $("#searchParameters").html(data);
+            $("#table").html("");
+        });
+});
 
+$(document).on("change", "#resourcesTypeSelect", function () {
+    $("#dark_bg").show();
+    $.post(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
+        {"resourceTypeId": $("#resourcesTypeSelect").val()},
+        function (data) {
+            $("#searchParameters").html(data);
+            $("#table").html("");
+            $("#dark_bg").hide();
+        });
+});
+
+$(document).on("click", "#search", function () {
+
+    var json = new Object();
+    json.discreteParamsIds = [];
+    json.discreteParamsCompares = [];
+    json.discreteParamsValues = [];
+    json.linearParamsIds = [];
+    json.linearParamsValues = [];
+    json.resourceTypeId = $("#resourcesTypeSelect").val();
+
+    $("#dark_bg").show();
+
+    $(".discreteParameter").each(function () {
+        json.discreteParamsIds.push($(this).attr("param_id"));
+        json.discreteParamsCompares.push($(this).find(".compare").val());
+        json.discreteParamsValues.push($(this).find(".value").val());
+    });
+
+    $(".linearParameter").each(function () {
+        json.linearParamsIds.push($(this).attr("param_id"));
+        json.linearParamsValues.push($(this).find(".value").val());
+    });
+
+    $.ajax({
+        type: "POST",
+        url: baseUrl.toString() + "/registrator/resource/resourceSearch",
+        data: JSON.stringify(json),
+        contentType: 'application/json; charset=utf-8',
+        timeout: 60000,
+        dataType: 'json',
+        success: function(data){
+            createDataTable(data);
+            $("#dark_bg").hide();
+        },
+        error: function () {
+            $("#dark_bg").hide();
+            bootbox.alert(jQuery.i18n.prop('msg.error'));
+        }
+    });
+
+
+});
+
+$(document).on("click", "#showAllResources", function(){
+    $("#dark_bg").show();
+
+    var resType = $("#resourcesTypeSelect").val();
+
+    $.ajax({
+        type: "POST",
+        url: baseUrl.toString() + "/registrator/resource/showAllResources",
+        data: {"resType": resType},
+        contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+        timeout: 60000,
+        dataType: 'json',
+        success: function(data){
+            createDataTable(data);
+            $("#dark_bg").hide();
+        },
+        error: function () {
+            $("#dark_bg").hide();
+            bootbox.alert(jQuery.i18n.prop('msg.error'));
+        }
+    });
+
+});
 
 google.maps.event.addDomListener(window, 'load', initialize);

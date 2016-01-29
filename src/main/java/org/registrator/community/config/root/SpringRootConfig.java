@@ -1,8 +1,10 @@
 package org.registrator.community.config.root;
 
+import org.registrator.community.config.AdditionalAppConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -14,6 +16,7 @@ import javax.persistence.EntityManagerFactory;
 @ComponentScan({"org.registrator.community.dto",
 	"org.registrator.community.service","org.registrator.community.validator"})
 @EnableTransactionManagement
+@Import(AdditionalAppConfig.class)
 public class SpringRootConfig {
 
     @Bean(name = "transactionManager")

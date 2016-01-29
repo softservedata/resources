@@ -3,6 +3,7 @@ package org.registrator.community.service;
 import java.util.List;
 import java.util.Set;
 
+import org.registrator.community.dto.JSON.ResourseSearchJson;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.entity.Resource;
@@ -28,7 +29,11 @@ public interface ResourceService {
 
     Set<String> getAllByPoint(Double lat, Double lng);
 
+    Set<String> getAllByParameters(ResourseSearchJson parameters);
+
     List<PolygonJSON> createPolygonJSON (String identifier);
+    
+    String getRegistrationNumber(String login);
     
 }
 
