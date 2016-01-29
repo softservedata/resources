@@ -181,7 +181,7 @@ public class UsersController {
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String showSettings(Model model) {
 		logger.info("begin: show admin settings");
-		model.addAttribute("regMethod", adminSettings.getRegistrationMethod().toString());
+		model.addAttribute("regMethod", adminSettings.getRegistrationMethod());
 		logger.info("end: admin settings are shown");
 		return "adminSettings";
 	}
