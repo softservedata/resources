@@ -44,25 +44,25 @@ public class UserServiceImpl implements UserService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	RoleRepository roleRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	PassportRepository passportRepository;
+	private PassportRepository passportRepository;
 
 	@Autowired
-	AddressRepository addressRepository;
+	private AddressRepository addressRepository;
 
 	@Autowired
-	ResourceNumberRepository resourceNumberRepository;
+	private ResourceNumberRepository resourceNumberRepository;
 
 	@Autowired
-	TomeRepository tomeRepository;
+	private TomeRepository tomeRepository;
 
 	@Autowired
-	Logger logger;
+	private Logger logger;
 
 	@Autowired
 	private PasswordEncoder userPasswordEncoder;
@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService {
 			user.setLastName(userDto.getLastName());
 			user.setMiddleName(userDto.getMiddleName());
 			user.setEmail(userDto.getEmail());
-			user.setPassword(userDto.getPassword());
+//			user.setPassword(userDto.getPassword());
 			user.setRole(checkRole(userDto.getRole()));
 			user.setStatus(checkUserStatus(userDto.getStatus()));
 			logger.info("edit user in data base");
@@ -273,7 +273,7 @@ public class UserServiceImpl implements UserService {
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-					user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
+					user.getRole().toString(), user.getLogin(), user.getEmail(),
 					user.getStatus().toString(), addressDto, passportDto);
 			userDtoList.add(userDto);
 		}
@@ -301,7 +301,7 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
+				user.getRole().toString(), user.getLogin(), user.getEmail(),
 				user.getStatus().toString(), addressDto, passportDto);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
@@ -528,7 +528,7 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
+				user.getRole().toString(), user.getLogin(),user.getEmail(),
 				user.getStatus().toString(), addressDto, passportDto);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);

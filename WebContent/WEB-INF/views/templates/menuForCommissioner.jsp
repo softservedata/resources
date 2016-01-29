@@ -10,8 +10,8 @@
 			<ul class="nav navbar-nav">
 				<li><a href="<c:url value='/'/>"
 					class="glyphicon glyphicon-home"></a></li>
-				<li class="dropdown"><a href="#"><spring:message
-							code="label.menu.users" /></a>
+				<li class="dropdown"><a href="#" class="not-active">
+					<spring:message code="label.menu.users" /></a>
 					<ul class="dropdown_menu">
 						<li><a href="<c:url value='/administrator/users/get-all-users'/>"><spring:message
 									code="label.registrated.pagename" /></a></li>
@@ -22,7 +22,6 @@
 					<li><a href="<c:url value='/register'/>"><spring:message
 								code="label.manualregister" /></a></li>
 				</c:if>
-					<li><a href="<c:url value='/'/>"><spring:message code="label.commissioner.excel" /></a></li>
 				<li><a href="<c:url value='/administrator/users/search" class="glyphicon glyphicon-search'/>"></a>
 			</ul>
 		</div>

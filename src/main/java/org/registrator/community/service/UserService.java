@@ -15,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public interface UserService {
 
 	void changeUserStatus(UserStatusDTOJSON userStatusDto);
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	List<UserDTO> getAllRegistratedUsers();
 
 	User getUserByLogin(String login);
@@ -29,7 +29,7 @@ public interface UserService {
 	List<UserDTO> getUserDtoList();
 
 	UserDTO getUserDto(String login);
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	List<UserDTO> getAllInactiveUsers();
 
 	void registerUser(RegistrationForm registrationForm);

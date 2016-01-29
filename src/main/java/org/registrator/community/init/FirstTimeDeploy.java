@@ -5,6 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.registrator.community.entity.Address;
+import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.RoleType;
@@ -39,13 +41,25 @@ public class FirstTimeDeploy {
 	        session.persist(roleCommissioner);
 	        
 	        roleTransaction.commit();
-	        Transaction userTransaction = session.beginTransaction();
-	        
+ 
+            Transaction userTransaction = session.beginTransaction();
 	        User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
-	        		roleAdmin,"Admin","Admin","Admin","admin@admin.com","UNBLOCK");
+	        		roleAdmin,"Адміністратор","Адміністратор","Адміністратор","admin@admin.com","UNBLOCK","+380500000000");
+
 	        session.persist(admin);
 	        
 	        userTransaction.commit();
+	        Transaction userInfoTransaction = session.beginTransaction();
+	        
+	        Address adminAddress = new Address(admin,"00000","Львівська","Галицький","Львів","Вітовського",
+	        		"48","31");
+	        PassportInfo adminPassportInfo = new PassportInfo(admin,"AA",00000,"Народом України");
+	        
+	        session.persist(adminAddress);
+	        session.persist(adminPassportInfo);
+	        
+	        userInfoTransaction.commit();
+	        
 		}
 	}
 }

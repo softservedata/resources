@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     @Autowired
-    Logger logger;
+    private Logger logger;
     @Autowired
     private ResourceTypeRepository resourceTypeRepository;
     @Autowired

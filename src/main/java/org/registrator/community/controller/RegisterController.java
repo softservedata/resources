@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.registrator.community.components.AdminSettings;
+import org.registrator.community.enumeration.RegistrationMethod;
 import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
@@ -24,17 +25,17 @@ public class RegisterController {
 
     private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    AdminSettings adminSettings;
+    private AdminSettings adminSettings;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
         model.addAttribute("registrationForm", new RegistrationForm());
         log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
 
-        if ((adminSettings.getRegistrationMethod().toString() == "MANUAL")
+        if ((adminSettings.getRegistrationMethod() == RegistrationMethod.MANUAL)
                 && (SecurityContextHolder.getContext().getAuthentication().getName() == "anonymousUser")) {
             return "redirect:/";
         }
@@ -51,12 +52,15 @@ public class RegisterController {
         userService.registerUser(registrationForm);
 
         log.info("Successfully registered new user: " + registrationForm.getLogin());
+        if ((adminSettings.getRegistrationMethod().toString() == "MANUAL")){
+            return "redirect:/administrator/users/get-all-inactive-users";
+        }
         return "thanks-for-registration";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(Model model) {
-        model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod().toString()); 
+        model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod()); 
         return "login";
     }
 
@@ -65,12 +69,6 @@ public class RegisterController {
         req.getSession().invalidate();
         SecurityContextHolder.clearContext();
         return "redirect:/login";
-    }
-
-    // Password Recovery
-    @RequestMapping(value = "/send-password", method = RequestMethod.GET)
-    public String showPasswordRecoveryForm() {
-        return "password_recovery";
     }
 
     // Frequently Asked Questions (FAQ)
