@@ -28,7 +28,7 @@ $(document).ready(function () {
     positionFooter();
 
     var getUrl = window.location;
-    baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+    baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
     $(document).ajaxSuccess(function(){
         positionFooter();
@@ -39,7 +39,7 @@ $(document).ready(function () {
     $(window).load(function () {
 
     //    Count resources in footer
-        $.post(baseUrl.toString() + "/registrator/resource/countResources", {"count": "true"}, onPostSuccess);
+        $.post("/registrator/resource/countResources", {"count": "true"}, onPostSuccess);
         function onPostSuccess (data) {
             if(data.toString().length < 5) {
                 data = ""+data;
@@ -61,7 +61,13 @@ $(document).ready(function () {
     document.onkeydown = function(e) {
         e = e || window.event;
         if (e.shiftKey && e.keyCode == 65) {
-            bootbox.alert('base URL: '+baseUrl);
+            alert('base URL: '+baseUrl + "\n" +
+            'pathname split: ' + window.location.pathname.split('/')[1] + "\n" +
+            'window.location.pathname: '+window.location.pathname + "\n" +
+            'window.location.host: '+window.location.host + "\n"+
+            'window.location.hostname: '+window.location.hostname + "\n" +
+            'window.location.protocol: '+window.location.protocol);
+
         }
         return true;
     }
