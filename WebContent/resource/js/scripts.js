@@ -56,4 +56,13 @@ $(document).ready(function () {
     $(".dropdown").mouseleave(function(){
         $(this).find(".dropdown_menu").slideUp(150);
     });
+
+    //Testing....
+    document.onkeydown = function(e) {
+        e = e || window.event;
+        if (e.shiftKey && e.keyCode == 65) {
+            bootbox.alert('base URL: '+baseUrl);
+        }
+        return true;
+    }
 });
