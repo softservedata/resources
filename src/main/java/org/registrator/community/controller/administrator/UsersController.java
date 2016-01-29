@@ -89,7 +89,6 @@ public class UsersController {
 			UserDTO editUserDto = userService.editUserInformation(userDto);
 			if (editUserDto == null) {
 				System.out.println("hi");
-				return null;
 			}
 			model.addAttribute("userDto", editUserDto);
 			List<Role> roleList = roleService.getAllRole();

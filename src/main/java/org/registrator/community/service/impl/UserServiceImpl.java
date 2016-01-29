@@ -64,11 +64,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private Logger logger;
 
-
 	@Autowired
-	private PasswordEncoder  userPasswordEncoder;
+	private PasswordEncoder userPasswordEncoder;
 
-	
 	/**
 	 * Method, which returns user from database by login
 	 * 
@@ -122,16 +120,19 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public List<UserDTO> getAllRegistratedUsers() {
-		List<UserDTO> userList = getUserDtoList();
-		List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
-
-		for (UserDTO user : userList) {
-			if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
-				logger.info("User is registrated");
-				registratedUsers.add(user);
+		try {
+			List<UserDTO> userList = getUserDtoList();
+			List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
+			for (UserDTO user : userList) {
+				if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
+					logger.info("User is registrated");
+					registratedUsers.add(user);
+				}
 			}
+			return registratedUsers;
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			return null;
 		}
-		return registratedUsers;
 	}
 
 	/**
@@ -143,16 +144,20 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public List<UserDTO> getAllInactiveUsers() {
-		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		userDtoList = getUserDtoList();
-		List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
-		for (UserDTO userDto : userDtoList) {
-			if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
-				userDto.setRole("USER");
-				inactiveUserDtoList.add(userDto);
+		try {
+			List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+			userDtoList = getUserDtoList();
+			List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
+			for (UserDTO userDto : userDtoList) {
+				if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
+					userDto.setRole("USER");
+					inactiveUserDtoList.add(userDto);
+				}
 			}
+			return inactiveUserDtoList;
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			return null;
 		}
-		return inactiveUserDtoList;
 	}
 
 	/**

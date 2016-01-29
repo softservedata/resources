@@ -6,7 +6,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.registrator.community.entity.Address;
+import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.PassportInfo;
+import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.RoleType;
@@ -57,9 +60,28 @@ public class FirstTimeDeploy {
 	        
 	        session.persist(adminAddress);
 	        session.persist(adminPassportInfo);
-	        
 	        userInfoTransaction.commit();
 	        
+	        
+	        Transaction resourceTypeTransaction = session.beginTransaction();
+	        ResourceType landType = new ResourceType("Земельний");
+	        ResourceType radioType = new ResourceType("Радіочастотний");
+            session.persist(landType);
+            session.persist(radioType);
+            resourceTypeTransaction.commit();
+	        
+            Transaction parameterForResourceTypeTransaction = session.beginTransaction();
+            DiscreteParameter discreteParameter1 = new DiscreteParameter(landType, "периметр","м");
+            DiscreteParameter discreteParameter2 = new DiscreteParameter(landType, "площа","га");
+            DiscreteParameter discreteParameter3 = new DiscreteParameter(radioType, "максимальна потужність","мВт");
+            DiscreteParameter discreteParameter4 = new DiscreteParameter(radioType, "напруженість","мВт");
+            LinearParameter linearParameter1 = new LinearParameter(radioType, "смуга радіочастот","МГц");
+            session.persist(discreteParameter1);
+            session.persist(discreteParameter2);
+            session.persist(discreteParameter3);
+            session.persist(discreteParameter4);
+            session.persist(linearParameter1);
+            parameterForResourceTypeTransaction.commit();
 		}
 	}
 }
