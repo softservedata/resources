@@ -139,7 +139,7 @@ public class InquiryController {
 	 * @param inquiryId - inquiry identifier.
 	 * @return listInqUserOut.jsp
 	 */
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/delete/{inquiryId}")
 	public String deleteInquiry(@PathVariable Integer inquiryId) {
 		logger.info("begin deleteInquiry, param inquiryId = " + inquiryId);
