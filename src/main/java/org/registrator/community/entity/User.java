@@ -57,6 +57,8 @@ public class User implements Serializable {
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+    
+  
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -87,6 +89,30 @@ public class User implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="registrators")
     private Set<User> owners = new HashSet<User>();
     
+    @Column(name = "phonenumber", nullable = true)
+    private String phoneNumber;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_affiliation", nullable = true)
+    private TerritorialCommunity territorialCommunity;
+    
+    
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public TerritorialCommunity getTerritorialCommunity() {
+        return territorialCommunity;
+    }
+
+    public void setTerritorialCommunity(TerritorialCommunity territorialCommunity) {
+        this.territorialCommunity = territorialCommunity;
+    }
+
     public User() {
 
     }
@@ -101,6 +127,19 @@ public class User implements Serializable {
         this.middleName = middleName;
         this.email = email;
         this.status = UserStatus.valueOf(status.toUpperCase());
+    }
+    
+    public User(String login, String password, Role role, String firstName, String lastName, String middleName,
+            String email, String status, String phoneNumber) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.email = email;
+        this.status = UserStatus.valueOf(status.toUpperCase());
+        this.phoneNumber = phoneNumber;
     }
 
     public Integer getUserId() {

@@ -1,6 +1,7 @@
 package org.registrator.community.controller;
 
 import java.util.List;
+
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.service.ResourceTypeService;
 import org.slf4j.Logger;
@@ -15,18 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 @Controller
 @RequestMapping(value = "/registrator/resourcetypes/")
 public class ResourceTypeController {
 
     @Autowired
-    Logger logger;
+    private Logger logger;
     @Autowired
-    ResourceTypeService resourceTypeService;
+    private ResourceTypeService resourceTypeService;
     
     /**
      * Method for showing all types of resources on UI
      */
+    
     @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/show-res-types", method = RequestMethod.GET)
     public String showResourceType(Model model) {

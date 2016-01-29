@@ -51,32 +51,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResourceServiceImpl implements ResourceService {
 
-    @Autowired
-    Logger logger;
+	@Autowired
+	Logger logger;
 
-    @Autowired
-    ResourceRepository resourceRepository;
+	@Autowired
+	ResourceRepository resourceRepository;
 
-    @Autowired
-    TomeRepository tomeRepository;
+	@Autowired
+	TomeRepository tomeRepository;
 
-    @Autowired
-    ResourceTypeRepository resourceTypeRepository;
+	@Autowired
+	ResourceTypeRepository resourceTypeRepository;
 
-    @Autowired
-    PolygonRepository polygonRepository;
+	@Autowired
+	PolygonRepository polygonRepository;
 
-    @Autowired
-    AreaRepository areaRepository;
+	@Autowired
+	AreaRepository areaRepository;
 
-    @Autowired
-    ResourceLinearValueRepository linearValueRepository;
+	@Autowired
+	ResourceLinearValueRepository linearValueRepository;
 
-    @Autowired
-    ResourceDiscreteValueRepository discreteValueRepository;
+	@Autowired
+	ResourceDiscreteValueRepository discreteValueRepository;
 
-    @Autowired
-    LinearParameterRepository linearParameterRepository;
+	@Autowired
+	LinearParameterRepository linearParameterRepository;
+
 
     @Autowired
     DiscreteParameterRepository discreteParameterRepository;
@@ -92,10 +93,11 @@ public class ResourceServiceImpl implements ResourceService {
     
     @Autowired
 	InquiryRepository inquiryRepository;
-    
-    @Autowired
-    ResourceNumberRepository resourceNumberRepository;
 
+	@Autowired
+	ResourceNumberRepository resourceNumberRepository;
+
+	
     /**
      * Method parse the resourceDTO into entity objects and save them into
      * database

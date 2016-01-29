@@ -118,7 +118,7 @@ public class ResourceController {
 	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
 	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
 			Model model, String ownerLogin) {
-		
+ 
 		logger.info("The ownerLogin is " + ownerLogin);
 		
 		/* check if given resourceDTO is valid */
@@ -337,4 +337,18 @@ public class ResourceController {
 		return userService.getUserDto(ownerLogin);
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/showAllResources", method = RequestMethod.POST)
+	public String showAllResources(@RequestParam("resType") Integer resType) {
+		ResourceType resourceType = resourceTypeService.findById(resType);
+		List<Resource> resources = resourceService.findByType(resourceType);
+		List<PolygonJSON> polygons = new ArrayList<>();
+
+		for (Resource resource: resources) {
+			polygons.addAll(resourceService.createPolygonJSON(resource.getIdentifier()));
+		}
+
+		Gson gson = new Gson();
+		return gson.toJson(polygons);
+	}
 }

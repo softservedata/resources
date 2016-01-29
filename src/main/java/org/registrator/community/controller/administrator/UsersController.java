@@ -17,7 +17,6 @@ import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
 import org.registrator.community.service.search.BaseSearchService;
-//import org.registrator.community.validator.UserValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -40,29 +38,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UsersController {
 
 	@Autowired
-	Logger logger;
+	private Logger logger;
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Autowired
-	AdminSettings adminSettings;
+	private AdminSettings adminSettings;
 
 	@Autowired
-	RoleService roleService;
-	
+	private RoleService roleService;
+
 	@Autowired
 	@Qualifier("registerUserSearchService")
-	BaseSearchService<User> userSearchService;
-	
+	private BaseSearchService<User> userSearchService;
+
 	@Autowired
-	TableSettingsFactory tableSettingsFactory;
+	private TableSettingsFactory tableSettingsFactory;
 
 	/**
 	 * Controller for showing information about user
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
 	public String fillInEditWindow(@RequestParam("login") String login, Model model) {
 		logger.info("begin");
@@ -80,7 +78,7 @@ public class UsersController {
 	 * Controller for editing user information
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.POST)
 	public String editRegistratedUser(@Valid @ModelAttribute("userDTO") UserDTO userDto, BindingResult result,
 			Model model) {
@@ -89,6 +87,10 @@ public class UsersController {
 		} else {
 			logger.info("begin");
 			UserDTO editUserDto = userService.editUserInformation(userDto);
+			if (editUserDto == null) {
+				System.out.println("hi");
+				return null;
+			}
 			model.addAttribute("userDto", editUserDto);
 			List<Role> roleList = roleService.getAllRole();
 			model.addAttribute("roleList", roleList);
@@ -104,7 +106,7 @@ public class UsersController {
 	 * Controller for showing all inactive user
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.GET)
 	public String getAllInactiveUsers(Model model) {
 		logger.info("begin");
@@ -122,7 +124,7 @@ public class UsersController {
 	 * Controller for changing user statur for inactive users
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@ResponseBody
 	@RequestMapping(value = "/get-all-inactive-users", method = RequestMethod.POST)
 	public String changeStatus(@RequestBody UserStatusDTOJSON userStatusDto) {
@@ -136,7 +138,7 @@ public class UsersController {
 	 * Controller for showing modal window
 	 *
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@ResponseBody
 	@RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.POST)
 	public ResponseEntity<String> showModalWindow(@RequestBody ResourceNumberDTOJSON resourceNumberDtoJson) {
@@ -151,7 +153,7 @@ public class UsersController {
 	 * Controller for get all registrated users
 	 * 
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
 	public String getAllUsers(Model model) {
 		logger.info("begin");
@@ -159,43 +161,47 @@ public class UsersController {
 		logger.info("end");
 		return "searchTableTemplate";
 	}
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
+
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@ResponseBody
-	@RequestMapping(value = "registerUser",method = RequestMethod.POST)
-	public TableSearchResponseDTO getDataFromDataTable(@Valid @RequestBody TableSearchRequestDTO dataTableRequest){
+	@RequestMapping(value = "registerUser", method = RequestMethod.POST)
+	public TableSearchResponseDTO getDataFromDataTable(@Valid @RequestBody TableSearchRequestDTO dataTableRequest) {
 		TableSearchResponseDTO dto = userSearchService.executeSearchRequest(dataTableRequest);
 		return dto;
 	}
 
 	/**
-     * Method for showing administrator settings in order to change registration
-     * method
-     * @param model
-     * @return adminSettings.jsp
-     */
+	 * Method for showing administrator settings in order to change registration
+	 * method
+	 * 
+	 * @param model
+	 * @return adminSettings.jsp
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-    public String showSettings(Model model) {
-        logger.info("begin: show admin settings");
-        model.addAttribute("regMethod", adminSettings.getRegistrationMethod().toString());
-        logger.info("end: admin settings are shown");
-        return "adminSettings";
-    }
+	public String showSettings(Model model) {
+		logger.info("begin: show admin settings");
+		model.addAttribute("regMethod", adminSettings.getRegistrationMethod());
+		logger.info("end: admin settings are shown");
+		return "adminSettings";
+	}
 
 	/**
-     * Method for changing administrator settings for one of the possible
-     * options
-     * @param optratio - one of three possible option for changing registration method
-     * @return adminSettings.jsp
-     */
+	 * Method for changing administrator settings for one of the possible
+	 * options
+	 * 
+	 * @param optratio
+	 *            - one of three possible option for changing registration
+	 *            method
+	 * @return adminSettings.jsp
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
-    public String changeSettings(@RequestParam String optradio) {
-        logger.info("start changing settings");
-        adminSettings.changeRegMethod(optradio);
-        logger.info("settings are successfully changed");
-        return "adminSettings";
-    }
+	public String changeSettings(@RequestParam String optradio) {
+		logger.info("start changing settings");
+		adminSettings.changeRegMethod(optradio);
+		logger.info("settings are successfully changed");
+		return "adminSettings";
+	}
 
 }
