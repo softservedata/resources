@@ -2,7 +2,6 @@ package org.registrator.community.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +17,7 @@ import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
+import org.registrator.community.service.ResourceDeleteService;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.registrator.community.service.UserService;
@@ -56,6 +56,9 @@ public class ResourceController {
 
 	@Autowired
 	ResourceService resourceService;
+	
+	@Autowired
+	private ResourceDeleteService resourceDeleteService;
 
 	@Autowired
 	ResourceTypeService resourceTypeService;
@@ -350,4 +353,14 @@ public class ResourceController {
 		Gson gson = new Gson();
 		return gson.toJson(polygons);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
+	@RequestMapping(value = "/delete/{resourceIdentifier}")
+	public String deleteResource(@PathVariable String resourceIdentifier) {
+		logger.info("begin deleteResource, param resourceIdentifier = " + resourceIdentifier);
+		resourceDeleteService.deleteResource(resourceIdentifier);
+		logger.info("end deleteResource");
+		return "redirect:/registrator/resource/searchOnMap";
+	}
+	
 }

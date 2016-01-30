@@ -12,7 +12,7 @@ public interface PrintService {
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	Document printExtract(Integer inquiryId);
 
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	Document printProcurationOnSubmitInfo(Integer inquiryId);
 	
 }
