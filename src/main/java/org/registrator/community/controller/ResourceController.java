@@ -238,7 +238,6 @@ public class ResourceController {
      * Shown in footer
      * @return
      */
-	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@ResponseBody
 	@RequestMapping(value = "/countResources", method = RequestMethod.POST)
 	public Long countResources() {
