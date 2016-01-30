@@ -2,6 +2,7 @@ package org.registrator.community.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "polygon")
@@ -29,6 +30,10 @@ public class Polygon implements Serializable{
     @ManyToOne
     @JoinColumn(name = "resource_id", nullable = false)
     private Resource resource;
+    
+  //for deleting the resource with its childs
+    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE, mappedBy="polygon")
+    public List<Area> areas;
 
     public Polygon() {
     }
