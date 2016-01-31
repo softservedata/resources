@@ -15,7 +15,13 @@ import javax.persistence.Table;
 @Table(name = "discrete_parameters")
 public class DiscreteParameter  implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+    @Override
+	public String toString() {
+		return "DiscreteParameter [discreteParameterId=" + discreteParameterId + ", resourceType=" + resourceType
+				+ ", description=" + description + ", unitName=" + unitName + "]";
+	}
+
+	private static final long serialVersionUID = 1L;
 
 
 

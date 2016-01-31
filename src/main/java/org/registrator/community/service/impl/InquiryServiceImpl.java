@@ -89,8 +89,9 @@ public class InquiryServiceImpl implements InquiryService{
 	@Override
 	public List<UserNameDTO> listUserNameDTO(String userLogin){	
 		logger.info("begin");
-		User user = userRepository.findUserByLogin(userLogin);
-		Set<User> registrators = user.getRegistrators();
+		//User user = userRepository.findUserByLogin(userLogin);
+		//Set<User> registrators = user.getRegistrators();
+		List<User> registrators = userRepository.getUsersByRole(RoleType.REGISTRATOR);
 		logger.info("set of registrators is empty " + registrators.isEmpty());
 		List<UserNameDTO> aListUserNameDTO = new ArrayList<>();
 		UserNameDTO userNameDTO;

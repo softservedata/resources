@@ -95,6 +95,12 @@
 						</sec:authorize>
 					</div>		
 					<div id="target" class="col-sm-5"></div>
+					<div class="col-sm-5">
+						<sec:authorize access="hasRole('REGISTRATOR')">
+							<div id="deleteResource" class="btn btn-danger" role="button" style="margin-bottom:10px">
+							<spring:message code="label.restype.delete"/></div>
+						</sec:authorize>
+					</div>		
 				
 				</div>
 			

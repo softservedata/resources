@@ -407,6 +407,7 @@
 
             </plugin>
 
+
 	    <plugin>
 	      <groupId>com.heroku.sdk</groupId>
 	      <artifactId>heroku-maven-plugin</artifactId>
@@ -419,7 +420,6 @@
 	        </processTypes>
 	      </configuration>
 	    </plugin>
-
 
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>

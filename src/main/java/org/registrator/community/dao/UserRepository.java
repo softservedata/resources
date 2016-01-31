@@ -3,6 +3,7 @@ package org.registrator.community.dao;
 import java.util.List;
 
 import org.registrator.community.entity.User;
+import org.registrator.community.enumeration.RoleType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,5 +31,8 @@ public interface UserRepository extends JpaRepository<User,Integer>, JpaSpecific
     
     @Query("SELECT u FROM User u WHERE u.lastName LIKE :searchTerm%")
     public List<User> findOwnersLikeProposed(@Param("searchTerm") String searchTerm);
+    
+    @Query("select u from User u where u.role.type = :roleType")
+    List<User> getUsersByRole(@Param("roleType")RoleType roleType);
     
 }

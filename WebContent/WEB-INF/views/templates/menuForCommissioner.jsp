@@ -19,7 +19,7 @@
 									code="label.inactive.pagename" /></a></li>
 					</ul></li>
 				<c:if test="${(registrationMethod eq ('MANUAL')) || (registrationMethod eq ('MIXED'))}">
-					<li><a href="<c:url value='/register'/>"><spring:message
+					<li><a href="<c:url value='/manualregistration'/>"><spring:message
 								code="label.manualregister" /></a></li>
 				</c:if>
 				<li><a href="<c:url value='/administrator/users/search" class="glyphicon glyphicon-search'/>"></a>

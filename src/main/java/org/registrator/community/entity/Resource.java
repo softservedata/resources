@@ -2,6 +2,7 @@ package org.registrator.community.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -45,6 +46,19 @@ public class Resource implements Serializable {
     
     @Column(name = "reason_inclusion", nullable = false)
     private String reasonInclusion;
+    
+    //for deleting the resource with its childs
+    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE, mappedBy="resource")
+    public List<Polygon> polygons;
+    
+    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE, mappedBy="resource")
+    public List<ResourceDiscreteValue> resourceDiscreteValues;
+    
+    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE, mappedBy="resource")
+    public List<ResourceLinearValue> resourceLinearValues;
+    
+    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE, mappedBy="resource")
+    public List<Inquiry> inquiries;
     
     
     public Resource() {
