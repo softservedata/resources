@@ -21,7 +21,13 @@ public class ResourceDiscreteValue implements Serializable {
     private Resource resource;
     
     
-    @Column(name = "value", nullable = false)
+    @Override
+	public String toString() {
+		return "ResourceDiscreteValue [resourceDiscreteId=" + resourceDiscreteId + ", resource=" + resource + ", value="
+				+ value + ", comment=" + comment + ", discreteParameter=" + discreteParameter + "]";
+	}
+
+	@Column(name = "value", nullable = false)
     private Double value;
     
     @Column(name = "comment")

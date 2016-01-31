@@ -182,7 +182,7 @@ public class InquiryController {
  		printService.printProcuration(inquiryId);
 
  		File file = null;
- 		file = new File("D:\\file.pdf");
+ 		file = new File("D:\\mandateToExtract" + inquiryId + ".pdf");
 
  		if (!file.exists()) {
  			String errorMessage = "Sorry. The file you are looking for does not exist";
@@ -224,7 +224,7 @@ public class InquiryController {
 
  		File file = null;
 
- 		file = new File("D:\\file.pdf");
+ 		file = new File("D:\\extract" + inquiryId + ".pdf");
 
  		if (!file.exists()) {
  			String errorMessage = "Sorry. The file you are looking for does not exist";
@@ -268,7 +268,7 @@ public class InquiryController {
 
  		File file = null;
 
- 		file = new File("D:\\file.pdf");
+ 		file = new File("D:\\mandateToInput" + inquiryId + ".pdf");
 
  		if (!file.exists()) {
  			String errorMessage = "Sorry. The file you are looking for does not exist";
