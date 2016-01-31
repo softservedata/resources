@@ -225,8 +225,10 @@ public class ResourceController {
         Set<String> identifiers = resourceService.getAllByParameters(json);
         List<PolygonJSON> polygons = new ArrayList<>();
 
+		int countPolygons = 0;
         for (String identifier : identifiers) {
-            polygons.addAll(resourceService.createPolygonJSON(identifier));
+            polygons.addAll(resourceService.createPolygonJSON(identifier, countPolygons));
+			countPolygons = polygons.size();
         }
 
         Gson gson = new Gson();
@@ -274,8 +276,10 @@ public class ResourceController {
         Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType);
 		List<PolygonJSON> polygons = new ArrayList<>();
 
+		int countPolygons = 0;
 		for (String identifier : identifiers) {
-			polygons.addAll(resourceService.createPolygonJSON(identifier));
+			polygons.addAll(resourceService.createPolygonJSON(identifier, countPolygons));
+			countPolygons = polygons.size();
 		}
 
 		Gson gson = new Gson();
@@ -297,8 +301,10 @@ public class ResourceController {
 		Set<String> identifiers = resourceService.getAllByPoint(lat, lng);
 		List<PolygonJSON> polygons = new ArrayList<>();
 
+		int countPolygons = 0;
 		for (String identifier : identifiers) {
-			polygons.addAll(resourceService.createPolygonJSON(identifier));
+			polygons.addAll(resourceService.createPolygonJSON(identifier, countPolygons));
+			countPolygons = polygons.size();
 		}
 
 		Gson gson = new Gson();
@@ -344,8 +350,10 @@ public class ResourceController {
 		List<Resource> resources = resourceService.findByType(resourceType);
 		List<PolygonJSON> polygons = new ArrayList<>();
 
+		int countPolygons = 0;
 		for (Resource resource: resources) {
-			polygons.addAll(resourceService.createPolygonJSON(resource.getIdentifier()));
+			polygons.addAll(resourceService.createPolygonJSON(resource.getIdentifier(), countPolygons));
+			countPolygons = polygons.size();
 		}
 
 		Gson gson = new Gson();

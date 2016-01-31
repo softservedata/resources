@@ -31,7 +31,7 @@ public interface ResourceService {
 
     Set<String> getAllByParameters(ResourseSearchJson parameters);
 
-    List<PolygonJSON> createPolygonJSON (String identifier);
+    List<PolygonJSON> createPolygonJSON (String identifier, int i);
     
     String getRegistrationNumber(String login);
     

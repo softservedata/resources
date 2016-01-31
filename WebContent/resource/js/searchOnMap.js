@@ -2,6 +2,8 @@ var map;
 var markers = [];
 var rectangles = [];
 var polygons = [];
+var boundsArray = [];
+var resTypes = [];
 var oTable = null;
 
 function getCookie(cname) {
@@ -136,11 +138,11 @@ function initialize() {
 
     google.maps.event.addListener(drawingManager, 'markercomplete', function (marker) {
 
-        // Clear out the old markers.
-        markers.forEach(function (marker) {
-            marker.setMap(null);
-        });
-        markers = [];
+        //// Clear out the old markers.
+        //markers.forEach(function (marker) {
+        //    marker.setMap(null);
+        //});
+        //markers = [];
 
         markers.push(marker);
 
@@ -222,110 +224,22 @@ function searchOnMapByPoint(latLng, marker) {
     var lat = latLng.lat();
     var lng = latLng.lng();
 
-    if (polygons.length > 0) {
-        for (var i = 0; i < polygons.length; i++) {
-            polygons[i].setMap(null);
-        }
-        polygons = [];
-    }
-
-    if (oTable != null) {
-        oTable.destroy();
-    }
-
     $("#dark_bg").show();
     $.ajax({
         data: {
             "lat": lat,
             "lng": lng
         },
-        //async: false,
         type: "POST",
         url: baseUrl.toString() + "/registrator/resource/getResourcesByPoint",
         timeout: 20000,
         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         dataType: 'json',
         success: function (data) {
-            //Function add additional 0 in the beginning of string to the @max length
-            function pad(str, max) {
-                str = str.toString();
-                return str.length < max ? pad("0" + str, max) : str;
-            }
-
-            function changeFillColor(color) {
-                color = color.substr(1);
-                var number = parseInt(color, 16);
-                number += 100000;
-                color = number.toString(16);
-                color = pad(color, 6);
-                console.log("New color: #" + color);
-                return "#" + color;
-            }
-
-            var infoWindowContent = "<table id='infowindow_table'><tr><th>"+ jQuery.i18n.prop('msg.description') +"</th><th>"+ jQuery.i18n.prop('msg.subclass') +"</th><th></th></tr>";
-            var contentString = "";
-
-            var color = "#000000";
-            var resTypes = [];
-
-            var bounds = new google.maps.LatLngBounds();
-
-            for (var i = 0; i < data.length; i++) {
-
-                var polygonPath = [];
-                var points = data[i].points;
-                for (var j = 0; j < points.length; j++) {
-                    var myLatLng = new google.maps.LatLng(points[j].latitude, points[j].longitude);
-                    polygonPath.push(myLatLng);
-                    bounds.extend(myLatLng);
-                }
-
-                //Changing fill color depending on resource type
-                if ($.inArray(data[i].resourceType, resTypes) == (-1)) {
-                    resTypes.push(data[i].resourceType);
-                    color = changeFillColor(color);
-                }
-
-                var polygon = new google.maps.Polygon({
-                    path: polygonPath, // Координаты
-                    strokeColor: "#FF0000", // Цвет обводки
-                    strokeOpacity: 0.8, // Прозрачность обводки
-                    strokeWeight: 2, // Ширина обводки
-                    fillColor: color, // Цвет заливки
-                    fillOpacity: 0.4 // Прозрачность заливки
-                });
-                polygons.push(polygon);
-
-                var isWithinPolygon = google.maps.geometry.poly.containsLocation(latLng, polygon);
-                if (isWithinPolygon) {
-                    contentString += "<tr>" +
-                        "<td>" + data[i].resourceDescription + "</td>" +
-                        "<td>" + data[i].resourceType + "</td>" +
-                        "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + data[i].identifier + "'><i>"+ jQuery.i18n.prop('msg.more')+ "</i></a> </td>" +
-                        "</tr>";
-                    polygon.setMap(map);
-                }
-                else {
-                    data.splice(i,1);
-                }
-            }
-
-
-            if (contentString.length > 0) {
-                infoWindowContent += contentString + "</table>";
-                //Zoom map to show all resources, which displayed
-                map.fitBounds(bounds);
-            }
-            else {
-                infoWindowContent = jQuery.i18n.prop('msg.noResources');
-            }
-
-            var infowindow = new google.maps.InfoWindow({
-                content: infoWindowContent
-            });
-
-            infowindow.open(map, marker);
-
+            createPolygons(data);
+            marker.setMap(map);
+            markers.push(marker);
+            showPolygons(polygons);
             createDataTable(data);
 
             $("#dark_bg").hide();
@@ -366,83 +280,16 @@ function searchOnMapByArea(rectangle) {
         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         dataType: 'json',
         success: function (data) {
-            //Function add additional 0 in the beginning of string to the @max length
-            function pad(str, max) {
-                str = str.toString();
-                return str.length < max ? pad("0" + str, max) : str;
-            }
+            createPolygons(data);
+            rectangle.setMap(map);
+            rectangles.push(rectangle);
+            showPolygons(polygons);
+            createDataTable(data);
 
-            function changeFillColor(color) {
-                color = color.substr(1);
-                var number = parseInt(color, 16);
-                number += 100000;
-                color = number.toString(16);
-                color = pad(color, 6);
-                console.log("New color: #" + color);
-                return "#" + color;
-            }
-
-            var infoWindowContent = "<table id='infowindow_table'><tr><th>Опис</th><th>Підклас</th><th></th></tr>";
-            var contentString = "";
             var resTypeFilter = "<p>Фільтр:</p>";
-            var infowindow = new google.maps.InfoWindow();
-
-            var color = "#000000";
-            var resTypes = [];
-
-            var bounds = new google.maps.LatLngBounds();
-
-            for (var i = 0; i < data.length; i++) {
-
-                var polygonPath = [];
-                var points = data[i].points;
-                for (var j = 0; j < points.length; j++) {
-                    var myLatLng = new google.maps.LatLng(points[j].latitude, points[j].longitude);
-                    polygonPath.push(myLatLng);
-                    bounds.extend(myLatLng);
-                }
-
-                //Changing fill color depending on resource type
-                if ($.inArray(data[i].resourceType, resTypes) == (-1)) {
-                    resTypes.push(data[i].resourceType);
-                    color = changeFillColor(color);
-                }
-
-                var polygon = new google.maps.Polygon({
-                    path: polygonPath, // Координаты
-                    strokeColor: "#FF0000", // Цвет обводки
-                    strokeOpacity: 0.8, // Прозрачность обводки
-                    strokeWeight: 2, // Ширина обводки
-                    fillColor: color, // Цвет заливки
-                    fillOpacity: 0.4, // Прозрачность заливки
-                    map: map,
-                    zIndex: 5,
-                    resType: data[i].resourceType,
-                    resDescription: data[i].resourceDescription,
-                    identifier: data[i].identifier
-                });
-
-                google.maps.event.addListener(polygon, 'click', function (event) {
-                    contentString = "<tr>" +
-                        "<td>" + this.resDescription + "</td>" +
-                        "<td>" + this.resType + "</td>" +
-                        "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + this.identifier + "'><i>Детальніше</i></a> </td>" +
-                        "</tr>";
-                    infowindow.setContent(infoWindowContent + contentString);
-                    infowindow.setPosition(event.latLng);
-                    infowindow.open(map);
-                });
-
-                polygons.push(polygon);
-            }
-
             for (var i = 0; i < resTypes.length; i++) {
                 resTypeFilter += '<button class="btn btn-default btn-filter">' + resTypes[i] + '</button>';
             }
-
-            map.fitBounds(bounds);
-            createDataTable(data);
-
             $("#resTypeFilter").html(resTypeFilter);
 
             $("#dark_bg").hide();
@@ -455,8 +302,6 @@ function searchOnMapByArea(rectangle) {
 }
 
 function createDataTable (json) {
-
-    console.log("datatable creates...");
     if (json.length > 0) {
         var url = baseUrl.toString() + "/registrator/resource/get/";
 
@@ -466,7 +311,7 @@ function createDataTable (json) {
         var date = jQuery.i18n.prop('msg.date');
         var details = jQuery.i18n.prop('msg.more');
 
-        $("#searchResult").html('<table id="datatable"></table>');
+        $("#searchResult").html('<table id="datatable" class="table table-striped table-bordered" cellspacing="0"></table>');
         oTable = $('#datatable').DataTable({
             "aaData": json,
             "aoColumns": [
@@ -491,7 +336,118 @@ function createDataTable (json) {
     }
 }
 
-$("#searchOnMapButton").click(function () {
+function createPolygons (json) {
+    clearMap();
+    var polygonFillColors = ["#ADD8E6","#008080","#32cd32","#ffff00","#f08080","#8a2be2", "#00ffff"];
+    var fillColor;
+    var fillColorIndex;
+    var infowindow = new google.maps.InfoWindow();
+    var infoWindowContent = "<table id='infowindow_table'><tr><th>"+jQuery.i18n.prop('msg.description')+
+        "</th><th>"+jQuery.i18n.prop('msg.subclass')+"</th><th></th></tr>";
+    var contentString = "";
+    resTypes = [];
+    boundsArray = [];
+
+    //Remove the old resource type filter buttons
+    $("#resTypeFilter").html("");
+
+    for (var i = 0; i < json.length; i++) {
+
+        var polygonPath = [];
+        var points = json[i].points;
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var j = 0; j < points.length; j++) {
+            var myLatLng = new google.maps.LatLng(points[j].latitude, points[j].longitude);
+            polygonPath.push(myLatLng);
+            bounds.extend(myLatLng);
+        }
+
+        boundsArray.push(bounds);
+
+        //Changing fill color depending on resource type
+        if(resTypes.length <= polygonFillColors.length) {
+            if ($.inArray(json[i].resourceType, resTypes) == (-1)) {
+                resTypes.push(json[i].resourceType);
+                fillColorIndex = resTypes.length - 1;
+                fillColor = polygonFillColors[fillColorIndex];
+            } else {
+                fillColorIndex = $.inArray(json[i].resourceType, resTypes);
+                fillColor = polygonFillColors[fillColorIndex];
+            }
+        } else {
+            fillColor = "#ff0000";
+        }
+
+        var polygon = new google.maps.Polygon({
+            path: polygonPath, // Координаты
+            strokeColor: "#FF0000", // Цвет обводки
+            strokeOpacity: 0.8, // Прозрачность обводки
+            strokeWeight: 2, // Ширина обводки
+            fillColor: fillColor, // Цвет заливки
+            fillOpacity: 0.4, // Прозрачность заливки
+            zIndex: 5,
+            resType: json[i].resourceType,
+            resDescription: json[i].resourceDescription,
+            identifier: json[i].identifier
+        });
+
+        google.maps.event.addListener(polygon, 'click', function (event) {
+            contentString = "<tr>" +
+                "<td>" + this.resDescription + "</td>" +
+                "<td>" + this.resType + "</td>" +
+                "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + this.identifier + "'><i>Детальніше</i></a> </td>" +
+                "</tr>";
+            infowindow.setContent(infoWindowContent + contentString);
+            infowindow.setPosition(event.latLng);
+            infowindow.open(map);
+        });
+
+        polygons.push(polygon);
+    }
+}
+
+function showPolygons (polygonsArray) {
+    var bounds = new google.maps.LatLngBounds();
+    for(var i= 0; i<polygonsArray.length; i++) {
+        polygonsArray[i].setMap(map);
+        bounds.union(boundsArray[i]);
+    }
+
+    map.fitBounds(bounds);
+}
+
+function clearMap(){
+    // Clear out the old markers.
+    markers.forEach(function (marker) {
+        marker.setMap(null);
+    });
+    markers = [];
+
+    // Clear out the old polygons.
+    polygons.forEach(function (poligon) {
+        poligon.setMap(null);
+    });
+    polygons = [];
+
+    // Clear out the old rectangles.
+    rectangles.forEach(function (rectangle) {
+        rectangle.setMap(null);
+    });
+    rectangles = [];
+
+}
+
+$(document).ready(function () {
+    $.post(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
+        {"resourceTypeId": $("#resourcesTypeSelect").val()},
+        function (data) {
+            $("#searchParameters").html(data);
+            $("#table").html("");
+        });
+});
+
+$(document).on("click", "#searchOnMapButton", function () {
     var latitudeDegrees = Number($(".latitudeDegrees").val());
     var latitudeMinutes = Number($(".latitudeMinutes").val());
     var latitudeSeconds = Number($(".latitudeSeconds").val());
@@ -521,7 +477,7 @@ $("#searchOnMapButton").click(function () {
     searchOnMapByPoint(myLatLng, marker);
 });
 
-$("#searchOnMapButton_area").click(function () {
+$(document).on("click", "#searchOnMapButton_area", function () {
     var firstPoint = $("#first_point");
     var secondPoint = $("#second_point");
 
@@ -596,7 +552,7 @@ $("#searchOnMapButton_area").click(function () {
     searchOnMapByArea(rectangle);
 });
 
-$(".toggle-button").click(function () {
+$(document).on("click", ".toggle-button", function () {
     if (!$(this).hasClass("active")) {
         $(this).siblings().removeClass("active");
         $(this).addClass("active");
@@ -633,14 +589,6 @@ $(document).on("click", ".btn-filter", function () {
         }
         $("#dark_bg").hide();
     }
-});
-$(document).ready(function () {
-    $.post(baseUrl.toString() + "/registrator/resource/getResourcesByTypeId",
-        {"resourceTypeId": $("#resourcesTypeSelect").val()},
-        function (data) {
-            $("#searchParameters").html(data);
-            $("#table").html("");
-        });
 });
 
 $(document).on("change", "#resourcesTypeSelect", function () {
@@ -711,6 +659,7 @@ $(document).on("click", "#showAllResources", function(){
         dataType: 'json',
         success: function(data){
             createDataTable(data);
+            createPolygons(data);
             $("#dark_bg").hide();
         },
         error: function () {
@@ -719,6 +668,23 @@ $(document).on("click", "#showAllResources", function(){
         }
     });
 
+});
+
+$(document).on("click", "#datatable tbody tr", function(){
+    if (!$(this).hasClass("clickedTr")) {
+        if($(".clickedTr").length > 0) {
+            var prevPolygonId = $(".clickedTr").attr("id").substr(3);
+            $(".clickedTr").removeClass("clickedTr");
+            if((rectangles.length == 0)&&(markers.length == 0)) {
+                polygons[prevPolygonId].setMap(null);
+            }
+        }
+
+        var polygonId = $(this).attr("id").substr(3);
+        $(this).addClass("clickedTr");
+        polygons[polygonId].setMap(map);
+        map.fitBounds(boundsArray[polygonId]);
+    }
 });
 
 google.maps.event.addDomListener(window, 'load', initialize);

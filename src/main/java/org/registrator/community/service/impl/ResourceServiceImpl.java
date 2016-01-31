@@ -102,7 +102,6 @@ public class ResourceServiceImpl implements ResourceService {
      * Method parse the resourceDTO into entity objects and save them into
      * database
      * @param resourceDTO
-     * @param resourceStatus
      * @param registrator
      * @return
      */
@@ -336,7 +335,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<PolygonJSON> createPolygonJSON(String identifier) {
+    public List<PolygonJSON> createPolygonJSON(String identifier, int i) {
         List<PolygonJSON> polygonsJSON = new ArrayList<>();
 
         Resource resource = resourceRepository.findByIdentifier(identifier);
@@ -359,10 +358,11 @@ public class ResourceServiceImpl implements ResourceService {
             polygonJSON.setIdentifier(resource.getIdentifier());
             polygonJSON.setResourceType(resource.getType().getTypeName());
             polygonJSON.setDate(new SimpleDateFormat("dd.MM.yyyy").format(resource.getDate()));
+            polygonJSON.setDT_RowId("row"+i);
             polygonJSON.setPoints(points);
 
             polygonsJSON.add(polygonJSON);
-
+            i++;
         }
         return polygonsJSON;
     }
