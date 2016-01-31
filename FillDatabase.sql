@@ -15,26 +15,28 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
-CREATE TABLE IF NOT EXISTS `persistent_logins` (
-  `username` varchar(64) NOT NULL,
-  `series` varchar(64) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`series`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
-
-
 --
 -- Dumping data for table `address`
 --
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES (1,'35в','Львів','Галицький','20','79026','Львівська','Пастернака',1),(2,'17','Хмельницький','Семенівський','17а','29000','Хмельницька','Героїв Майдану',2),(3,'30к','Стрий','Стрийський','0','353567','Львівська','Героїв Майдану',3),(4,'45','Львів','Залізничний','78','79026','Львівська','Стрийська',4),(5,'34','Київ','Троєщина','90','4456767','Київська','Бандери',5),(6,'43','Львів','Троєщина','43','34345','Киівська','Стрийська',6);
+INSERT INTO `address` VALUES (2,'17','Хмельницький','Семенівський','17а','29000','Хмельницька','Героїв Майдану',2),(3,'30к','Стрий','Стрийський','0','353567','Львівська','Героїв Майдану',3),(4,'45','Львів','Залізничний','78','79026','Львівська','Стрийська',4),(5,'34','Київ','Троєщина','90','4456767','Київська','Бандери',5),(6,'43','Львів','Троєщина','43','34345','Киівська','Стрийська',6);
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `territorial_community`
+--
+LOCK TABLES `territorial_community` WRITE;
+/*!40000 ALTER TABLE `territorial_community` DISABLE KEYS */;
+INSERT INTO `territorial_community` VALUES (1,'Львівська'),(2,'Дрогобицька'),(3,'Стрийська'),(4,'Пустомитська'),(5,'Жовківська');
+/*!40000 ALTER TABLE `territorial_community` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+
 
 --
 -- Dumping data for table `area`
@@ -101,7 +103,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `passport_data` WRITE;
 /*!40000 ALTER TABLE `passport_data` DISABLE KEYS */;
-INSERT INTO `passport_data` VALUES (1,NULL,2234,'Львівським','КС',1),(2,NULL,123456,'Хмельницьким','КК',2),(3,NULL,123456,'Стрийським','КК',3),(4,NULL,1122456,'Львівський','КС',4),(5,NULL,1126789,'Київський','КС',5),(6,NULL,43545,'Львівським','КС',6);
+INSERT INTO `passport_data` VALUES (2,NULL,123456,'Хмельницьким','КК',2),(3,NULL,123456,'Стрийським','КК',3),(4,NULL,1122456,'Львівський','КС',4),(5,NULL,1126789,'Київський','КС',5),(6,NULL,43545,'Львівським','КС',6);
 /*!40000 ALTER TABLE `passport_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,6 +123,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `registration_number_of_the_resource` WRITE;
 /*!40000 ALTER TABLE `registration_number_of_the_resource` DISABLE KEYS */;
+INSERT INTO `registration_number_of_the_resource` VALUES (1,1,'1234',2);
 /*!40000 ALTER TABLE `registration_number_of_the_resource` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,16 +168,6 @@ INSERT INTO `resource_types` VALUES (1,'земельний'),(2,'радіоча�
 UNLOCK TABLES;
 
 --
--- Dumping data for table `roles`
---
-
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'description','ADMIN'),(2,'description','REGISTRATOR'),(3,'description','USER'),(4,'description','COMMISSIONER');
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `tomes`
 --
 
@@ -190,7 +183,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'petro@gmail.com','Петро','Петренко','registrator','Петрович','$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm','UNBLOCK',2),(3,'ivan@gmail.com','Юрій','Іванов','user','Іванович','$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.','UNBLOCK',3),(4,'vasyl@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','UNBLOCK',2),(5,'oleh@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','INACTIVE',3),(6,'andr@gmail.com','Андрій','Іванов','commissioner','Петрович','$2a$10$JUp23T7bbFnzdqAJGrAq8Of.e3TUtw/32GtWbV8Cs8005ctg8.zyu','INACTIVE',4);
+INSERT INTO `users` VALUES (2,'petro@gmail.com','Петро','Петренко','registrator','Петрович','$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm','+380634898677','UNBLOCK',2,1),(3,'ivan@gmail.com','Юрій','Іванов','user','Іванович','$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.','+380633333333','UNBLOCK',3,2),(4,'vasyl@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','+380505050550','UNBLOCK',2,4),(5,'oleh@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','+380999999999','INACTIVE',3,5),(6,'andr@gmail.com','Андрій','Іванов','commissioner','Петрович','$2a$10$JUp23T7bbFnzdqAJGrAq8Of.e3TUtw/32GtWbV8Cs8005ctg8.zyu','+3806969696','UNBLOCK',4,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

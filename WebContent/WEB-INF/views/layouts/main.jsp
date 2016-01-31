@@ -84,5 +84,5 @@
 
     </div>
 
-
+<div id="baseurl" class="hidden"><c:url value="/"/> </div>
 </c:if>

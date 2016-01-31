@@ -456,6 +456,7 @@ function searchOnMapByArea(rectangle) {
 
 function createDataTable (json) {
 
+    console.log("datatable creates...");
     if (json.length > 0) {
         var url = baseUrl.toString() + "/registrator/resource/get/";
 
@@ -653,7 +654,7 @@ $(document).on("change", "#resourcesTypeSelect", function () {
         });
 });
 
-$(document).on("click", ".search", function () {
+$(document).on("click", "#search", function () {
 
     var json = new Object();
     json.discreteParamsIds = [];
@@ -685,8 +686,6 @@ $(document).on("click", ".search", function () {
         dataType: 'json',
         success: function(data){
             createDataTable(data);
-            //$("#table").html(data);
-            //$("#datatable").DataTable();
             $("#dark_bg").hide();
         },
         error: function () {
@@ -695,6 +694,30 @@ $(document).on("click", ".search", function () {
         }
     });
 
+
+});
+
+$(document).on("click", "#showAllResources", function(){
+    $("#dark_bg").show();
+
+    var resType = $("#resourcesTypeSelect").val();
+
+    $.ajax({
+        type: "POST",
+        url: baseUrl.toString() + "/registrator/resource/showAllResources",
+        data: {"resType": resType},
+        contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+        timeout: 60000,
+        dataType: 'json',
+        success: function(data){
+            createDataTable(data);
+            $("#dark_bg").hide();
+        },
+        error: function () {
+            $("#dark_bg").hide();
+            bootbox.alert(jQuery.i18n.prop('msg.error'));
+        }
+    });
 
 });
 

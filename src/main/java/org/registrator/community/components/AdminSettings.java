@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class AdminSettings {
     
     @Autowired
-    Logger logger;  
+    private Logger logger;  
     private RegistrationMethod registrationMethod = RegistrationMethod.MANUAL;
     
     public AdminSettings(){}

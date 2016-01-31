@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -29,10 +27,10 @@ public class UserDTO implements Serializable {
 	
 	private String login;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
-	@Size(min = 5, max = 32, message = "Пароль повинен містити від 5 до 32 символів")
-	@Pattern(regexp = "[a-zA-z,0-9]+",message="Літери тільки латиною")
-	private String password;
+//	@NotEmpty(message = "Поле є обов'язковим для введення")
+//	@Size(min = 5, max = 32, message = "Пароль повинен містити від 5 до 32 символів")
+//	@Pattern(regexp = "[a-zA-z,0-9]+",message="Літери тільки латиною")
+//	private String password;
 	
 	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Email(message = "Емейл введено не коректно")
@@ -49,14 +47,13 @@ public class UserDTO implements Serializable {
 	private WillDocumentDTO willDocument;
 	private List<String> otherDocuments;
 
-	public UserDTO(String firstName, String lastName, String middleName, String role, String login, String password,
+	public UserDTO(String firstName, String lastName, String middleName, String role, String login,
 			String email, String status, AddressDTO address, PassportDTO passport) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
 		this.role = role;
 		this.login = login;
-		this.password = password;
 		this.email = email;
 		this.status = status;
 		this.address = address;
@@ -115,14 +112,6 @@ public class UserDTO implements Serializable {
 		this.login = login;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -175,7 +164,7 @@ public class UserDTO implements Serializable {
 	public String toString() {
 		String result;
 		result = String.valueOf("ПІБ: " + lastName + " " + firstName + " " + middleName + "\n" + "Роль:  " + getRole()
-				+ "\n" + "Логін: " + login + "\n" + "Пароль: " + password + "\n" + "Пошта: " + email + "\n" + "Статус: "
+				+ "\n" + "Логін: " + login + "\n" + "Пошта: " + email + "\n" + "Статус: "
 				+ status + "\n" + "Паспортні дані:" + passport.toString() + "\n" + "Адреса: " + address.toString()
 				+ "\n");
 		return result;

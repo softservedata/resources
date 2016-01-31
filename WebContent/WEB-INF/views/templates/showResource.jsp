@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <fmt:formatDate value="${resource.date}" pattern="dd.MM.yyyy" var="Date" />
 
@@ -88,10 +89,18 @@
 			<p>			
 				<div class="form-group">
 					<div class="col-sm-5">
-						<div id="outputInquiry" class="btn btn-success" role="button" style="margin-bottom:10px">
-						<spring:message code="label.inquiry.output.pagename"/></div>
+						<sec:authorize access="hasRole('USER')">
+							<div id="outputInquiry" class="btn btn-success" role="button" style="margin-bottom:10px">
+							<spring:message code="label.inquiry.output.pagename"/></div>
+						</sec:authorize>
 					</div>		
 					<div id="target" class="col-sm-5"></div>
+					<div class="col-sm-5">
+						<sec:authorize access="hasRole('REGISTRATOR')">
+							<div id="deleteResource" class="btn btn-danger" role="button" style="margin-bottom:10px">
+							<spring:message code="label.restype.delete"/></div>
+						</sec:authorize>
+					</div>		
 				
 				</div>
 			

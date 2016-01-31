@@ -3,9 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <c:if test="${not empty discreteParameters or not empty linearParameters}">
-    <div><h5><i><spring:message
-                    code="label.search.message1" /> (<spring:message
-                    code="label.search.message2" />):</i></h5></div>
+    <div><h5><i><spring:message code="label.search.message1" />:</i></h5></div>
 </c:if>
 <c:if test="${not empty discreteParameters}">
     <div id="discreteParameters" class="container">
@@ -42,7 +40,15 @@
         </c:forEach>
     </div>
 </c:if>
+<div class="container">
 <c:if test="${not empty discreteParameters or not empty linearParameters}">
-    <div class="container"><button class="search btn btn-success" id="search"><span class="glyphicon glyphicon-search"></span> <spring:message
-                    code="label.menu.search" /></button></div>
+    <button class="search btn btn-success" id="search">
+        <span class="glyphicon glyphicon-search"></span>
+        <spring:message code="label.menu.search" />
+    </button>
 </c:if>
+    <button class="search btn btn-success" id="showAllResources">
+        <span class="glyphicon glyphicon-search"></span>
+        <spring:message code="label.search.showAll" />
+    </button>
+</div>

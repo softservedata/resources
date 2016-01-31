@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AddResourceTypeController {
 
     @Autowired
-    Logger logger;  
+    private Logger logger;  
     @Autowired
-    ResTypeDTOValidator validator;
+    private ResTypeDTOValidator validator;
     @Autowired
-    ResourceTypeService resourceTypeService;
+    private ResourceTypeService resourceTypeService;
 
     /**
      * Method for loading form for input the parameters and resource type name

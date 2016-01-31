@@ -36,17 +36,13 @@
 								<td> ${inquiryUser.userName}	</td>
 								<td> ${inquiryUser.registratorName}	</td>
 								<td hidden="true"> ${inquiryUser.inquiryType}	</td>
-								<td><a href="get/${inquiryUser.resourceIdentifier}"> ${inquiryUser.resourceIdentifier}	</a></td>	
+								<td><a href="<c:url value='/inquiry/add/get/${inquiryUser.resourceIdentifier}' />"> 
+										${inquiryUser.resourceIdentifier}	</a></td>	
 								<td> ${inquiryUser.resourceStatus}	</td>
 								<td> <div class="block">										
-										<a href="printdata/${inquiryUser.inquiryId}"
+										<a href="<c:url value='/inquiry/add/printdata/${inquiryUser.inquiryId}' />"
 											class="btn btn-primary" role="button"> 
-											<spring:message code="label.inquiry.print" /></a>
-																		
-												
-									<!-- 	<a href="<c:url value='printdata/${inquiryUser.inquiryId}' />"
-											class="btn btn-primary" role="button"> 
-											<spring:message code="label.inquiry.print" /></a>  -->	
+											<spring:message code="label.inquiry.print" /></a>  	
 									</div>								
 								</td>							
 							</tr>	

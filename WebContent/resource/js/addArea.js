@@ -46,7 +46,6 @@ var addNewPoint = function(poligonNumber,
 $(document).ready(
 		function() {
 
-			
 			$.post("getParameters", {
 				"resourceTypeName" : $("#resourcesTypeSelect").val()},
 				function(data) {

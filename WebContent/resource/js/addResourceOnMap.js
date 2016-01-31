@@ -157,7 +157,7 @@ function getResources() {
         polygons = [];
     }
 
-    //$("#dark_bg").show();
+    $("#dark_bg").show();
     $.ajax({
         data: {
             "minLat": minLat,
@@ -209,6 +209,7 @@ function getResources() {
 //At the moment we check only do the point of one polygon inside of the other one.
 
 function intersectionCheck(polygon){
+    //console.log("Intersection check started!");
 
     $("#dark_bg").show();
 
@@ -236,21 +237,29 @@ function intersectionCheck(polygon){
 
     map.fitBounds(bounds);
 
-    getResources();
+    getResources();   
+
+    //console.log("Polygons found: "+polygons.length);
 
     for (i = 0; i < vertices.getLength(); i++) {
         point = vertices.getAt(i);
         for (j = 0; j < polygons.length; j++) {
             isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygons[j]);
             if (isWithinPolygon) {
+                //console.log("Possible intersection at point: "+ i);
                 sameVertice = false;
                 verticesPoly = polygons[j].getPath();
                 for (k = 0; k < verticesPoly.getLength(); k++) {
-                    if ((point != verticesPoly.getAt(k)) && (!sameVertice)) {
+                    //console.log("Point: "+point+" compare: "+ verticesPoly.getAt(k));
+                    if ((point.lat() == verticesPoly.getAt(k).lat()) &&
+                        (point.lng() == verticesPoly.getAt(k).lng()) &&
+                        (!sameVertice)) {
+                        //console.log("Same point!");
                         sameVertice = true;
                     }
                 }
                 if (!sameVertice) {
+                    console.log("Intersection found");
                     intersection = true;
                     polygons[j].setOptions({fillColor: "#FF0000"});
                 }
@@ -263,21 +272,22 @@ function intersectionCheck(polygon){
         verticesPoly = polygons[i].getPath();
         for (j = 0; j < verticesPoly.getLength(); j++) {
             point = verticesPoly.getAt(j);
-            for (k = 0; k < newPolygons.length; k++) {
-                isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygon);
-                if (isWithinPolygon) {
-                    sameVertice = false;
-                    for (var l = 0; l < vertices.getLength(); l++) {
-                        if ((point != vertices.getAt(l)) && (!sameVertice)) {
-                            sameVertice = true;
-                        }
-                    }
-                    if (!sameVertice) {
-                        intersection = true;
-                        polygons[i].setOptions({fillColor: "#FF0000"});
+            isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygon);
+            if (isWithinPolygon) {
+                sameVertice = false;
+                for (k = 0; k < vertices.getLength(); k++) {
+                    if ((point.lat() == vertices.getAt(k).lat()) &&
+                        (point.lng() == vertices.getAt(k).lng()) &&
+                        (!sameVertice)) {
+                        sameVertice = true;
                     }
                 }
+                if (!sameVertice) {
+                    intersection = true;
+                    polygons[i].setOptions({fillColor: "#FF0000"});
+                }
             }
+
         }
     }
 
@@ -293,14 +303,16 @@ function intersectionCheck(polygon){
 }
 
 $("#gmaps-show-res").click(function () {
-    var resType = $("#resourcesTypeSelect").val();
 
+    var resType = $("#resourcesTypeSelect").val();
     if (resType == "") {
         $("#resourcesTypeSelect").focus();
         bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         return false;
     }
+    $("#dark_bg").show();
     getResources();
+    $("#dark_bg").hide();
     //console.log("Polygons: " + polygons.length)
 });
 
@@ -308,7 +320,7 @@ $("#gmaps-show-res").click(function () {
 $("#addPointsFromMap").click(function () {
 
     if (newPolygons.length > 0) {
-
+        $("#dark_bg").show();
         var area = new Number();
         var perimeter = new Number();
 
@@ -355,6 +367,7 @@ $("#addPointsFromMap").click(function () {
             });
         //We make the link "Add polygon" inactive
         $(".toggle a").addClass("inactiveLink");
+        $("#dark_bg").hide();
     }
     else {
         bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
@@ -365,9 +378,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 //importScripts(baseUrl.toString()+"/resources/js/ukraineCoord.js");
 
-
-//attach the click handlers to the button. #cp-wrap is never added or removed
-//from the DOM, so its safe to bind the listeners to it.
 $("#cp-wrap").on("click", "a", function(){
 
     var inactive = $(this).hasClass("inactiveLink");
@@ -434,3 +444,4 @@ $(document).on("click", "#mapManual", function(){
         });
     }
 });
+

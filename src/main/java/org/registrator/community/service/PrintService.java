@@ -16,3 +16,6 @@ public interface PrintService {
 	Document printProcurationOnSubmitInfo(Integer inquiryId);
 	
 }
+
+
+

@@ -2,7 +2,6 @@ package org.registrator.community.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +17,7 @@ import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
+import org.registrator.community.service.ResourceDeleteService;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.registrator.community.service.UserService;
@@ -56,6 +56,9 @@ public class ResourceController {
 
 	@Autowired
 	ResourceService resourceService;
+	
+	@Autowired
+	private ResourceDeleteService resourceDeleteService;
 
 	@Autowired
 	ResourceTypeService resourceTypeService;
@@ -99,6 +102,8 @@ public class ResourceController {
 		logger.info(listOfResourceType.size() + " resource types was found");
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		ResourceDTO newresource = new ResourceDTO();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        newresource.setIdentifier(resourceService.getRegistrationNumber(auth.getName()));
 		model.addAttribute("newresource", newresource);
 		return "addResource";
 	}
@@ -116,7 +121,7 @@ public class ResourceController {
 	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
 	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
 			Model model, String ownerLogin) {
-		
+ 
 		logger.info("The ownerLogin is " + ownerLogin);
 		
 		/* check if given resourceDTO is valid */
@@ -236,7 +241,6 @@ public class ResourceController {
      * Shown in footer
      * @return
      */
-	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping(value = "/countResources", method = RequestMethod.POST)
 	public Long countResources() {
@@ -335,4 +339,28 @@ public class ResourceController {
 		return userService.getUserDto(ownerLogin);
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/showAllResources", method = RequestMethod.POST)
+	public String showAllResources(@RequestParam("resType") Integer resType) {
+		ResourceType resourceType = resourceTypeService.findById(resType);
+		List<Resource> resources = resourceService.findByType(resourceType);
+		List<PolygonJSON> polygons = new ArrayList<>();
+
+		for (Resource resource: resources) {
+			polygons.addAll(resourceService.createPolygonJSON(resource.getIdentifier()));
+		}
+
+		Gson gson = new Gson();
+		return gson.toJson(polygons);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
+	@RequestMapping(value = "/delete/{resourceIdentifier}")
+	public String deleteResource(@PathVariable String resourceIdentifier) {
+		logger.info("begin deleteResource, param resourceIdentifier = " + resourceIdentifier);
+		resourceDeleteService.deleteResource(resourceIdentifier);
+		logger.info("end deleteResource");
+		return "redirect:/registrator/resource/searchOnMap";
+	}
+	
 }

@@ -20,7 +20,7 @@ public interface ResourceService {
 	ResourceDTO findByIdentifier(String identifier);
 
     List<Resource> findByType (ResourceType type);
-    @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_USER')")
     long count();
     
     Set<String> getDescriptionBySearchTag(String searchTag);
@@ -32,6 +32,8 @@ public interface ResourceService {
     Set<String> getAllByParameters(ResourseSearchJson parameters);
 
     List<PolygonJSON> createPolygonJSON (String identifier);
+    
+    String getRegistrationNumber(String login);
     
 }
 

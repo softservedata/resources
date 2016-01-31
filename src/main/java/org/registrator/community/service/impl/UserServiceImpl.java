@@ -42,51 +42,51 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
-	
-	@Autowired
-	UserRepository userRepository;
 
 	@Autowired
-	RoleRepository roleRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	PassportRepository passportRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	AddressRepository addressRepository;
+	private PassportRepository passportRepository;
 
 	@Autowired
-	ResourceNumberRepository resourceNumberRepository;
+	private AddressRepository addressRepository;
 
 	@Autowired
-	TomeRepository tomeRepository;
-	
-	@Autowired
-	Logger logger;
+	private ResourceNumberRepository resourceNumberRepository;
 
 	@Autowired
-	private PasswordEncoder  userPasswordEncoder;
+	private TomeRepository tomeRepository;
 
-	
+	@Autowired
+	private Logger logger;
+
+	@Autowired
+	private PasswordEncoder userPasswordEncoder;
+
 	/**
-     * Method, which returns user from database by login
-     * @param login
-     * @return User 
-     * 
-     */
+	 * Method, which returns user from database by login
+	 * 
+	 * @param login
+	 * @return User
+	 * 
+	 */
 	@Transactional
 	@Override
 	public User getUserByLogin(String login) {
 		return userRepository.findUserByLogin(login);
 	}
 
-	
 	/**
-     * Method, which changes user status
-     * @param userStatusDTO
-     * @return void 
-     * 
-     */
+	 * Method, which changes user status
+	 * 
+	 * @param userStatusDTO
+	 * @return void
+	 * 
+	 */
 	@Transactional
 	@Override
 	public void changeUserStatus(UserStatusDTOJSON userStatusDTO) {
@@ -111,87 +111,124 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-     * Method, which retruns all registrated users
-     * @return List<UserDTO>
-     * 
-     */
-	
+	 * Method, which retruns all registrated users
+	 * 
+	 * @return List<UserDTO>
+	 * 
+	 */
+
 	@Transactional
 	@Override
 	public List<UserDTO> getAllRegistratedUsers() {
-		List<UserDTO> userList = getUserDtoList();
-		List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
-		
-		for (UserDTO user : userList) {
-			if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
-				logger.info("User is registrated");
-				registratedUsers.add(user);
+		try {
+			List<UserDTO> userList = getUserDtoList();
+			List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
+			for (UserDTO user : userList) {
+				if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
+					logger.info("User is registrated");
+					registratedUsers.add(user);
+				}
 			}
+			return registratedUsers;
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			return null;
 		}
-		return registratedUsers;
 	}
 
 	/**
-     * Method, which changes user role
-     * @param login,role_id
-     * @return void 
-     * 
-     */
+	 * Method, which retruns all inactive users
+	 * 
+	 * @return List<UserDTO>
+	 * 
+	 */
+	@Transactional
+	@Override
+	public List<UserDTO> getAllInactiveUsers() {
+		try {
+			List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+			userDtoList = getUserDtoList();
+			List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
+			for (UserDTO userDto : userDtoList) {
+				if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
+					userDto.setRole("USER");
+					inactiveUserDtoList.add(userDto);
+				}
+			}
+			return inactiveUserDtoList;
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			return null;
+		}
+	}
+
+	/**
+	 * Method, which changes user role
+	 * 
+	 * @param login,role_id
+	 * @return void
+	 * 
+	 */
 	@Transactional
 	@Override
 	public void changeUserRole(String login, Integer role_id) {
 		User user = getUserByLogin(login);
 		Role role = roleRepository.findOne(String.valueOf(role_id));
-		logger.info("user role is"+ role.getType().name());
+		logger.info("user role is" + role.getType().name());
 		user.setRole(role);
 		logger.info("save user role");
 		userRepository.save(user);
 	}
 
 	/**
-     * Method, which edits information about user
-     * @param userDto
-     * @return userDTO 
-     * 
-     */
+	 * Method, which edits information about user
+	 * 
+	 * @param userDto
+	 * @return userDTO
+	 * 
+	 */
 	@Transactional
 	@Override
 	public UserDTO editUserInformation(UserDTO userDto) {
 		User user = getUserByLogin(userDto.getLogin());
-		user.setFirstName(userDto.getFirstName());
-		user.setLastName(userDto.getLastName());
-		user.setMiddleName(userDto.getMiddleName());
-		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getPassword());
-		user.setRole(checkRole(userDto.getRole()));
-		user.setStatus(checkUserStatus(userDto.getStatus()));
-		logger.info("edit user in data base");
-		PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
-				Integer.parseInt(userDto.getPassport().getNumber()), userDto.getPassport().getPublished_by_data());
-		Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
-				userDto.getAddress().getDistrict(), userDto.getAddress().getCity(), userDto.getAddress().getStreet(),
-				userDto.getAddress().getBuilding(), userDto.getAddress().getFlat());
-		int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
-		if (result != 0) {
-			logger.info("save address");
-			addressRepository.save(address);
-		}
-		result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
-		if (result != 0) {
-			logger.info("save passport");
-			passportRepository.save(passport);
-		}
-		logger.info("save all changes");
-		userRepository.save(user);
+		if (user != null) {
+			user.setFirstName(userDto.getFirstName());
+			user.setLastName(userDto.getLastName());
+			user.setMiddleName(userDto.getMiddleName());
+			user.setEmail(userDto.getEmail());
+//			user.setPassword(userDto.getPassword());
+			user.setRole(checkRole(userDto.getRole()));
+			user.setStatus(checkUserStatus(userDto.getStatus()));
+			logger.info("edit user in data base");
+			PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
+					Integer.parseInt(userDto.getPassport().getNumber()), userDto.getPassport().getPublished_by_data());
+			Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
+					userDto.getAddress().getDistrict(), userDto.getAddress().getCity(),
+					userDto.getAddress().getStreet(), userDto.getAddress().getBuilding(),
+					userDto.getAddress().getFlat());
+			int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
+			if (result != 0) {
+				logger.info("save address");
+				addressRepository.save(address);
+			}
+			result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
+			if (result != 0) {
+				logger.info("save passport");
+				passportRepository.save(passport);
+			}
+			logger.info("save all changes");
+			userRepository.save(user);
 
-		return userDto;
+			return userDto;
+		} else {
+			return null;
+		}
 	}
 
 	/**
-     * Method, which fill in user status for registrateds users
-     * @return List<UserStatus>
-     * 
-     */
+	 * Method, which fill in user status for registrateds users
+	 * 
+	 * @return List<UserStatus>
+	 * 
+	 */
 	@Transactional
 	@Override
 	public List<UserStatus> fillInUserStatusforRegistratedUsers() {
@@ -202,10 +239,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-     * Method, which fill in user status for inactives users
-     * @return List<UserStatus>
-     * 
-     */
+	 * Method, which fill in user status for inactives users
+	 * 
+	 * @return List<UserStatus>
+	 * 
+	 */
 	@Transactional
 	@Override
 	public List<UserStatus> fillInUserStatusforInactiveUsers() {
@@ -216,12 +254,12 @@ public class UserServiceImpl implements UserService {
 		return userStatusList;
 	}
 
-	
 	/**
-     * Method, which gets user list userDto from database
-     * @return userDTO 
-     * 
-     */
+	 * Method, which gets user list userDto from database
+	 * 
+	 * @return userDTO
+	 * 
+	 */
 	@Transactional
 	@Override
 	public List<UserDTO> getUserDtoList() {
@@ -235,19 +273,20 @@ public class UserServiceImpl implements UserService {
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-					user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
+					user.getRole().toString(), user.getLogin(), user.getEmail(),
 					user.getStatus().toString(), addressDto, passportDto);
 			userDtoList.add(userDto);
 		}
 		return userDtoList;
 	}
-	
+
 	/**
-     * Method, which gets user userDto from database
-     * @param login
-     * @return userDTO 
-     * 
-     */
+	 * Method, which gets user userDto from database
+	 * 
+	 * @param login
+	 * @return userDTO
+	 * 
+	 */
 	@Transactional
 	@Override
 	public UserDTO getUserDto(String login) {
@@ -262,7 +301,7 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
+				user.getRole().toString(), user.getLogin(), user.getEmail(),
 				user.getStatus().toString(), addressDto, passportDto);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
@@ -277,25 +316,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-     * Method, which gets all inactives users
-     * @return List<UserDTO>
-     * 
-     */
-	
-	@Transactional
-	@Override
-	public List<UserDTO> getAllInactiveUsers() {
-		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		userDtoList = getUserDtoList();
-		List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
-		for (UserDTO userDto : userDtoList) {
-			if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
-				userDto.setRole("USER");
-				inactiveUserDtoList.add(userDto);
-			}
-		}
-		return inactiveUserDtoList;
-	}
+	 * Method, which gets all inactives users
+	 * 
+	 * @return List<UserDTO>
+	 * 
+	 */
 
 	@Transactional
 	@Override
@@ -314,11 +339,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-     * Method, which checks user status
-     * @param status
-     * @return UserStatus
-     * 
-     */
+	 * Method, which checks user status
+	 * 
+	 * @param status
+	 * @return UserStatus
+	 * 
+	 */
 	private UserStatus checkUserStatus(String status) {
 		if (status.equals(UserStatus.BLOCK.name())) {
 			return UserStatus.BLOCK;
@@ -330,36 +356,46 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-     * Method, which checks user role
-     * @param role
-     * @return Role
-     * 
-     */
+	 * Method, which checks user role
+	 * 
+	 * @param role
+	 * @return Role
+	 * 
+	 */
 	private Role checkRole(String role) {
 		List<Role> roleList = roleRepository.findAll();
-		switch(role){
-		case "USER": return roleList.get(2); 
-		case "REGISTRATOR": return roleList.get(1);
-		case "COMMISSIONER": return roleList.get(3);
-		default: return roleList.get(0);
-		}	
+		switch (role) {
+		case "USER":
+			return roleList.get(2);
+		case "REGISTRATOR":
+			return roleList.get(1);
+		case "COMMISSIONER":
+			return roleList.get(3);
+		default:
+			return roleList.get(0);
+		}
 	}
 
 	/**
-	 * register user service: accepts 'registrationForm' with fields, needed to store data in Users, Address and Passport_Data tables
-	 * By default, every new user is given role "User" and status "Inactive" until it's changed by Admin
+	 * register user service: accepts 'registrationForm' with fields, needed to
+	 * store data in Users, Address and Passport_Data tables By default, every
+	 * new user is given role "User" and status "Inactive" until it's changed by
+	 * Admin
+	 * 
 	 * @param registrationForm
-     */
+	 */
 	@Override
 	@Transactional
 	public void registerUser(RegistrationForm registrationForm) {
 
-//		if (this.userRepository.findUserByLogin(registrationForm.getLogin()) != null) {
-//			return UserService.ERR_DUP_USER;
-//		}
-//		if (this.userRepository.findUserByEmail(registrationForm.getEmail()) != null) {
-//			return UserService.ERR_DUP_EMAIL;
-//		}
+		// if (this.userRepository.findUserByLogin(registrationForm.getLogin())
+		// != null) {
+		// return UserService.ERR_DUP_USER;
+		// }
+		// if (this.userRepository.findUserByEmail(registrationForm.getEmail())
+		// != null) {
+		// return UserService.ERR_DUP_EMAIL;
+		// }
 		User user = new User();
 		user.setLogin(registrationForm.getLogin());
 		user.setEmail(registrationForm.getEmail());
@@ -382,7 +418,8 @@ public class UserServiceImpl implements UserService {
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
 			passportRepository.saveAndFlush(passport);
-			log.info("Inserted passport data for user {0}, passport_data_id = {1}", user.getLogin(), passport.getPassportId());
+			log.info("Inserted passport data for user {0}, passport_data_id = {1}", user.getLogin(),
+					passport.getPassportId());
 
 			// insert user's address records into "address" table
 			Address address = new Address();
@@ -398,7 +435,7 @@ public class UserServiceImpl implements UserService {
 			addressRepository.saveAndFlush(address);
 			log.info("Inserted address data for user {0}, address_id = {1}", user.getLogin(), address.getAddressId());
 		}
-		
+
 	}
 
 	// @Transactional
@@ -431,16 +468,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-     * Method, which creates resoure number
-     * @param resourseNumberDtoJson
-     * @return void
-     * 
-     */
+	 * Method, which creates resoure number
+	 * 
+	 * @param resourseNumberDtoJson
+	 * @return void
+	 * 
+	 */
 	@Transactional
 	@Override
 	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
 		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(Integer.parseInt(resourseNumberDtoJson.getResource_number()),
+		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
+				Integer.parseInt(resourseNumberDtoJson.getResource_number()),
 				resourseNumberDtoJson.getRegistrator_number());
 		ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
 				resourseNumberDto.getRegistratorNumber(), user);
@@ -448,11 +487,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-     * Method, which creates tome
-     * @param resourseNumberDtoJson
-     * @return void
-     * 
-     */
+	 * Method, which creates tome
+	 * 
+	 * @param resourseNumberDtoJson
+	 * @return void
+	 * 
+	 */
 	@Transactional
 	@Override
 	public void createTome(ResourceNumberDTOJSON resourseNumberDtoJson) {
@@ -465,51 +505,49 @@ public class UserServiceImpl implements UserService {
 
 	// @Override
 
-    @Override
-    public List<UserDTO> getUserBySearchTag(String searchTag) {
-        List<User> usersList = userRepository.findOwnersLikeProposed(searchTag);
-        List<UserDTO> userDtos= new ArrayList<UserDTO>();
-        for(User user : usersList) {
-            UserDTO userdto = formUserDTO(user);
-            userDtos.add(userdto);
-        }
-        System.out.println("DtOs" + userDtos);
-        return userDtos;
-    }
-    
-    
+	@Override
+	public List<UserDTO> getUserBySearchTag(String searchTag) {
+		List<User> usersList = userRepository.findOwnersLikeProposed(searchTag);
+		List<UserDTO> userDtos = new ArrayList<UserDTO>();
+		for (User user : usersList) {
+			UserDTO userdto = formUserDTO(user);
+			userDtos.add(userdto);
+		}
+		System.out.println("DtOs" + userDtos);
+		return userDtos;
+	}
 
-    private UserDTO formUserDTO(User user){
-        PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
-        PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber().toString(),
-                passportInfo.getPublishedByData());
-        if (passportInfo.getComment() != null) {
-            passportDto.setComment(passportInfo.getComment());
-        }
-        Address address = user.getAddress().get(user.getAddress().size() - 1);
-        AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
-                address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
-        UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-                user.getRole().toString(), user.getLogin(), user.getPassword(), user.getEmail(),
-                user.getStatus().toString(), addressDto, passportDto);
-        if (!user.getWillDocument().isEmpty()) {
-            WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
-            WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
-            willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
-            if (willDocument.getComment() != null) {
-                willDocumentDTO.setComment(willDocument.getComment());
-            }
-            userdto.setWillDocument(willDocumentDTO);
-        }
-        
-        if (!user.getOtherDocuments().isEmpty()) {
-            List<String> otherDocuments = new ArrayList<String>();
-            for(OtherDocuments otherDocument : user.getOtherDocuments()) {
-                otherDocuments.add(otherDocument.getComment());
-            }
-            userdto.setOtherDocuments(otherDocuments);
-        }
-       
-        return userdto;
-    }
+	private UserDTO formUserDTO(User user) {
+		PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+		PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber().toString(),
+				passportInfo.getPublishedByData());
+		if (passportInfo.getComment() != null) {
+			passportDto.setComment(passportInfo.getComment());
+		}
+		Address address = user.getAddress().get(user.getAddress().size() - 1);
+		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+				user.getRole().toString(), user.getLogin(),user.getEmail(),
+				user.getStatus().toString(), addressDto, passportDto);
+		if (!user.getWillDocument().isEmpty()) {
+			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
+			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
+			willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
+			if (willDocument.getComment() != null) {
+				willDocumentDTO.setComment(willDocument.getComment());
+			}
+			userdto.setWillDocument(willDocumentDTO);
+		}
+
+		if (!user.getOtherDocuments().isEmpty()) {
+			List<String> otherDocuments = new ArrayList<String>();
+			for (OtherDocuments otherDocument : user.getOtherDocuments()) {
+				otherDocuments.add(otherDocument.getComment());
+			}
+			userdto.setOtherDocuments(otherDocuments);
+		}
+
+		return userdto;
+	}
 }

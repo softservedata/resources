@@ -133,3 +133,8 @@ body {
 .searchDiv {
     margin-top: 15px;
 }
+
+.not-active {
+    pointer-events: none;
+    cursor: default;
+}
