@@ -93,14 +93,5 @@ $(document).ready(
 			});
 			
 			$('.deleteButton').attr('disabled', 'disabled');
-			
-			
-            //We can't send the point number from disabled field. The following code
-/*            //makes all point number fields enabled, exactly before sending.
-            $(".formsubmit").click(function() {
-                $('.clonedInput').each(function () {
-                    $(this).find('#myparam0').attr('disabled', '');
-                });
-            });*/
-			//$('#btnDelArea').attr('disabled', 'disabled');
+
 		});

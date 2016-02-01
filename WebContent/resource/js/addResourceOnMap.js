@@ -445,3 +445,20 @@ $(document).on("click", "#mapManual", function(){
     }
 });
 
+
+$(document).on("click", "#resetForm", function(){
+    $('.clonedAreaInput').each(function(){
+        var num = $('.clonedAreaInput').length;
+        $('#areaInput' + num).remove();
+        if (num == 2) {
+            $('#btnDelAreaPoint').attr('disabled', 'disabled');
+            newPolygons.forEach(function(polygon) {
+                polygon.setMap(null);
+            });
+            newPolygons = [];
+            $(".inactiveLink").removeClass("inactiveLink");
+            return false;
+        }
+    });
+
+});
