@@ -93,11 +93,11 @@ public class User implements Serializable {
     @Column(name = "phonenumber", nullable = true)
     private String phoneNumber;
     
-    @Column(name = "zdate_of_accession", nullable = true)
+    @Column(name = "date_of_accession", nullable = true)
     private Date dateOfAccession;
     
     @ManyToOne
-    @JoinColumn(name = "user_affiliation", nullable = false)
+    @JoinColumn(name = "territorialCommunity_id", nullable = false)
     private TerritorialCommunity territorialCommunity;
     
     

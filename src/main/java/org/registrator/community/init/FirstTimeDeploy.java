@@ -32,6 +32,11 @@ public class FirstTimeDeploy {
 		long userCount = (long)session.createQuery("select count(u) from User u").uniqueResult();
 		if(userCount==0){
 		    
+		    Transaction territorialCommunity = session.beginTransaction();
+		    TerritorialCommunity globalTerritorialCommunity = new TerritorialCommunity();
+		    globalTerritorialCommunity.setName("Україна");
+		    session.persist(globalTerritorialCommunity);
+		    territorialCommunity.commit();
 
 		    Transaction roleTransaction = session.beginTransaction();
 	        System.out.println("In the init and if");
@@ -53,11 +58,6 @@ public class FirstTimeDeploy {
 	        User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
 	        		roleAdmin,"Адміністратор","Адміністратор","Адміністратор","admin@admin.com","UNBLOCK","+380500000000");
 	        
-	        Transaction territorialCommunity = session.beginTransaction();
-	        TerritorialCommunity globalTerritorialCommunity = new TerritorialCommunity();
-	        globalTerritorialCommunity.setName("Україна");
-	        session.persist(globalTerritorialCommunity);
-	        territorialCommunity.commit();
 	          
 	        admin.setTerritorialCommunity(globalTerritorialCommunity);
 	        admin.setDateOfAccession(new Date());
