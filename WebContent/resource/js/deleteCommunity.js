@@ -20,7 +20,7 @@ $(function() {
 													})
 										},
 										error : function() {
-											  bootbox.alert(jQuery.i18n.prop('msg.canNotDelete'));
+											  bootbox.alert(jQuery.i18n.prop('msg.canNotDeleteCommunity'));
 										}
 
 									});
