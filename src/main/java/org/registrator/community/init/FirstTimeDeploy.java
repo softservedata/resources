@@ -1,5 +1,7 @@
 package org.registrator.community.init;
 
+import java.util.Date;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.Session;
@@ -11,6 +13,7 @@ import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +31,14 @@ public class FirstTimeDeploy {
 		Session session = sessionFactory.openSession();
 		long userCount = (long)session.createQuery("select count(u) from User u").uniqueResult();
 		if(userCount==0){
-			
-	        Transaction roleTransaction = session.beginTransaction();
+		    
+		    Transaction territorialCommunity = session.beginTransaction();
+            TerritorialCommunity globalTerritorialCommunity = new TerritorialCommunity();
+            globalTerritorialCommunity.setName("Україна");
+            session.persist(globalTerritorialCommunity);
+            territorialCommunity.commit();
+
+		    Transaction roleTransaction = session.beginTransaction();
 	        System.out.println("In the init and if");
 	        Role roleAdmin = new Role(RoleType.ADMIN,"description");
 	        session.persist(roleAdmin);
@@ -48,7 +57,8 @@ public class FirstTimeDeploy {
             Transaction userTransaction = session.beginTransaction();
 	        User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
 	        		roleAdmin,"Адміністратор","Адміністратор","Адміністратор","admin@admin.com","UNBLOCK","+380500000000");
-
+	        admin.setTerritorialCommunity(globalTerritorialCommunity);
+	        admin.setDateOfAccession(new Date());
 	        session.persist(admin);
 	        
 	        userTransaction.commit();
@@ -64,8 +74,8 @@ public class FirstTimeDeploy {
 	        
 	        
 	        Transaction resourceTypeTransaction = session.beginTransaction();
-	        ResourceType landType = new ResourceType("Земельний");
-	        ResourceType radioType = new ResourceType("Радіочастотний");
+	        ResourceType landType = new ResourceType("земельний");
+	        ResourceType radioType = new ResourceType("радіочастотний");
             session.persist(landType);
             session.persist(radioType);
             resourceTypeTransaction.commit();

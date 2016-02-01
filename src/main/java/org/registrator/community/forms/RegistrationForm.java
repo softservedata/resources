@@ -1,13 +1,21 @@
 package org.registrator.community.forms;
 
+import java.util.Date;
+
 import javax.validation.constraints.*;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.registrator.community.dao.UserRepository;
+import org.registrator.community.dto.ResourceTypeDTO;
+import org.registrator.community.dto.UserDTO;
+import org.registrator.community.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-
-public class RegistrationForm {
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+@Component
+public class RegistrationForm /*implements Validator*/{
 
     @Autowired
     UserRepository userRepository;
@@ -73,6 +81,10 @@ public class RegistrationForm {
     private String building;
 
     private String flat;
+    
+    private Date dateOfAccession;
+    
+    private String phoneNumber;
 
 
     @AssertTrue(message = "Введене вами підтвердження паролю невірне")
@@ -220,5 +232,21 @@ public class RegistrationForm {
     public void setFlat(String flat) {
         this.flat = flat;
     }
-}
 
+    public Date getDateOfAccession() {
+        return dateOfAccession;
+    }
+
+    public void setDateOfAccession(Date dateOfAccession) {
+        this.dateOfAccession = dateOfAccession;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }  
+    
+}

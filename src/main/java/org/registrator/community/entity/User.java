@@ -2,6 +2,7 @@ package org.registrator.community.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class User implements Serializable {
     @Column(name = "middle_name", nullable = false)
     private String middleName;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", nullable = true)
     private String email;
     
   
@@ -92,8 +93,11 @@ public class User implements Serializable {
     @Column(name = "phonenumber", nullable = true)
     private String phoneNumber;
     
+    @Column(name = "zdate_of_accession", nullable = true)
+    private Date dateOfAccession;
+    
     @ManyToOne
-    @JoinColumn(name = "user_affiliation", nullable = true)
+    @JoinColumn(name = "user_affiliation", nullable = false)
     private TerritorialCommunity territorialCommunity;
     
     
@@ -264,6 +268,14 @@ public class User implements Serializable {
 
     public void setPasswordHash(String passwordHash){
         this.password = passwordHash;
+    }
+
+    public Date getDateOfAccession() {
+        return dateOfAccession;
+    }
+
+    public void setDateOfAccession(Date dateOfAccession) {
+        this.dateOfAccession = dateOfAccession;
     }
 
 }

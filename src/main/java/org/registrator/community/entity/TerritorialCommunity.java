@@ -32,6 +32,15 @@ public class TerritorialCommunity implements Serializable {
     public TerritorialCommunity() {
         
     }
+
+    public Integer getTerritorialCommunityId() {
+        return territorialCommunityId;
+    }
+    
+    public void setTerritorialCommunityId(Integer territorialCommunityId) {
+        this.territorialCommunityId = territorialCommunityId;
+    }
+
     public String getName() {
         return name;
     }

@@ -3,36 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
 
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#username').keyup(function (){
-      var username = $(this).val();
-        console.log(username);
-
-        if(username.length >= 3){
-        $.ajax({
-            url: 'http://localhost:8080/registrator/check-username-is-available',
-            method: 'GET',
-            data: {login: username},
-            dataType: 'json',
-            success: function(data){
-                var divElem = $();
-                if(data == "fail"){
-                  console.log(username + " is already in use");
-                }
-            },
-            error: function(){
-                console.log("Cannot process request");
-            }
-        })}})
-});
-</script>
 <style>
 input.error {
 	border-style: solid;
 	border-color: #ff0000;
 }
-
 span.error {
 	color: red;
 }
@@ -43,18 +18,14 @@ span.error {
 			method="POST" name="registrationForm">
 			<div class="form-group">
 				<div class="personal_header col-lg-4">
-					<legend><spring:message code="label.user.information" /></legend>
-					<!-- <div class="personal_header header"><span><b> ► <spring:message code="label.user.information" /></b></span>
-        <div class="personal_content content">-->
-					<!-- In case you want to see all the error message on the top of the form, uncomment below line:
-      		  <sf:errors path="*" element="div" cssClass="errors" /> -->
+					<span><spring:message code="label.user.information" /></span>
 					<label class="col-lg-4 control-label" for="firstName"><spring:message
 							code="label.user.firstname" /> *</label>
 					<div class="col-lg-8">
 						<input name="firstName" type="text" class="form-control login"
 							id="firstName" value="${registrationForm.firstName}" />
 						<sf:errors path="firstName" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="lastName"><spring:message
@@ -63,7 +34,7 @@ span.error {
 						<input name="lastName" type="text" class="form-control login"
 							id="lastName" value="${registrationForm.lastName}" />
 						<sf:errors path="lastName" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="middleName"><spring:message
@@ -72,7 +43,7 @@ span.error {
 						<input name="middleName" type="text" class="form-control login"
 							id="middleName" value="${registrationForm.middleName}" />
 						<sf:errors path="middleName" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="email"><spring:message
@@ -81,7 +52,7 @@ span.error {
 						<input name="email" type="text" class="form-control login"
 							id="email" value="${registrationForm.email}" />
 						<sf:errors path="email" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="login"><spring:message
@@ -90,7 +61,7 @@ span.error {
 						<input name="login" type="text" class="form-control login"
 							id="login" value="${registrationForm.login}" />
 						<sf:errors path="login" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="password"><spring:message
@@ -99,7 +70,7 @@ span.error {
 						<input name="password" type="password" class="form-control login"
 							id="password" type="password" />
 						<sf:errors path="password" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="confirmPassword"><spring:message
@@ -108,20 +79,18 @@ span.error {
 						<input name="confirmPassword" type="password"
 							class="form-control login" id="confirmPassword" type="password" />
 						<sf:errors path="confirmPassword" class="error" />
-						</br>
+						<br>
 					</div>
 				</div>
-				<!--<div class="address_header header"><span><b> ► Адреса</b></span></div>
-            <div class="address_content content">-->
 				<div class="address_header col-lg-4">
-					<legend><spring:message code="label.user.addressinfo" /></legend>
+					<span><spring:message code="label.user.addressinfo" /></span>
 					<label class="col-lg-4 control-label" for="city"><spring:message
 							code="label.user.city" /> *</label>
 					<div class="col-lg-8">
 						<input name="city" type="text" class="form-control login"
 							id="city" value="${registrationForm.city}" />
 						<sf:errors path="city" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="region"><spring:message
@@ -130,7 +99,7 @@ span.error {
 						<input name="region" type="text" class="form-control login"
 							id="region" value="${registrationForm.region}" />
 						<sf:errors path="region" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="district"><spring:message
@@ -139,7 +108,7 @@ span.error {
 						<input name="district" type="text" class="form-control login"
 							id="district" value="${registrationForm.district}" />
 						<sf:errors path="district" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="street"><spring:message
@@ -148,7 +117,7 @@ span.error {
 						<input name="street" type="text" class="form-control login"
 							id="street" value="${registrationForm.street}" />
 						<sf:errors path="street" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="building"><spring:message
@@ -157,7 +126,7 @@ span.error {
 						<input name="building" type="text" class="form-control login"
 							id="building" value="${registrationForm.building}" />
 						<sf:errors path="building" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="flat"><spring:message
@@ -166,7 +135,7 @@ span.error {
 						<input name="flat" type="text" class="form-control login"
 							id="flat" value="${registrationForm.flat}" />
 						<sf:errors path="flat" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="postcode"><spring:message
@@ -175,14 +144,11 @@ span.error {
 						<input name="postcode" type="text" class="form-control login"
 							id="postcode" value="${registrationForm.postcode}" />
 						<sf:errors path="postcode" class="error" />
-						</br>
+						<br>
 					</div>
 				</div>
-			<!--<div class="passport_header header"><span><b> ► <spring:message code="label.user.passportinfo" /></b></span>
-             </div>
-             <div class="passport_content content">-->
 				<div class="passport_header col-lg-4">
-					<legend><spring:message code="label.user.passportinfo" /></legend>
+					<span><spring:message code="label.user.passportinfo" /></span>
 
 					<label class="col-lg-4 control-label" for="passport_seria"><spring:message
 							code="label.user.seria" /> *</label>
@@ -190,7 +156,7 @@ span.error {
 						<input name="seria" type="text" class="form-control login"
 							id="passport_seria" value="${registrationForm.seria}" />
 						<sf:errors path="seria" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="passport_number"><spring:message
@@ -199,7 +165,7 @@ span.error {
 						<input name="number" type="text" class="form-control login"
 							id="passport_number" value="${registrationForm.number}" />
 						<sf:errors path="number" class="error" />
-						</br>
+						<br>
 					</div>
 
 					<label class="col-lg-4 control-label" for="published_by_data"><spring:message
@@ -209,11 +175,9 @@ span.error {
 							class="form-control login" id="published_by_data"
 							value="${registrationForm.publishedByData}" />
 						<sf:errors path="publishedByData" class="error" />
-						</br>
+						<br>
 					</div>
 				</div>
-			<!-- </div> -->
-			<p>
 	</div>
 	<p>
 		<sf:button class="btn btn-success" type="submit" id="submit">
@@ -225,7 +189,7 @@ span.error {
 		</sf:button>
 	</p>
 	</sf:form>
-		<p>
 	<spring:message code="label.msg.required" />
 </div>	
-<script src="${base}resource/js/registration/validate_registration.js" type="text/javascript"></script>
+<script src="<c:url value='/resource/js/registration/checkUserName.js'/>"></script>
+<script src="<c:url value='/resource/js/registration/validate_registration.js'/>"></script>
