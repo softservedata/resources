@@ -2,8 +2,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 <nav class="navbar navbar-default" id="menubaradmin">
     <div class="container-fluid">
 
@@ -20,6 +18,9 @@
                 </li>
                 <li><a href="<c:url value='/administrator/users/settings'/>">
                     <spring:message code="label.admin.settings"/></a></li>
+                <li><a href="<c:url value='/administrator/users/show-all-communities'/>"><spring:message code="label.community.showall"/></a></li>
+                <li><a href="<c:url value='/manualregistration'/>"><spring:message
+								code="label.manualregister" /></a></li>
                 <li><a href="<c:url value='/administrator/users/search'/>" class="glyphicon glyphicon-search"></a></li>
             </ul>
         </div>

@@ -1,7 +1,7 @@
 package org.registrator.community.dao;
 
 import java.util.List;
-
+import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.RoleType;
 import org.springframework.data.domain.Page;
@@ -34,5 +34,8 @@ public interface UserRepository extends JpaRepository<User,Integer>, JpaSpecific
     
     @Query("select u from User u where u.role.type = :roleType")
     List<User> getUsersByRole(@Param("roleType")RoleType roleType);
+    
+    List<User> findByTerritorialCommunity(TerritorialCommunity community);
+    
     
 }

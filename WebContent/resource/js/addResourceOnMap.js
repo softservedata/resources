@@ -432,7 +432,7 @@ $("#cp-wrap").on("click", "a", function(){
         }
     }
     else {
-        bootbox.alert("Точки вже додано. Додавання нових полігонів заборонено.");
+        bootbox.alert(jQuery.i18n.prop('msg.forbidden'));
     }
 
 });
