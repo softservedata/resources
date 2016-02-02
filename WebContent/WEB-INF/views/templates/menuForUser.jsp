@@ -2,9 +2,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <nav class="navbar navbar-default" id=menubaruser>
     <div class="container-fluid">
 

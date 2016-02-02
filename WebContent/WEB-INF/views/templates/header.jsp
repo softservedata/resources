@@ -53,7 +53,6 @@
 	</div>
 </div>
 
-
 <script
 	src="<c:url value='/resource/js/lib/jquery.i18n.properties.js'/>"></script>
 
@@ -91,3 +90,4 @@
 
 	}
 </script>
+
