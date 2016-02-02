@@ -42,9 +42,9 @@ public interface UserService {
 
 	UserDTO editUserInformation(UserDTO userDto);
 
-	void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson);
-
 	void createTome(ResourceNumberDTOJSON resourseNumberDtoJson);
+	
+	void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson);
 
 	List<UserDTO> getUserBySearchTag(String searchTag);
 
