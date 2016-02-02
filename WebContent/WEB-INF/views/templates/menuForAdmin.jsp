@@ -21,6 +21,8 @@
                 <li><a href="<c:url value='/administrator/users/settings'/>">
                     <spring:message code="label.admin.settings"/></a></li>
                 <li><a href="<c:url value='/administrator/users/show-all-communities'/>"><spring:message code="label.community.showall"/></a></li>
+                <li><a href="<c:url value='/manualregistration'/>"><spring:message
+								code="label.manualregister" /></a></li>
                 <li><a href="<c:url value='/administrator/users/search'/>" class="glyphicon glyphicon-search"></a></li>
             </ul>
         </div>

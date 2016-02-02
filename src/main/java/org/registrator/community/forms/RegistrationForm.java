@@ -11,6 +11,7 @@ import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -82,11 +83,16 @@ public class RegistrationForm /*implements Validator*/{
 
     private String flat;
     
+    
+    @NotNull
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date dateOfAccession;
     
+    @Pattern (regexp = "[^\\([0-9]{3}\\)\\s[0-9]{3}-[0-9]{2}-[0-9]{2}$]?", message = "Некоректний номер телефону")
     private String phoneNumber;
 
-
+    private String territorialCommunity;
+    
     @AssertTrue(message = "Введене вами підтвердження паролю невірне")
     private boolean isValidConfirmPassword(){
         return confirmPassword != password;
@@ -247,6 +253,14 @@ public class RegistrationForm /*implements Validator*/{
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getTerritorialCommunity() {
+        return territorialCommunity;
+    }
+
+    public void setTerritorialCommunity(String territorialCommunity) {
+        this.territorialCommunity = territorialCommunity;
     }  
     
 }

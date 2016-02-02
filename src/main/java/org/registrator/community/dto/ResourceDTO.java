@@ -14,10 +14,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class ResourceDTO {
     
-    @NotEmpty(message = "Виберіть тип ресурсу")
+    @NotEmpty(message = "{msg.notEmptyField}")
     private String resourceType;
     
-    @NotEmpty(message = "Поле є обов'язковим для введення")
+    @NotEmpty(message = "{msg.notEmptyField}")
     @Pattern(regexp ="\\d+", message = "Ідентифікатор може містити лише цифри від 0 до 9")
     private String identifier;
     
@@ -26,13 +26,13 @@ public class ResourceDTO {
     
     private String registratorName;
     
-    @NotNull(message = "Поле є обов'язковим для введення")
+    @NotNull(message = "{msg.notEmptyField}")
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date date;
     
     private ResourceStatus status;
     
-    @NotEmpty(message = "Поле є обов'язковим для введення")
+    @NotEmpty(message = "{msg.notEmptyField}")
     private String reasonInclusion;
         
     private String tomeIdentifier;

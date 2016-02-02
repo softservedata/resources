@@ -37,6 +37,8 @@ import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private CommunityService communityService;
+
 
 	/**
 	 * Method, which returns user from database by login
@@ -393,7 +396,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void registerUser(RegistrationForm registrationForm) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+	    User admin = getUserByLogin(auth.getName());
 		// if (this.userRepository.findUserByLogin(registrationForm.getLogin())
 		// != null) {
 		// return UserService.ERR_DUP_USER;
@@ -402,6 +407,7 @@ public class UserServiceImpl implements UserService {
 		// != null) {
 		// return UserService.ERR_DUP_EMAIL;
 		// }
+	    TerritorialCommunity territorialCommunity = communityService.findByName(registrationForm.getTerritorialCommunity());
 		User user = new User();
 		user.setLogin(registrationForm.getLogin());
 		user.setEmail(registrationForm.getEmail());
@@ -409,13 +415,18 @@ public class UserServiceImpl implements UserService {
 		user.setFirstName(registrationForm.getFirstName());
 		user.setLastName(registrationForm.getLastName());
 		user.setMiddleName(registrationForm.getMiddleName());
-		user.setRole(roleRepository.findRoleByType(RoleType.USER));
-		user.setStatus(UserStatus.INACTIVE);
 
+		if(admin.getRole().getType() == RoleType.ADMIN){
+		    user.setRole(roleRepository.findRoleByType(RoleType.COMMISSIONER));
+	        user.setStatus(UserStatus.UNBLOCK);
+		}
+		else {user.setRole(roleRepository.findRoleByType(RoleType.USER));
+		user.setStatus(UserStatus.INACTIVE);}
+		
 		// temporarily hardcode
-		user.setDateOfAccession(new Date());
-		user.setTerritorialCommunity(communityService.findById(1));
-		//
+		user.setDateOfAccession(registrationForm.getDateOfAccession());
+		user.setTerritorialCommunity(territorialCommunity);
+		// 
 
 		userRepository.saveAndFlush(user);
 		log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());
