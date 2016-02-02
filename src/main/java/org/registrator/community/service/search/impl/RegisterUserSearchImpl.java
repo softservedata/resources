@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class RegisterUserSearchImpl extends AbstractSearchService<User,UserRepository> {
 	
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public TableSearchResponseDTO executeSearchRequest(
