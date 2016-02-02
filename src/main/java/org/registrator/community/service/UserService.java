@@ -5,8 +5,6 @@ import java.util.List;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
-import org.registrator.community.entity.Address;
-import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.forms.RegistrationForm;
@@ -47,5 +45,7 @@ public interface UserService {
 	void createTome(ResourceNumberDTOJSON resourseNumberDtoJson);
 
 	List<UserDTO> getUserBySearchTag(String searchTag);
+	
+	public User findUserByEmail(String email);
 
 }

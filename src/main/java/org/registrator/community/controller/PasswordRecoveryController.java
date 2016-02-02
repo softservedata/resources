@@ -1,29 +1,39 @@
 package org.registrator.community.controller;
 
-import org.registrator.community.service.UserService;
+import org.registrator.community.service.PasswordRecoveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PasswordRecoveryController {
 
     @Autowired
-    UserService userService;
+    private PasswordRecoveryService passwordRecoveryService;
 
-//    @RequestMapping(value = "/send-password", method = RequestMethod.GET)
-//    public String showPasswordRecoveryForm(){
-//        return "password_recovery";
-//    }
-
-    @RequestMapping(value = "/send-password", method = RequestMethod.POST)
-    public String processPasswordRecoveryForm(@RequestParam String email){
-//        if(userService.recoverUsersPassword(email)){
-//            return "success:password_sent_to_email";
-//        }
-
+    @RequestMapping(value = "/forgot_password", method = RequestMethod.GET)
+    public String getForgotPasswordPage() {
+        return "undefined Page";
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/forgot_password", method = RequestMethod.POST)
+    public String handleForgotPasswordEmail(@RequestParam("email") String email) {
+    	passwordRecoveryService.sendRecoverPasswordEmail(email);
+        return email;
+    }   
+    
+    @RequestMapping(value = "/recovery_password", method = RequestMethod.GET)
+    public String getPasswordRecoveryPage(@RequestParam("hash") String hash){
+        return "undefined Page";
+    }
+    
+    @RequestMapping(value = "/recovery_password", method = RequestMethod.POST)
+    public String handlePasswordRecoveryForm(@RequestParam("email") String email){    	
+    	passwordRecoveryService.recoverPasswordByEmailLink(email);
         return "failure:email or captcha is incorrect";
     }
 }

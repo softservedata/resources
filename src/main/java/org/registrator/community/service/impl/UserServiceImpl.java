@@ -3,7 +3,6 @@ package org.registrator.community.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.ResourceNumberRepository;
@@ -544,5 +543,10 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return userdto;
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		return userRepository.getUserByEmail(email);
 	}
 }

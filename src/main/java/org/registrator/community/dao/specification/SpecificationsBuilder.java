@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specifications;
 
 public class SpecificationsBuilder<T> {
 	
-	private  List<SearchColumn> colums;
+private  List<SearchColumn> colums;
 	
 	public SpecificationsBuilder() {
 		colums = new ArrayList<SearchColumn>();
