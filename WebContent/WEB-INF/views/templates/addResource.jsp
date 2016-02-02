@@ -259,7 +259,7 @@
 		</div>
 		<br />
 		<div class="button">
-			<input type="submit" class="btn btn-success"
+			<input id="submitForm" type="submit" class="btn btn-success"
 				value=<spring:message code="label.save"/>>
 			<button id="resetForm" type="reset" class="btn btn-default">
 				<spring:message code="label.clearall" />

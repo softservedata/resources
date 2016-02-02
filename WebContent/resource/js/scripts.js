@@ -31,18 +31,6 @@ $(document).ready(function () {
 
     $(window).resize(positionFooter);
 
-    $(window).load(function () {
-
-    //    Count resources in footer
-        $.post(baseUrl.toString() + "/registrator/resource/countResources", {"count": "true"}, onPostSuccess);
-        function onPostSuccess (data) {
-            if(data.toString().length < 5) {
-                data = ""+data;
-            }
-            $("#count").html(data);
-        }
-    });
-
     //Dropdown menu
     $(".dropdown").mouseenter(function(){
         $(this).find(".dropdown_menu").slideDown(150);
