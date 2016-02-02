@@ -1,1 +1,1 @@
-web: java -Xss512k -XX:+UseCompressedOops -javaagent:properties/heroku-javaagent-1.4.jar=stdout=true,lxmem=true -jar target/dependency/webapp-runner.jar ${WEBAPP_RUNNER_OPTS:-"--expand-war"} --port $PORT ./target/resources.war
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar ${WEBAPP_RUNNER_OPTS:-"--expand-war"} --port $PORT ./target/resources.war
