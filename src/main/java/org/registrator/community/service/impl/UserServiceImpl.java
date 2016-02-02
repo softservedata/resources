@@ -71,9 +71,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordEncoder userPasswordEncoder;
-	
+
 	@Autowired
-    private CommunityService communityService;
+	private CommunityService communityService;
 
 
 	/**
@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
 			user.setLastName(userDto.getLastName());
 			user.setMiddleName(userDto.getMiddleName());
 			user.setEmail(userDto.getEmail());
-//			user.setPassword(userDto.getPassword());
+			// user.setPassword(userDto.getPassword());
 			user.setRole(checkRole(userDto.getRole()));
 			user.setStatus(checkUserStatus(userDto.getStatus()));
 			logger.info("edit user in data base");
@@ -282,8 +282,8 @@ public class UserServiceImpl implements UserService {
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-					user.getRole().toString(), user.getLogin(), user.getEmail(),
-					user.getStatus().toString(), addressDto, passportDto);
+					user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(),
+					addressDto, passportDto);
 			userDtoList.add(userDto);
 		}
 		return userDtoList;
@@ -310,8 +310,8 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(), user.getEmail(),
-				user.getStatus().toString(), addressDto, passportDto);
+				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
+				passportDto);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -415,6 +415,7 @@ public class UserServiceImpl implements UserService {
 		user.setFirstName(registrationForm.getFirstName());
 		user.setLastName(registrationForm.getLastName());
 		user.setMiddleName(registrationForm.getMiddleName());
+
 		if(admin.getRole().getType() == RoleType.ADMIN){
 		    user.setRole(roleRepository.findRoleByType(RoleType.COMMISSIONER));
 	        user.setStatus(UserStatus.UNBLOCK);
@@ -498,13 +499,18 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
-		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
-				Integer.parseInt(resourseNumberDtoJson.getResource_number()),
-				resourseNumberDtoJson.getRegistrator_number());
-		ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
-				resourseNumberDto.getRegistratorNumber(), user);
-		resourceNumberRepository.save(resourceNumber);
+		try {
+			User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
+			ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
+					Integer.parseInt(resourseNumberDtoJson.getResource_number()),
+					resourseNumberDtoJson.getRegistrator_number());
+			ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
+					resourseNumberDto.getRegistratorNumber(), user);
+			resourceNumberRepository.save(resourceNumber);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			log.error("Format is incorrect");
+		}
 	}
 
 	/**
@@ -517,11 +523,16 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void createTome(ResourceNumberDTOJSON resourseNumberDtoJson) {
+		try {
 		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
 		TomeDTO tomeDto = new TomeDTO(resourseNumberDtoJson.getIdentifier(), user.getFirstName(), user.getLastName(),
 				user.getMiddleName());
 		Tome tome = new Tome(user, tomeDto.getTomeIdentifier());
 		tomeRepository.save(tome);
+		} catch(NumberFormatException ex) {
+			ex.printStackTrace();
+			log.error("Format is incorrect");
+		}
 	}
 
 	// @Override
@@ -549,8 +560,8 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(),user.getEmail(),
-				user.getStatus().toString(), addressDto, passportDto);
+				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
+				passportDto);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
