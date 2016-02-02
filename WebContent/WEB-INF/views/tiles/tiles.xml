@@ -30,7 +30,10 @@
 			<put-attribute name="body" type="template" value="/WEB-INF/views/register.jsp" />
 		</definition>
 
-
+	<definition name="regForComm" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/register.jsp" />
+	</definition>
 	<!-- FAQ -->
 		<definition name="faq" extends="base">
 			<put-attribute name="login_body" type="template" value="/WEB-INF/views/faq.jsp"/>
@@ -178,6 +181,15 @@
 			value="/WEB-INF/views/templates/stress.jsp" />
 	</definition>
 	
+	<definition name="addNewCommunity" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/addNewCommunity.jsp" />
+	</definition>
+	
+	<definition name="showAllCommunity" extends="homepage">
+		<put-attribute name="body" type="template"
+			value="/WEB-INF/views/templates/showAllCommunity.jsp" />
+	</definition>
 	
 
 </tiles-definitions>

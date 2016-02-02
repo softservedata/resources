@@ -19,6 +19,7 @@ public class UserSearchServiceImpl extends AbstractSearchService<User,UserReposi
 	@Autowired
 	private UserRepository userRepository;
 
+
 	@Override
 	public List<Map<String, String>> fillResponseDataList(
 			List<User> searchEntityList) {

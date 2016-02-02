@@ -20,8 +20,7 @@ $(function() {
 													})
 										},
 										error : function() {
-											  bootbox.alert("Даний підклас видалити неможливо, " +
-											  		"оскільки уже зареєстровані ресурси даного підкласу");
+											  bootbox.alert(jQuery.i18n.prop('msg.canNotDelete'));
 										}
 
 									});

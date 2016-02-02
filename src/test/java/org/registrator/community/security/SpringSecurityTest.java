@@ -1,5 +1,6 @@
-/*package org.registrator.community.security;
-
+package org.registrator.community.security;
+/*
+import org.springframework.test.context.ActiveProfiles;
 import org.apache.log4j.Logger;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,12 +22,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestingConfiguration.class)
-@WebAppConfiguration
-@TestExecutionListeners(listeners = {
-	    DependencyInjectionTestExecutionListener.class })
+@ActiveProfiles("testing")
 public class SpringSecurityTest {
 
-	private static Logger LOG = Logger.getLogger(SpringSecurityTest.class);
+//	private static Logger LOG = Logger.getLogger(SpringSecurityTest.class);
 
 	@Autowired
 	public UserService userService;
@@ -47,12 +46,12 @@ public class SpringSecurityTest {
 public	TestWatcher testWatcher = new TestWatcher() {
 
 		protected void succeeded(org.junit.runner.Description description) {
-			LOG.info(description.getMethodName());
+//			LOG.info(description.getMethodName());
 			System.out.println("<<SUCCESS>> - " + description.getMethodName());
 		};
 
 		protected void failed(Throwable e, org.junit.runner.Description description) {
-			LOG.error(description.getMethodName());
+//			LOG.error(description.getMethodName());
 			System.out.println("<<FAILED>> - " + description.getMethodName());
 		};
 

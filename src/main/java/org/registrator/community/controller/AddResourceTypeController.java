@@ -59,11 +59,11 @@ public class AddResourceTypeController {
                     + "return to page for adding all resource types");
             return "addResType";
             
-        } else {
-            resourceTypeService.addResourceTypeDTO(resourceTypeDTO);
-            model.addAttribute("resourceType", resourceTypeDTO);
-            logger.info("end method: return to page for showing all resource types (subclasses)");
-            return "redirect:/registrator/resourcetypes/show-res-types";
-        }  
+        } 
+        resourceTypeService.addResourceTypeDTO(resourceTypeDTO);
+        model.addAttribute("resourceType", resourceTypeDTO);
+        logger.info("end method: return to page for showing all resource types (subclasses)");
+        return "redirect:/registrator/resourcetypes/show-res-types";
+        
     }
 }

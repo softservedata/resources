@@ -1,6 +1,7 @@
 package org.registrator.community.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.registrator.community.dao.AddressRepository;
@@ -23,12 +24,14 @@ import org.registrator.community.entity.OtherDocuments;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.ResourceNumber;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
 import org.registrator.community.entity.WillDocument;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.forms.RegistrationForm;
+import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,11 +66,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private Logger logger;
 
-
 	@Autowired
-	private PasswordEncoder  userPasswordEncoder;
-
+	private PasswordEncoder userPasswordEncoder;
 	
+	@Autowired
+    private CommunityService communityService;
+
 	/**
 	 * Method, which returns user from database by login
 	 * 
@@ -121,16 +125,19 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public List<UserDTO> getAllRegistratedUsers() {
-		List<UserDTO> userList = getUserDtoList();
-		List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
-
-		for (UserDTO user : userList) {
-			if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
-				logger.info("User is registrated");
-				registratedUsers.add(user);
+		try {
+			List<UserDTO> userList = getUserDtoList();
+			List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
+			for (UserDTO user : userList) {
+				if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
+					logger.info("User is registrated");
+					registratedUsers.add(user);
+				}
 			}
+			return registratedUsers;
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			return null;
 		}
-		return registratedUsers;
 	}
 
 	/**
@@ -142,16 +149,20 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public List<UserDTO> getAllInactiveUsers() {
-		List<UserDTO> userDtoList = new ArrayList<UserDTO>();
-		userDtoList = getUserDtoList();
-		List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
-		for (UserDTO userDto : userDtoList) {
-			if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
-				userDto.setRole("USER");
-				inactiveUserDtoList.add(userDto);
+		try {
+			List<UserDTO> userDtoList = new ArrayList<UserDTO>();
+			userDtoList = getUserDtoList();
+			List<UserDTO> inactiveUserDtoList = new ArrayList<UserDTO>();
+			for (UserDTO userDto : userDtoList) {
+				if (userDto.getStatus() == UserStatus.INACTIVE.toString()) {
+					userDto.setRole("USER");
+					inactiveUserDtoList.add(userDto);
+				}
 			}
+			return inactiveUserDtoList;
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			return null;
 		}
-		return inactiveUserDtoList;
 	}
 
 	/**
@@ -399,6 +410,11 @@ public class UserServiceImpl implements UserService {
 		user.setMiddleName(registrationForm.getMiddleName());
 		user.setRole(roleRepository.findRoleByType(RoleType.USER));
 		user.setStatus(UserStatus.INACTIVE);
+		
+		// temporarily hardcode
+		user.setDateOfAccession(new Date());
+		user.setTerritorialCommunity(communityService.findById(1));
+		// 
 
 		userRepository.saveAndFlush(user);
 		log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());

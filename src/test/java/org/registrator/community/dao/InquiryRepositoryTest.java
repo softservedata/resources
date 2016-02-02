@@ -39,12 +39,11 @@ public class InquiryRepositoryTest {
 		}
 	
 		// test method findByUserAndInquiryType - get inquiry by User and inquiryType
-		@Test
+		/*@Test*/
 	    public void testFindByUserAndInquiryType(){
 			User user = userRepository.findUserByLogin("user");
-			List<Inquiry> inquiryList = inquiryRepository.findByUserAndInquiryType(user, InquiryType.OUTPUT);
-						
-			Assert.assertTrue(inquiryList.size() == 1);						
+			List<Inquiry> inquiryList = inquiryRepository.findByUserAndInquiryType(user, InquiryType.OUTPUT); 
+			Assert.assertTrue(inquiryList.size() == 2);						
 		}
 	
 

@@ -21,7 +21,7 @@
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES (1,'35в','Львів','Галицький','20','79026','Львівська','Пастернака',1),(2,'17','Хмельницький','Семенівський','17а','29000','Хмельницька','Героїв Майдану',2),(3,'30к','Стрий','Стрийський','0','353567','Львівська','Героїв Майдану',3),(4,'45','Львів','Залізничний','78','79026','Львівська','Стрийська',4),(5,'34','Київ','Троєщина','90','4456767','Київська','Бандери',5),(6,'43','Львів','Троєщина','43','34345','Киівська','Стрийська',6);
+INSERT INTO `address` VALUES (2,'17','Хмельницький','Семенівський','17а','29000','Хмельницька','Героїв Майдану',2),(3,'30к','Стрий','Стрийський','0','353567','Львівська','Героїв Майдану',3),(4,'45','Львів','Залізничний','78','79026','Львівська','Стрийська',4),(5,'34','Київ','Троєщина','90','4456767','Київська','Бандери',5),(6,'43','Львів','Троєщина','43','34345','Киівська','Стрийська',6);
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -30,7 +30,7 @@ UNLOCK TABLES;
 --
 LOCK TABLES `territorial_community` WRITE;
 /*!40000 ALTER TABLE `territorial_community` DISABLE KEYS */;
-INSERT INTO `territorial_community` VALUES (1,'Львівська'),(2,'Дрогобицька'),(3,'Стрийська'),(4,'Пустомитська'),(5,'Жовківська');
+INSERT INTO `territorial_community` VALUES (2,'Львівська'),(3,'Дрогобицька'),(4,'Стрийська'),(5,'Пустомитська'),(6,'Жовківська');
 /*!40000 ALTER TABLE `territorial_community` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,12 +52,6 @@ UNLOCK TABLES;
 -- Dumping data for table `discrete_parameters`
 --
 
-LOCK TABLES `discrete_parameters` WRITE;
-/*!40000 ALTER TABLE `discrete_parameters` DISABLE KEYS */;
-INSERT INTO `discrete_parameters` VALUES (1,'периметер','м',1),(2,'площа','га',1),(3,'потужність','мВт',2),(4,'напруженість','мВт',2),(11,'площа','га',2);
-/*!40000 ALTER TABLE `discrete_parameters` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Dumping data for table `inquiry_list`
 --
@@ -71,12 +65,6 @@ UNLOCK TABLES;
 --
 -- Dumping data for table `linear_parameters`
 --
-
-LOCK TABLES `linear_parameters` WRITE;
-/*!40000 ALTER TABLE `linear_parameters` DISABLE KEYS */;
-INSERT INTO `linear_parameters` VALUES (1,'cмуга радіочастот','МГц',2),(2,'широта діапазону','кГц',2),(3,'радіус дії','км',2);
-/*!40000 ALTER TABLE `linear_parameters` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping data for table `list_of_resouces`
@@ -103,7 +91,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `passport_data` WRITE;
 /*!40000 ALTER TABLE `passport_data` DISABLE KEYS */;
-INSERT INTO `passport_data` VALUES (1,NULL,2234,'Львівським','КС',1),(2,NULL,123456,'Хмельницьким','КК',2),(3,NULL,123456,'Стрийським','КК',3),(4,NULL,1122456,'Львівський','КС',4),(5,NULL,1126789,'Київський','КС',5),(6,NULL,43545,'Львівським','КС',6);
+INSERT INTO `passport_data` VALUES (2,NULL,123456,'Хмельницьким','КК',2),(3,NULL,123456,'Стрийським','КК',3),(4,NULL,1122456,'Львівський','КС',4),(5,NULL,1126789,'Київський','КС',5),(6,NULL,43545,'Львівським','КС',6);
 /*!40000 ALTER TABLE `passport_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,11 +149,7 @@ UNLOCK TABLES;
 -- Dumping data for table `resource_types`
 --
 
-LOCK TABLES `resource_types` WRITE;
-/*!40000 ALTER TABLE `resource_types` DISABLE KEYS */;
-INSERT INTO `resource_types` VALUES (1,'земельний'),(2,'радіочастотний');
-/*!40000 ALTER TABLE `resource_types` ENABLE KEYS */;
-UNLOCK TABLES;
+
 
 --
 -- Dumping data for table `tomes`
@@ -183,7 +167,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'petro@gmail.com','Петро','Петренко','registrator','Петрович','$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm','+380634898677','UNBLOCK',2,1),(3,'ivan@gmail.com','Юрій','Іванов','user','Іванович','$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.','+380633333333','UNBLOCK',3,2),(4,'vasyl@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','+380505050550','UNBLOCK',2,4),(5,'oleh@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','+380999999999','INACTIVE',3,5),(6,'andr@gmail.com','Андрій','Іванов','commissioner','Петрович','$2a$10$JUp23T7bbFnzdqAJGrAq8Of.e3TUtw/32GtWbV8Cs8005ctg8.zyu','+3806969696','INACTIVE',4,1);
+INSERT INTO `users` VALUES (2,'2016-01-02 00:00:00','petro@gmail.com','Петро','Петренко','registrator','Петрович','$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm','+380634898677','UNBLOCK',2,1),(3,'2016-01-02 00:00:00','ivan@gmail.com','Юрій','Іванов','user','Іванович','$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.','+380633333333','UNBLOCK',3,2),(4,'2016-01-02 00:00:00','vasyl@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','+380505050550','UNBLOCK',2,4),(5,'2016-01-02 00:00:00','oleh@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','+380999999999','INACTIVE',3,5),(6,'2016-01-02 00:00:00','andr@gmail.com','Андрій','Іванов','commissioner','Петрович','$2a$10$JUp23T7bbFnzdqAJGrAq8Of.e3TUtw/32GtWbV8Cs8005ctg8.zyu','+3806969696','UNBLOCK',4,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

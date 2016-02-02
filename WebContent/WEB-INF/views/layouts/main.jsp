@@ -14,7 +14,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- fav-icon -->
-    <link rel="Shortcut Icon" href="<c:url value='/resource/img/tree_leaf.ico'/>"
+    <link rel="Shortcut Icon" href="<c:url value='/resource/img/maple_leaf.ico'/>"
           type="image/x-icon"/>
     <title><tiles:getAsString name="title"/></title>
 
@@ -31,8 +31,10 @@
 
     <!-- DataTables lib -->
     <script src="<c:url value='/resource/js/lib/jquery.dataTables.min.js'/>"></script>
+    <%--<script src="<c:url value='/resource/js/lib/dataTables.bootstrap.js'/>"></script>--%>
     <!-- DataTables CSS-->
     <link rel="stylesheet" href="<c:url value='/resource/css/jquery.dataTables.min.css'/>">
+    <%--<link rel="stylesheet" href="<c:url value='/resource/css/dataTables.bootstrap.css'/>">--%>
 
     <!-- Our JavaScript-->
     <script src="<c:url value='/resource/js/scripts.js'/>"></script>
@@ -84,5 +86,5 @@
 
     </div>
 
-
+<div id="baseurl" class="hidden"><c:url value="/"/> </div>
 </c:if>

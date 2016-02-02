@@ -8,6 +8,7 @@ import java.util.List;
  * Created by Oleksiy on 02.01.2016.
  */
 public class PolygonJSON {
+    private String DT_RowId;
     private String resourceDescription;
     private String identifier;
     private String resourceType;
@@ -44,6 +45,14 @@ public class PolygonJSON {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getDT_RowId() {
+        return DT_RowId;
+    }
+
+    public void setDT_RowId(String DT_RowId) {
+        this.DT_RowId = DT_RowId;
     }
 
     public List<PointJSON> getPoints() {

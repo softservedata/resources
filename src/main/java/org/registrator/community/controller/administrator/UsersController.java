@@ -12,11 +12,14 @@ import org.registrator.community.dto.JSON.UserStatusDTOJSON;
 import org.registrator.community.dto.search.TableSearchRequestDTO;
 import org.registrator.community.dto.search.TableSearchResponseDTO;
 import org.registrator.community.entity.Role;
+import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
+import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.RoleService;
 import org.registrator.community.service.UserService;
 import org.registrator.community.service.search.BaseSearchService;
+import org.registrator.community.validator.CommunityValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +30,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +44,9 @@ public class UsersController {
 	@Autowired
 	private Logger logger;
 
+	@Autowired
+	private CommunityService communityService;
+	
 	@Autowired
 	private UserService userService;
 
@@ -55,6 +62,9 @@ public class UsersController {
 
 	@Autowired
 	private TableSettingsFactory tableSettingsFactory;
+	
+	@Autowired
+	private CommunityValidator validator;
 
 	/**
 	 * Controller for showing information about user
@@ -89,7 +99,6 @@ public class UsersController {
 			UserDTO editUserDto = userService.editUserInformation(userDto);
 			if (editUserDto == null) {
 				System.out.println("hi");
-				return null;
 			}
 			model.addAttribute("userDto", editUserDto);
 			List<Role> roleList = roleService.getAllRole();
@@ -181,18 +190,14 @@ public class UsersController {
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String showSettings(Model model) {
 		logger.info("begin: show admin settings");
-		model.addAttribute("regMethod", adminSettings.getRegistrationMethod().toString());
+		model.addAttribute("regMethod", adminSettings.getRegistrationMethod());
 		logger.info("end: admin settings are shown");
 		return "adminSettings";
 	}
 
 	/**
-	 * Method for changing administrator settings for one of the possible
-	 * options
-	 * 
-	 * @param optratio
-	 *            - one of three possible option for changing registration
-	 *            method
+	 * Method for changing administrator settings for one of the possible options
+	 * @param optratio - one of three possible option for changing registration method
 	 * @return adminSettings.jsp
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -203,5 +208,65 @@ public class UsersController {
 		logger.info("settings are successfully changed");
 		return "adminSettings";
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/show-all-communities", method = RequestMethod.GET)
+	public String showCommunity(Model model) {
+	   List<TerritorialCommunity> listOfTerritorialCommunity = communityService.findAll();
+	   model.addAttribute("listOfTerritorialCommunity", listOfTerritorialCommunity);
+	   return "showAllCommunity";
+	}
+	
+    /**
+     * Method for loading form for input new territorial community name
+     * @param model
+     * @return addNewCommunity.jsp
+     */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/addCommunity", method = RequestMethod.GET)
+	public String addNewCommunity(Model model) {
+	    model.addAttribute("newCommunity", new TerritorialCommunity());
+	    return "addNewCommunity";
+	 }
+	/**
+     * Method for saving new territorial community in the database. Also there is validation for checking whether 
+     * inputing name already exists in database or not.
+     * @param territorialCommunity
+     * @param result
+     * @param model
+     * @return addNewCommunity.jsp (showAllCommunity.jsp page if community name is not valid)
+     */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/addCommunity", method = RequestMethod.POST)
+    public String addCommunity(@Valid @ModelAttribute("newCommunity") TerritorialCommunity territorialCommunity,
+            BindingResult result, Model model) {
+        validator.validate(territorialCommunity, result);
+        if (result.hasErrors()) {
+            logger.info("end method: community name is not valid, "
+                    + "return to page for adding new territorial community");
+            return "addNewCommunity";
+            
+        }
+        communityService.addCommunity(territorialCommunity);
+        model.addAttribute("territorialCommunity", territorialCommunity);
+        return "redirect:/administrator/users/show-all-communities";
+    }	
+	/**
+     * Method for deleting chosen community by territorialCommunityId. If chosen community
+     * has at least one user who is in this community we will get bad_request and it will not be
+     * deleted nor from UI by Ajax neither from database
+     */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/deleteCommunity/{territorialCommunityId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<String> deleteCommunity(@PathVariable Integer territorialCommunityId) {
+        boolean isDeleted = communityService.deleteCommunity(communityService.findById(territorialCommunityId));
+        if (isDeleted) {
+            logger.info("end: deleted chosen community");
+            return new ResponseEntity<String>(HttpStatus.OK);
+        }
+        logger.info("end: it's impossible to delete territorial community");
+        return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+    }
 
 }
