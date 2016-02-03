@@ -21,7 +21,7 @@ text-align: center;
 	<form:form action="manualregistration"
 		class="form-horizontal" role="form" modelAttribute="registrationForm"
 		method="POST" name="registrationForm">
-		<div class="form-group">
+		<div class="form-group col-sm-12">
 			<div class="personal_header col-lg-4">
 				<h4><spring:message code="label.user.information" /></h4> <label
 					class="col-lg-4 control-label" for="firstName"><spring:message

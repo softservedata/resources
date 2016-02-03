@@ -27,7 +27,7 @@
 	<definition name="register" extends="base">
 		<put-attribute name="title" value="Register new user" />
 		<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
-		<put-attribute name="login_body" type="template" value="/WEB-INF/views/register.jsp" />
+		<put-attribute name="login_body" type="template" value="/WEB-INF/views/templates/register.jsp" />
 	</definition>
 		<!--<definition name="register" template="/WEB-INF/views/layouts/registerTiles.jsp">-->
 			<!--<put-attribute name="title" value="Register new user" />-->
