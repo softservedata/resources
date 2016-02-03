@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 		List<UserStatus> userStatusList = new ArrayList<UserStatus>();
 		userStatusList.add(UserStatus.INACTIVE);
 		userStatusList.add(UserStatus.BLOCK);
-		userStatusList.add(UserStatus.UNBLOCK);
+		userStatusList.add(UserStatus.ACTIVE);
 		return userStatusList;
 	}
 
