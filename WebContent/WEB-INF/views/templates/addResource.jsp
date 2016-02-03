@@ -184,6 +184,10 @@
 				style="margin-top: 10px;">
 				<spring:message code="label.resource.coordinates.addFromMap" />
 			</button>
+			<button id="addPointsToMap" class="btn btn-primary" type="button"
+					style="margin-top: 10px;">
+				<spring:message code="label.resource.coordinates.addToMap" />
+			</button>
 			<%--<button id="show_UA" class="btn btn-primary" type="button"--%>
 			<%--style="margin-top: 10px;">Show Ukraine</button>--%>
 		</div>

@@ -1,6 +1,7 @@
 var map;
 var polygons = [];
 var newPolygons = [];
+var polygonFromCoordinates = new google.maps.Polygon();
 var PS = null;
 
 function getCookie(cname) {
@@ -395,6 +396,41 @@ $("#addPointsFromMap").click(function () {
     }
 });
 
+$(document).on("click", "#addPointsToMap", function(){
+    var points = $('.clonedAreaInput');
+    if((newPolygons.length == 0)&&(points.length > 1)){
+        polygonFromCoordinates.setMap(null);
+        var polygonPath = [];
+        points.each(function(){
+            var latGrad = Number($(this).find('#myparam1').val());
+            var latMin = Number($(this).find('#myparam2').val());
+            var latSec = Number($(this).find('#myparam3').val());
+            var lngGrad = Number($(this).find('#myparam4').val());
+            var lngMin = Number($(this).find('#myparam5').val());
+            var lngSec = Number($(this).find('#myparam6').val());
+
+            var lat = latGrad + latMin/60 + latSec/3600;
+            var lng = lngGrad + lngMin/60 + lngSec/3600;
+            //console.log("lat: " + lat + " lng: " + lng);
+
+            var point = new google.maps.LatLng(lat, lng);
+            polygonPath.push(point);
+        });
+
+        polygonFromCoordinates = new google.maps.Polygon({
+            path: polygonPath, // Координаты
+            strokeColor: "#FF0000", // Цвет обводки
+            strokeOpacity: 0.8, // Прозрачность обводки
+            strokeWeight: 2, // Ширина обводки
+            fillColor: "#0000FF", // Цвет заливки
+            fillOpacity: 0.3, // Прозрачность заливки
+            map: map
+        });
+
+        intersectionCheck(polygonFromCoordinates);
+    }
+});
+
 google.maps.event.addDomListener(window, 'load', initialize);
 
 //importScripts(baseUrl.toString()+"/resources/js/ukraineCoord.js");
@@ -483,9 +519,20 @@ $(document).on("click", "#submitForm", function(){
         bootbox.alert(jQuery.i18n.prop('msg.twoPoints'));
         return false;
     }
-    if((newPolygons.length == 0)&&(points.length > 1)){
-        var polygonPath = [];
-        var bounds = new google.maps.LatLngBounds();
+    if((newPolygons.length > 0)&&(points.length > 1)){
+        console.log("Start add");
+        var latArray = [];
+        var lngArray = [];
+        var different = false;
+
+        newPolygons.forEach(function(newPolygon) {
+            var path = newPolygon.getPath();
+            path.forEach(function(point){
+                latArray.push(point.lat());
+                lngArray.push(point.lng());
+            });
+        });
+
         points.each(function(){
             var latGrad = Number($(this).find('#myparam1').val());
             var latMin = Number($(this).find('#myparam2').val());
@@ -496,27 +543,21 @@ $(document).on("click", "#submitForm", function(){
 
             var lat = latGrad + latMin/60 + latSec/3600;
             var lng = lngGrad + lngMin/60 + lngSec/3600;
-            //console.log("lat: " + lat + " lng: " + lng);
 
-            var point = new google.maps.LatLng(lat, lng);
-            polygonPath.push(point);
+            var pointIndex = $.inArray(lat,latArray);
+            if ((pointIndex == -1) || (lng != lngArray[pointIndex])) {
+                $(this).find("input").css("background","rgba(255,0,0,0.4)");
+                different = true;
+                console.log("Point out!");
+            }
         });
-
-        var polygon = new google.maps.Polygon({
-            path: polygonPath, // Координаты
-            strokeColor: "#FF0000", // Цвет обводки
-            strokeOpacity: 0.8, // Прозрачность обводки
-            strokeWeight: 2, // Ширина обводки
-            fillColor: "#0000FF", // Цвет заливки
-            fillOpacity: 0.3 // Прозрачность заливки
-        });
-
-        var intersection = intersectionCheck(polygon);
-        if (intersection) {
-            polygon.setMap(map);
+        if(different) {
+            bootbox.alert("Точки на мапі і введені відрізняються!");
+            return false;
         }
-        //bootbox.alert("Polygon path: "+polygonPath);
+    }
+    else {
+        bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
         return false;
-
     }
 });
