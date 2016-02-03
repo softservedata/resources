@@ -57,4 +57,5 @@ public class PersistentLogin {
         this.token = token;
         this.last_used = last_used;
     }
+    
 }

@@ -2,10 +2,10 @@ INSERT INTO `roles` (`role_id`,`description`,`type`) VALUES (1,'description','AD
 INSERT INTO `roles` (`role_id`,`description`,`type`) VALUES (2,'description','REGISTRATOR');
 INSERT INTO `roles` (`role_id`,`description`,`type`) VALUES (3,'description','USER');
 
-INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (1,'oless.@gmail.com','Олександр','Архилюк','oleks','Олександрович','pass1','UNBLOCK',1);
-INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (2,'petro.@gmail.com','Петро','Петренко','petro','Петрович','pass2','UNBLOCK',2);
-INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (3,'ivan.@gmail.com','Юрій','Іванов','ivan','Іванович','pass3','UNBLOCK',3);
-INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (4,'vasyl.@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','UNBLOCK',2);
+INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (1,'oless.@gmail.com','Олександр','Архилюк','oleks','Олександрович','pass1','ACTIVE',1);
+INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (2,'petro.@gmail.com','Петро','Петренко','petro','Петрович','pass2','ACTIVE',2);
+INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (3,'ivan.@gmail.com','Юрій','Іванов','ivan','Іванович','pass3','ACTIVE',3);
+INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (4,'vasyl.@gmail.com','Василь','Василюк','vasyl','Васильович','pass4','ACTIVE',2);
 INSERT INTO `users` (`user_id`,`email`,`first_name`,`last_name`,`login`,`middle_name`,`password`,`status`,`role_id`) VALUES (5,'oleh.@gmail.com','Олег','Василюк','oleh','Олеговчич','pass5','INACTIVE',3);
 
 INSERT INTO `address` (`address_id`,`building`,`city`,`district`,`flat`,`postcode`,`region`,`street`,`user_id`) VALUES (1,'35','Львів',NULL,NULL,'79026','Львівська','Пастернака',1);

@@ -1,14 +1,14 @@
 --
--- Скрипт сгенерирован Devart dbForge Studio for MySQL, Версия 6.3.358.0
--- Домашняя страница продукта: http://www.devart.com/ru/dbforge/mysql/studio
--- Дата скрипта: 04.01.2016 23:55:21
--- Версия сервера: 5.5.41
--- Версия клиента: 4.1
+-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Devart dbForge Studio for MySQL, пїЅпїЅпїЅпїЅпїЅпїЅ 6.3.358.0
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: http://www.devart.com/ru/dbforge/mysql/studio
+-- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 04.01.2016 23:55:21
+-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 5.5.41
+-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 4.1
 --
 
 
 --
--- Описание для базы данных registrator_db
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ registrator_db
 --
 DROP DATABASE IF EXISTS registrator_db;
 CREATE DATABASE IF NOT EXISTS registrator_db
@@ -16,22 +16,22 @@ CREATE DATABASE IF NOT EXISTS registrator_db
 	COLLATE latin1_swedish_ci;
 
 -- 
--- Отключение внешних ключей
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 -- 
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 
 -- 
--- Установить режим SQL (SQL mode)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ SQL (SQL mode)
 -- 
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- 
--- Установка базы данных по умолчанию
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 --
 USE registrator_db;
 
 --
--- Описание для таблицы address
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ address
 --
 CREATE TABLE IF NOT EXISTS address (
   address_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -53,7 +53,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы area
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ area
 --
 CREATE TABLE IF NOT EXISTS area (
   area_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -70,7 +70,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы discrete_parameters
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ discrete_parameters
 --
 CREATE TABLE IF NOT EXISTS discrete_parameters (
   discrete_parameter_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -86,7 +86,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы inquiry_list
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ inquiry_list
 --
 CREATE TABLE IF NOT EXISTS inquiry_list (
   inquiry_list_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -106,7 +106,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы linear_parameters
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ linear_parameters
 --
 CREATE TABLE IF NOT EXISTS linear_parameters (
   linear_parameter_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -122,7 +122,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы list_of_resouces
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ list_of_resouces
 --
 CREATE TABLE IF NOT EXISTS list_of_resouces (
   resources_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -146,7 +146,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы passport_data
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ passport_data
 --
 CREATE TABLE IF NOT EXISTS passport_data (
   passport_data_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -164,7 +164,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы resource_discrete_values
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_discrete_values
 --
 CREATE TABLE IF NOT EXISTS resource_discrete_values (
   resource_discrete_value_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -181,7 +181,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы resource_linear_values
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_linear_values
 --
 CREATE TABLE IF NOT EXISTS resource_linear_values (
   resource_linear_param_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -199,7 +199,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы resource_parameters
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_parameters
 --
 CREATE TABLE IF NOT EXISTS resource_parameters (
   resource_parameters_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -215,7 +215,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы resource_types
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_types
 --
 CREATE TABLE IF NOT EXISTS resource_types (
   resource_type_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -230,7 +230,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы roles
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ roles
 --
 CREATE TABLE IF NOT EXISTS roles (
   role_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -246,7 +246,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы tomes
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ tomes
 --
 CREATE TABLE IF NOT EXISTS tomes (
   tome_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -262,7 +262,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 --
--- Описание для таблицы users
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ users
 --
 CREATE TABLE IF NOT EXISTS users (
   user_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS users (
   login VARCHAR(255) NOT NULL,
   middle_name VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  status ENUM('BLOCK','UNBLOCK','INACTIVE') NOT NULL,
+  status ENUM('BLOCK','ACTIVE','INACTIVE') NOT NULL,
   role_id INT(11) NOT NULL,
   PRIMARY KEY (user_id),
   UNIQUE INDEX UK_6dotkott2kjsp8vw4d0m25fb7 (email),
@@ -287,7 +287,7 @@ CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
 -- 
--- Вывод данных для таблицы address
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ address
 --
 INSERT INTO address VALUES
 (1, 'one', 'Lviv', 'Lvivslka', '21', '78901', 'west', 'Bandera', 1),
@@ -298,37 +298,37 @@ INSERT INTO address VALUES
 (6, 'three', 'Lviv', 'Lvivslka', '88', '77901', 'center', 'Bumer', 3);
 
 -- 
--- Вывод данных для таблицы area
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ area
 --
 
--- Таблица registrator_db.area не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.area пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы discrete_parameters
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ discrete_parameters
 --
 
--- Таблица registrator_db.discrete_parameters не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.discrete_parameters пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы inquiry_list
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ inquiry_list
 --
 
--- Таблица registrator_db.inquiry_list не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.inquiry_list пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы linear_parameters
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ linear_parameters
 --
 
--- Таблица registrator_db.linear_parameters не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.linear_parameters пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы list_of_resouces
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ list_of_resouces
 --
 
--- Таблица registrator_db.list_of_resouces не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.list_of_resouces пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы passport_data
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ passport_data
 --
 INSERT INTO passport_data VALUES
 (1, 123456, 'Lviv', 'KB', 1),
@@ -336,31 +336,31 @@ INSERT INTO passport_data VALUES
 (3, 45612, 'Lviv', 'KH', 3);
 
 -- 
--- Вывод данных для таблицы resource_discrete_values
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_discrete_values
 --
 
--- Таблица registrator_db.resource_discrete_values не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.resource_discrete_values пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы resource_linear_values
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_linear_values
 --
 
--- Таблица registrator_db.resource_linear_values не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.resource_linear_values пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы resource_parameters
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_parameters
 --
 
--- Таблица registrator_db.resource_parameters не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.resource_parameters пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы resource_types
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ resource_types
 --
 INSERT INTO resource_types VALUES
 (1, '?????????');
 
 -- 
--- Вывод данных для таблицы roles
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ roles
 --
 INSERT INTO roles VALUES
 (1, 'have admin access', 'ADMIN'),
@@ -368,25 +368,25 @@ INSERT INTO roles VALUES
 (3, 'have user access', 'USER');
 
 -- 
--- Вывод данных для таблицы tomes
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ tomes
 --
 
--- Таблица registrator_db.tomes не содержит данных
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ registrator_db.tomes пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 -- 
--- Вывод данных для таблицы users
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ users
 --
 INSERT INTO users VALUES
-(1, 'admin@gmail.com', 'Huan', 'Pedro', 'admin', 'Oliveira', 'admin', 'UNBLOCK', 1),
-(2, 'registrator@gmail.com', 'Ivan', 'Shpulka', 'registrator', 'Petrovuch', 'registrator', 'UNBLOCK', 2),
-(3, 'user@gmail.com', 'Hugo', 'Boss', 'user', 'Ivanovuch', 'user', 'UNBLOCK', 3);
+(1, 'admin@gmail.com', 'Huan', 'Pedro', 'admin', 'Oliveira', 'admin', 'ACTIVE', 1),
+(2, 'registrator@gmail.com', 'Ivan', 'Shpulka', 'registrator', 'Petrovuch', 'registrator', 'ACTIVE', 2),
+(3, 'user@gmail.com', 'Hugo', 'Boss', 'user', 'Ivanovuch', 'user', 'ACTIVE', 3);
 
 -- 
--- Восстановить предыдущий режим SQL (SQL mode)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ SQL (SQL mode)
 -- 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 
 -- 
--- Включение внешних ключей
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 -- 
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

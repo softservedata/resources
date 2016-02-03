@@ -294,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `login` varchar(255) NOT NULL,
   `middle_name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `status` enum('BLOCK','UNBLOCK','INACTIVE') NOT NULL,
+  `status` enum('BLOCK','ACTIVE','INACTIVE') NOT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `UK_6dotkott2kjsp8vw4d0m25fb7` (`email`),

@@ -105,9 +105,9 @@ public class UserServiceImpl implements UserService {
 			logger.info("set user status to" + UserStatus.BLOCK);
 			user.setStatus(UserStatus.BLOCK);
 		} else {
-			if (userStatusDTO.getStatus().equals(UserStatus.UNBLOCK.toString())) {
-				logger.info("set user status to" + UserStatus.UNBLOCK);
-				user.setStatus(UserStatus.UNBLOCK);
+			if (userStatusDTO.getStatus().equals(UserStatus.ACTIVE.toString())) {
+				logger.info("set user status to" + UserStatus.ACTIVE);
+				user.setStatus(UserStatus.ACTIVE);
 			} else {
 				if (userStatusDTO.getStatus().equals(UserStatus.INACTIVE.toString())) {
 					logger.info("set user status to" + UserStatus.INACTIVE);
@@ -243,7 +243,7 @@ public class UserServiceImpl implements UserService {
 	public List<UserStatus> fillInUserStatusforRegistratedUsers() {
 		List<UserStatus> userStatusList = new ArrayList<UserStatus>();
 		userStatusList.add(UserStatus.BLOCK);
-		userStatusList.add(UserStatus.UNBLOCK);
+		userStatusList.add(UserStatus.ACTIVE);
 		return userStatusList;
 	}
 
@@ -259,7 +259,7 @@ public class UserServiceImpl implements UserService {
 		List<UserStatus> userStatusList = new ArrayList<UserStatus>();
 		userStatusList.add(UserStatus.INACTIVE);
 		userStatusList.add(UserStatus.BLOCK);
-		userStatusList.add(UserStatus.UNBLOCK);
+		userStatusList.add(UserStatus.ACTIVE);
 		return userStatusList;
 	}
 
@@ -360,7 +360,7 @@ public class UserServiceImpl implements UserService {
 		} else if (status.equals(UserStatus.INACTIVE.name())) {
 			return UserStatus.INACTIVE;
 		} else {
-			return UserStatus.UNBLOCK;
+			return UserStatus.ACTIVE;
 		}
 	}
 
@@ -397,7 +397,6 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void registerUser(RegistrationForm registrationForm) {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 	    User admin = getUserByLogin(auth.getName());
 		// if (this.userRepository.findUserByLogin(registrationForm.getLogin())
 		// != null) {
@@ -415,18 +414,16 @@ public class UserServiceImpl implements UserService {
 		user.setFirstName(registrationForm.getFirstName());
 		user.setLastName(registrationForm.getLastName());
 		user.setMiddleName(registrationForm.getMiddleName());
-
+		user.setPhoneNumber(registrationForm.getPhoneNumber());
+		user.setRole(roleRepository.findRoleByType(RoleType.USER));
 		if(admin.getRole().getType() == RoleType.ADMIN){
-		    user.setRole(roleRepository.findRoleByType(RoleType.COMMISSIONER));
-	        user.setStatus(UserStatus.UNBLOCK);
-		}
-		else {user.setRole(roleRepository.findRoleByType(RoleType.USER));
 		user.setStatus(UserStatus.INACTIVE);}
-		
-		// temporarily hardcode
+		else{
+		user.setStatus(UserStatus.ACTIVE);
+		}
+		user.setPhoneNumber(registrationForm.getPhoneNumber());
 		user.setDateOfAccession(registrationForm.getDateOfAccession());
 		user.setTerritorialCommunity(territorialCommunity);
-		// 
 
 		userRepository.saveAndFlush(user);
 		log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());

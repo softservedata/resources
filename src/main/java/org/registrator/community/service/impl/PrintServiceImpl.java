@@ -623,7 +623,7 @@ public class PrintServiceImpl implements PrintService {
 	 */
 
 	/**
-	 * @author Vitalii Horban creates pdf document "Доручення на внесення"
+	 * @author Vitalii Horban creates pdf document "Доручення на внесення" 
 	 */
 	
 	

@@ -53,13 +53,11 @@ public class User implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "middle_name", nullable = false)
+    @Column(name = "middle_name", nullable = true)
     private String middleName;
 
-    @Column(name = "email", nullable = true)
+    @Column(name = "email", nullable = false)
     private String email;
-    
-  
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
