@@ -91,7 +91,7 @@ public class User implements Serializable {
     @Column(name = "phonenumber", nullable = true)
     private String phoneNumber;
     
-    @Column(name = "date_of_accession", nullable = false)
+    @Column(name = "date_of_accession", nullable = true)
     private Date dateOfAccession;
     
     @ManyToOne
