@@ -24,11 +24,16 @@
 		</definition>
 
 		<!-- Register Page -->
-		<definition name="register" template="/WEB-INF/views/layouts/registerTiles.jsp">
-			<put-attribute name="title" value="Register new user" />
-			<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />
-			<put-attribute name="body" type="template" value="/WEB-INF/views/register.jsp" />
-		</definition>
+	<definition name="register" extends="base">
+		<put-attribute name="title" value="Register new user" />
+		<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
+		<put-attribute name="login_body" type="template" value="/WEB-INF/views/register.jsp" />
+	</definition>
+		<!--<definition name="register" template="/WEB-INF/views/layouts/registerTiles.jsp">-->
+			<!--<put-attribute name="title" value="Register new user" />-->
+			<!--<put-attribute name="header" type="template" value="/WEB-INF/views/templates/header.jsp" />-->
+			<!--<put-attribute name="body" type="template" value="/WEB-INF/views/register.jsp" />-->
+		<!--</definition>-->
 
 	<definition name="regForComm" extends="homepage">
 		<put-attribute name="body" type="template"
@@ -132,8 +137,8 @@
 	</definition>
 	
 	<definition name="userDataTable" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/userDataTable.jsp" />
+		<!--<put-attribute name="body" type="template"-->
+			<!--value="/WEB-INF/views/templates/userDataTable.jsp" />-->
 	</definition>
 
 	<definition name="parameters" template="/WEB-INF/views/searchParameters.jsp">
@@ -162,8 +167,8 @@
 	</definition>
 	
 	<definition name="addUsersFromExcel" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/templates/addUsersFromExcel.jsp" />
+		<!--<put-attribute name="body" type="template"-->
+			<!--value="/WEB-INF/views/templates/addUsersFromExcel.jsp" />-->
 	</definition>
 	
 	<definition name="searchTableTemplate" extends="homepage">

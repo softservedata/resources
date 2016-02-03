@@ -23,7 +23,7 @@
 
     <script src="<c:url value='/resource/js/lib/jquery.dataTables.min.js'/>"></script>
     <script src="<c:url value='/resource/js/lib/jquery-validate/jquery.validate.js'/>" type="text/javascript"></script>
-    <%--<script src="<c:url value='/resource/js/scripts.js'/>"></script>--%>
+    <script src="<c:url value='/resource/js/scripts.js'/>"></script>
     <%--<link rel="stylesheet" href="<c:url value='/resource/css/login.css'/>">--%>
 
     <!-- Our own css -->
