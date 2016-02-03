@@ -6,6 +6,7 @@ import org.registrator.community.service.ResourceDeleteService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ResourceDeleteServiceImpl implements ResourceDeleteService {
@@ -15,12 +16,13 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 	@Autowired
 	private ResourceRepository resourceRepository;
 	
+	@Transactional
 	@Override
 	public void deleteResource(String resourceIdentifier) {
 		logger.info("begin deleteResource, param resourceIdentifier = " + resourceIdentifier);
 		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
 		resourceRepository.delete(resource);
-		logger.info("end deleteResource");
+		logger.info("Resource with identifier " + resourceIdentifier + "was succesfully deleted");
 
 	}
 

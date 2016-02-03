@@ -6,7 +6,7 @@ $(function() {
 	$(document).on("click","#deleteInquiry",
 					function(event) {
 		event.preventDefault();
-		bootbox.confirm(jQuery.i18n.prop('msg.confirmDelete'),function(result){
+		bootbox.confirm(jQuery.i18n.prop('msg.confirmDeleteProcuration'),function(result){
 			if (result) {
 				window.location = $(event.target).attr("href");
 					

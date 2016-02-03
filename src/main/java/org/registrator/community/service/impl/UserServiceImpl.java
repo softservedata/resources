@@ -36,6 +36,8 @@ import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,9 +70,10 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordEncoder userPasswordEncoder;
-	
+
 	@Autowired
-    private CommunityService communityService;
+	private CommunityService communityService;
+
 
 	/**
 	 * Method, which returns user from database by login
@@ -199,7 +202,7 @@ public class UserServiceImpl implements UserService {
 			user.setLastName(userDto.getLastName());
 			user.setMiddleName(userDto.getMiddleName());
 			user.setEmail(userDto.getEmail());
-//			user.setPassword(userDto.getPassword());
+			// user.setPassword(userDto.getPassword());
 			user.setRole(checkRole(userDto.getRole()));
 			user.setStatus(checkUserStatus(userDto.getStatus()));
 			logger.info("edit user in data base");
@@ -278,8 +281,8 @@ public class UserServiceImpl implements UserService {
 			AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 					address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 			UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-					user.getRole().toString(), user.getLogin(), user.getEmail(),
-					user.getStatus().toString(), addressDto, passportDto);
+					user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(),
+					addressDto, passportDto);
 			userDtoList.add(userDto);
 		}
 		return userDtoList;
@@ -306,8 +309,8 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(), user.getEmail(),
-				user.getStatus().toString(), addressDto, passportDto);
+				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
+				passportDto);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -392,7 +395,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void registerUser(RegistrationForm registrationForm) {
-
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    User admin = getUserByLogin(auth.getName());
 		// if (this.userRepository.findUserByLogin(registrationForm.getLogin())
 		// != null) {
 		// return UserService.ERR_DUP_USER;
@@ -401,6 +405,7 @@ public class UserServiceImpl implements UserService {
 		// != null) {
 		// return UserService.ERR_DUP_EMAIL;
 		// }
+	    TerritorialCommunity territorialCommunity = communityService.findByName(registrationForm.getTerritorialCommunity());
 		User user = new User();
 		user.setLogin(registrationForm.getLogin());
 		user.setEmail(registrationForm.getEmail());
@@ -408,13 +413,16 @@ public class UserServiceImpl implements UserService {
 		user.setFirstName(registrationForm.getFirstName());
 		user.setLastName(registrationForm.getLastName());
 		user.setMiddleName(registrationForm.getMiddleName());
+		user.setPhoneNumber(registrationForm.getPhoneNumber());
 		user.setRole(roleRepository.findRoleByType(RoleType.USER));
-		user.setStatus(UserStatus.INACTIVE);
-		
-		// temporarily hardcode
-		user.setDateOfAccession(new Date());
-		user.setTerritorialCommunity(communityService.findById(1));
-		// 
+		if(admin.getRole().getType() == RoleType.ADMIN){
+		user.setStatus(UserStatus.INACTIVE);}
+		else{
+		user.setStatus(UserStatus.UNBLOCK);
+		}
+		user.setPhoneNumber(registrationForm.getPhoneNumber());
+		user.setDateOfAccession(registrationForm.getDateOfAccession());
+		user.setTerritorialCommunity(territorialCommunity);
 
 		userRepository.saveAndFlush(user);
 		log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());
@@ -487,13 +495,18 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
-		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-		ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
-				Integer.parseInt(resourseNumberDtoJson.getResource_number()),
-				resourseNumberDtoJson.getRegistrator_number());
-		ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
-				resourseNumberDto.getRegistratorNumber(), user);
-		resourceNumberRepository.save(resourceNumber);
+		try {
+			User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
+			ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
+					Integer.parseInt(resourseNumberDtoJson.getResource_number()),
+					resourseNumberDtoJson.getRegistrator_number());
+			ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
+					resourseNumberDto.getRegistratorNumber(), user);
+			resourceNumberRepository.save(resourceNumber);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			log.error("Format is incorrect");
+		}
 	}
 
 	/**
@@ -506,11 +519,16 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void createTome(ResourceNumberDTOJSON resourseNumberDtoJson) {
+		try {
 		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
 		TomeDTO tomeDto = new TomeDTO(resourseNumberDtoJson.getIdentifier(), user.getFirstName(), user.getLastName(),
 				user.getMiddleName());
 		Tome tome = new Tome(user, tomeDto.getTomeIdentifier());
 		tomeRepository.save(tome);
+		} catch(NumberFormatException ex) {
+			ex.printStackTrace();
+			log.error("Format is incorrect");
+		}
 	}
 
 	// @Override
@@ -538,8 +556,8 @@ public class UserServiceImpl implements UserService {
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
-				user.getRole().toString(), user.getLogin(),user.getEmail(),
-				user.getStatus().toString(), addressDto, passportDto);
+				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
+				passportDto);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();

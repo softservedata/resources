@@ -28,10 +28,11 @@
 		</div>
 
 		<!-- login of the selected co-owner -->
-		<div class="form-group"  hidden="true">
+		<div class="form-group" hidden="true">
 			<label class="control-label col-sm-3">login:</label>
 			<div class="col-sm-3">
-				<input class="form-control" id="owner_login" type="text" value="" name="ownerLogin">
+				<input class="form-control" id="owner_login" type="text" value=""
+					name="ownerLogin">
 			</div>
 		</div>
 
@@ -103,7 +104,8 @@
 				</div>
 			</div>
 			<div class="checkbox">
-				<label><input id="pass" type="checkbox" disabled> <spring:message
+				<div class="col-sm-3">
+					<label><input id="pass" type="checkbox" disabled> <spring:message
 						code="label.resource.pass" /></label><br /> <label><input
 					id="will" type="checkbox" disabled> <spring:message
 						code="label.resource.willDocument" /></label><br /> <label><input
@@ -113,6 +115,7 @@
 						code="label.resource.propertyTitle" /></label><br /> <label><input
 					id="delivery" type="checkbox"> <spring:message
 						code="label.resource.assignment" /></label>
+				</div>
 			</div>
 
 		</div>
@@ -146,33 +149,47 @@
 		</legend>
 
 		<%--Container for Google map--%>
-        <div class="col-sm-12" style="margin-bottom: 10px;">
-            <div class="col-sm-12" id="mapManual">
-                <span class="glyphicon glyphicon-triangle-right"></span>
-                <span class="glyphicon glyphicon-triangle-bottom hidden"></span>
-                <span><spring:message code="label.howToUseMap" /></span>
-            </div>
-            <div class="spoiler col-sm-12">
-                Щоб додати область натисніть кнопку "Додати полігон". Клікаючи на мапі лівою кнопкою мишки виділіть потрібну область.<br/>
-                Якщо Ви хочете виділити область поруч з існуючою, таким чином, щоб вони мали спільну межу, виконайте наступні дії:<br/>
-                1. Знайдіть на мапі потрібну область і оберіть такий масштаб, щоб вся область поміщалася в межах мапи.<br/>
-                2. Натисніть кнопку показати ресурси. <br/>
-                3. На мапі відобразяться області ресурсів вже внесених в базу.<br/>
-                4. Коли ви підведете мишку до однієї з вершин показаних областей, на ній з'явиться маркер. Затиснувши кнопку шифт клікніть лівою кнопкою миші. Таким чином Ви оберете для нової області точку з тими ж координатами, що має відображена область.<br/>
-                Якщо Ви зробили помилку - Ви можете видалити введену точку клікнувши на ній правою кнопкою миші.<br/>
-                Після повного введення області натисніть кнопку "Зберегти". Після цього область вже буде недоступною для редагування.<br/>
-                Якщо Вам необхідно додати ще одну область до ресурсу, повторіть кроки описані вище.<br/>
-                Після закінчення введення областей, натисність кнопку "Додати координати з мапи". Після цього вже буде не можливо додати нову область.
-            </div>
-        </div>
+		<div class="col-sm-12" style="margin-bottom: 10px;">
+			<div class="col-sm-12" id="mapManual">
+				<span class="glyphicon glyphicon-triangle-right"></span> <span
+					class="glyphicon glyphicon-triangle-bottom hidden"></span> <span><spring:message
+						code="label.howToUseMap" /></span>
+			</div>
+			<div class="spoiler col-sm-12">
+				Щоб додати область натисніть кнопку "Додати полігон". Клікаючи на
+				мапі лівою кнопкою мишки виділіть потрібну область.<br /> Якщо Ви
+				хочете виділити область поруч з існуючою, таким чином, щоб вони мали
+				спільну межу, виконайте наступні дії:<br /> 1. Знайдіть на мапі
+				потрібну область і оберіть такий масштаб, щоб вся область поміщалася
+				в межах мапи.<br /> 2. Натисніть кнопку показати ресурси. <br /> 3.
+				На мапі відобразяться області ресурсів вже внесених в базу.<br /> 4.
+				Коли ви підведете мишку до однієї з вершин показаних областей, на
+				ній з'явиться маркер. Затиснувши кнопку шифт клікніть лівою кнопкою
+				миші. Таким чином Ви оберете для нової області точку з тими ж
+				координатами, що має відображена область.<br /> Якщо Ви зробили
+				помилку - Ви можете видалити введену точку клікнувши на ній правою
+				кнопкою миші.<br /> Після повного введення області натисніть кнопку
+				"Зберегти". Після цього область вже буде недоступною для
+				редагування.<br /> Якщо Вам необхідно додати ще одну область до
+				ресурсу, повторіть кроки описані вище.<br /> Після закінчення
+				введення областей, натисність кнопку "Додати координати з мапи".
+				Після цього вже буде не можливо додати нову область.
+			</div>
+		</div>
 
 		<div id="map_canvas" class="container"
 			style="height: 500px; padding: 20px 0px;"></div>
 		<div class="col-sm-12">
 			<button id="addPointsFromMap" class="btn btn-primary" type="button"
-                    style="margin-top: 10px;"><spring:message code="label.resource.coordinates.addFromMap" /></button>
+				style="margin-top: 10px;">
+				<spring:message code="label.resource.coordinates.addFromMap" />
+			</button>
+			<button id="addPointsToMap" class="btn btn-primary" type="button"
+					style="margin-top: 10px;">
+				<spring:message code="label.resource.coordinates.addToMap" />
+			</button>
 			<%--<button id="show_UA" class="btn btn-primary" type="button"--%>
-					<%--style="margin-top: 10px;">Show Ukraine</button>--%>
+			<%--style="margin-top: 10px;">Show Ukraine</button>--%>
 		</div>
 
 		<div class="form-group">
@@ -259,7 +276,7 @@
 		</div>
 		<br />
 		<div class="button">
-			<input type="submit" class="btn btn-success"
+			<input id="submitForm" type="submit" class="btn btn-success"
 				value=<spring:message code="label.save"/>>
 			<button id="resetForm" type="reset" class="btn btn-default">
 				<spring:message code="label.clearall" />
@@ -267,28 +284,31 @@
 		</div>
 	</form:form>
 
-    <%--Search on the map--%>
+	<%--Search on the map--%>
 	<p>
 		<input id="gmaps-input" class="controls gmap-input"
-			style="width: 300px;" type="text" placeholder=<spring:message code="label.menu.searchOnMap"/>>
+			style="width: 300px;" type="text"
+			placeholder=<spring:message code="label.menu.searchOnMap"/>>
 	</p>
 
-    <%--Search existing resources on the map--%>
+	<%--Search existing resources on the map--%>
 	<p>
-		<a id="gmaps-show-res" class="controls gmap-button"><spring:message code="label.showResources" /></a>
+		<a id="gmaps-show-res" class="controls gmap-button"><spring:message
+				code="label.showResources" /></a>
 
-    <%--Control buttons for polygon drawing--%>
-    <div id='cp-wrap' style="width: 80px;">
-        <span class="toggle">
-            <a data-action='save' class="controls gmap-button" style="position: relative;"><spring:message code="label.savePolygon" /></a>
-            <a data-action='cancel' class="controls gmap-button" style="position: relative;"><spring:message code="label.cancelPolygon" /></a>
-        </span>
-        <span class="toggle active">
-            <a data-action='new' class="controls gmap-button"><spring:message code="label.addPolygon" /></a>
-        </span>
+		<%--Control buttons for polygon drawing--%>
+	<div id='cp-wrap' style="width: 80px;">
+		<span class="toggle"> <a data-action='save'
+			class="controls gmap-button" style="position: relative;"><spring:message
+					code="label.savePolygon" /></a> <a data-action='cancel'
+			class="controls gmap-button" style="position: relative;"><spring:message
+					code="label.cancelPolygon" /></a>
+		</span> <span class="toggle active"> <a data-action='new'
+			class="controls gmap-button"><spring:message
+					code="label.addPolygon" /></a>
+		</span>
 
-    </div>
-	</p>
+	</div>
 
 	<%--AJAX Loader on the dark display--%>
 	<div id="dark_bg">
@@ -311,10 +331,11 @@
 		</div>
 	</div>
 
-    <%--Scripts for Google Map--%>
+	<%--Scripts for Google Map--%>
 	<script
 		src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,places"></script>
-	<script type="text/javascript" src="<c:url value="/resource/js/lib/polysnapper.js"/>"></script>
+	<script type="text/javascript"
+		src="<c:url value="/resource/js/lib/polysnapper.js"/>"></script>
 	<script type="text/javascript"
 		src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
 </div>

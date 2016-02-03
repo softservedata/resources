@@ -25,9 +25,9 @@ $(document).ready(function() {
 			"address.city" : {
 				required : true
 			},
-			"address.district" : {
-				required : true
-			},
+//			"address.district" : {
+//				required : true
+//			},
 			"address.street" : {
 				required : true
 			},
@@ -76,9 +76,9 @@ $(document).ready(function() {
 			"address.city" : {
 				required : "Поле є обов'язковим для введення"
 			},
-			"address.district" : {
-				required : "Поле є обов'язковим для введення"
-			},
+//			"address.district" : {
+//				required : "Поле є обов'язковим для введення"
+//			},
 			"address.street" : {
 				required : "Поле є обов'язковим для введення"
 			},

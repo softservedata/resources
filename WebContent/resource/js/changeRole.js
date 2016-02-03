@@ -20,7 +20,11 @@ $(document).on('change', '#roleId', function() {
 				
 				success: function() {
 					$('#myModal').modal('hide');
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+				    bootbox.alert("Реєстраційний номер реєстратора є унікальним або вже закріплений за іншим реєстратором");
 				}
+			
 			});
 		})
 		

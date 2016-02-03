@@ -7,6 +7,7 @@
 <script src="<c:url value='/resource/js/changeRole.js'/>"></script>
 <script src="<c:url value='/resource/js/editingUser.js'/>"></script>
 <script src="<c:url value='/resource/js/userValidate.js'/>"></script>
+<script src="<c:url value='/resource/js/checkResourceNumber.js'/>"></script>
 
 <div class="container">
 	<c:url value='/administrator/users/edit-registrated-user'
@@ -66,19 +67,19 @@
 								class="form-control input-md" value="${userDto.login}" readonly>
 						</div>
 					</div>
-<!-- 					<div class="form-group"> -->
-<%-- 						<label class="col-lg-4 control-label" for="textinput"><spring:message --%>
-<%-- 								code="label.password" /></label> --%>
-<!-- 						<div class="col-lg-8"> -->
-<!-- 							<input id="password" name="password" placeholder="" -->
-<!-- 								class="form-control input-md readonly" type="text" -->
-<%-- 								value="${userDto.password}" readonly> --%>
-<!-- 							<div class="control-group error"> -->
-<%-- 								<form:errors path="password" cssClass="error" --%>
-<%-- 									style="color:black" /> --%>
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
+					<!-- 					<div class="form-group"> -->
+					<%-- 						<label class="col-lg-4 control-label" for="textinput"><spring:message --%>
+					<%-- 								code="label.password" /></label> --%>
+					<!-- 						<div class="col-lg-8"> -->
+					<!-- 							<input id="password" name="password" placeholder="" -->
+					<!-- 								class="form-control input-md readonly" type="text" -->
+					<%-- 								value="${userDto.password}" readonly> --%>
+					<!-- 							<div class="control-group error"> -->
+					<%-- 								<form:errors path="password" cssClass="error" --%>
+					<%-- 									style="color:black" /> --%>
+					<!-- 							</div> -->
+					<!-- 						</div> -->
+					<!-- 					</div> -->
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.user.email" /></label>
@@ -274,7 +275,9 @@
 				</div>
 			</div>
 			<div class="wrapper" style="text-align: center">
-				<button type="button" id="edit" class="btn btn-primary"><spring:message code="label.restype.edit"></spring:message></button>
+				<button type="button" id="edit" class="btn btn-primary">
+					<spring:message code="label.restype.edit"></spring:message>
+				</button>
 				<input type="submit" id="ok"
 					value=<spring:message code="label.user.button"/>
 					class="btn btn-primary btn-sm" style="display: none">
@@ -286,31 +289,46 @@
 
 <div class="container">
 	<form:form id="modalWindow" modelAttribute="resourceNumberDtoJson"
-		method="get" action="modal-window" class="form-horizontal">
+		method="post" action="modal-window" class="form-horizontal">
 		<div id="myModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title"><spring:message
-                                code="label.registrator.enterData" /></h4>
+						<h4 class="modal-title">
+							<spring:message code="label.registrator.enterData" />
+						</h4>
 					</div>
 					<div class="modal-body">
 						<label class="control-label"><spring:message
-                                code="label.registrator.tomeNumber" /></label> <input
-							id="identifier" name="identifier" class="form-control input-md"
-							type="text" required> <label class="control-label"><spring:message
-                                code="label.registrator.registratorNumber" /></label> 
-                                <input id="registrator_number"
-							name="registrator_number" class="form-control input-md"
-							type="text" required> <label class="control-label"><spring:message
-                                code="label.registrator.objectIdentifier" /></label> 
-                                <input id="resource_number" name="resource_number"
-							class="form-control input-md" type="text" required>
+								code="label.registrator.tomeNumber" /></label> 
+						<input id="identifier"
+							name="identifier" class="form-control input-md" type="text">
+						<div class="control-group error">
+							<form:errors path="identifier" cssClass="error"
+								style="color:black" />
+						</div>
+						<label class="control-label"><spring:message
+								code="label.registrator.registratorNumber" /></label> 
+						<input
+							id="registrator_number" name="registrator_number"
+							class="form-control input-md" type="text">
+						<div class="control-group error">
+							<form:errors path="registrator_number" cssClass="error"
+								style="color:black" />
+						</div>
+						<label class="control-label"><spring:message
+								code="label.registrator.objectIdentifier" /></label> 
+						<input
+							id="resource_number" name="resource_number"
+							class="form-control input-md" type="text">
 					</div>
+					<div class="control-group error">
+							<form:errors path="resource_number" cssClass="error"
+								style="color:black" />
+						</div>
 					<div class="modal-footer">
-						<button type="button" id="submit" class="btn btn-primary">
-							Ok</button>
+						<input type="submit" id="submit" class="btn btn-primary" value="Ok">
 					</div>
 				</div>
 			</div>

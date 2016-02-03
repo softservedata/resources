@@ -55,7 +55,7 @@ public class AddResourceTypeController {
         logger.info("begin method for adding new resource type (subclass)");
         validator.validate(resourceTypeDTO, result);
         if (result.hasErrors()) {
-            logger.info("end method: resource type is not valid, "
+            logger.warn("end method: resource type is not valid, "
                     + "return to page for adding all resource types");
             return "addResType";
             

@@ -10,21 +10,30 @@ import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.ResourceTypeDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.entity.User;
+import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-@Component
+
 public class RegistrationForm /*implements Validator*/{
 
     @Autowired
     UserRepository userRepository;
+    
+    @Autowired
+    UserService userService;
 
+ 
     @NotNull
     @Size(min=5, max=16, message="Логін повинен містити від {min} до {max} символів")
     @Pattern(regexp = "[a-zA-Z0-9].{4,16}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
     private String login;
-
+    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
+    private boolean loginIsAlreadyTaken(){
+        return userService.checkUsernameNotExistInDB(login);
+    }
     @NotNull
     @Size(min=6, max=20, message="Пароль повинен містити від {min} до {max} символів")
 //    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль може складатись лише з латинських літер (великих і малих) і/або цифр")
@@ -36,16 +45,15 @@ public class RegistrationForm /*implements Validator*/{
     private String confirmPassword;
 
     @NotNull
-    @Size(min=2, max=30, message="Ім\'я повинно містити від {min} до {max} символів")
+    @Size(min=1, max=30, message="Ім\'я повинно містити від {min} до {max} символів")
     private String firstName;
 
     @NotNull
-    @Size(min=4, max=30, message="Прізвище повинне містити від {min} до {max} символів")
+    @Size(min=1, max=30, message="Прізвище повинне містити від {min} до {max} символів")
 //    @Size(min=4, max=30, message="{lastName.size}")
     private String lastName;
 
-    @NotNull
-    @Size(min=4, max=30, message="Поле повинне містити від {min} до {max} символів")
+    @Size(min=1, max=30, message="Поле повинне містити від {min} до {max} символів")
     private String middleName;
 
     @NotNull
@@ -82,20 +90,22 @@ public class RegistrationForm /*implements Validator*/{
 
     private String flat;
     
+    
+    @NotNull
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date dateOfAccession;
     
+    @Pattern (regexp = "(?=.*[0-9]).{10}", message = "Некоректний номер телефону")
     private String phoneNumber;
 
-
+    @NotNull
+    private String territorialCommunity;
+    
     @AssertTrue(message = "Введене вами підтвердження паролю невірне")
     private boolean isValidConfirmPassword(){
         return confirmPassword != password;
     }
 
-    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
-    private boolean loginIsAlreadyTaken(){
-        return userRepository.findUserByLogin(login) != null;
-    }
 
     public String getLogin() {
         return login;
@@ -247,6 +257,14 @@ public class RegistrationForm /*implements Validator*/{
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getTerritorialCommunity() {
+        return territorialCommunity;
+    }
+
+    public void setTerritorialCommunity(String territorialCommunity) {
+        this.territorialCommunity = territorialCommunity;
     }  
     
 }

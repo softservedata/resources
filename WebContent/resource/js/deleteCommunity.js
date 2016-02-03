@@ -1,8 +1,8 @@
 $(function() {
-	$(document).on("click","#deleterestype",
+	$(document).on("click","#deleterecommunity",
 					function(event) {
 		event.preventDefault();
-						bootbox.confirm(jQuery.i18n.prop('msg.confirmDelete'),function(result){
+						bootbox.confirm(jQuery.i18n.prop('msg.confirmDeleteCommunity'),function(result){
 						if (result) {
 							$
 									.ajax({
