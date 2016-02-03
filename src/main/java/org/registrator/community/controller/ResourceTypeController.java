@@ -28,8 +28,9 @@ public class ResourceTypeController {
     
     /**
      * Method for showing all types of resources on UI
+     * @param model
+     * @return allResourcesTypes.jsp
      */
-    
     @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/show-res-types", method = RequestMethod.GET)
     public String showResourceType(Model model) {
@@ -59,10 +60,10 @@ public class ResourceTypeController {
         logger.info("begin method for deleting chosen resource type with its parameters");
         boolean isDeleted = resourceTypeService.delete(resourceTypeService.findById(typeId));
         if (isDeleted) {
-            logger.info("end: cannot delete resource type");
+            logger.warn("end method: resource type must be deleted");
             return new ResponseEntity<String>(HttpStatus.OK);
         }
-        logger.info("end: it's impossible to delete resource type");
+        logger.info("end method: it's impossible to delete resource type");
         return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
     }
 }
