@@ -14,7 +14,7 @@ $(document).on("click","#outputInquiry",function(){
 })
 
 $(document).on("click","#deleteResource",function(){
-	bootbox.confirm(jQuery.i18n.prop('msg.confirmDelete'),function(result){
+	bootbox.confirm(jQuery.i18n.prop('msg.confirmDeleteResource'),function(result){
 		if (result) {
 			window.location = baseUrl.toString() +'/registrator/resource/delete/'+ $('#resourceIdentifierCopy').val();			
 		}

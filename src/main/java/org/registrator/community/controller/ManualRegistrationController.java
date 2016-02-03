@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.CommunityService;
@@ -31,6 +29,11 @@ public class ManualRegistrationController {
     @Autowired
     private CommunityService communityService;
 
+    /**
+     * Method for loading form for adding new user
+     * @param model
+     * @return register.jsp
+     */
     @PreAuthorize("hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/manualregistration", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
@@ -39,21 +42,31 @@ public class ManualRegistrationController {
         model.addAttribute("territorialCommunities", territorialCommunities);
         
         model.addAttribute("registrationForm", new RegistrationForm());
-        logger.info("Loaded 'New user registration form' " + request.getRemoteAddr());
+        logger.info("Loaded registration form' " + request.getRemoteAddr());
         return "regForComm";
     }
-
+    /**
+     * Method for saving new user in the database if inputed data is correct
+     * @param registrationForm
+     * @param result
+     * @param model
+     * @return register.jsp if inputed data is incorrect or redirect to page for showing and
+     * editing users in another way
+     */
     @PreAuthorize("hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/manualregistration", method = RequestMethod.POST)
-    public String processNewUserData(@Valid RegistrationForm registrationForm, Errors result) {
-        if (result.hasErrors()) {
+    public String processNewUserData(@Valid RegistrationForm registrationForm, Errors result, Model model) {
+        List<TerritorialCommunity> territorialCommunities = communityService.findAll();
+        model.addAttribute("territorialCommunities", territorialCommunities);
+        
+        if (result.hasErrors() || !userService.checkUsernameNotExistInDB(registrationForm.getLogin())) {
             logger.warn("Registration form sent to server with following errors: \n" + result.getFieldErrors()
                     + "\n Error messages displayed to user.");
             return "regForComm";
         }
         userService.registerUser(registrationForm);
 
-        logger.info("Successfully registered new user: " + registrationForm.getLogin());
-        return "redirect:/";
+        logger.info("Successfully registered new commissioner/user: " + registrationForm.getLogin());
+        return "redirect:/administrator/users/get-all-inactive-users";
     }
 }
