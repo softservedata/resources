@@ -1,6 +1,7 @@
 var map;
 var polygons = [];
 var newPolygons = [];
+var polygonFromCoordinates = new google.maps.Polygon();
 var PS = null;
 
 function getCookie(cname) {
@@ -302,6 +303,21 @@ function intersectionCheck(polygon){
     return intersection;
 }
 
+function cleanPoints() {
+    var num = $('.clonedAreaInput').length;
+    while (num > 2) {
+        num = $('.clonedAreaInput').length;
+        $('#areaInput' + num).remove();
+        if (num <= 2) {
+            $('#btnDelAreaPoint').attr('disabled', 'disabled');
+            $("#btnAddAreaPoint").removeAttr('disabled');
+        }
+    }
+    $('.clonedAreaInput input').val(function() {
+        return this.defaultValue;
+    });
+}
+
 $("#gmaps-show-res").click(function () {
 
     var resType = $("#resourcesTypeSelect").val();
@@ -325,52 +341,93 @@ $("#addPointsFromMap").click(function () {
         var perimeter = new Number();
 
         //If user entered the correct polygon and it doesn't intersect with existing polygons
-        //we add points coordinates to inputs and deny to edit entered polygon.
-            for (var i = 0; i < newPolygons.length; i++) {
+        //we add points coordinates to inputs and deny to edit entered polygon. Before adding points
+        //we clean the points inputs.
+        cleanPoints();
 
-                var pointsArray = newPolygons[i].getPath().getArray();
-                for (var j = 0; j < pointsArray.length; j++) {
-                    var delimiter = String(pointsArray[j]).indexOf(",");
-                    var end = String(pointsArray[j]).length;
-                    var latitude = Number(String(pointsArray[j]).slice(1, delimiter));
-                    var longitude = Number(String(pointsArray[j]).slice(delimiter + 1, end - 1));
+        for (var i = 0; i < newPolygons.length; i++) {
 
-                    var latitudeDegrees = Math.floor(latitude);
-                    var latitudeMinutes = Math.floor((latitude - latitudeDegrees) * 60);
-                    var latitudeSeconds = ((latitude - latitudeDegrees) * 60 - latitudeMinutes) * 60;
-                    var longitudeDegrees = Math.floor(longitude);
-                    var longitudeMinutes = Math.floor((longitude - longitudeDegrees) * 60);
-                    var longitudeSeconds = ((longitude - longitudeDegrees) * 60 - longitudeMinutes) * 60;
+            var pointsArray = newPolygons[i].getPath().getArray();
+            for (var j = 0; j < pointsArray.length; j++) {
+                var delimiter = String(pointsArray[j]).indexOf(",");
+                var end = String(pointsArray[j]).length;
+                var latitude = Number(String(pointsArray[j]).slice(1, delimiter));
+                var longitude = Number(String(pointsArray[j]).slice(delimiter + 1, end - 1));
 
-                    addNewPoint(i,
-                        latitudeDegrees, latitudeMinutes, latitudeSeconds,
-                        longitudeDegrees, longitudeMinutes, longitudeSeconds);
-                }
-                newPolygons[i].setOptions({fillColor: "#003400"});
+                var latitudeDegrees = Math.floor(latitude);
+                var latitudeMinutes = Math.floor((latitude - latitudeDegrees) * 60);
+                var latitudeSeconds = ((latitude - latitudeDegrees) * 60 - latitudeMinutes) * 60;
+                var longitudeDegrees = Math.floor(longitude);
+                var longitudeMinutes = Math.floor((longitude - longitudeDegrees) * 60);
+                var longitudeSeconds = ((longitude - longitudeDegrees) * 60 - longitudeMinutes) * 60;
 
-                //Calculation of area and perimeter of all new polygons.
-                area += Number(google.maps.geometry.spherical.computeArea(newPolygons[i].getPath()));
-                perimeter += Number(google.maps.geometry.spherical.computeLength(newPolygons[i].getPath()));
-
-                //Coordinates added, if we want we can delete the polygon from the array.
-                //newPolygons.splice(i,1);
+                addNewPoint(i,
+                    latitudeDegrees, latitudeMinutes, latitudeSeconds,
+                    longitudeDegrees, longitudeMinutes, longitudeSeconds);
             }
+            newPolygons[i].setOptions({fillColor: "#003400"});
 
-            //Adding area and perimeter values to input fields
-            $("input").each(function () {
-                if ($(this).val() == "площа") {
-                    $(this).siblings("div").children("input:first").val((area / 10000).toFixed(5));
-                }
-                if ($(this).val() == "периметер") {
-                    $(this).siblings("div").children("input:first").val((perimeter).toFixed(1));
-                }
-            });
+            //Calculation of area and perimeter of all new polygons.
+            area += Number(google.maps.geometry.spherical.computeArea(newPolygons[i].getPath()));
+            perimeter += Number(google.maps.geometry.spherical.computeLength(newPolygons[i].getPath()));
+
+            //Coordinates added, if we want we can delete the polygon from the array.
+            //newPolygons.splice(i,1);
+        }
+
+        //Adding area and perimeter values to input fields
+        $("input").each(function () {
+            if ($(this).val() == "площа") {
+                $(this).siblings("div").children("input:first").val((area / 10000).toFixed(5));
+            }
+            if ($(this).val() == "периметер") {
+                $(this).siblings("div").children("input:first").val((perimeter).toFixed(1));
+            }
+        });
         //We make the link "Add polygon" inactive
         $(".toggle a").addClass("inactiveLink");
+        $("#btnAddAreaPoint").attr('disabled', 'disabled');
+        $('#btnDelAreaPoint').attr('disabled', 'disabled');
+        //$('.clonedAreaInput input').attr('disabled', 'disabled');
         $("#dark_bg").hide();
     }
     else {
         bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
+    }
+});
+
+$(document).on("click", "#addPointsToMap", function(){
+    var points = $('.clonedAreaInput');
+    if((newPolygons.length == 0)&&(points.length > 1)){
+        polygonFromCoordinates.setMap(null);
+        var polygonPath = [];
+        points.each(function(){
+            var latGrad = Number($(this).find('#myparam1').val());
+            var latMin = Number($(this).find('#myparam2').val());
+            var latSec = Number($(this).find('#myparam3').val());
+            var lngGrad = Number($(this).find('#myparam4').val());
+            var lngMin = Number($(this).find('#myparam5').val());
+            var lngSec = Number($(this).find('#myparam6').val());
+
+            var lat = latGrad + latMin/60 + latSec/3600;
+            var lng = lngGrad + lngMin/60 + lngSec/3600;
+            //console.log("lat: " + lat + " lng: " + lng);
+
+            var point = new google.maps.LatLng(lat, lng);
+            polygonPath.push(point);
+        });
+
+        polygonFromCoordinates = new google.maps.Polygon({
+            path: polygonPath, // Координаты
+            strokeColor: "#FF0000", // Цвет обводки
+            strokeOpacity: 0.8, // Прозрачность обводки
+            strokeWeight: 2, // Ширина обводки
+            fillColor: "#0000FF", // Цвет заливки
+            fillOpacity: 0.3, // Прозрачность заливки
+            map: map
+        });
+
+        intersectionCheck(polygonFromCoordinates);
     }
 });
 
@@ -445,20 +502,62 @@ $(document).on("click", "#mapManual", function(){
     }
 });
 
-
 $(document).on("click", "#resetForm", function(){
-    $('.clonedAreaInput').each(function(){
-        var num = $('.clonedAreaInput').length;
-        $('#areaInput' + num).remove();
-        if (num == 2) {
-            $('#btnDelAreaPoint').attr('disabled', 'disabled');
-            newPolygons.forEach(function(polygon) {
-                polygon.setMap(null);
+    cleanPoints();
+    //$("input[id*='myparam']").removeAttr("disabled");
+    $("#typeParameters").html("");
+    newPolygons.forEach(function (polygon) {
+        polygon.setMap(null);
+    });
+    newPolygons = [];
+    $(".inactiveLink").removeClass("inactiveLink");
+});
+
+$(document).on("click", "#submitForm", function(){
+    var points = $('.clonedAreaInput');
+    if(points.length == 2) {
+        bootbox.alert(jQuery.i18n.prop('msg.twoPoints'));
+        return false;
+    }
+    if((newPolygons.length > 0)&&(points.length > 1)){
+        console.log("Start add");
+        var latArray = [];
+        var lngArray = [];
+        var different = false;
+
+        newPolygons.forEach(function(newPolygon) {
+            var path = newPolygon.getPath();
+            path.forEach(function(point){
+                latArray.push(point.lat());
+                lngArray.push(point.lng());
             });
-            newPolygons = [];
-            $(".inactiveLink").removeClass("inactiveLink");
+        });
+
+        points.each(function(){
+            var latGrad = Number($(this).find('#myparam1').val());
+            var latMin = Number($(this).find('#myparam2').val());
+            var latSec = Number($(this).find('#myparam3').val());
+            var lngGrad = Number($(this).find('#myparam4').val());
+            var lngMin = Number($(this).find('#myparam5').val());
+            var lngSec = Number($(this).find('#myparam6').val());
+
+            var lat = latGrad + latMin/60 + latSec/3600;
+            var lng = lngGrad + lngMin/60 + lngSec/3600;
+
+            var pointIndex = $.inArray(lat,latArray);
+            if ((pointIndex == -1) || (lng != lngArray[pointIndex])) {
+                $(this).find("input").css("background","rgba(255,0,0,0.4)");
+                different = true;
+                console.log("Point out!");
+            }
+        });
+        if(different) {
+            bootbox.alert("Точки на мапі і введені відрізняються!");
             return false;
         }
-    });
-
+    }
+    else {
+        bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
+        return false;
+    }
 });

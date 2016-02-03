@@ -184,6 +184,10 @@
 				style="margin-top: 10px;">
 				<spring:message code="label.resource.coordinates.addFromMap" />
 			</button>
+			<button id="addPointsToMap" class="btn btn-primary" type="button"
+					style="margin-top: 10px;">
+				<spring:message code="label.resource.coordinates.addToMap" />
+			</button>
 			<%--<button id="show_UA" class="btn btn-primary" type="button"--%>
 			<%--style="margin-top: 10px;">Show Ukraine</button>--%>
 		</div>
@@ -272,7 +276,7 @@
 		</div>
 		<br />
 		<div class="button">
-			<input type="submit" class="btn btn-success"
+			<input id="submitForm" type="submit" class="btn btn-success"
 				value=<spring:message code="label.save"/>>
 			<button id="resetForm" type="reset" class="btn btn-default">
 				<spring:message code="label.clearall" />

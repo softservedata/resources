@@ -238,17 +238,6 @@ public class ResourceController {
         return gson.toJson(polygons);
     }
 
-    /**
-     * Count all resources which we have in Database and send them to JS
-     * Shown in footer
-     * @return
-     */
-	@ResponseBody
-	@RequestMapping(value = "/countResources", method = RequestMethod.POST)
-	public Long countResources() {
-		return resourceService.count();
-	}
-
 	@ResponseBody
 	@RequestMapping(value = "/decs", method = RequestMethod.GET)
 	public Map<String, Set<String>> getDescriptionProposition(@RequestParam("descTag") String descTag) {
