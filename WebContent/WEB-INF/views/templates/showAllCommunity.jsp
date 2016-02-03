@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<script src="<c:url value='/resource/js/deleteRS.js'/>"></script>
+<script src="<c:url value='/resource/js/deleteCommunity.js'/>"></script>
 
 <div style="text-align: center;">
 	<h4>
@@ -31,7 +31,7 @@
 					<td>
 						 <div class="wrapper" style="text-align: center;">
 							<a href="deleteCommunity/${commun.territorialCommunityId}" class="btn btn-danger"
-								id="deleterestype" role="button"><spring:message code="label.community.delete" /></a>
+								id="deleterecommunity" role="button"><spring:message code="label.community.delete" /></a>
 						</div>
 					</td>
 				</tr>
