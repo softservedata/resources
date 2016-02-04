@@ -506,6 +506,10 @@ $(document).on("click", "#resetForm", function(){
     cleanPoints();
     //$("input[id*='myparam']").removeAttr("disabled");
     $("#typeParameters").html("");
+    $("#reasonInclusion").text("");
+    $('#will').attr("disabled","disabled"); 
+    $('#pass').attr("disabled","disabled"); 
+    $('#otherDocs').attr("disabled","disabled"); 
     newPolygons.forEach(function (polygon) {
         polygon.setMap(null);
     });
