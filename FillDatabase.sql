@@ -111,7 +111,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `registration_number_of_the_resource` WRITE;
 /*!40000 ALTER TABLE `registration_number_of_the_resource` DISABLE KEYS */;
-INSERT INTO `registration_number_of_the_resource` VALUES (1,1,'1234',2);
+INSERT INTO `registration_number_of_the_resource` VALUES (1,10,'804:23:17:026:79000:',2);
 /*!40000 ALTER TABLE `registration_number_of_the_resource` ENABLE KEYS */;
 UNLOCK TABLES;
 

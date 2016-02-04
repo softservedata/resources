@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.apache.tiles.request.attribute.Addable;
 import org.registrator.community.dao.AreaRepository;
 import org.registrator.community.dao.DiscreteParameterRepository;
 import org.registrator.community.dao.InquiryRepository;
@@ -142,15 +143,21 @@ public class ResourceServiceImpl implements ResourceService {
         }
         
         //save data in the table inquiry_list
-        User user = userRepository.findUserByLogin(ownerLogin);
-        Inquiry inquiry = new Inquiry("INPUT", resourceDTO.getDate(), user, registrator, resourceEntity);
-		inquiryRepository.saveAndFlush(inquiry);
+        if(!ownerLogin.isEmpty()) {
+            addInquiry(ownerLogin, resourceEntity, registrator);            
+        }
 
 		incrementRegistrationNumber(registrator.getLogin());
         return findByIdentifier(resourceEntity.getIdentifier());
     }
 
 
+    private void addInquiry(String ownerLogin, Resource resourceEntity, User registrator) {
+        User user = userRepository.findUserByLogin(ownerLogin);
+        Inquiry inquiry = new Inquiry("INPUT", resourceEntity.getDate(), user, registrator, resourceEntity);
+        inquiryRepository.saveAndFlush(inquiry);
+    }
+    
 
     /**
      * Find the resource with given identifier and form resourceDTO object
@@ -467,10 +474,18 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public String getRegistrationNumber(String login) {
+        final int MAXIMAL_NUMBER_LENGTH = 4;
         User user = userRepository.findUserByLogin(login);
         ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
         if(resourceNumber != null){
-            return resourceNumber.getRegistratorNumber()+ resourceNumber.getNumber();            
+        int numberOfDigits = resourceNumber.getNumber().toString().length();
+        StringBuilder resourceNumberPattern = new StringBuilder();
+        for(int i = numberOfDigits; i < MAXIMAL_NUMBER_LENGTH; i++) {
+            resourceNumberPattern.append("0");
+        }
+        resourceNumberPattern.append(resourceNumber.getNumber());
+        
+            return resourceNumber.getRegistratorNumber()+ resourceNumberPattern.toString();            
         }
         
         return null;
