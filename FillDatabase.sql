@@ -91,7 +91,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `passport_data` WRITE;
 /*!40000 ALTER TABLE `passport_data` DISABLE KEYS */;
-INSERT INTO `passport_data` VALUES (2,NULL,123456,'Хмельницьким','КК',2),(3,NULL,123456,'Стрийським','КК',3),(4,NULL,1122456,'Львівський','КС',4),(5,NULL,1126789,'Київський','КС',5),(6,NULL,43545,'Львівським','КС',6);
+INSERT INTO `passport_data` VALUES (2,NULL,'123456','Хмельницьким','КК',2),(3,NULL,'123456','Стрийським','КК',3),(4,NULL,'1122456','Львівський','КС',4),(5,NULL,'1126789','Київський','КС',5),(6,NULL,'43545','Львівським','КС',6);
 /*!40000 ALTER TABLE `passport_data` ENABLE KEYS */;
 UNLOCK TABLES;
 

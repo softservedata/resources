@@ -207,7 +207,7 @@ public class UserServiceImpl implements UserService {
 			user.setStatus(checkUserStatus(userDto.getStatus()));
 			logger.info("edit user in data base");
 			PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
-					Integer.parseInt(userDto.getPassport().getNumber()), userDto.getPassport().getPublished_by_data());
+					userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
 			Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
 					userDto.getAddress().getDistrict(), userDto.getAddress().getCity(),
 					userDto.getAddress().getStreet(), userDto.getAddress().getBuilding(),
@@ -432,7 +432,7 @@ public class UserServiceImpl implements UserService {
 			PassportInfo passport = new PassportInfo();
 			passport.setUser(user);
 			passport.setSeria(registrationForm.getSeria());
-			passport.setNumber(Integer.parseInt(registrationForm.getNumber()));
+			passport.setNumber((registrationForm.getNumber()));
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
 			passportRepository.saveAndFlush(passport);

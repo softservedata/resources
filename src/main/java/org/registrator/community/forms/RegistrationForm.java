@@ -7,89 +7,79 @@ import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.registrator.community.dao.UserRepository;
-import org.registrator.community.dto.ResourceTypeDTO;
-import org.registrator.community.dto.UserDTO;
-import org.registrator.community.entity.User;
 import org.registrator.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
-public class RegistrationForm /*implements Validator*/{
+public class RegistrationForm{
 
+    public static final String ONLY_LITERALS = "[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]+";
+    public static final String ONLY_DIGITS = "[0-9]+";
+    
     @Autowired
     UserRepository userRepository;
     
     @Autowired
     UserService userService;
 
- 
-    @NotNull
+    @NotEmpty
     @Size(min=5, max=16, message="Логін повинен містити від {min} до {max} символів")
-    @Pattern(regexp = "[a-zA-Z0-9].{4,16}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
+    @Pattern(regexp = "[a-zA-Z0-9].{5,16}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
     private String login;
 //    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
 //    private boolean loginIsAlreadyTaken(){
 //        return userService.checkUsernameNotExistInDB(login);
 //    }
-    @NotNull
+    @NotEmpty
     @Size(min=6, max=20, message="Пароль повинен містити від {min} до {max} символів")
 //    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль може складатись лише з латинських літер (великих і малих) і/або цифр")
-    @Pattern(regexp = "(?=.*[a-zA-Z])[a-zA-Z0-9].{5,20}",message = "Пароль повинен складатись з латинських літер (великих і малих) і хоча б однієї цифри")
+    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль повинен складатись з латинських літер і/або цифр")
 //    @Pattern(regexp = "((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})+ ",message = "at least one Upper and Lower character + at least one digit and special symbol. Password length: 6 - 20")
     private String password;
 
-    @NotNull
+    @NotEmpty
     private String confirmPassword;
 
-    @NotNull
+    @NotEmpty
     @Size(min=1, max=30, message="Ім\'я повинно містити від {min} до {max} символів")
+    @Pattern(regexp =  ONLY_LITERALS, message = "Некоректне введення")
     private String firstName;
 
-    @NotNull
+    @NotEmpty
     @Size(min=1, max=30, message="Прізвище повинне містити від {min} до {max} символів")
 //    @Size(min=4, max=30, message="{lastName.size}")
+    @Pattern(regexp =  ONLY_LITERALS, message = "Некоректне введення")
     private String lastName;
 
-    @Size(min=1, max=30, message="Поле повинне містити від {min} до {max} символів")
+    /*@Size(min=1, max=30, message="Поле повинне містити від {min} до {max} символів")*/
     private String middleName;
 
-    @NotNull //add pattern
-    @Email(message = "Введена вами e-mail адреса невірна")
+    @NotEmpty 
+    @Email(message="Введіть коректну адресу")
     private String email;
 
-    @NotNull
-    @Size(min=2, max=2, message = "Серія паспорту складається із двох букв")
+    
+    /*@Size(min=2, max=2, message = "Серія паспорту складається із двох букв")*/
     private String seria;
 
-    @NotNull
-    @Pattern(regexp = "(?=.*[0-9]).{6}", message = "Поле повинне містити 6 цифр")
+   /* @Pattern(regexp = "(?=.*[0-9]).{6}", message = "Поле повинне містити 6 цифр")*/
     private String number;
 
-    @NotNull
     private String publishedByData;
 
-    @NotNull
     private String postcode;
 
-    @NotNull
     private String region;
 
     private String district;
 
-    @NotNull
     private String city;
 
-    @NotNull
     private String street;
 
-    @NotNull
     private String building;
 
     private String flat;
-    
     
     @NotNull
     @DateTimeFormat(pattern = "dd.MM.yyyy")
@@ -98,7 +88,7 @@ public class RegistrationForm /*implements Validator*/{
     @Pattern (regexp = "[(?=.*[0-9]).{10}]*", message = "Некоректний номер телефону")
     private String phoneNumber;
 
-    @NotNull
+    @NotEmpty
     private String territorialCommunity;
     
 //    @AssertTrue(message = "Введене вами підтвердження паролю невірне")
