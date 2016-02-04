@@ -9,7 +9,6 @@ $(document).ready(function(){
                data: $("#сhangeReg").serialize(), 
                success: function(data)
                {
-            	   //bootbox.alert("Метод реєстрації успішно змінено!");
             	   bootbox.alert(jQuery.i18n.prop('msg.settingsChanged'));
                }
              });

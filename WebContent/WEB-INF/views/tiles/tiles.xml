@@ -171,12 +171,7 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/adminSettings.jsp" />
 	</definition>
-	
-	<definition name="addUsersFromExcel" extends="homepage">
-		<!--<put-attribute name="body" type="template"-->
-			<!--value="/WEB-INF/views/templates/addUsersFromExcel.jsp" />-->
-	</definition>
-	
+
 	<definition name="searchTableTemplate" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/searchTableTemplate.jsp" />

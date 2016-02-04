@@ -30,9 +30,9 @@
 				<td>${user.firstName}</td>
 				<td>${user.middleName}</td>
 				<td>${user.email}</td>
-				<td>${user.address.city},${user.address.street},
-					${user.address.building}, ${user.address.flat}</td>
-				<td>${user.passport.seria},${user.passport.number},
+				<td>${user.address.city} ${user.address.street},
+					${user.address.building} ${user.address.flat}</td>
+				<td>${user.passport.seria} ${user.passport.number},
 					${user.passport.published_by_data}</td>
 				<td><a
 					href="<c:url value='/administrator/users/edit-registrated-user/?login=${user.login}'/>"

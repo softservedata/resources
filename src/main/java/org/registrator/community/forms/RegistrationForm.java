@@ -23,8 +23,8 @@ public class RegistrationForm{
     UserService userService;
 
     @NotEmpty
-    @Size(min=5, max=16, message="Логін повинен містити від {min} до {max} символів")
-    @Pattern(regexp = "[a-zA-Z0-9].{5,16}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
+    @Size(min=6, max=20, message="Логін повинен містити від {min} до {max} символів")
+    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
     private String login;
 //    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
 //    private boolean loginIsAlreadyTaken(){
@@ -42,31 +42,31 @@ public class RegistrationForm{
 
     @NotEmpty
     @Size(min=1, max=30, message="Ім\'я повинно містити від {min} до {max} символів")
-    @Pattern(regexp =  ONLY_LITERALS, message = "Некоректне введення")
+    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення")
     private String firstName;
 
     @NotEmpty
     @Size(min=1, max=30, message="Прізвище повинне містити від {min} до {max} символів")
-//    @Size(min=4, max=30, message="{lastName.size}")
-    @Pattern(regexp =  ONLY_LITERALS, message = "Некоректне введення")
+    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення")
     private String lastName;
 
-    /*@Size(min=1, max=30, message="Поле повинне містити від {min} до {max} символів")*/
+    @Pattern(regexp = "[(?=.*[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]).{1,30}]*", message = "Некоректне введення")
     private String middleName;
 
     @NotEmpty 
     @Email(message="Введіть коректну адресу")
     private String email;
 
-    
+    @Pattern(regexp = "[(?=.*[А-ЯІЇЄ]).{2}]*", message = "Поле повинне містити 2 великі літери")
     /*@Size(min=2, max=2, message = "Серія паспорту складається із двох букв")*/
     private String seria;
 
-   /* @Pattern(regexp = "(?=.*[0-9]).{6}", message = "Поле повинне містити 6 цифр")*/
+    @Pattern(regexp = "[(?=.*[0-9]).{6}]*", message = "Поле повинне містити 6 цифр")
     private String number;
 
     private String publishedByData;
 
+    @Pattern(regexp = "[(?=.*[0-9])]*", message = "Цифри лише від 0 до 9")
     private String postcode;
 
     private String region;

@@ -28,13 +28,13 @@ public class UserNameValidator implements Validator {
         RegistrationForm registrationForm = (RegistrationForm) target;
 
         if (userRepository.findUserByLogin(registrationForm.getLogin()) != null) {
-            errors.rejectValue("login", "msg.resourcetype.typename.exist");
+            errors.rejectValue("login", "msg.registration.login.exist");
         }
         if(!(registrationForm.getPassword()).equals(registrationForm.getConfirmPassword())){
-            errors.rejectValue("confirmPassword", "msg.resourcetype.typename.exist");
+            errors.rejectValue("confirmPassword", "msg.registration.badconfirmation");
         }
         if(userRepository.getUserByEmail(registrationForm.getEmail()) != null){
-            errors.rejectValue("email", "msg.resourcetype.typename.exist");
+            errors.rejectValue("email", "msg.registration.email.exist");
         }
     }
 }
