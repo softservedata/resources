@@ -54,7 +54,7 @@
 					</c:if>
 						
 					</div>
-					<a href="/resources/forgot_password" class="forgot-password">
+					<a href="${pageContext.request.contextPath}/forgot_password" class="forgot-password">
 	                		<spring:message code="label.forgotPassword" />
 	            	</a>
 				</form:form>
