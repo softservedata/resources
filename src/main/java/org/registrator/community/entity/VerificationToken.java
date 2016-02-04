@@ -9,10 +9,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.registrator.community.enumeration.TokenType;
 
 @Entity
+@Table(name = "verification_token")
 public class VerificationToken {
 	
 	@Id
@@ -29,12 +31,14 @@ public class VerificationToken {
 	@Column(name = "expiry_date", nullable = false)
     private Date expiryDate;
 	
-	@Column(name = "status", nullable = false)
+	@Column(name = "token_type", nullable = false)
     @Enumerated(EnumType.STRING)
 	private TokenType tokenType;
 
+	public VerificationToken() {
+	}
+
 	public VerificationToken(String token, String userEmail, Date expiryDate) {
-		super();
 		this.token = token;
 		this.userEmail = userEmail;
 		this.expiryDate = expiryDate;
@@ -42,7 +46,6 @@ public class VerificationToken {
 	
 	public VerificationToken(String token, String userEmail, Date expiryDate,
 			TokenType tokenType) {
-		super();
 		this.token = token;
 		this.userEmail = userEmail;
 		this.expiryDate = expiryDate;
@@ -80,12 +83,12 @@ public class VerificationToken {
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
-	
-	public TokenType getVerificationType() {
+
+	public TokenType getTokenType() {
 		return tokenType;
 	}
 
-	public void setVerificationType(TokenType tokenType) {
+	public void setTokenType(TokenType tokenType) {
 		this.tokenType = tokenType;
 	}
 

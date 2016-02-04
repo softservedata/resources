@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.registrator.community.dao.VerificationTokenRepository;
-import org.registrator.community.entity.User;
 import org.registrator.community.entity.VerificationToken;
 import org.registrator.community.enumeration.TokenType;
 import org.registrator.community.service.VerificationTokenService;
@@ -46,11 +45,24 @@ public class VerificationTokenServiceImpl implements VerificationTokenService{
 	}
 
 	@Override
-	public User findUserByToken(String token) {
-		// TODO Auto-generated method stub
-		return null;
+	public VerificationToken findVerificationTokenByTokenAndTokenType(String token,
+			TokenType type) {
+		return verificationTokenRepository.findVerificationTokenByTokenAndTokenType(token, type);
+	}
+
+	@Override
+	public boolean isExistValidVerificationToken(String token) {
+		VerificationToken verToken = verificationTokenRepository.findVerificationTokenByToken(token);
+		if(verToken != null){
+			return (verToken.getExpiryDate().getTime()> System.currentTimeMillis());
+		}
+		return false;
+	}
+
+	@Override
+	public void deleteVerificationToken(VerificationToken verificationToken) {
+		verificationTokenRepository.delete(verificationToken);
 	}
 	
 	
-
 }

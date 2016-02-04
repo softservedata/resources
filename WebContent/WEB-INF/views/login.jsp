@@ -37,9 +37,7 @@
                     code="label.password" /> size="30"
 							autocomplete="on">
 					</div>
-
-
-
+					
 					<div class="checkbox">
 						<label><input type="checkbox" id="_spring_security_remember_me" value="true" name="_spring_security_remember_me">
 						 <spring:message code="label.rememberMe" /></label>
@@ -54,7 +52,11 @@
 					<a href="${pageContext.request.contextPath}/register" class="btn btn-success"
 						role="button" ><spring:message code="label.register" /></a>
 					</c:if>
+						
 					</div>
+					<a href="/resources/forgot_password" class="forgot-password">
+	                		<spring:message code="label.forgotPassword" />
+	            	</a>
 				</form:form>
 			</c:if>
 		</fieldset>

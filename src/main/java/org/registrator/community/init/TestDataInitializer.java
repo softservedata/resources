@@ -14,7 +14,9 @@ import org.registrator.community.entity.Role;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
+import org.registrator.community.entity.VerificationToken;
 import org.registrator.community.enumeration.RoleType;
+import org.registrator.community.enumeration.TokenType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -99,6 +101,12 @@ public class TestDataInitializer {
         session.persist(inquiry);
         
         inquiryTransaction.commit();
+        Transaction tokenTransaction = session.beginTransaction();
+        
+        VerificationToken verificationToken = new VerificationToken("token", "ivan@gmail.com", new Date(),TokenType.RECOVER_PASSWORD);
+        session.persist(verificationToken);
+        
+        tokenTransaction.commit();
 	}
 
 }
