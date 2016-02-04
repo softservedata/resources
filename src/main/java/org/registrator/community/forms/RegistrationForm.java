@@ -30,10 +30,10 @@ public class RegistrationForm /*implements Validator*/{
     @Size(min=5, max=16, message="Логін повинен містити від {min} до {max} символів")
     @Pattern(regexp = "[a-zA-Z0-9].{4,16}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
     private String login;
-    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
-    private boolean loginIsAlreadyTaken(){
-        return userService.checkUsernameNotExistInDB(login);
-    }
+//    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
+//    private boolean loginIsAlreadyTaken(){
+//        return userService.checkUsernameNotExistInDB(login);
+//    }
     @NotNull
     @Size(min=6, max=20, message="Пароль повинен містити від {min} до {max} символів")
 //    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль може складатись лише з латинських літер (великих і малих) і/або цифр")
@@ -56,7 +56,7 @@ public class RegistrationForm /*implements Validator*/{
     @Size(min=1, max=30, message="Поле повинне містити від {min} до {max} символів")
     private String middleName;
 
-    @NotNull
+    @NotNull //add pattern
     @Email(message = "Введена вами e-mail адреса невірна")
     private String email;
 
@@ -95,16 +95,16 @@ public class RegistrationForm /*implements Validator*/{
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date dateOfAccession;
     
-    @Pattern (regexp = "(?=.*[0-9]).{10}", message = "Некоректний номер телефону")
+    @Pattern (regexp = "[(?=.*[0-9]).{10}]*", message = "Некоректний номер телефону")
     private String phoneNumber;
 
     @NotNull
     private String territorialCommunity;
     
-    @AssertTrue(message = "Введене вами підтвердження паролю невірне")
-    private boolean isValidConfirmPassword(){
-        return confirmPassword != password;
-    }
+//    @AssertTrue(message = "Введене вами підтвердження паролю невірне")
+//    private boolean isValidConfirmPassword(){
+//        return confirmPassword != password;
+//    }
 
 
     public String getLogin() {

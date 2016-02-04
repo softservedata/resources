@@ -70,10 +70,10 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         List<Resource> list = resourceService.findByType(resourceType);
         if(list.isEmpty()){
             resourceTypeRepository.delete(resourceType);
-            logger.info("end: return 0 if list is empty");
+            logger.info("end: return true if list is empty");
             return true;
         }
-        logger.info("end: return -1 if list isn't empty");
+        logger.info("end: return false if list isn't empty");
         return false;
     }
     /**
