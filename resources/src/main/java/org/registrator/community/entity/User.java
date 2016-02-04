@@ -53,7 +53,7 @@ public class User implements Serializable {
 	@Column(name = "email",unique = true, nullable = false)
 	private String email;
 	
-	@Column(name = "status", nullable = false, columnDefinition = "ENUM('BLOCK','UNBLOCK','INACTIVE')")
+	@Column(name = "status", nullable = false, columnDefinition = "ENUM('BLOCK','ACTIVE','INACTIVE')")
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 	

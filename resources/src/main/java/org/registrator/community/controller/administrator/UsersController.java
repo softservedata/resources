@@ -36,7 +36,7 @@ public class UsersController {
 	// MediaType.APPLICATION_JSON_VALUE)
 	//
 	// public String changeStatus(@ModelAttribute("login") String login) {
-	// userService.changeUserStatus(login, UserStatus.UNBLOCK);
+	// userService.changeUserStatus(login, UserStatus.ACTIVE);
 	// return "allUsers";
 	// }
 

@@ -29,6 +29,6 @@ $(document).on('change', '#roleId', function() {
 		})
 		
 	}
-	event.preventDefault();
+	//event.preventDefault();
 
 });

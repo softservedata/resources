@@ -57,20 +57,20 @@ public class TestDataInitializer {
         Transaction userTransaction = session.beginTransaction();
         
         User user = new User("user","$2a$10$Wcuw6mLD18wVT5diGYncJeVyL8J1bTSIly2IbLUX2bJ.UWZPC.qS.",
-        		roleUser,"Іван","Головатий","Сергійович","ivan@gmail.com","UNBLOCK");
+        		roleUser,"Іван","Головатий","Сергійович","ivan@gmail.com","ACTIVE");
         user.setDateOfAccession(new Date());
         user.setTerritorialCommunity(globalTerritorialCommunity);
         
         session.persist(user);
         
         User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
-        		roleAdmin,"Сергій","Головатий","Сергійович","sergey@gmail.com","UNBLOCK");
+        		roleAdmin,"Сергій","Головатий","Сергійович","sergey@gmail.com","ACTIVE");
         user.setDateOfAccession(new Date());
         admin.setTerritorialCommunity(globalTerritorialCommunity);
         session.persist(admin);
         
         User registrator = new User("registrator","$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm",
-        		roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","UNBLOCK");
+        		roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","ACTIVE");
         user.setDateOfAccession(new Date());
         registrator.setTerritorialCommunity(globalTerritorialCommunity);
         session.persist(registrator);
