@@ -42,7 +42,7 @@ public class RegisterController {
     @Autowired
     UserNameValidator validator;
 
-    @PreAuthorize("hasRole('anonymousUser')")
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
         List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
@@ -55,7 +55,7 @@ public class RegisterController {
         return "register";
     }
 
-    @PreAuthorize("hasRole('anonymousUser')")
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
         validator.validate(registrationForm, result);
