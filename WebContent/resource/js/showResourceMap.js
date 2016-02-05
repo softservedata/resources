@@ -15,7 +15,7 @@
         var polygonCoords = [];
         var bounds = new google.maps.LatLngBounds();
 
-        $(".coordinates").each(function () {
+        $(".coordinatesPoint").each(function () {
             var latitudeDegrees = Number($(this).find(".latitudeDegrees").html());
             var latitudeMinutes = Number($(this).find(".latitudeMinutes").html());
             var latitudeSeconds = Number($(this).find(".latitudeSeconds").html());
