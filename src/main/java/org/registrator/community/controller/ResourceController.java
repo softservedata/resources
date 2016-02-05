@@ -49,34 +49,34 @@ import com.google.gson.Gson;
 public class ResourceController {
 
 	@Autowired
-	Logger logger;
+	private Logger logger;
 
 	@Autowired
-	ResourceDTOValidator validator;
+	private ResourceDTOValidator validator;
 
 	@Autowired
-	ResourceService resourceService;
+	private ResourceService resourceService;
 	
 	@Autowired
 	private ResourceDeleteService resourceDeleteService;
 
 	@Autowired
-	ResourceTypeService resourceTypeService;
+	private ResourceTypeService resourceTypeService;
 
 	@Autowired
-	DiscreteParameterServiceImpl discreteParameterService;
+	private DiscreteParameterServiceImpl discreteParameterService;
 
 	@Autowired
-	LinearParameterServiceImpl linearParameterService;
+	private LinearParameterServiceImpl linearParameterService;
 
 	@Autowired
-	ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
+	private ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
 
 	@Autowired
-	ResourceLinearValueServiceImpl resourceLinearValueService;
+	private ResourceLinearValueServiceImpl resourceLinearValueService;
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	/**
 	 * Method for loading form for input the parameter of resource (with
@@ -89,19 +89,13 @@ public class ResourceController {
 	@RequestMapping(value = "/addresource", method = RequestMethod.GET)
 	public String addResourceForm(Model model) {
 
-		/*
-		 * Authentication auth =
-		 * SecurityContextHolder.getContext().getAuthentication(); User
-		 * registrator = userService.getUserByLogin(auth.getName()); Set<User>
-		 * owners = registrator.getOwners(); model.addAttribute("owners",
-		 * owners);
-		 */
-
 		/* load list of resource types on UI form */
 		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
 		logger.info(listOfResourceType.size() + " resource types was found");
 		model.addAttribute("listOfResourceType", listOfResourceType);
 		ResourceDTO newresource = new ResourceDTO();
+		
+		/* fill default registration number of resource depending on authenticated user */
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         newresource.setIdentifier(resourceService.getRegistrationNumber(auth.getName()));
 		model.addAttribute("newresource", newresource);
@@ -114,9 +108,9 @@ public class ResourceController {
 	 * @param resourceDTO
 	 * @param result
 	 * @param model
+	 * @param ownerLogin
 	 * @return showResource.jsp (addResource.jsp page if resource not valid)
 	 */
-	//add parameter ownerLogin for adding input inquiry
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
 	public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
@@ -138,7 +132,7 @@ public class ResourceController {
 			User registrator = userService.getUserByLogin(auth.getName());
 			logger.info("The logged register is" + registrator.getLastName() + " " + registrator.getFirstName());
 
-			/* save resourceDTO on servicelayer with status ACTIVE */
+			/* save resourceDTO on service layer and inquiry*/
 			resourceDTO = resourceService.addNewResource(resourceDTO, ownerLogin, registrator);
 			logger.info("Resource was successfully saved");
 			model.addAttribute("resource", resourceDTO);
@@ -166,7 +160,7 @@ public class ResourceController {
 	 * 
 	 * @param typeName
 	 * @param model
-	 * @return
+	 * @return resourceValues.jsp
 	 */
 	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
 	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
@@ -316,6 +310,12 @@ public class ResourceController {
         return "searchOnMap";
 	}
 
+	/**
+     * Find the list of owners with similar surname
+     * 
+     * @param ownerDesc corresponds to first letters of surname
+     * @return userList list of users
+     */
 	@ResponseBody
 	@RequestMapping(value = "/owners", method = RequestMethod.POST)
 	public List<UserDTO> getOwnersSuggestions(@RequestParam("ownerDesc") String ownerDesc) {
@@ -360,5 +360,5 @@ public class ResourceController {
 		logger.info("end deleteResource");
 		return "redirect:/registrator/resource/searchOnMap";
 	}
-	
+
 }
