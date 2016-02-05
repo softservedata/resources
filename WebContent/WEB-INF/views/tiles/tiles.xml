@@ -15,10 +15,16 @@
 			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
 			<put-attribute name="login_body" type="template" value="/WEB-INF/views/login.jsp" />
 		</definition>
+		
+		<!-- Password Recovery Page -->
+		<definition name="forgot_password" extends="base">
+			<put-attribute name="title" value="Forgot Password" />
+			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
+			<put-attribute name="login_body" type="template" value="/WEB-INF/views/forgotPasswordForm.jsp" />
+		</definition>
 
 		<!-- Password Recovery Page -->
 		<definition name="password_recovery" extends="base">
-			<put-attribute name="title" value="Password Recovery" />
 			<put-attribute name="login_header" type="template" value="/WEB-INF/views/templates/header.jsp" />
 			<put-attribute name="login_body" type="template" value="/WEB-INF/views/password_recovery.jsp" />
 		</definition>
@@ -165,12 +171,7 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/adminSettings.jsp" />
 	</definition>
-	
-	<definition name="addUsersFromExcel" extends="homepage">
-		<!--<put-attribute name="body" type="template"-->
-			<!--value="/WEB-INF/views/templates/addUsersFromExcel.jsp" />-->
-	</definition>
-	
+
 	<definition name="searchTableTemplate" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/searchTableTemplate.jsp" />

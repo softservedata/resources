@@ -242,7 +242,7 @@ function intersectionCheck(polygon){
 
     //console.log("Polygons found: "+polygons.length);
 
-    for (i = 0; i < vertices.getLength(); i++) {
+   /* for (i = 0; i < vertices.getLength(); i++) {
         point = vertices.getAt(i);
         for (j = 0; j < polygons.length; j++) {
             isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygons[j]);
@@ -290,7 +290,9 @@ function intersectionCheck(polygon){
             }
 
         }
-    }
+    }*/
+    
+    intersection = checkIntersectionAllPolygons(polygon, polygons);
 
     if (!intersection) {
         newPolygons.push(polygon);
@@ -506,6 +508,10 @@ $(document).on("click", "#resetForm", function(){
     cleanPoints();
     //$("input[id*='myparam']").removeAttr("disabled");
     $("#typeParameters").html("");
+    $("#reasonInclusion").text("");
+    $('#will').attr("disabled","disabled"); 
+    $('#pass').attr("disabled","disabled"); 
+    $('#otherDocs').attr("disabled","disabled"); 
     newPolygons.forEach(function (polygon) {
         polygon.setMap(null);
     });

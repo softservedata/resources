@@ -53,6 +53,10 @@ $(document).ready(
 				
 			});	
 			
+			$("#editNumber").click(function() {
+				$('#identifier').removeAttr('readonly');
+			});
+			
             /* Switch off form submit on ENTER keypress from every input field */
             $('form').bind("keypress", function(e) {
                 if (e.keyCode == 13) {

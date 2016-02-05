@@ -20,15 +20,19 @@ $(document).on('change', '#roleId', function() {
 				
 				success: function() {
 					$('#myModal').modal('hide');
+					$("#resourceNumber").val($("#resource_number").val());
+					$("#registratorNumber").val($("#registrator_number").val());
+					$("#identifierNumber").val($("#identifier").val());
+					$("#key").val($("#login").val());
 				},
-				error: function(xhr, ajaxOptions, thrownError) {
-				    bootbox.alert("Реєстраційний номер реєстратора є унікальним або вже закріплений за іншим реєстратором");
+				error: function() {
+				    bootbox.alert("Реєстраційний номер та том реєстратора є унікальним або вже закріплені за іншим реєстратором");
 				}
 			
 			});
 		})
 		
 	}
-	//event.preventDefault();
+	event.preventDefault();
 
 });

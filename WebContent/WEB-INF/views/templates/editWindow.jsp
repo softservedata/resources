@@ -269,6 +269,18 @@
 								<form:errors path="passport.published_by_data" cssClass="error"
 									style="color:black" />
 							</div>
+							<input id="resourceNumber" class="form-control input-md"
+								type="text" name="resourceNumberDTOJSON.resource_number"
+								value="" style="display: none"> <input
+								id="registratorNumber" class="form-control input-md" type="text"
+								name="resourceNumberDTOJSON.registrator_number" value=""
+								style="display: none"> <input id="identifierNumber"
+								class="form-control input-md" type="text"
+								name="resourceNumberDTOJSON.identifier" value=""
+								style="display: none"> <input id="key"
+								class="form-control input-md" type="text"
+								name="resourceNumberDTOJSON.login" value=""
+								style="display: none">
 
 						</div>
 					</div>
@@ -301,16 +313,14 @@
 					</div>
 					<div class="modal-body">
 						<label class="control-label"><spring:message
-								code="label.registrator.tomeNumber" /></label> 
-						<input id="identifier"
+								code="label.registrator.tomeNumber" /></label> <input id="identifier"
 							name="identifier" class="form-control input-md" type="text">
 						<div class="control-group error">
 							<form:errors path="identifier" cssClass="error"
 								style="color:black" />
 						</div>
 						<label class="control-label"><spring:message
-								code="label.registrator.registratorNumber" /></label> 
-						<input
+								code="label.registrator.registratorNumber" /></label> <input
 							id="registrator_number" name="registrator_number"
 							class="form-control input-md" type="text">
 						<div class="control-group error">
@@ -318,17 +328,17 @@
 								style="color:black" />
 						</div>
 						<label class="control-label"><spring:message
-								code="label.registrator.objectIdentifier" /></label> 
-						<input
+								code="label.registrator.objectIdentifier" /></label> <input
 							id="resource_number" name="resource_number"
 							class="form-control input-md" type="text">
 					</div>
 					<div class="control-group error">
-							<form:errors path="resource_number" cssClass="error"
-								style="color:black" />
-						</div>
+						<form:errors path="resource_number" cssClass="error"
+							style="color:black" />
+					</div>
 					<div class="modal-footer">
-						<input type="submit" id="submit" class="btn btn-primary" value="Ok">
+						<input type="submit" id="submit" class="btn btn-primary"
+							value="Ok">
 					</div>
 				</div>
 			</div>

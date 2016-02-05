@@ -150,6 +150,11 @@
 			<artifactId>standard</artifactId>
 			<version>${taglibs.standard.version}</version>
 		</dependency>
+		<dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
 		<!-- - - - Spring - - - -->
 		<dependency>
 			<groupId>org.springframework</groupId>

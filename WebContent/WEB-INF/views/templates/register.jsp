@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-
+<script src="<c:url value='/resource/js/registration/loginValidation.js'/>"></script>
 <style>
 input.error {
 	border-style: solid;
@@ -28,7 +28,7 @@ text-align: center;
 						code="label.user.firstname" /> *</label>
 				<div class="col-lg-8">
 					<input name="firstName" type="text" class="form-control login"
-						id="firstName" value="${registrationForm.firstName}" />
+						id="firstName" value="${registrationForm.firstName}" required/>
 					<form:errors path="firstName" class="error" />
 					<br>
 				</div>
@@ -37,13 +37,13 @@ text-align: center;
 						code="label.user.secondname" />*</label>
 				<div class="col-lg-8">
 					<input name="lastName" type="text" class="form-control login"
-						id="lastName" value="${registrationForm.lastName}" />
+						id="lastName" value="${registrationForm.lastName}" required/>
 					<form:errors path="lastName" class="error" />
 					<br>
 				</div>
 
 				<label class="col-lg-4 control-label" for="middleName"><spring:message
-						code="label.user.middlename" /> *</label>
+						code="label.user.middlename" /></label>
 				<div class="col-lg-8">
 					<input name="middleName" type="text" class="form-control login"
 						id="middleName" value="${registrationForm.middleName}" />
@@ -55,7 +55,7 @@ text-align: center;
 						code="label.user.email" /> *</label>
 				<div class="col-lg-8">
 					<input name="email" type="text" class="form-control login"
-						id="email" value="${registrationForm.email}" />
+						id="email" value="${registrationForm.email}" required/>
 					<form:errors path="email" class="error" />
 					<br>
 				</div>
@@ -64,7 +64,7 @@ text-align: center;
 						code="label.login" /> *</label>
 				<div class="col-lg-8">
 					<input name="login" type="text" class="form-control login"
-						id="login" value="${registrationForm.login}" />
+						id="login" value="${registrationForm.login}" required/>
 					<form:errors path="login" class="error" />
 					<br>
 				</div>
@@ -73,7 +73,7 @@ text-align: center;
 						code="label.password" /> *</label>
 				<div class="col-lg-8">
 					<input name="password" type="password" class="form-control login"
-						id="password" type="password" />
+						id="password" type="password" required/>
 					<form:errors path="password" class="error" />
 					<br>
 				</div>
@@ -82,7 +82,7 @@ text-align: center;
 						code="label.confirmPassword" /> *</label>
 				<div class="col-lg-8">
 					<input name="confirmPassword" type="password"
-						class="form-control login" id="confirmPassword" type="password" />
+						class="form-control login" id="confirmPassword" type="password" required/>
 					<form:errors path="confirmPassword" class="error" />
 					<br>
 				</div>
@@ -90,7 +90,7 @@ text-align: center;
 			<div class="address_header col-lg-4">
 				<h4><spring:message code="label.user.addressinfo" /></h4> <label
 					class="col-lg-4 control-label" for="city"><spring:message
-						code="label.user.city" /> *</label>
+						code="label.user.city" /></label>
 				<div class="col-lg-8">
 					<input name="city" type="text" class="form-control login" id="city"
 						value="${registrationForm.city}" />
@@ -99,7 +99,7 @@ text-align: center;
 				</div>
 
 				<label class="col-lg-4 control-label" for="region"><spring:message
-						code="label.user.region" /> *</label>
+						code="label.user.region" /></label>
 				<div class="col-lg-8">
 					<input name="region" type="text" class="form-control login"
 						id="region" value="${registrationForm.region}" />
@@ -108,7 +108,7 @@ text-align: center;
 				</div>
 
 				<label class="col-lg-4 control-label" for="district"><spring:message
-						code="label.user.district" /> </label>
+						code="label.user.district" /></label>
 				<div class="col-lg-8">
 					<input name="district" type="text" class="form-control login"
 						id="district" value="${registrationForm.district}" />
@@ -117,7 +117,7 @@ text-align: center;
 				</div>
 
 				<label class="col-lg-4 control-label" for="street"><spring:message
-						code="label.user.street" /> *</label>
+						code="label.user.street" /></label>
 				<div class="col-lg-8">
 					<input name="street" type="text" class="form-control login"
 						id="street" value="${registrationForm.street}" />
@@ -126,7 +126,7 @@ text-align: center;
 				</div>
 
 				<label class="col-lg-4 control-label" for="building"><spring:message
-						code="label.user.building" /> *</label>
+						code="label.user.building" /></label>
 				<div class="col-lg-8">
 					<input name="building" type="text" class="form-control login"
 						id="building" value="${registrationForm.building}" />
@@ -135,7 +135,7 @@ text-align: center;
 				</div>
 
 				<label class="col-lg-4 control-label" for="flat"><spring:message
-						code="label.user.flat" /> </label>
+						code="label.user.flat" /></label>
 				<div class="col-lg-8">
 					<input name="flat" type="text" class="form-control login" id="flat"
 						value="${registrationForm.flat}" />
@@ -144,7 +144,7 @@ text-align: center;
 				</div>
 
 				<label class="col-lg-4 control-label" for="postcode"><spring:message
-						code="label.user.postcode" /> *</label>
+						code="label.user.postcode" /></label>
 				<div class="col-lg-8">
 					<input name="postcode" type="text" class="form-control login"
 						id="postcode" value="${registrationForm.postcode}" />
@@ -155,7 +155,7 @@ text-align: center;
 			<div class="passport_header col-lg-4">
 				<h4><spring:message code="label.user.passportinfo" /></h4> <label
 					class="col-lg-4 control-label" for="passport_seria"><spring:message
-						code="label.user.seria" /> *</label>
+						code="label.user.seria" /></label>
 				<div class="col-lg-8">
 					<input name="seria" type="text" class="form-control login"
 						id="passport_seria" value="${registrationForm.seria}" />
@@ -163,7 +163,7 @@ text-align: center;
 					<br>
 				</div>
 				<label class="col-lg-4 control-label" for="passport_number"><spring:message
-						code="label.user.number" />*</label>
+						code="label.user.number" /></label>
 				<div class="col-lg-8">
 					<input name="number" type="text" class="form-control login"
 						id="passport_number" value="${registrationForm.number}" />
@@ -171,7 +171,7 @@ text-align: center;
 					<br>
 				</div>
 				<label class="col-lg-4 control-label" for="published_by_data"><spring:message
-						code="label.user.published" /> *</label>
+						code="label.user.published" /></label>
 				<div class="col-lg-8">
 					<input name="publishedByData" type="text"
 						class="form-control login" id="published_by_data"
@@ -208,7 +208,7 @@ text-align: center;
 						code="label.manualregister.dateOfaccession" />*</label>
 				<div class="col-lg-8">
 					<input name="dateOfAccession" class="form-control" type="text"
-						id="datepicker">
+						id="datepicker" required>
 					<div class="control-group error">
 						<form:errors path="dateOfAccession" class="error" />
 						<br>

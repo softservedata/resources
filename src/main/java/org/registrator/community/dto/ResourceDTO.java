@@ -18,7 +18,7 @@ public class ResourceDTO {
     private String resourceType;
     
     @NotEmpty(message = "{msg.notEmptyField}")
-    @Pattern(regexp ="\\d+", message = "Ідентифікатор може містити лише цифри від 0 до 9")
+    @Pattern(regexp ="^[\\d]{3}:[\\d]{2}:[\\d]{2}:[\\d]{3}:[\\d]{5}:[\\d]{4}$", message = "{msg.resource.identifier.patternMissmatch}")
     private String identifier;
     
     @Pattern(regexp ="\\p{IsCyrillic}*", message = "Лише літери лише від А до Я ")

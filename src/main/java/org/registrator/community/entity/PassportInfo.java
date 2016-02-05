@@ -26,7 +26,7 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 	private String seria;
 
 	@Column(name = "number", nullable = false)
-	private Integer number;
+	private String number;
 
 	@Column(name = "published_by_data", nullable = false)
 	private String publishedByData;
@@ -38,7 +38,7 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 
 	}
 
-	public PassportInfo(User user, String seria, Integer number, String publishedByData) {
+	public PassportInfo(User user, String seria, String number, String publishedByData) {
 		this.user = user;
 		this.seria = seria;
 		this.number = number;
@@ -69,11 +69,11 @@ public class PassportInfo implements Serializable,Comparable<PassportInfo>{
 		this.seria = seria;
 	}
 
-	public Integer getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(Integer number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 

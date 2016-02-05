@@ -14,7 +14,9 @@ import org.registrator.community.entity.Role;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.Tome;
 import org.registrator.community.entity.User;
+import org.registrator.community.entity.VerificationToken;
 import org.registrator.community.enumeration.RoleType;
+import org.registrator.community.enumeration.TokenType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -63,13 +65,13 @@ public class TestDataInitializer {
         
         User admin = new User("admin","$2a$10$tkROwYPOXyBmKjarHW1rbuOOez2Z5gfkFCbUXUbOv1OY2wgekbZNC",
         		roleAdmin,"Сергій","Головатий","Сергійович","sergey@gmail.com","ACTIVE");
-        user.setDateOfAccession(new Date());
+        admin.setDateOfAccession(new Date());
         admin.setTerritorialCommunity(globalTerritorialCommunity);
         session.persist(admin);
         
         User registrator = new User("registrator","$2a$10$KJdq1wmP3MctLh.lEdAuseUCnSRdhJo8S7qwaZHFEUoGhfjOsOnrm",
         		roleRegistrator,"Євген","Михалкевич","Сергійович","evgen@gmail.com","ACTIVE");
-        user.setDateOfAccession(new Date());
+        registrator.setDateOfAccession(new Date());
         registrator.setTerritorialCommunity(globalTerritorialCommunity);
         session.persist(registrator);
         
@@ -99,6 +101,12 @@ public class TestDataInitializer {
         session.persist(inquiry);
         
         inquiryTransaction.commit();
+        Transaction tokenTransaction = session.beginTransaction();
+        
+        VerificationToken verificationToken = new VerificationToken("token", "ivan@gmail.com", new Date(),TokenType.RECOVER_PASSWORD);
+        session.persist(verificationToken);
+        
+        tokenTransaction.commit();
 	}
 
 }

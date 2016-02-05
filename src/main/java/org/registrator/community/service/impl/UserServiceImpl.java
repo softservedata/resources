@@ -1,14 +1,11 @@
 package org.registrator.community.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.ResourceNumberRepository;
-//import org.registrator.community.dao.ResourceNumberRepository;
 import org.registrator.community.dao.RoleRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
@@ -18,7 +15,6 @@ import org.registrator.community.dto.ResourceNumberDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.WillDocumentDTO;
-import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.OtherDocuments;
@@ -74,7 +70,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private CommunityService communityService;
-
 
 	/**
 	 * Method, which returns user from database by login
@@ -208,7 +203,7 @@ public class UserServiceImpl implements UserService {
 			user.setStatus(checkUserStatus(userDto.getStatus()));
 			logger.info("edit user in data base");
 			PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
-					Integer.parseInt(userDto.getPassport().getNumber()), userDto.getPassport().getPublished_by_data());
+					userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
 			Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
 					userDto.getAddress().getDistrict(), userDto.getAddress().getCity(),
 					userDto.getAddress().getStreet(), userDto.getAddress().getBuilding(),
@@ -396,17 +391,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void registerUser(RegistrationForm registrationForm) {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    User admin = getUserByLogin(auth.getName());
-		// if (this.userRepository.findUserByLogin(registrationForm.getLogin())
-		// != null) {
-		// return UserService.ERR_DUP_USER;
-		// }
-		// if (this.userRepository.findUserByEmail(registrationForm.getEmail())
-		// != null) {
-		// return UserService.ERR_DUP_EMAIL;
-		// }
-	    TerritorialCommunity territorialCommunity = communityService.findByName(registrationForm.getTerritorialCommunity());
+		TerritorialCommunity territorialCommunity = communityService
+				.findByName(registrationForm.getTerritorialCommunity());
 		User user = new User();
 		user.setLogin(registrationForm.getLogin());
 		user.setEmail(registrationForm.getEmail());
@@ -416,11 +402,7 @@ public class UserServiceImpl implements UserService {
 		user.setMiddleName(registrationForm.getMiddleName());
 		user.setPhoneNumber(registrationForm.getPhoneNumber());
 		user.setRole(roleRepository.findRoleByType(RoleType.USER));
-		if(admin.getRole().getType() == RoleType.ADMIN){
-		user.setStatus(UserStatus.INACTIVE);}
-		else{
-		user.setStatus(UserStatus.ACTIVE);
-		}
+		user.setStatus(UserStatus.INACTIVE);
 		user.setPhoneNumber(registrationForm.getPhoneNumber());
 		user.setDateOfAccession(registrationForm.getDateOfAccession());
 		user.setTerritorialCommunity(territorialCommunity);
@@ -433,7 +415,7 @@ public class UserServiceImpl implements UserService {
 			PassportInfo passport = new PassportInfo();
 			passport.setUser(user);
 			passport.setSeria(registrationForm.getSeria());
-			passport.setNumber(Integer.parseInt(registrationForm.getNumber()));
+			passport.setNumber((registrationForm.getNumber()));
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
 			passportRepository.saveAndFlush(passport);
@@ -486,54 +468,6 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
-	/**
-	 * Method, which creates resoure number
-	 * 
-	 * @param resourseNumberDtoJson
-	 * @return void
-	 * 
-	 */
-	@Transactional
-	@Override
-	public void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson) {
-		try {
-			User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-			ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
-					Integer.parseInt(resourseNumberDtoJson.getResource_number()),
-					resourseNumberDtoJson.getRegistrator_number());
-			ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
-					resourseNumberDto.getRegistratorNumber(), user);
-			resourceNumberRepository.save(resourceNumber);
-		} catch (NumberFormatException ex) {
-			ex.printStackTrace();
-			log.error("Format is incorrect");
-		}
-	}
-
-	/**
-	 * Method, which creates tome
-	 * 
-	 * @param resourseNumberDtoJson
-	 * @return void
-	 * 
-	 */
-	@Transactional
-	@Override
-	public void createTome(ResourceNumberDTOJSON resourseNumberDtoJson) {
-		try {
-		User user = userRepository.findUserByLogin(resourseNumberDtoJson.getLogin());
-		TomeDTO tomeDto = new TomeDTO(resourseNumberDtoJson.getIdentifier(), user.getFirstName(), user.getLastName(),
-				user.getMiddleName());
-		Tome tome = new Tome(user, tomeDto.getTomeIdentifier());
-		tomeRepository.save(tome);
-		} catch(NumberFormatException ex) {
-			ex.printStackTrace();
-			log.error("Format is incorrect");
-		}
-	}
-
-	// @Override
-
 	@Override
 	public List<UserDTO> getUserBySearchTag(String searchTag) {
 		List<User> usersList = userRepository.findOwnersLikeProposed(searchTag);
@@ -578,5 +512,44 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return userdto;
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		return userRepository.getUserByEmail(email);
+	}
+
+	/**
+	 * Method, which creates tome and number of resource
+	 * 
+	 * @param userDto
+	 * @return void
+	 * 
+	 */
+	@Transactional
+	@Override
+	public void CreateTomeAndRecourceNumber(UserDTO userDto) {
+		try {
+			if (!userDto.getResourceNumberDTOJSON().getLogin().equals("")) {
+				System.out.println("3");
+				User user = userRepository.findUserByLogin(userDto.getResourceNumberDTOJSON().getLogin());
+				TomeDTO tomeDto = new TomeDTO(userDto.getResourceNumberDTOJSON().getIdentifier(), user.getFirstName(),
+						user.getLastName(), user.getMiddleName());
+				ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
+						Integer.parseInt(userDto.getResourceNumberDTOJSON().getResource_number()),
+						userDto.getResourceNumberDTOJSON().getRegistrator_number());
+				ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
+						resourseNumberDto.getRegistratorNumber(), user);
+				Tome tome = new Tome(user, tomeDto.getTomeIdentifier());
+				tomeRepository.save(tome);
+				resourceNumberRepository.save(resourceNumber);
+			}
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			log.error("Format is incorrect");
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
+		}
+
 	}
 }

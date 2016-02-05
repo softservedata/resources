@@ -28,11 +28,11 @@
 		</div>
 
 		<!-- login of the selected co-owner -->
-		<div class="form-group" hidden="true">
+		<div class="form-group"  hidden="true">
 			<label class="control-label col-sm-3">login:</label>
 			<div class="col-sm-3">
-				<input class="form-control" id="owner_login" type="text" value=""
-					name="ownerLogin">
+				<input class="form-control" id="owner_login" type="text" 
+				value="${ownerLogin}" name="ownerLogin">
 			</div>
 		</div>
 
@@ -83,12 +83,18 @@
 			<label class="control-label col-sm-3"><spring:message
 					code="label.resource.identifier" />:</label>
 			<div class="col-sm-3">
-				<input class="form-control" name="identifier"
+				<input class="form-control" name="identifier" id="identifier"
 					value="${newresource.identifier}" readonly>
 				<div class="control-group error">
 					<form:errors path="identifier" cssClass="error" style="color:red" />
 				</div>
 			</div>
+			<div class="col-sm-3">
+				<button id="editNumber" type="button" class="btn btn-primary">
+					<spring:message code="label.resource.edit" />
+				</button>
+			</div>
+
 		</div>
 
 		<!-- reasonInclusion -->
@@ -106,15 +112,15 @@
 			<div class="checkbox">
 				<div class="col-sm-3">
 					<label><input id="pass" type="checkbox" disabled> <spring:message
-						code="label.resource.pass" /></label><br /> <label><input
-					id="will" type="checkbox" disabled> <spring:message
-						code="label.resource.willDocument" /></label><br /> <label><input
-					id="otherDocs" type="checkbox" disabled> <spring:message
-						code="label.resource.otherDocuments" /></label><br /> <label><input
-					id="tytul" type="checkbox" disabled> <spring:message
-						code="label.resource.propertyTitle" /></label><br /> <label><input
-					id="delivery" type="checkbox"> <spring:message
-						code="label.resource.assignment" /></label>
+							code="label.resource.pass" /></label><br /> <label><input
+						id="will" type="checkbox" disabled> <spring:message
+							code="label.resource.willDocument" /></label><br /> <label><input
+						id="otherDocs" type="checkbox" disabled> <spring:message
+							code="label.resource.otherDocuments" /></label><br /> <label><input
+						id="tytul" type="checkbox" disabled> <spring:message
+							code="label.resource.propertyTitle" /></label><br /> <label><input
+						id="delivery" type="checkbox"> <spring:message
+							code="label.resource.assignment" /></label>
 				</div>
 			</div>
 
@@ -161,9 +167,9 @@
 				хочете виділити область поруч з існуючою, таким чином, щоб вони мали
 				спільну межу, виконайте наступні дії:<br /> 1. Знайдіть на мапі
 				потрібну область і оберіть такий масштаб, щоб вся область поміщалася
-				в межах мапи.<br /> 2. Натисніть кнопку показати ресурси. <br /> 3.
-				На мапі відобразяться області ресурсів вже внесених в базу.<br /> 4.
-				Коли ви підведете мишку до однієї з вершин показаних областей, на
+				в межах мапи.<br /> 2. Натисніть кнопку показати ресурси. <br />
+				3. На мапі відобразяться області ресурсів вже внесених в базу.<br />
+				4. Коли ви підведете мишку до однієї з вершин показаних областей, на
 				ній з'явиться маркер. Затиснувши кнопку шифт клікніть лівою кнопкою
 				миші. Таким чином Ви оберете для нової області точку з тими ж
 				координатами, що має відображена область.<br /> Якщо Ви зробили
@@ -185,7 +191,7 @@
 				<spring:message code="label.resource.coordinates.addFromMap" />
 			</button>
 			<button id="addPointsToMap" class="btn btn-primary" type="button"
-					style="margin-top: 10px;">
+				style="margin-top: 10px;">
 				<spring:message code="label.resource.coordinates.addToMap" />
 			</button>
 			<%--<button id="show_UA" class="btn btn-primary" type="button"--%>
@@ -338,6 +344,8 @@
 		src="<c:url value="/resource/js/lib/polysnapper.js"/>"></script>
 	<script type="text/javascript"
 		src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
+	<script type="text/javascript"
+		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>	
 </div>
 
 <script
@@ -353,3 +361,4 @@
 	href="<c:url value='/resource/css/cssload.css'/>">
 <link rel="stylesheet"
 	href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+

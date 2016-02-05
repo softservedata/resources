@@ -63,6 +63,19 @@ public class InquiryServiceImpl implements InquiryService{
 		return inquiry;
 	}
 	
+	/**
+     * Method save input inquiry in database for selected user and saved resource
+     * @param ownerLogin
+     * @param resourceEntity
+     * @param registrator
+     */
+	@Transactional
+	@Override
+	public void addInputInquiry(String ownerLogin, Resource resourceEntity, User registrator){
+		User user = userRepository.findUserByLogin(ownerLogin);
+        Inquiry inquiry = new Inquiry("INPUT", resourceEntity.getDate(), user, registrator, resourceEntity);
+        inquiryRepository.saveAndFlush(inquiry);
+	}
 	
 	/**
 	 * Method for showing form on UI to input the parameters 
