@@ -27,20 +27,19 @@ public class AdditionalAppConfig {
 
     @Bean(name = "mailSender")
     public JavaMailSender mailSender(){
-    	JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    	mailSender.setDefaultEncoding("UTF-8");
-    	mailSender.setHost(env.getProperty("mail.host"));
-    	mailSender.setPort(Integer.valueOf(env.getProperty("mail.port")));
-    	mailSender.setUsername(env.getProperty("mail.user"));
-    	mailSender.setPassword(env.getProperty("mail.password"));
-    	
-    	Properties javaMailProperties = new Properties();
-    	javaMailProperties.setProperty("mail.smtp.auth", "true");
-    	javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
-		javaMailProperties.put("mail.smtp.socketFactory.fallback", "true");
-    	
-		mailSender.setJavaMailProperties(javaMailProperties);
-    	return mailSender;
+    	JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        sender.setDefaultEncoding("UTF-8");
+        sender.setHost("smtp.gmail.com");
+        sender.setPort(587);
+        sender.setUsername("resources.registrator@gmail.com");
+        sender.setPassword("m@!RljNg");
+       
+        Properties javaMailProperties = new Properties();
+        javaMailProperties.setProperty("mail.smtp.auth", "true");
+        javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
+        sender.setJavaMailProperties(javaMailProperties);
+       
+        return sender;
     }
     
     @Bean
