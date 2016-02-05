@@ -28,11 +28,11 @@
 		</div>
 
 		<!-- login of the selected co-owner -->
-		<div class="form-group" hidden="true">
+		<div class="form-group"  hidden="true">
 			<label class="control-label col-sm-3">login:</label>
 			<div class="col-sm-3">
-				<input class="form-control" id="owner_login" type="text" value=""
-					name="ownerLogin">
+				<input class="form-control" id="owner_login" type="text" 
+				value="${ownerLogin}" name="ownerLogin">
 			</div>
 		</div>
 
@@ -344,6 +344,8 @@
 		src="<c:url value="/resource/js/lib/polysnapper.js"/>"></script>
 	<script type="text/javascript"
 		src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
+	<script type="text/javascript"
+		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>	
 </div>
 
 <script
@@ -359,3 +361,4 @@
 	href="<c:url value='/resource/css/cssload.css'/>">
 <link rel="stylesheet"
 	href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+

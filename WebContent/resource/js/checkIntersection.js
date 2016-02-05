@@ -1,70 +1,64 @@
 /**
  * author Ann
  */
-//Ann    
- //   intersection = checkIntersectionAllPoligons(polygon, polygons);
 
-//var polygons = [];
+var Polygons = [];
 var N = 10;		 //ділимо сторону на N частин.
 var tolerance = 0.000000001;
 
-function checkIntersectionAllPoligons(polygon, polygons){
-	
-	// перетворюємо тип
-	/*polygonPath = [];
-	for (var j = 0; j < polygon.length; j++) {
-        polygonPath.push(new google.maps.LatLng(polygon[j][0], polygon[j][1]));
-    }
-	var polygonNew = new google.maps.Polygon({
-        path: polygonPath, // Координаты
-        strokeColor: "#FF0000", // Цвет обводки
-        strokeOpacity: 0.8, // Прозрачность обводки
-        strokeWeight: 2, // Ширина обводки
-        fillColor: "#0000FF", // Цвет заливки
-        fillOpacity: 0.3, // Прозрачность заливки
-        snapable: true,
-        map: map
-    }); */
-	
-	for (var i = 0; i<polygons.length; i++)	{
-		//можна буде частину відкинути
-		return checkEdgeOfFirstOnSecond(polygon, poligons[i]) || checkEdgeOfFirstOnSecond(poligons[i], poligon);
+function checkIntersectionAllPolygons(polygon, Polygons){
+	var intersect = false;
+		
+	console.log("polygons.length = " + Polygons.length);
+	for (var i = 0; i<Polygons.length; i++)	{		
+		//console.log("i = " + i);
+		intersect = checkEdgeOfFirstOnSecond(Polygons[i], polygon)  || checkEdgeOfFirstOnSecond(polygon, Polygons[i]);
+		if (intersect) {
+			return intersect;
+		}
 	}   
 }
 
 //перевіряє чи межа першого полігону перетинає другий
-function checkEdgeOfFirstOnSecond(polygon1, poligon2){
+function checkEdgeOfFirstOnSecond(polygon1, polygon2){
 	var intersection = false;
-	var vertices = polygon.getPath();
+	var vertices = polygon1.getPath();
 	var pointBegin;
 	var pointEnd;
+	console.log("vertices Length = " + vertices.getLength());
 	for (var j = 0; j < vertices.getLength()-2; j++){
+		//console.log("j = " + j);
 		pointBegin = vertices.getAt(j);
 		pointEnd = vertices.getAt(j+1);
-		intersection = checkInterseptionLinePoligon(pointBegin, pointEnd, poligon2);
+		intersection = checkInterseptionLinePolygon(pointBegin, pointEnd, polygon2);
 		if (intersection){
-			alert("intersection " + intersection);
+			console.log("intersection " + intersection);
 			return intersection;
 		}
 	}
-	pointBegin = vertices.vertices.getLength()-1;
+	pointBegin = vertices.getAt(vertices.getLength()-1);
 	pointEnd = vertices.getAt(0);	
-	return checkInterseptionLinePoligon(pointBegin, pointEnd, poligon2);;
+	return checkInterseptionLinePolygon(pointBegin, pointEnd, polygon2);
 }
 
 //перевіряє чи відрізок (pointBegin, pointEnd) перетинає полігон
-function checkInterseptionLinePoligon(pointBegin, pointEnd, poligon2){
+function checkInterseptionLinePolygon(pointBegin, pointEnd, polygon2){
+	var pointOnVerticesLat;
+	var pointOnVerticesLng;
 	var pointOnVertices;
 	var isInsidePolygon;
 	var isOnEdge;
 	for (var k=0; k<N; k++) {
-		// new google.maps.LatLng(  )
-		pointOnVertices = pointBegin*(N-k)/N + pointEnd*k/N;
+		//take point on the line
+		pointOnVerticesLat = pointBegin.lat() * (N-k)/N + pointEnd.lat()*k/N;
+		pointOnVerticesLng = pointBegin.lng() * (N-k)/N + pointEnd.lng()*k/N;
+		pointOnVertices = new google.maps.LatLng(pointOnVerticesLat, pointOnVerticesLng);
 		//is inside the polygon2
 		isInsidePolygon = google.maps.geometry.poly.containsLocation(pointOnVertices, polygon2);
-		console.log("isInsidePolygon " + isInsidePolygon);
+		
 		// if yes check if it is on edge
 		if (isInsidePolygon) {
+			console.log("isInsidePolygon " + isInsidePolygon);
 			isOnEdge = google.maps.geometry.poly.isLocationOnEdge(pointOnVertices, polygon2, tolerance);
 			console.log("isOnEdge " + isOnEdge);
 			if (!isOnEdge) {
@@ -73,4 +67,5 @@ function checkInterseptionLinePoligon(pointBegin, pointEnd, poligon2){
 			}
 		}		
 	}	
+return false;
 }

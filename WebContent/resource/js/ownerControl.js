@@ -32,6 +32,20 @@ $('#owner_search').autocomplete({
 
     });
 
+//to restore the information about the co-owner after unsuccessful validation
+if ($("#owner_login").val() !== ""){
+	 $.ajax({
+         url: "getOwnerInfo",
+         data: { ownerLogin : $("#owner_login").val()},
+         dataType: "json",
+         type: "GET",
+         success: function(data){
+         	$("#owner_search").val(data.lastName + " " +data.firstName + " " + data.middleName);
+         }
+     });
+}
+
+
 function reasonInclusionControl(owner) {
     if( owner.willDocument !== null) {
         $('#will').removeAttr('disabled');        
