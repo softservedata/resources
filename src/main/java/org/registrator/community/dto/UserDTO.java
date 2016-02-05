@@ -20,18 +20,12 @@ public class UserDTO implements Serializable {
 	@Pattern(regexp = AddressDTO.ONLY_LITERALS,message="Літери лише від А до Я")
 	private String lastName;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Pattern(regexp = AddressDTO.ONLY_LITERALS,message="Літери лише від А до Я")
 	private String middleName;
 	
 	private String role;
 	
 	private String login;
-	
-//	@NotEmpty(message = "Поле є обов'язковим для введення")
-//	@Size(min = 5, max = 32, message = "Пароль повинен містити від 5 до 32 символів")
-//	@Pattern(regexp = "[a-zA-z,0-9]+",message="Літери тільки латиною")
-//	private String password;
 	
 	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Email(message = "Емейл введено не коректно")

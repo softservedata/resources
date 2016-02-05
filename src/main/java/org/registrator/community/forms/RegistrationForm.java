@@ -24,7 +24,7 @@ public class RegistrationForm{
 
     @NotEmpty
     @Size(min=6, max=20, message="Логін повинен містити від {min} до {max} символів")
-    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
+    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
     private String login;
 //    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
 //    private boolean loginIsAlreadyTaken(){
@@ -33,7 +33,7 @@ public class RegistrationForm{
     @NotEmpty
     @Size(min=6, max=20, message="Пароль повинен містити від {min} до {max} символів")
 //    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль може складатись лише з латинських літер (великих і малих) і/або цифр")
-    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль повинен складатись з латинських літер і/або цифр")
+    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Пароль повинен складатись з латинських літер і/або цифр")
 //    @Pattern(regexp = "((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})+ ",message = "at least one Upper and Lower character + at least one digit and special symbol. Password length: 6 - 20")
     private String password;
 

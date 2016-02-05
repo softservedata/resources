@@ -23,7 +23,7 @@ $(document).on('change', '#roleId', function() {
 					$("#resourceNumber").val($("#resource_number").val());
 					$("#registratorNumber").val($("#registrator_number").val());
 					$("#identifierNumber").val($("#identifier").val());
-					$("#loginNumber").val($("#login").val());
+					$("#key").val($("#login").val());
 				},
 				error: function() {
 				    bootbox.alert("Реєстраційний номер та том реєстратора є унікальним або вже закріплені за іншим реєстратором");

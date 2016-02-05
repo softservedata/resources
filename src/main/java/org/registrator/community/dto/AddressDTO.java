@@ -14,12 +14,10 @@ public class AddressDTO implements Serializable {
 
 	public static final String ONLY_DIGITS = "[0-9]+";
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Size(min = 5, max = 5, message = "Поштовий індекс повиннен містити 5 цифер")
 	@Pattern(regexp = ONLY_DIGITS, message = "Цифри лише від 0 до 9")
 	private String postcode;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String region;
 	
@@ -27,19 +25,15 @@ public class AddressDTO implements Serializable {
 	//@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String district;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String city;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Pattern(regexp = ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String street;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Pattern(regexp = ONLY_DIGITS+"|"+ONLY_DIGITS + ONLY_LITERALS, message = "Приклад: 5 або 5а")
 	private String building;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Pattern(regexp = ONLY_DIGITS+"|"+ONLY_DIGITS + ONLY_LITERALS, message = "Приклад: 2 або 2б")
 	private String flat;
 

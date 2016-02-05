@@ -100,8 +100,6 @@ public class UsersController {
 			return fillInEditWindow(userDto.getLogin(), model);
 		} else {
 			logger.info("begin");
-			//userService.createResourceNumber(resourceNumberDtoJson);
-			//userService.createTome(resourceNumberDtoJson);
 			userService.CreateTomeAndRecourceNumber(userDto);
 			UserDTO editUserDto = userService.editUserInformation(userDto);
 			model.addAttribute("userDto", editUserDto);
