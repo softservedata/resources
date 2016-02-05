@@ -46,7 +46,7 @@ public class RegisterController {
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
-        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
+        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc(); 
         model.addAttribute("territorialCommunities", territorialCommunities);
         model.addAttribute("registrationForm", new RegistrationForm());
         log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
@@ -60,7 +60,6 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
         validator.validate(registrationForm, result);
-        model.addAttribute("formAction", "register"); 
         if (result.hasErrors()) {
             List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
             model.addAttribute("territorialCommunities", territorialCommunities);
