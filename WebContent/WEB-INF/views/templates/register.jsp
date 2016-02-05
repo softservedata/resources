@@ -2,7 +2,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<script src="<c:url value='/resource/js/registration/loginValidation.js'/>"></script>
 <style>
 input.error {
 	border-style: solid;
@@ -18,7 +17,7 @@ text-align: center;
 </style>
 
 <div id="register_container">
-	<form:form action="manualregistration"
+	<form:form action="${formAction}"
 		class="form-horizontal" role="form" modelAttribute="registrationForm"
 		method="POST" name="registrationForm">
 		<div class="form-group col-sm-12">

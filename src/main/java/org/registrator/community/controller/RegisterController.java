@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.registrator.community.components.AdminSettings;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.enumeration.RegistrationMethod;
@@ -59,6 +60,7 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
         validator.validate(registrationForm, result);
+        model.addAttribute("formAction", "register"); 
         if (result.hasErrors()) {
             List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
             model.addAttribute("territorialCommunities", territorialCommunities);
@@ -69,8 +71,7 @@ public class RegisterController {
         userService.registerUser(registrationForm);
 
         log.info("Successfully registered new user: " + registrationForm.getLogin());
-        //thanks for registration
-        return "redirect:/login";
+        return "thanks-for-registration";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
