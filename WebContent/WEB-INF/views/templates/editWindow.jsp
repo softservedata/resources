@@ -8,7 +8,6 @@
 <script src="<c:url value='/resource/js/editingUser.js'/>"></script>
 <script src="<c:url value='/resource/js/userValidate.js'/>"></script>
 <script src="<c:url value='/resource/js/checkResourceNumber.js'/>"></script>
-<script src="<c:url value='/resource/js/hideInput.js'/>"></script>
 
 <div class="container">
 	<c:url value='/administrator/users/edit-registrated-user'
@@ -276,9 +275,11 @@
 								id="registratorNumber" class="form-control input-md" type="text"
 								name="resourceNumberDTOJSON.registrator_number" value=""
 								style="display: none"> <input id="identifierNumber"
-								class="form-control input-md" type="text" name="resourceNumberDTOJSON.identifier" value=""
-								style="display: none"> <input id="loginNumber"
-								class="form-control input-md" type="text" name="resourceNumberDTOJSON.login" value=""
+								class="form-control input-md" type="text"
+								name="resourceNumberDTOJSON.identifier" value=""
+								style="display: none"> <input id="key"
+								class="form-control input-md" type="text"
+								name="resourceNumberDTOJSON.login" value=""
 								style="display: none">
 
 						</div>

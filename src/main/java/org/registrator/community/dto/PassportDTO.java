@@ -11,16 +11,13 @@ public class PassportDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Size(min = 2, max = 2, message = "Серія повинна містити лише 2")
 	@Pattern(regexp = AddressDTO.ONLY_LITERALS, message = "Серія повинна містити лише літери від А до Я")
 	private String seria;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Size(min = 6, max = 6, message = "Номер повинен містити лише 6 цифер")
 	private String number;
 	
-	@NotEmpty(message = "Поле є обов'язковим для введення")
 	@Pattern(regexp = AddressDTO.ONLY_LITERALS, message = "Літери лише від А до Я")
 	private String published_by_data;
 	

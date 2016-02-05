@@ -544,20 +544,25 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void CreateTomeAndRecourceNumber(UserDTO userDto) {
 		try {
-			User user = userRepository.findUserByLogin(userDto.getResourceNumberDTOJSON().getLogin());
-			TomeDTO tomeDto = new TomeDTO(userDto.getResourceNumberDTOJSON().getIdentifier(), user.getFirstName(),
-					user.getLastName(), user.getMiddleName());
-			ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
-					Integer.parseInt(userDto.getResourceNumberDTOJSON().getResource_number()),
-					userDto.getResourceNumberDTOJSON().getRegistrator_number());
-			ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
-					resourseNumberDto.getRegistratorNumber(), user);
-			Tome tome = new Tome(user, tomeDto.getTomeIdentifier());
-			tomeRepository.save(tome);
-			resourceNumberRepository.save(resourceNumber);
+			if (!userDto.getResourceNumberDTOJSON().getLogin().equals("")) {
+				System.out.println("3");
+				User user = userRepository.findUserByLogin(userDto.getResourceNumberDTOJSON().getLogin());
+				TomeDTO tomeDto = new TomeDTO(userDto.getResourceNumberDTOJSON().getIdentifier(), user.getFirstName(),
+						user.getLastName(), user.getMiddleName());
+				ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
+						Integer.parseInt(userDto.getResourceNumberDTOJSON().getResource_number()),
+						userDto.getResourceNumberDTOJSON().getRegistrator_number());
+				ResourceNumber resourceNumber = new ResourceNumber(resourseNumberDto.getNumber(),
+						resourseNumberDto.getRegistratorNumber(), user);
+				Tome tome = new Tome(user, tomeDto.getTomeIdentifier());
+				tomeRepository.save(tome);
+				resourceNumberRepository.save(resourceNumber);
+			}
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
 			log.error("Format is incorrect");
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
 		}
 
 	}
