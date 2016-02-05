@@ -100,10 +100,10 @@ public class UsersController {
 			return fillInEditWindow(userDto.getLogin(), model);
 		} else {
 			logger.info("begin");
+			//userService.createResourceNumber(resourceNumberDtoJson);
+			//userService.createTome(resourceNumberDtoJson);
+			userService.CreateTomeAndRecourceNumber(userDto);
 			UserDTO editUserDto = userService.editUserInformation(userDto);
-			if (editUserDto == null) {
-				System.out.println("hi");
-			}
 			model.addAttribute("userDto", editUserDto);
 			List<Role> roleList = roleService.getAllRole();
 			model.addAttribute("roleList", roleList);
@@ -161,8 +161,6 @@ public class UsersController {
 		if (result.hasErrors()) {
 			return new ResponseEntity<String>(HttpStatus.CONFLICT);
 		} else {
-			userService.createResourceNumber(resourceNumberDtoJson);
-			userService.createTome(resourceNumberDtoJson);
 			logger.info("end");
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}

@@ -68,7 +68,7 @@ public class FirstTimeDeploy {
 	        
 	        Address adminAddress = new Address(admin,"00000","Львівська","Галицький","Львів","Вітовського",
 	        		"48","31");
-	        PassportInfo adminPassportInfo = new PassportInfo(admin,"AA",00000,"Народом України");
+	        PassportInfo adminPassportInfo = new PassportInfo(admin,"AA","00000","Народом України");
 	        
 	        session.persist(adminAddress);
 	        session.persist(adminPassportInfo);

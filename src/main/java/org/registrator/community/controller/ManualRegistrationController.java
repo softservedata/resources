@@ -5,15 +5,19 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import org.hibernate.mapping.Collection;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.UserService;
+import org.registrator.community.validator.UserNameValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +32,9 @@ public class ManualRegistrationController {
     private UserService userService;
     @Autowired
     private CommunityService communityService;
+    
+    @Autowired
+    UserNameValidator validator;
 
     /**
      * Method for loading form for adding new user
@@ -37,10 +44,8 @@ public class ManualRegistrationController {
     @PreAuthorize("hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/manualregistration", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
-        
-        List<TerritorialCommunity> territorialCommunities = communityService.findAll();
+        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
         model.addAttribute("territorialCommunities", territorialCommunities);
-        
         model.addAttribute("registrationForm", new RegistrationForm());
         logger.info("Loaded registration form' " + request.getRemoteAddr());
         return "regForComm";
@@ -55,11 +60,12 @@ public class ManualRegistrationController {
      */
     @PreAuthorize("hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/manualregistration", method = RequestMethod.POST)
-    public String processNewUserData(@Valid RegistrationForm registrationForm, Errors result, Model model) {
-        List<TerritorialCommunity> territorialCommunities = communityService.findAll();
-        model.addAttribute("territorialCommunities", territorialCommunities);
-        
-        if (result.hasErrors() || !userService.checkUsernameNotExistInDB(registrationForm.getLogin())) {
+    public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
+        validator.validate(registrationForm, result);
+              
+        if (result.hasErrors()) {
+            List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
+            model.addAttribute("territorialCommunities", territorialCommunities);
             logger.warn("Registration form sent to server with following errors: \n" + result.getFieldErrors()
                     + "\n Error messages displayed to user.");
             return "regForComm";

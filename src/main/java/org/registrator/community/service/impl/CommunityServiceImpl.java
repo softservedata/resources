@@ -45,11 +45,15 @@ public class CommunityServiceImpl implements CommunityService{
         List<User> listOfUsers = userRepository.findByTerritorialCommunity(territorialCommunity);
         if(listOfUsers.isEmpty()){
             communityRepository.delete(territorialCommunity);
-            logger.info("end: return 0 if list is empty");
+            logger.info("end: return true if list is empty");
             return true;
         }
-        logger.info("end: return -1 if list isn't empty");
+        logger.info("end: return false if list isn't empty");
         return false;
         
+    }
+    @Override
+    public List<TerritorialCommunity> findAllByAsc() {
+        return communityRepository.findAllByAsc();
     }
 }
