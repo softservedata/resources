@@ -6,6 +6,8 @@ import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserNameDTO;
 import org.registrator.community.entity.Inquiry;
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.InquiryType;
 
 /**
@@ -25,7 +27,7 @@ public interface InquiryService {
 		
 	void removeInquiry (Integer inquiryId);
 	
-	//ResourceDTO addInputInquiry(ResourceDTO resourceDTO, String userLogin);
+	void addInputInquiry(String ownerLogin, Resource resourceEntity, User registrator);
 
 }
 
