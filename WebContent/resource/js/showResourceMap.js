@@ -1,4 +1,3 @@
-
     var map;
     var myLatlng;
     var centerlat = $("#map_canvas").attr("centerlat");
@@ -45,5 +44,16 @@
         polygon.setMap(map);
         map.fitBounds(bounds);
     }
+
+    $(document).on("click", "#geoCoords", function(){
+       if($(this).hasClass("active")) {
+           $(this).removeClass("active");
+           $(".coordinates").hide();
+       }
+       else {
+           $(this).addClass("active");
+           $(".coordinates").show();
+       }
+    });
 
     google.maps.event.addDomListener(window, 'load', initialize);

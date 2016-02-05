@@ -11,9 +11,9 @@
 
 <div>	
 	<form:form modelAttribute="resource" id="form" action="${actionUrl}">
-	<c:if test="${empty resource}">
-	 Ресурс із вказаним ідентифікатором не знайдено
-	</c:if>
+        <c:if test="${empty resource}">
+            Ресурс із вказаним ідентифікатором не знайдено
+        </c:if>
 		<c:if test="${!empty resource}">
 		<h1>Ресурс</h1>
 			<table id="datatable" class="table display">
@@ -46,24 +46,40 @@
 					<td>${Date}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="label.resource.coordinates" />:</td>
+					<td colspan="2">
+						<span id="geoCoords">
+							<spring:message code="label.resource.coordinates"/>:
+						</span>
+					</td>
 				</tr>
-				<c:forEach var="poligon" items="${resource.resourceArea.poligons}">
-					<c:forEach var="point" items="${poligon.points}">
-						<tr class="coordinates">
-							<td>
-                                <span class="latitudeDegrees">${point.latitudeDegrees}</span>°
-                                <span class="latitudeMinutes">${point.latitudeMinutes}</span>'
-                                <span class="latitudeSeconds"><fmt:formatNumber type="number" maxFractionDigits="2" value="${point.latitudeSeconds}" /></span>"
-                            </td>
-							<td>
-                                <span class="longitudeDegrees">${point.longitudeDegrees}</span>°
-                                <span class="longitudeMinutes">${point.longitudeMinutes}</span>'
-                                <span class="longitudeSeconds"><fmt:formatNumber type="number" maxFractionDigits="2" value="${point.longitudeSeconds}" /></span>"
-                            </td>
-						</tr>
-					</c:forEach>
-				</c:forEach>
+                <tr class="coordinates">
+                    <td colspan="2">
+                        <c:forEach var="poligon" items="${resource.resourceArea.poligons}">
+                            <div class="col-sm-12">
+                            <c:forEach var="point" items="${poligon.points}">
+                                <div class="coordinatesPoint">
+                                    <span class="pointLat">
+                                        <span class="latitudeDegrees">${point.latitudeDegrees}</span>°
+                                        <span class="latitudeMinutes">${point.latitudeMinutes}</span>'
+                                        <span class="latitudeSeconds">
+                                            <fmt:formatNumber type="number" maxFractionDigits="2"
+                                                              value="${point.latitudeSeconds}"/>
+                                        </span>"
+                                    </span>
+                                    <span class="pointLng">
+                                        <span class="longitudeDegrees">${point.longitudeDegrees}</span>°
+                                        <span class="longitudeMinutes">${point.longitudeMinutes}</span>'
+                                        <span class="longitudeSeconds">
+                                            <fmt:formatNumber type="number" maxFractionDigits="2"
+                                                              value="${point.longitudeSeconds}"/>
+                                        </span>"
+                                    </span>
+                                </div>
+                            </c:forEach>
+                            </div>
+                        </c:forEach>
+                    </td>
+                </tr>
 				<c:forEach var="linear" items="${resource.resourceLinear}">
 					<tr>
 						<td>${linear.linearParameterDescription},${linear.linearParameterUnit}</td>
@@ -76,8 +92,10 @@
 					<tr>
 						<td>${discrete.discreteParameterDescription},${discrete.discreteParameterUnit}</td>
 						<c:forEach var="valueDiscrete" items="${discrete.valueDiscretes}">
-							<td>${valueDiscrete.value}</td>
-							<td>${valueDiscrete.comment}</td>
+							<td>
+                                <span class="col-sm-6">${valueDiscrete.value}</span>
+                                <span class="col-sm-6">${valueDiscrete.comment}</span>
+                            </td>
 						</c:forEach>
 					</tr>
 				</c:forEach>

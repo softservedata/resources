@@ -1,5 +1,5 @@
 body {
-  
+    min-width: 1200px;
 }
 
 #header {
@@ -137,4 +137,31 @@ body {
 .not-active {
     pointer-events: none;
     cursor: default;
+}
+
+/*Page show resource*/
+
+#geoCoords {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.coordinates {
+    display: none;
+}
+
+.coordinatesPoint {
+    display: inline-block;
+    padding: 0 15px;
+    width: 260px;
+    font-style: italic;
+}
+
+.coordinatesPoint:hover {
+    background: rgba(6, 102, 255, 0.1);
+}
+
+.pointLat, .pointLng {
+    width: 110px;
+    display: inline-block;
 }
