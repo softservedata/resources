@@ -28,11 +28,11 @@
 		</div>
 
 		<!-- login of the selected co-owner -->
-		<div class="form-group" hidden="true">
+		<div class="form-group"  hidden="true">
 			<label class="control-label col-sm-3">login:</label>
 			<div class="col-sm-3">
-				<input class="form-control" id="owner_login" type="text" value=""
-					name="ownerLogin">
+				<input class="form-control" id="owner_login" type="text" 
+				value="${ownerLogin}" name="ownerLogin">
 			</div>
 		</div>
 
