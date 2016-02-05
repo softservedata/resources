@@ -43,11 +43,11 @@ public class ManualRegistrationController {
      */
     @PreAuthorize("hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/manualregistration", method = RequestMethod.GET)
-    public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
+    public String showNewUserRegisterForm(Model model) {
         List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
         model.addAttribute("territorialCommunities", territorialCommunities);
         model.addAttribute("registrationForm", new RegistrationForm());
-        logger.info("Loaded registration form' " + request.getRemoteAddr());
+        logger.info("Loaded registration form");
         return "regForComm";
     }
     /**

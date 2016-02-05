@@ -1,16 +1,22 @@
 package org.registrator.community.controller;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.registrator.community.components.AdminSettings;
+import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.enumeration.RegistrationMethod;
 import org.registrator.community.forms.RegistrationForm;
+import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.UserService;
+import org.registrator.community.validator.UserNameValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,22 +35,33 @@ public class RegisterController {
 
     @Autowired
     private AdminSettings adminSettings;
+    
+    @Autowired
+    private CommunityService communityService;
+    
+    @Autowired
+    UserNameValidator validator;
 
+    @PreAuthorize("hasRole('anonymousUser')")
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
+        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
+        model.addAttribute("territorialCommunities", territorialCommunities);
         model.addAttribute("registrationForm", new RegistrationForm());
         log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
-
-        if ((adminSettings.getRegistrationMethod() == RegistrationMethod.MANUAL)
-                && (SecurityContextHolder.getContext().getAuthentication().getName() == "anonymousUser")) {
+        if ((adminSettings.getRegistrationMethod() == RegistrationMethod.MANUAL)){
             return "redirect:/";
         }
         return "register";
     }
 
+    @PreAuthorize("hasRole('anonymousUser')")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processNewUserData(@Valid RegistrationForm registrationForm, Errors result) {
+    public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
+        validator.validate(registrationForm, result);
         if (result.hasErrors()) {
+            List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
+            model.addAttribute("territorialCommunities", territorialCommunities);
             log.warn("Registration form sent to server with following errors: \n" + result.getFieldErrors()
                     + "\n Error messages displayed to user.");
             return "register";
@@ -52,10 +69,8 @@ public class RegisterController {
         userService.registerUser(registrationForm);
 
         log.info("Successfully registered new user: " + registrationForm.getLogin());
-        if ((adminSettings.getRegistrationMethod().toString() == "MANUAL")){
-            return "redirect:/administrator/users/get-all-inactive-users";
-        }
-        return "thanks-for-registration";
+        //thanks for registration
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
