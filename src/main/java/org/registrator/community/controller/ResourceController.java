@@ -123,6 +123,7 @@ public class ResourceController {
 		if (result.hasErrors()) {
 			logger.info("The resoursrDTO is not valid");
 			model.addAttribute("newresource", resourceDTO);
+			model.addAttribute("ownerLogin", ownerLogin);
 			return "addResource";
 		} else {
 
@@ -359,5 +360,5 @@ public class ResourceController {
 		logger.info("end deleteResource");
 		return "redirect:/registrator/resource/searchOnMap";
 	}
-	
+
 }

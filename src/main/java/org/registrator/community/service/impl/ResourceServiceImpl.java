@@ -44,6 +44,7 @@ import org.registrator.community.entity.ResourceNumber;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.ResourceStatus;
+import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,9 +91,9 @@ public class ResourceServiceImpl implements ResourceService {
     
     @Autowired
     private UserRepository userRepository;
-    
+      
     @Autowired
-    private InquiryRepository inquiryRepository;
+    private InquiryService inquiryService;
 
 	@Autowired
 	private ResourceNumberRepository resourceNumberRepository;
@@ -121,7 +122,7 @@ public class ResourceServiceImpl implements ResourceService {
               
         //save data in the table inquiry_list
         if(!ownerLogin.isEmpty()) {
-            addInquiry(ownerLogin, resourceEntity, registrator);            
+        	inquiryService.addInputInquiry(ownerLogin, resourceEntity, registrator);            
         }
 
         /* increment registration number of resource for authenticated registrar*/
@@ -517,9 +518,9 @@ public class ResourceServiceImpl implements ResourceService {
      * @param resourceEntity
      * @param registrator
      */
-    private void addInquiry(String ownerLogin, Resource resourceEntity, User registrator) {
+   /* private void addInquiry(String ownerLogin, Resource resourceEntity, User registrator) {
         User user = userRepository.findUserByLogin(ownerLogin);
         Inquiry inquiry = new Inquiry("INPUT", resourceEntity.getDate(), user, registrator, resourceEntity);
         inquiryRepository.saveAndFlush(inquiry);
-    }
+    }*/
 }
