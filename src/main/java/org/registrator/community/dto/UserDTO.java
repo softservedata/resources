@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 
 public class UserDTO implements Serializable {
 
@@ -43,6 +44,8 @@ public class UserDTO implements Serializable {
 	
 	@Valid
 	private PassportDTO passport;
+	
+	private ResourceNumberDTOJSON resourceNumberDTOJSON;
 	
 	private WillDocumentDTO willDocument;
 	private List<String> otherDocuments;
@@ -168,5 +171,13 @@ public class UserDTO implements Serializable {
 				+ status + "\n" + "Паспортні дані:" + passport.toString() + "\n" + "Адреса: " + address.toString()
 				+ "\n");
 		return result;
+	}
+
+	public ResourceNumberDTOJSON getResourceNumberDTOJSON() {
+		return resourceNumberDTOJSON;
+	}
+
+	public void setResourceNumberDTOJSON(ResourceNumberDTOJSON resourceNumberDTOJSON) {
+		this.resourceNumberDTOJSON = resourceNumberDTOJSON;
 	}
 }

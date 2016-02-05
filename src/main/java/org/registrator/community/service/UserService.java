@@ -3,7 +3,6 @@ package org.registrator.community.service;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
-import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
@@ -40,12 +39,10 @@ public interface UserService {
 
 	UserDTO editUserInformation(UserDTO userDto);
 
-	void createTome(ResourceNumberDTOJSON resourseNumberDtoJson);
-	
-	void createResourceNumber(ResourceNumberDTOJSON resourseNumberDtoJson);
-
 	List<UserDTO> getUserBySearchTag(String searchTag);
 	
-	public User findUserByEmail(String email);
+	User findUserByEmail(String email);
+	
+	void CreateTomeAndRecourceNumber(UserDTO userDto);
 
 }
