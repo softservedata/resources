@@ -53,50 +53,49 @@ import org.springframework.stereotype.Service;
 public class ResourceServiceImpl implements ResourceService {
 
 	@Autowired
-	Logger logger;
+	private Logger logger;
 
 	@Autowired
-	ResourceRepository resourceRepository;
+	private ResourceRepository resourceRepository;
 
 	@Autowired
-	TomeRepository tomeRepository;
+	private TomeRepository tomeRepository;
 
 	@Autowired
-	ResourceTypeRepository resourceTypeRepository;
+	private ResourceTypeRepository resourceTypeRepository;
 
 	@Autowired
-	PolygonRepository polygonRepository;
+	private PolygonRepository polygonRepository;
 
 	@Autowired
-	AreaRepository areaRepository;
+	private AreaRepository areaRepository;
 
 	@Autowired
-	ResourceLinearValueRepository linearValueRepository;
+	private ResourceLinearValueRepository linearValueRepository;
 
 	@Autowired
-	ResourceDiscreteValueRepository discreteValueRepository;
+	private ResourceDiscreteValueRepository discreteValueRepository;
 
 	@Autowired
-	LinearParameterRepository linearParameterRepository;
-
+	private LinearParameterRepository linearParameterRepository;
 
     @Autowired
-    DiscreteParameterRepository discreteParameterRepository;
+    private DiscreteParameterRepository discreteParameterRepository;
 
     @Autowired
-    ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
+    private ResourceDiscreteValueServiceImpl resourceDiscreteValueService;
 
     @Autowired
-    ResourceLinearValueServiceImpl resourceLinearValueService;
+    private ResourceLinearValueServiceImpl resourceLinearValueService;
     
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     
     @Autowired
-	InquiryRepository inquiryRepository;
+    private InquiryRepository inquiryRepository;
 
 	@Autowired
-	ResourceNumberRepository resourceNumberRepository;
+	private ResourceNumberRepository resourceNumberRepository;
 
 	
     /**
@@ -117,47 +116,19 @@ public class ResourceServiceImpl implements ResourceService {
         Resource resourceEntity = parseToResourseEntity(resourceDTO, registrator);                 
         resourceEntity = resourceRepository.save(resourceEntity);
 
-        /* save list of area points */
-        for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
-
-            Polygon polygonEntity = getPolygonEntity(resourceEntity, poligonAreaDTO);
-
-            polygonEntity = polygonRepository.save(polygonEntity);
-
-            List<Area> areas = parseToAreaList(poligonAreaDTO, polygonEntity);
-            areaRepository.save(areas);
-        }
-       
-        /* save list of resource linear values if exist*/ 
-        if (!resourceDTO.getResourceLinear().isEmpty()) {
-            logger.info("save linear values of resource");
-            List<ResourceLinearValue> resourceLinearValues = parseToLinearValueList(resourceDTO, resourceEntity);
-            linearValueRepository.save(resourceLinearValues);
-        }
-
-        /* save list of resource discrete values if exist */
-        if (!resourceDTO.getResourceDiscrete().isEmpty()) {
-            logger.info("save discrete values of resource");
-            List<ResourceDiscreteValue> resourceDiscreteValues = parseToDiscreteValueList(resourceDTO, resourceEntity);
-            discreteValueRepository.save(resourceDiscreteValues);
-        }
-        
+        /* sava all additional parameters of given resource */
+        saveResourceParameters(resourceDTO, resourceEntity);
+              
         //save data in the table inquiry_list
         if(!ownerLogin.isEmpty()) {
             addInquiry(ownerLogin, resourceEntity, registrator);            
         }
 
+        /* increment registration number of resource for authenticated registrar*/
 		incrementRegistrationNumber(registrator.getLogin());
         return findByIdentifier(resourceEntity.getIdentifier());
     }
-
-
-    private void addInquiry(String ownerLogin, Resource resourceEntity, User registrator) {
-        User user = userRepository.findUserByLogin(ownerLogin);
-        Inquiry inquiry = new Inquiry("INPUT", resourceEntity.getDate(), user, registrator, resourceEntity);
-        inquiryRepository.saveAndFlush(inquiry);
-    }
-    
+ 
 
     /**
      * Find the resource with given identifier and form resourceDTO object
@@ -168,7 +139,6 @@ public class ResourceServiceImpl implements ResourceService {
     public ResourceDTO findByIdentifier(String identifier) {
 
         logger.info("Method findByIdentifier");
-        ResourceDTO resourceDTO = new ResourceDTO();
         Resource resourceEntity = resourceRepository.findByIdentifier(identifier);
 
         if (resourceEntity != null) {
@@ -190,15 +160,7 @@ public class ResourceServiceImpl implements ResourceService {
             }
 
             /*fill standard resource fields */
-            resourceDTO.setDescription(resourceEntity.getDescription());
-            resourceDTO.setDate(resourceEntity.getDate());
-            resourceDTO.setIdentifier(resourceEntity.getIdentifier());
-            resourceDTO.setReasonInclusion(resourceEntity.getReasonInclusion());
-            resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() + " "
-                    + resourceEntity.getRegistrator().getMiddleName() + " "
-                    + resourceEntity.getRegistrator().getLastName());
-            resourceDTO.setTomeIdentifier(resourceEntity.getTome().getIdentifier());
-            resourceDTO.setResourceType(resourceEntity.getType().getTypeName());
+           ResourceDTO resourceDTO = formResourceDTO(resourceEntity);
 
             
             /*fill additional resource fields*/
@@ -269,6 +231,7 @@ public class ResourceServiceImpl implements ResourceService {
         }
         
     }
+
 
     @Override
     public List<Resource> findByType(ResourceType type) {
@@ -374,6 +337,32 @@ public class ResourceServiceImpl implements ResourceService {
         return polygonsJSON;
     }
     
+    
+    private void saveResourceParameters(ResourceDTO resourceDTO, Resource resourceEntity) {
+        /* save list of area points */
+        for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
+
+            Polygon polygonEntity = getPolygonEntity(resourceEntity, poligonAreaDTO);
+            polygonEntity = polygonRepository.save(polygonEntity);
+            List<Area> areas = parseToAreaList(poligonAreaDTO, polygonEntity);
+            areaRepository.save(areas);
+        }
+       
+        /* save list of resource linear values if exist*/ 
+        if (!resourceDTO.getResourceLinear().isEmpty()) {
+            logger.info("save linear values of resource");
+            List<ResourceLinearValue> resourceLinearValues = parseToLinearValueList(resourceDTO, resourceEntity);
+            linearValueRepository.save(resourceLinearValues);
+        }
+
+        /* save list of resource discrete values if exist */
+        if (!resourceDTO.getResourceDiscrete().isEmpty()) {
+            logger.info("save discrete values of resource");
+            List<ResourceDiscreteValue> resourceDiscreteValues = parseToDiscreteValueList(resourceDTO, resourceEntity);
+            discreteValueRepository.save(resourceDiscreteValues);
+        }
+    }
+    
     private List<Area> parseToAreaList(PoligonAreaDTO poligonAreaDTO, Polygon polygonEntity) {
         List<Area> areas = new ArrayList<Area>();
         for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
@@ -470,8 +459,6 @@ public class ResourceServiceImpl implements ResourceService {
         return resourceEntity;
     }
 
-
-
     @Override
     public String getRegistrationNumber(String login) {
         final int MAXIMAL_NUMBER_LENGTH = 4;
@@ -491,6 +478,25 @@ public class ResourceServiceImpl implements ResourceService {
         return null;
     }
 
+    /**
+     * Method create ResourceDTO from resoureEntity
+     * @param resourceEntity
+     * @return ResourceDTO
+     */
+    private ResourceDTO formResourceDTO(Resource resourceEntity) {
+        ResourceDTO resourceDTO = new ResourceDTO();
+        resourceDTO.setDescription(resourceEntity.getDescription());
+        resourceDTO.setDate(resourceEntity.getDate());
+        resourceDTO.setIdentifier(resourceEntity.getIdentifier());
+        resourceDTO.setReasonInclusion(resourceEntity.getReasonInclusion());
+        resourceDTO.setRegistratorName(resourceEntity.getRegistrator().getFirstName() + " "
+                + resourceEntity.getRegistrator().getMiddleName() + " "
+                + resourceEntity.getRegistrator().getLastName());
+        resourceDTO.setTomeIdentifier(resourceEntity.getTome().getIdentifier());
+        resourceDTO.setResourceType(resourceEntity.getType().getTypeName());
+        return resourceDTO;
+    }
+
 
     /**
      * Method increment registration number of resource for registrator which add new resource
@@ -503,5 +509,17 @@ public class ResourceServiceImpl implements ResourceService {
         Integer incrementedNumber = resourceNumber.getNumber() + 1;
         resourceNumber.setNumber(incrementedNumber);
         resourceNumberRepository.save(resourceNumber);
+    }
+    
+    /**
+     * Method save inquiry in database for selected user and saved resource
+     * @param ownerLogin
+     * @param resourceEntity
+     * @param registrator
+     */
+    private void addInquiry(String ownerLogin, Resource resourceEntity, User registrator) {
+        User user = userRepository.findUserByLogin(ownerLogin);
+        Inquiry inquiry = new Inquiry("INPUT", resourceEntity.getDate(), user, registrator, resourceEntity);
+        inquiryRepository.saveAndFlush(inquiry);
     }
 }
