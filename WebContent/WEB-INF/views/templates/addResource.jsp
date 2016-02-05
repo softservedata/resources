@@ -338,6 +338,9 @@
 		src="<c:url value="/resource/js/lib/polysnapper.js"/>"></script>
 	<script type="text/javascript"
 		src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
+	<script type="text/javascript"
+		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>	
+		
 </div>
 
 <script

@@ -240,9 +240,9 @@ function intersectionCheck(polygon){
 
     getResources();   
 
-    //console.log("Polygons found: "+polygons.length);
-
-    for (i = 0; i < vertices.getLength(); i++) {
+    console.log("Polygons found: "+polygons.length);
+//
+  /* for (i = 0; i < vertices.getLength(); i++) {
         point = vertices.getAt(i);
         for (j = 0; j < polygons.length; j++) {
             isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygons[j]);
@@ -290,8 +290,12 @@ function intersectionCheck(polygon){
             }
 
         }
-    }
-
+    }*/
+    
+   
+    intersection = checkIntersectionAllPolygons(polygon, polygons);
+    
+//
     if (!intersection) {
         newPolygons.push(polygon);
         polygon.setEditable(false);
@@ -299,6 +303,8 @@ function intersectionCheck(polygon){
     else {
         bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
     }
+       
+    
     $("#dark_bg").hide();
     return intersection;
 }
