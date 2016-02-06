@@ -341,6 +341,7 @@ $("#addPointsFromMap").click(function () {
         $("#dark_bg").show();
         var area = new Number();
         var perimeter = new Number();
+        var infoBoxMessage = "";
 
         //If user entered the correct polygon and it doesn't intersect with existing polygons
         //we add points coordinates to inputs and deny to edit entered polygon. Before adding points
@@ -370,22 +371,24 @@ $("#addPointsFromMap").click(function () {
             newPolygons[i].setOptions({fillColor: "#003400"});
 
             //Calculation of area and perimeter of all new polygons.
-            area += Number(google.maps.geometry.spherical.computeArea(newPolygons[i].getPath()));
-            perimeter += Number(google.maps.geometry.spherical.computeLength(newPolygons[i].getPath()));
+            area = Number(google.maps.geometry.spherical.computeArea(newPolygons[i].getPath()));
+            perimeter = Number(google.maps.geometry.spherical.computeLength(newPolygons[i].getPath()));
 
             //Coordinates added, if we want we can delete the polygon from the array.
             //newPolygons.splice(i,1);
-        }
 
-        //Adding area and perimeter values to input fields
-        $("input").each(function () {
-            if ($(this).val() == "площа") {
-                $(this).siblings("div").children("input:first").val((area / 10000).toFixed(5));
-            }
-            if ($(this).val() == "периметер") {
-                $(this).siblings("div").children("input:first").val((perimeter).toFixed(1));
-            }
-        });
+            //Adding area and perimeter values to input fields
+            infoBoxMessage += "<div>" +
+                "<label>"+jQuery.i18n.prop('msg.Polygon')+" "+(i+1)+": </label> " +
+                "<span>"+jQuery.i18n.prop('msg.Area')+" "
+                    +(area / 10000).toFixed(5)+" "+jQuery.i18n.prop('msg.Area.units')+"; </span>" +
+                "<span>"+jQuery.i18n.prop('msg.Perimeter')+" "
+                    +(perimeter).toFixed(1)+" "+jQuery.i18n.prop('msg.Perimeter.units')+" </span>"+
+                "</div>";
+
+        }
+        $("#infoBox").html(infoBoxMessage);
+
         //We make the link "Add polygon" inactive
         $(".toggle a").addClass("inactiveLink");
         $("#btnAddAreaPoint").attr('disabled', 'disabled');
@@ -509,7 +512,8 @@ $(document).on("click", "#resetForm", function(){
     //$("input[id*='myparam']").removeAttr("disabled");
     $("#typeParameters").html("");
     $("#reasonInclusion").text("");
-    $('#will').attr("disabled","disabled"); 
+    $("#infoBox").html(jQuery.i18n.prop('msg.infoBox'));
+    $('#will').attr("disabled","disabled");
     $('#pass').attr("disabled","disabled"); 
     $('#otherDocs').attr("disabled","disabled"); 
     newPolygons.forEach(function (polygon) {
