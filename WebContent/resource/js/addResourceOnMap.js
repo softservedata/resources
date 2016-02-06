@@ -543,6 +543,7 @@ $(document).on("click", "#submitForm", function(){
             });
         });
 
+        var i=0;
         points.each(function(){
             var latGrad = Number($(this).find('#myparam1').val());
             var latMin = Number($(this).find('#myparam2').val());
@@ -554,15 +555,14 @@ $(document).on("click", "#submitForm", function(){
             var lat = latGrad + latMin/60 + latSec/3600;
             var lng = lngGrad + lngMin/60 + lngSec/3600;
 
-            var pointIndex = $.inArray(lat,latArray);
-            if ((pointIndex == -1) || (lng != lngArray[pointIndex])) {
+            if ((lat != latArray[i]) || (lng != lngArray[i])) {
                 $(this).find("input").css("background","rgba(255,0,0,0.4)");
                 different = true;
-                console.log("Point out!");
             }
+            i++;
         });
         if(different) {
-            bootbox.alert("Точки на мапі і введені відрізняються!");
+            bootbox.alert(jQuery.i18n.prop('msg.differentPoints'));
             return false;
         }
     }
