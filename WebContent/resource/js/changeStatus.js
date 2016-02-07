@@ -1,7 +1,7 @@
 $(document).on('change', '#userStatusId', function(event) {
 	var json = {
-		"status" : $(this).val(),
-		"login" : $("#login").text()
+		"status" : $("#userStatusId").val(),
+		"login" : $("#login").val()
 	};
 
 	$.ajax({
@@ -20,7 +20,4 @@ $(document).on('change', '#userStatusId', function(event) {
 		}
 
 	});
-
-	event.preventDefault();
-
 });

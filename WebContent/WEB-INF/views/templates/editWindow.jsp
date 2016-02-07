@@ -269,19 +269,34 @@
 								<form:errors path="passport.published_by_data" cssClass="error"
 									style="color:black" />
 							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-8">
 							<input id="resourceNumber" class="form-control input-md"
 								type="text" name="resourceNumberDTOJSON.resource_number"
-								value="" style="display: none"> <input
-								id="registratorNumber" class="form-control input-md" type="text"
-								name="resourceNumberDTOJSON.registrator_number" value=""
-								style="display: none"> <input id="identifierNumber"
-								class="form-control input-md" type="text"
-								name="resourceNumberDTOJSON.identifier" value=""
-								style="display: none"> <input id="key"
-								class="form-control input-md" type="text"
-								name="resourceNumberDTOJSON.login" value=""
+								value="0" style="display: none">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-8">
+							<input id="registratorNumber" class="form-control input-md"
+								type="text" name="resourceNumberDTOJSON.registrator_number"
+								value="0" style="display: none">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-8">
+							<input id="identifierNumber" class="form-control input-md"
+								type="text" name="resourceNumberDTOJSON.identifier" value="0"
 								style="display: none">
-
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-8">
+							<input id="key" class="form-control input-md" type="text"
+								name="resourceNumberDTOJSON.login" value="0"
+								style="display: none">
 						</div>
 					</div>
 				</div>
