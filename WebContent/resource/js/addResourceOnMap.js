@@ -3,6 +3,7 @@ var polygons = [];
 var newPolygons = [];
 var polygonFromCoordinates = new google.maps.Polygon();
 var PS = null;
+var isInsideUKRAINE = true;
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -293,14 +294,28 @@ function intersectionCheck(polygon){
     }*/
     
     intersection = checkIntersectionAllPolygons(polygon, polygons);
-
+    
+    if (intersection) {
+    	bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
+    } else {
+    	isInsideUKRAINE = isInsideUkraine(polygon);
+    	if (!isInsideUKRAINE) {    
+    		bootbox.alert("Ресурс, що не належить території України не може бути внесений");
+    	} else {
+	    	newPolygons.push(polygon);
+	        polygon.setEditable(false);
+    	}
+    }
+    
+    /* Old version
     if (!intersection) {
         newPolygons.push(polygon);
         polygon.setEditable(false);
     }
     else {
         bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
-    }
+    }*/
+    
     $("#dark_bg").hide();
     return intersection;
 }
@@ -456,7 +471,8 @@ $("#cp-wrap").on("click", "a", function(){
         else if (action == 'save') {
             if(PS.polygon().getPath().length > 2) {
                 var intersection = intersectionCheck(PS.polygon());
-                if (!intersection) {
+                //if (!intersection) {
+                if (!intersection && isInsideUKRAINE) { 	
                     PS.save();
                     $(this).closest(".toggle").removeClass("active");
                     $(this).closest(".toggle").siblings("span").addClass("active");

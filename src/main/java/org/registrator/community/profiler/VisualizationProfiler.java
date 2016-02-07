@@ -17,9 +17,11 @@ public class VisualizationProfiler {
     
     @Around("org.registrator.community.profiler.SystemArchitecture.businessController()")
     public Object visualizationProfile(ProceedingJoinPoint pjp) throws Throwable {
+        long start = System.currentTimeMillis();
         Object output = pjp.proceed();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("method: "+ pjp.getSignature().getName() + " user: " + auth.getName());
+        long elapsedTime = System.currentTimeMillis() - start;
+        logger.info("method: "+ pjp.getSignature().getName() + " time: " + elapsedTime +" user: " + auth.getName());
         return output;
     }
 

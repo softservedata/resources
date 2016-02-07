@@ -13,8 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class RegistrationForm{
 
-    public static final String ONLY_LITERALS = "[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]+";
-    public static final String ONLY_DIGITS = "[0-9]+";
+    private static final String ONLY_LITERALS = "[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]+";
     
     @Autowired
     UserRepository userRepository;
@@ -22,43 +21,31 @@ public class RegistrationForm{
     @Autowired
     UserService userService;
 
-    @NotEmpty
-    @Size(min=6, max=20, message="Логін повинен містити від {min} до {max} символів")
-    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Логін може складатись лише з латинських літер (великих і малих) і/або цифр")
+    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Логін повинен складатись лише з латинських літер і/або цифр, від 6 до 20 символів")
     private String login;
-//    @AssertTrue(message = "Sorry, but this login name is already taken. Try to enter another one")
-//    private boolean loginIsAlreadyTaken(){
-//        return userService.checkUsernameNotExistInDB(login);
-//    }
-    @NotEmpty
-    @Size(min=6, max=20, message="Пароль повинен містити від {min} до {max} символів")
-//    @Pattern(regexp = "[a-zA-Z0-9].{6,20}",message = "Пароль може складатись лише з латинських літер (великих і малих) і/або цифр")
-    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Пароль повинен складатись з латинських літер і/або цифр")
-//    @Pattern(regexp = "((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})+ ",message = "at least one Upper and Lower character + at least one digit and special symbol. Password length: 6 - 20")
+
+    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Пароль повинен складатись з латинських літер і/або цифр, від 6 до 20 символів")
     private String password;
 
-    @NotEmpty
+    @NotEmpty(message = "{msg.notEmptyField}")
     private String confirmPassword;
 
-    @NotEmpty
     @Size(min=1, max=30, message="Ім\'я повинно містити від {min} до {max} символів")
-    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення")
+    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, цифри не допустимі")
     private String firstName;
 
-    @NotEmpty
     @Size(min=1, max=30, message="Прізвище повинне містити від {min} до {max} символів")
-    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення")
+    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, цифри не допустимі")
     private String lastName;
 
-    @Pattern(regexp = "[(?=.*[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]).{1,30}]*", message = "Некоректне введення")
+    @Pattern(regexp = "[(?=.*[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]).{1,30}]*", message = "Від 1 до 30 символів, цифри недопустимі")
     private String middleName;
 
-    @NotEmpty 
+    @NotEmpty(message = "{msg.notEmptyField}")
     @Email(message="Введіть коректну адресу")
     private String email;
 
     @Pattern(regexp = "[(?=.*[А-ЯІЇЄ]).{2}]*", message = "Поле повинне містити 2 великі літери")
-    /*@Size(min=2, max=2, message = "Серія паспорту складається із двох букв")*/
     private String seria;
 
     @Pattern(regexp = "[(?=.*[0-9]).{6}]*", message = "Поле повинне містити 6 цифр")
@@ -66,7 +53,7 @@ public class RegistrationForm{
 
     private String publishedByData;
 
-    @Pattern(regexp = "[(?=.*[0-9]).{5}]*", message = "Поле повинне містити 5 цифр")
+    @Pattern(regexp = "[(?=.*[0-9])]*", message = "Поле повинне містити тільки цифри")
     private String postcode;
 
     private String region;
@@ -81,21 +68,15 @@ public class RegistrationForm{
 
     private String flat;
     
-    @NotNull
+    @NotNull(message = "{msg.notEmptyField}")
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date dateOfAccession;
     
     @Pattern (regexp = "[(?=.*[0-9]).{10}]*", message = "Некоректний номер телефону")
     private String phoneNumber;
 
-    @NotEmpty
+    @NotEmpty(message = "{msg.notEmptyField}")
     private String territorialCommunity;
-    
-//    @AssertTrue(message = "Введене вами підтвердження паролю невірне")
-//    private boolean isValidConfirmPassword(){
-//        return confirmPassword != password;
-//    }
-
 
     public String getLogin() {
         return login;

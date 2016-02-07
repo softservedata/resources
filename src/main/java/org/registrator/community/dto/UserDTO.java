@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
-import org.registrator.community.entity.TerritorialCommunity;
 
 public class UserDTO implements Serializable {
 
@@ -113,14 +112,6 @@ public class UserDTO implements Serializable {
 	public void setRole(String role) {
 		this.role = role;
 	}
-
-	// public Try getRole() {
-	// return role;
-	// }
-	//
-	// public void setRole(Try role) {
-	// this.role = role;
-	// }
 
 	public String getLogin() {
 		return login;

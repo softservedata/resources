@@ -22,8 +22,8 @@
 		<div class="form-group">
 			<label class="control-label col-md-3"><spring:message
 					code="label.resource.co-owner.select" />:</label>
-			<div class="col-md-3">
-				<input class="form-control" id="owner_search" type="text" value="">
+			<div class="col-sm-3">
+				<input class="form-control" id="owner_search" type="text">
 			</div>
 		</div>
 
@@ -111,12 +111,12 @@
 			</div>
 			<div class="checkbox">
 				<div class="col-md-3">
-					<label><input id="pass" type="checkbox" disabled> <spring:message
-							code="label.resource.pass" /></label><br /> <label><input
+					<label><input class="disable" id="pass" type="checkbox" disabled> <spring:message
+							code="label.resource.pass" /></label><br /> <label><input class="disable"
 						id="will" type="checkbox" disabled> <spring:message
-							code="label.resource.willDocument" /></label><br /> <label><input
+							code="label.resource.willDocument" /></label><br /> <label><input class="disable"
 						id="otherDocs" type="checkbox" disabled> <spring:message
-							code="label.resource.otherDocuments" /></label><br /> <label><input
+							code="label.resource.otherDocuments" /></label><br /> <label><input class="disable"
 						id="tytul" type="checkbox" disabled> <spring:message
 							code="label.resource.propertyTitle" /></label><br /> <label><input
 						id="delivery" type="checkbox"> <spring:message
@@ -347,7 +347,9 @@
 	<script type="text/javascript"
 		src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
 	<script type="text/javascript"
-		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>	
+		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>
+	<script type="text/javascript"
+		src="<c:url value='/resource/js/isInsideUkraine.js'/>"></script>	
 </div>
 
 <script
