@@ -66,7 +66,7 @@ public class RegistrationForm{
 
     private String publishedByData;
 
-    @Pattern(regexp = "[(?=.*[0-9])]*", message = "Цифри лише від 0 до 9")
+    @Pattern(regexp = "[(?=.*[0-9]).{5}]*", message = "Поле повинне містити 5 цифр")
     private String postcode;
 
     private String region;
