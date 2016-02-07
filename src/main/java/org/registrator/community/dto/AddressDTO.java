@@ -14,7 +14,7 @@ public class AddressDTO implements Serializable {
 	public static final String ONLY_LITERALS = "[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]+";
 	public static final String ONLY_DIGITS = "[0-9]+";
 
-	@Pattern(regexp = "[(?=.*[0-9]).{5}]*", message = "Поле повинне містити 5 цифр")
+	@Pattern(regexp = "[(?=.*[0-9])]*", message = "Поле повинне містити тільки цифри")
 	private String postcode;
 
 	private String region;

@@ -22,7 +22,7 @@
 					</legend>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
-								code="label.user.firstname" /></label>
+								code="label.user.firstname" />* </label>
 						<div class="col-lg-8">
 							<input id="firstName" name="firstName" placeholder=""
 								class="form-control input-md readonly" type="text"
@@ -35,7 +35,7 @@
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
-								code="label.user.secondname" /></label>
+								code="label.user.secondname" />* </label>
 						<div class="col-lg-8">
 							<input id="lastname" name="lastName" placeholder=""
 								class="form-control input-md readonly" type="text"
@@ -82,7 +82,7 @@
 					<!-- 					</div> -->
 					<div class="form-group">
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
-								code="label.user.email" /></label>
+								code="label.user.email" />* </label>
 						<div class="col-lg-8">
 							<input id="email" name="email" placeholder=""
 								class="form-control input-md readonly" type="text"
@@ -272,6 +272,25 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-lg-4 control-label" for="textinput"><spring:message
+								code="label.manualregister.community" />* </label>
+						<div class="col-lg-8">
+							<select id="community" name="territorialCommunity" class="form-control"
+								style="width: 230px; height: 34px" disabled>
+								<c:forEach items="${territorialCommunities}" var="communities">
+									<c:choose>
+										<c:when test="${userDto.territorialCommunity == communities.name}">
+											<option selected value="${communities.name}">${communities.name}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${communities.name}">${communities.name}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
 						<div class="col-lg-8">
 							<input id="resourceNumber" class="form-control input-md"
 								type="text" name="resourceNumberDTOJSON.resource_number"
@@ -309,8 +328,8 @@
 					value=<spring:message code="label.user.button"/>
 					class="btn btn-primary btn-sm" style="display: none">
 			</div>
-			<p>
 		</fieldset>
+		<spring:message code="label.msg.required" />
 	</form:form>
 </div>
 

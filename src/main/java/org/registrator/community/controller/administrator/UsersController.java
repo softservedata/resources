@@ -85,6 +85,8 @@ public class UsersController {
 		model.addAttribute("roleList", roleList);
 		List<UserStatus> userStatusList = userService.fillInUserStatusforRegistratedUsers();
 		model.addAttribute("userStatusList", userStatusList);
+		List<TerritorialCommunity> territorialCommunities = communityService.findAll();
+		model.addAttribute("territorialCommunities", territorialCommunities);
 		logger.info("end");
 		return "editWindow";
 	}
@@ -104,6 +106,7 @@ public class UsersController {
 			logger.info("begin");
 			userService.CreateTomeAndRecourceNumber(userDto);
 			UserDTO editUserDto = userService.editUserInformation(userDto);
+			System.out.println(editUserDto.getTerritorialCommunity());
 			model.addAttribute("userDto", editUserDto);
 			logger.info("end");
 			redirectAttributes.addFlashAttribute("tableSetting", tableSettingsFactory.getTableSetting("registerUser"));

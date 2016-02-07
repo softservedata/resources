@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
+import org.registrator.community.entity.TerritorialCommunity;
 
 public class UserDTO implements Serializable {
 
@@ -31,8 +32,8 @@ public class UserDTO implements Serializable {
 
 	private String login;
 
-	@NotEmpty 
-    @Email(message="Введіть коректну адресу")
+	@NotEmpty
+	@Email(message = "Введіть коректну адресу")
 	private String email;
 
 	private String status;
@@ -44,6 +45,8 @@ public class UserDTO implements Serializable {
 	private PassportDTO passport;
 
 	private ResourceNumberDTOJSON resourceNumberDTOJSON;
+
+	private String territorialCommunity;
 
 	private WillDocumentDTO willDocument;
 	private List<String> otherDocuments;
@@ -59,6 +62,20 @@ public class UserDTO implements Serializable {
 		this.status = status;
 		this.address = address;
 		this.passport = passport;
+	}
+	
+	public UserDTO(String firstName, String lastName, String middleName, String role, String login, String email,
+			String status, AddressDTO address, PassportDTO passport,String territorialCommunity) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.middleName = middleName;
+		this.role = role;
+		this.login = login;
+		this.email = email;
+		this.status = status;
+		this.address = address;
+		this.passport = passport;
+		this.territorialCommunity = territorialCommunity;
 	}
 
 	public UserDTO() {
@@ -176,5 +193,13 @@ public class UserDTO implements Serializable {
 
 	public void setResourceNumberDTOJSON(ResourceNumberDTOJSON resourceNumberDTOJSON) {
 		this.resourceNumberDTOJSON = resourceNumberDTOJSON;
+	}
+
+	public String getTerritorialCommunity() {
+		return territorialCommunity;
+	}
+
+	public void setTerritorialCommunity(String territorialCommunity) {
+		this.territorialCommunity = territorialCommunity;
 	}
 }

@@ -198,9 +198,10 @@ public class UserServiceImpl implements UserService {
 			user.setLastName(userDto.getLastName());
 			user.setMiddleName(userDto.getMiddleName());
 			user.setEmail(userDto.getEmail());
-			// user.setPassword(userDto.getPassword());
 			user.setRole(checkRole(userDto.getRole()));
 			user.setStatus(checkUserStatus(userDto.getStatus()));
+			TerritorialCommunity territorialCommunity = communityService.findByName(userDto.getTerritorialCommunity());
+			user.setTerritorialCommunity(territorialCommunity);
 			logger.info("edit user in data base");
 			PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
 					userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
@@ -306,7 +307,7 @@ public class UserServiceImpl implements UserService {
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto);
+				passportDto,user.getTerritorialCommunity().getName());
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -474,7 +475,7 @@ public class UserServiceImpl implements UserService {
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto);
+				passportDto,user.getTerritorialCommunity().getName());
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();

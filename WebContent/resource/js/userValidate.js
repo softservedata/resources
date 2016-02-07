@@ -10,16 +10,7 @@ $(document).ready(function() {
 			email : {
 				required : true,
 				email : true
-			},
-			"address.postcode" : {
-				required : true
-			},
-			"passport.seria" : {
-				required : true
-			},
-			"passport.number" : {
-				required : true
-			},
+			}
 		},
 		messages : {
 			firstName : {
@@ -31,16 +22,6 @@ $(document).ready(function() {
 			email : {
 				required : "Поле є обов'язковим для введення",
 				email : "Це не емейл"
-			},
-			"address.postcode" : {
-				required : "Поле є обов'язковим для введення"
-			
-			},
-			"passport.seria" : {
-				required : "Поле є обов'язковим для введення"
-			},
-			"passport.number" : {
-				required : "Поле є обов'язковим для введення",
 			}
 		}
 	});
