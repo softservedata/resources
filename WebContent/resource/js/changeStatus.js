@@ -1,7 +1,7 @@
 $(document).on('change', '#userStatusId', function(event) {
 	var json = {
 		"status" : $("#userStatusId").val(),
-		"login" : $("#login").val()
+		"login" : $("#login").text()
 	};
 
 	$.ajax({

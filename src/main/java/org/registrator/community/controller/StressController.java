@@ -1,6 +1,8 @@
 package org.registrator.community.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.AreaRepository;
@@ -12,6 +14,7 @@ import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.RoleRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
+import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.Area;
 import org.registrator.community.entity.DiscreteParameter;
@@ -132,22 +135,14 @@ public class StressController {
             System.out.println("RDV1" + rdv1.toString());// hashcode
             System.out.println(rdv1 != null);
 
-            /*
-             * ResourceDiscreteValue rdv2 = new ResourceDiscreteValue();
-             * rdv1.setDiscreteParameter(dis2);// SQUARE
-             * rdv2.setResource(resource); rdv2.setValue(10.0);
-             * 
-             * resourceDiscreteValueRepository.save(rdv2);
-             */
+           
+            ResourceDiscreteValue rdv2 = new ResourceDiscreteValue();
+            rdv2.setDiscreteParameter(dis2);// SQUARE
+            rdv2.setResource(resource); rdv2.setValue(10.0);
+            resourceDiscreteValueRepository.save(rdv2);
+            
 
-            Polygon polygon = new Polygon();
-            polygon.setMaxLat(50.0);
-            polygon.setMaxLng(34.0);
-            polygon.setMinLat(49.0);
-            polygon.setMinLng(33.0);
-            polygon.setResource(resource);
-            polygonRepository.save(polygon);
-            System.out.println("POLIGON" + polygon.toString());
+           List<Area> listArea = new ArrayList<Area>();
 
             /*
              * change j
@@ -169,14 +164,60 @@ public class StressController {
                 System.out.println(randomLongitude);
 
                 area.setOrderNumber(j);
-                area.setPolygon(polygon);
+                
 
                 System.out.println("AREA" + area.toString());
                 System.out.println(area != null);
-                areaRepository.save(area);
+                /*areaRepository.save(area);*/
+                listArea.add(area);
             }
-
+            Polygon polygon = getPolygonEntity(resource, listArea);
+            polygonRepository.save(polygon);
+            for(Area area2: listArea){
+                area2.setPolygon(polygon);
+            }
+            areaRepository.save(listArea);
+            
+            /*
+            Polygon polygon = new Polygon();
+            polygon.setMaxLat(50.0);
+            polygon.setMaxLng(34.0);
+            polygon.setMinLat(49.0);
+            polygon.setMinLng(33.0);
+            polygon.setResource(resource);
+            polygonRepository.save(polygon);
+            System.out.println("POLIGON" + polygon.toString());*/
         }
         return "stress";
+    }
+    private Polygon getPolygonEntity(Resource resourceEntity, List<Area> listArea) {
+        Polygon polygonEntity = new Polygon();
+        Double minLat = 90.0;
+        Double maxLat = -90.0;
+        Double minLng = 180.0;
+        Double maxLng = -180.0;
+
+        for (Area area: listArea) {
+            if (minLat > area.getLatitude()) {
+                minLat = area.getLatitude();
+            }
+            if (maxLat < area.getLatitude()) {
+                maxLat = area.getLatitude();
+            }
+            if (minLng > area.getLongitude()) {
+                minLng = area.getLongitude();
+            }
+            if (maxLng < area.getLongitude()) {
+                maxLng = area.getLongitude();
+            }
+        }
+
+        polygonEntity.setMinLat(minLat);
+        polygonEntity.setMaxLat(maxLat);
+        polygonEntity.setMinLng(minLng);
+        polygonEntity.setMaxLng(maxLng);
+        polygonEntity.setResource(resourceEntity);
+
+        return polygonEntity;
     }
 }
