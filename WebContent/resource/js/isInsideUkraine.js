@@ -73,8 +73,17 @@ function isInsideUkraine(polygon){
 		return false;
 	}
 	// else we don't know exactly
-	alert ("we don't know exactly");	
-	
+	//alert ("we don't know exactly"); //jQuery.i18n.prop('msg.confirmDeleteProcuration')
+	console.log("we don't know exactly");
+	//TO TEST
+	bootbox.confirm("Ви впевнені що ресурс знаходиться на території України?", function(result){
+		console.log("confirm = " + result);
+		isInside = result;
+		console.log("confirm = " + isInside);
+	});
+	//isInside = confirm("Ви впевнені що ресурс знаходиться на території України?");
+	console.log("confirm = " + isInside);
+	return isInside;	
 }
 
 
