@@ -379,12 +379,14 @@ public class ResourceServiceImpl implements ResourceService {
     private List<Area> parseToAreaList(PoligonAreaDTO poligonAreaDTO, Polygon polygonEntity) {
         List<Area> areas = new ArrayList<Area>();
         for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
-            Area area = new Area();
-            area.setPolygon(polygonEntity);
-            area.setOrderNumber(point.getOrderNumber());
-            area.setLatitude(point.getDecimalLatitude());
-            area.setLongitude(point.getDecimalLongitude());
-            areas.add(area);
+            if (point.getOrderNumber() != 0) {
+                Area area = new Area();
+                area.setPolygon(polygonEntity);
+                area.setOrderNumber(point.getOrderNumber());
+                area.setLatitude(point.getDecimalLatitude());
+                area.setLongitude(point.getDecimalLongitude());
+                areas.add(area);
+            }
         }
         return areas;
     }
@@ -556,26 +558,27 @@ public class ResourceServiceImpl implements ResourceService {
      */
     private ResourceDTO fillAreaDTO(ResourceDTO resourceDTO, Resource resourceEntity) {
         List<Polygon> polygons = polygonRepository.findByResource(resourceEntity);
-        List<Area> areas = new ArrayList<>();
-        for (Polygon polygon : polygons) {
-            areas.addAll(areaRepository.findByPolygon(polygon));
-        }
-
         /* fill additional resource fields */
         ResourceAreaDTO resourceArea = new ResourceAreaDTO();
         List<PoligonAreaDTO> poligonsDTO = new ArrayList<PoligonAreaDTO>();
 
-        PoligonAreaDTO poligon = new PoligonAreaDTO();
-        List<PointAreaDTO> pointDTOs = new ArrayList<PointAreaDTO>();
-        for (Area area : areas) {
-            PointAreaDTO pointDTO = new PointAreaDTO();
-            pointDTO.setOrderNumber(area.getOrderNumber());
-            pointDTO.setLatitudeValues(area.getLatitude());
-            pointDTO.setLongitudeValues(area.getLongitude());
-            pointDTOs.add(pointDTO);
+        for (Polygon polygon : polygons) {
+            List<Area> areas = new ArrayList<>();
+            areas.addAll(areaRepository.findByPolygon(polygon));
+
+            PoligonAreaDTO poligon = new PoligonAreaDTO();
+            List<PointAreaDTO> pointDTOs = new ArrayList<PointAreaDTO>();
+
+            for (Area area : areas) {
+                PointAreaDTO pointDTO = new PointAreaDTO();
+                pointDTO.setOrderNumber(area.getOrderNumber());
+                pointDTO.setLatitudeValues(area.getLatitude());
+                pointDTO.setLongitudeValues(area.getLongitude());
+                pointDTOs.add(pointDTO);
+            }
             poligon.setPoints(pointDTOs);
+            poligonsDTO.add(poligon);
         }
-        poligonsDTO.add(poligon);
         resourceArea.setPoligons(poligonsDTO);
         resourceDTO.setResourceArea(resourceArea);
         return resourceDTO;

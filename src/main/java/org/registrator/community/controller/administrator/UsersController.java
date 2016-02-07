@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/administrator/users/")
@@ -92,10 +93,11 @@ public class UsersController {
 	 * Controller for editing user information
 	 *
 	 */
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/edit-registrated-user", method = RequestMethod.POST)
 	public String editRegistratedUser(@Valid @ModelAttribute("userDTO") UserDTO userDto, BindingResult result,
-			Model model) {
+			Model model,RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			return fillInEditWindow(userDto.getLogin(), model);
 		} else {
@@ -103,14 +105,10 @@ public class UsersController {
 			userService.CreateTomeAndRecourceNumber(userDto);
 			UserDTO editUserDto = userService.editUserInformation(userDto);
 			model.addAttribute("userDto", editUserDto);
-			List<Role> roleList = roleService.getAllRole();
-			model.addAttribute("roleList", roleList);
-			List<UserStatus> userStatusList = userService.fillInUserStatusforRegistratedUsers();
-			model.addAttribute("userStatusList", userStatusList);
 			logger.info("end");
-			return "redirect:/administrator/users/get-all-users";
+			redirectAttributes.addFlashAttribute("tableSetting", tableSettingsFactory.getTableSetting("registerUser"));
 		}
-
+		return "redirect:/administrator/users/get-all-users";
 	}
 
 	/**
@@ -168,6 +166,7 @@ public class UsersController {
 	 * Controller for get all registrated users
 	 * 
 	 */
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
 	public String getAllUsers(Model model) {

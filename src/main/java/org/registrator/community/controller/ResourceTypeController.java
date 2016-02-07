@@ -40,14 +40,7 @@ public class ResourceTypeController {
         logger.info("end method for showing all types of resources");
         return "allResourcesTypes";
     }
-
-    @RequestMapping(value = "/show-one-res-types/{typeName}", method = RequestMethod.GET)
-    public String showOneResourceType(@PathVariable String typeName, Model model) {
-        ResourceType oneResType = resourceTypeService.findByName(typeName);
-        model.addAttribute("oneResType", oneResType);
-        return "findOneResType";
-    }
-
+    
     /**
      * Method for deleting chosen resource type by typeId. If chosen resource
      * type has at least one resource we will get bad_request and it will not be

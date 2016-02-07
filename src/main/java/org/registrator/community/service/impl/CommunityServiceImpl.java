@@ -39,16 +39,23 @@ public class CommunityServiceImpl implements CommunityService{
     public TerritorialCommunity findById(Integer id) {
         return communityRepository.findOne(id);
     }
+    /**
+     * Delete community if it doesn't have any co-owners
+     * 
+     * @param territorialCommunity
+     * @return true if at least one co-owner exists in the database or false if we cannot
+     *         delete this community from the database
+     */
     @Override
     public boolean deleteCommunity(TerritorialCommunity territorialCommunity) {
         
         List<User> listOfUsers = userRepository.findByTerritorialCommunity(territorialCommunity);
         if(listOfUsers.isEmpty()){
             communityRepository.delete(territorialCommunity);
-            logger.info("end: return true if list is empty");
+            logger.info("end: return true if list of co-ownwers is empty");
             return true;
         }
-        logger.info("end: return false if list isn't empty");
+        logger.info("end: return false if list co-owners isn't empty");
         return false;
         
     }

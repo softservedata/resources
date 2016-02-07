@@ -10,7 +10,7 @@ import org.springframework.validation.Validator;
 @Component
 public class PasswordRecoveryValidator implements Validator {
 	
-	private static final String PASSWORD_PATTERN="(?=.*[a-zA-Z])[a-zA-Z0-9].{5,20}";
+	private static final String PASSWORD_PATTERN="[a-zA-Z0-9].{5,20}";
 	
 	@Autowired
 	private VerificationTokenService verificationTokenService;

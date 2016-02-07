@@ -20,7 +20,7 @@
 
 		<!-- select co-owner -->
 		<div class="form-group">
-			<label class="control-label col-sm-3"><spring:message
+			<label class="control-label col-md-3"><spring:message
 					code="label.resource.co-owner.select" />:</label>
 			<div class="col-sm-3">
 				<input class="form-control" id="owner_search" type="text">
@@ -29,8 +29,8 @@
 
 		<!-- login of the selected co-owner -->
 		<div class="form-group"  hidden="true">
-			<label class="control-label col-sm-3">login:</label>
-			<div class="col-sm-3">
+			<label class="control-label col-md-3">login:</label>
+			<div class="col-md-3">
 				<input class="form-control" id="owner_login" type="text" 
 				value="${ownerLogin}" name="ownerLogin">
 			</div>
@@ -38,9 +38,9 @@
 
 		<!-- add resource description -->
 		<div class="form-group">
-			<label class="control-label col-sm-3"><spring:message
+			<label class="control-label col-md-3"><spring:message
 					code="label.resource.description" />:</label>
-			<div class="col-sm-3">
+			<div class="col-md-3">
 				<input class="form-control" name="description" id="w-input-search"
 					value="${newresource.description}">
 				<div class="control-group error">
@@ -51,9 +51,9 @@
 
 		<!-- select resource type -->
 		<div class="form-group">
-			<label class="control-label col-sm-3"><spring:message
+			<label class="control-label col-md-3"><spring:message
 					code="label.resource.type" />:</label>
-			<div class="col-sm-3">
+			<div class="col-md-3">
 				<select id="resourcesTypeSelect" name="resourceType"
 					class="form-control" required>
 					<c:if test="${!empty newresource.resourceType}">
@@ -80,16 +80,16 @@
 
 		<!-- registration number of resource-->
 		<div class="form-group">
-			<label class="control-label col-sm-3"><spring:message
+			<label class="control-label col-md-3"><spring:message
 					code="label.resource.identifier" />:</label>
-			<div class="col-sm-3">
+			<div class="col-md-3">
 				<input class="form-control" name="identifier" id="identifier"
 					value="${newresource.identifier}" readonly>
 				<div class="control-group error">
 					<form:errors path="identifier" cssClass="error" style="color:red" />
 				</div>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-md-3">
 				<button id="editNumber" type="button" class="btn btn-primary">
 					<spring:message code="label.resource.edit" />
 				</button>
@@ -99,9 +99,9 @@
 
 		<!-- reasonInclusion -->
 		<div class="form-group">
-			<label class="control-label col-sm-3"><spring:message
+			<label class="control-label col-md-3"><spring:message
 					code="label.resource.reasonInclusion" />:</label>
-			<div class="col-sm-3">
+			<div class="col-md-3">
 				<textarea id="reasonInclusion" class="form-control" rows="5"
 					name="reasonInclusion">${newresource.reasonInclusion}</textarea>
 				<div class="control-group error">
@@ -110,7 +110,7 @@
 				</div>
 			</div>
 			<div class="checkbox">
-				<div class="col-sm-3">
+				<div class="col-md-3">
 					<label><input class="disable" id="pass" type="checkbox" disabled> <spring:message
 							code="label.resource.pass" /></label><br /> <label><input class="disable"
 						id="will" type="checkbox" disabled> <spring:message
@@ -128,9 +128,9 @@
 
 		<!-- reasonInclusion -->
 		<div class="form-group">
-			<label class="control-label col-sm-3"><spring:message
+			<label class="control-label col-md-3"><spring:message
 					code="label.resource.date" />:</label>
-			<div class="col-sm-3">
+			<div class="col-md-3">
 				<input class="form-control" type="text" id="datepicker" name="date"
 					value="${FormatedDate}">
 				<div class="control-group error">
@@ -141,9 +141,9 @@
 
 		<!-- fill tome identifier -->
 		<%--         <div class="form-group ">
-            <label class="control-label col-sm-3"><spring:message
+            <label class="control-label col-md-3"><spring:message
                     code="label.resource.tome" />:</label>
-            <div class="col-sm-3">
+            <div class="col-md-3">
                 <input class="form-control" name="tomeIdentifier" required readonly
                     value="${tome.identifier}">
             </div>
@@ -155,13 +155,13 @@
 		</legend>
 
 		<%--Container for Google map--%>
-		<div class="col-sm-12" style="margin-bottom: 10px;">
-			<div class="col-sm-12" id="mapManual">
+		<div class="col-md-12" style="margin-bottom: 10px;">
+			<div class="col-md-12" id="mapManual">
 				<span class="glyphicon glyphicon-triangle-right"></span> <span
 					class="glyphicon glyphicon-triangle-bottom hidden"></span> <span><spring:message
 						code="label.howToUseMap" /></span>
 			</div>
-			<div class="spoiler col-sm-12">
+			<div class="spoiler col-md-12">
 				Щоб додати область натисніть кнопку "Додати полігон". Клікаючи на
 				мапі лівою кнопкою мишки виділіть потрібну область.<br /> Якщо Ви
 				хочете виділити область поруч з існуючою, таким чином, щоб вони мали
@@ -185,7 +185,7 @@
 
 		<div id="map_canvas" class="container"
 			style="height: 500px; padding: 20px 0px;"></div>
-		<div class="col-sm-12">
+		<div class="col-md-12">
 			<button id="addPointsFromMap" class="btn btn-primary" type="button"
 				style="margin-top: 10px;">
 				<spring:message code="label.resource.coordinates.addFromMap" />
@@ -196,23 +196,25 @@
 			</button>
 			<%--<button id="show_UA" class="btn btn-primary" type="button"--%>
 			<%--style="margin-top: 10px;">Show Ukraine</button>--%>
+			<span id="infoBox" class="col-md-5"><spring:message
+                    code="label.resource.infoBox" /></span>
 		</div>
 
 		<div class="form-group">
-			<label class="control-label col-sm-1"><spring:message
+			<label class="control-label col-md-1"><spring:message
 					code="label.resource.orderPoint" /></label> <label
-				class="control-label col-sm-3"><spring:message
+				class="control-label col-md-3"><spring:message
 					code="label.resource.latitude" /></label> <label
-				class="control-label col-sm-3"><spring:message
+				class="control-label col-md-3"><spring:message
 					code="label.resource.longitude" /></label>
 		</div>
 		<div id="areaInput1" class="form-group clonedAreaInput">
-			<div class="col-sm-1" style="width: 130px; height: 34px">
+			<div class="col-md-1" style="width: 130px; height: 34px">
 				<input id="pointNumber" class="form-control"
 					name="resourceArea.poligons[0].points[0].orderNumber" value="${1}"
 					readonly>
 			</div>
-			<div class="col-sm-1" style="width: 130px; height: 34px">
+			<div class="col-md-1" style="width: 130px; height: 34px">
 				<input id="myparam1" class="form-control"
 					name="resourceArea.poligons[0].points[0].latitudeDegrees"
 					value="${0}" required>
@@ -222,7 +224,7 @@
 						cssClass="error" style="color:red" />
 				</div>
 			</div>
-			<div class="col-sm-1" style="width: 130px; height: 34px">
+			<div class="col-md-1" style="width: 130px; height: 34px">
 				<input id="myparam2" class="form-control"
 					name="resourceArea.poligons[0].points[0].latitudeMinutes"
 					value="${0}" required>
@@ -232,7 +234,7 @@
 						cssClass="error" style="color:red" />
 				</div>
 			</div>
-			<div class="col-sm-1" style="width: 130px; height: 34px">
+			<div class="col-md-1" style="width: 130px; height: 34px">
 				<input id="myparam3" class="form-control"
 					name="resourceArea.poligons[0].points[0].latitudeSeconds"
 					value="${0.0}" required>
@@ -242,7 +244,7 @@
 						cssClass="error" style="color:red" />
 				</div>
 			</div>
-			<div class="col-sm-1" style="width: 130px; height: 34px">
+			<div class="col-md-1" style="width: 130px; height: 34px">
 				<input id="myparam4" class="form-control"
 					name="resourceArea.poligons[0].points[0].longitudeDegrees"
 					value="${0}" required>
@@ -252,7 +254,7 @@
 						cssClass="error" style="color:red" />
 				</div>
 			</div>
-			<div class="col-sm-1" style="width: 130px; height: 34px">
+			<div class="col-md-1" style="width: 130px; height: 34px">
 				<input id="myparam5" class="form-control"
 					name="resourceArea.poligons[0].points[0].longitudeMinutes"
 					value="${0}" required>
@@ -262,7 +264,7 @@
 						cssClass="error" style="color:red" />
 				</div>
 			</div>
-			<div class="col-sm-1" style="width: 130px; height: 34px">
+			<div class="col-md-1" style="width: 130px; height: 34px">
 				<input id="myparam6" class="form-control"
 					name="resourceArea.poligons[0].points[0].longitudeSeconds"
 					value="${0.0}" required>
@@ -345,7 +347,9 @@
 	<script type="text/javascript"
 		src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
 	<script type="text/javascript"
-		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>	
+		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>
+	<script type="text/javascript"
+		src="<c:url value='/resource/js/isInsideUkraine.js'/>"></script>	
 </div>
 
 <script
