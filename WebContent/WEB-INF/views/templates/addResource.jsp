@@ -345,7 +345,9 @@
 	<script type="text/javascript"
 		src="<c:url value='/resource/js/addResourceOnMap.js'/>"></script>
 	<script type="text/javascript"
-		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>	
+		src="<c:url value='/resource/js/checkIntersection.js'/>"></script>
+	<script type="text/javascript"
+		src="<c:url value='/resource/js/isInsideUkraine.js'/>"></script>	
 </div>
 
 <script

@@ -293,7 +293,7 @@ function intersectionCheck(polygon){
     }*/
     
     intersection = checkIntersectionAllPolygons(polygon, polygons);
-
+    
     if (!intersection) {
         newPolygons.push(polygon);
         polygon.setEditable(false);
