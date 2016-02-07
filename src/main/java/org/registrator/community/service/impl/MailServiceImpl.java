@@ -35,6 +35,8 @@ public class MailServiceImpl implements MailService{
 	
 	public static final String RECOVER_PASSWORD_LETTER_PATH =  "/velocity/recoverPassword.vm";
 	
+	public static final String RECOVER_PASSWORD_SUBJECT =  "Заявка на відновлення паролю";
+	
 	@Autowired
 	private JavaMailSender mailSender;
 	
@@ -59,14 +61,14 @@ public class MailServiceImpl implements MailService{
                 templateVariables.put("token", token);
                 String body = mergeTemplateIntoString(velocityEngine, RECOVER_PASSWORD_LETTER_PATH, "UTF-8", templateVariables);
                 message.setText(body, true);
-                message.setSubject("Important notification");
+                message.setSubject(RECOVER_PASSWORD_SUBJECT);
             }
         };
-//        try{
+        try{
         	mailSender.send(preparator);
-//        }
-//        catch(MailException e){
-//        	logger.error("Send mail exception to"+recepientEmail);
-//        } 
+        }
+        catch(MailException e){
+        	logger.error("Send mail exception to"+recepientEmail);
+        } 
 	}
 }
