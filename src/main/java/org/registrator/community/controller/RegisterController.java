@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.registrator.community.components.AdminSettings;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.enumeration.RegistrationMethod;
@@ -42,10 +43,10 @@ public class RegisterController {
     @Autowired
     UserNameValidator validator;
 
-    @PreAuthorize("hasRole('anonymousUser')")
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
-        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
+        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc(); 
         model.addAttribute("territorialCommunities", territorialCommunities);
         model.addAttribute("registrationForm", new RegistrationForm());
         log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
@@ -55,7 +56,7 @@ public class RegisterController {
         return "register";
     }
 
-    @PreAuthorize("hasRole('anonymousUser')")
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
         validator.validate(registrationForm, result);
@@ -69,8 +70,7 @@ public class RegisterController {
         userService.registerUser(registrationForm);
 
         log.info("Successfully registered new user: " + registrationForm.getLogin());
-        //thanks for registration
-        return "redirect:/login";
+        return "thanks-for-registration";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

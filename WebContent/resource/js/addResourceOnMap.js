@@ -242,7 +242,7 @@ function intersectionCheck(polygon){
 
     //console.log("Polygons found: "+polygons.length);
 
-    for (i = 0; i < vertices.getLength(); i++) {
+   /* for (i = 0; i < vertices.getLength(); i++) {
         point = vertices.getAt(i);
         for (j = 0; j < polygons.length; j++) {
             isWithinPolygon = google.maps.geometry.poly.containsLocation(point, polygons[j]);
@@ -290,7 +290,9 @@ function intersectionCheck(polygon){
             }
 
         }
-    }
+    }*/
+    
+    intersection = checkIntersectionAllPolygons(polygon, polygons);
 
     if (!intersection) {
         newPolygons.push(polygon);
@@ -339,6 +341,7 @@ $("#addPointsFromMap").click(function () {
         $("#dark_bg").show();
         var area = new Number();
         var perimeter = new Number();
+        var infoBoxMessage = "";
 
         //If user entered the correct polygon and it doesn't intersect with existing polygons
         //we add points coordinates to inputs and deny to edit entered polygon. Before adding points
@@ -368,22 +371,24 @@ $("#addPointsFromMap").click(function () {
             newPolygons[i].setOptions({fillColor: "#003400"});
 
             //Calculation of area and perimeter of all new polygons.
-            area += Number(google.maps.geometry.spherical.computeArea(newPolygons[i].getPath()));
-            perimeter += Number(google.maps.geometry.spherical.computeLength(newPolygons[i].getPath()));
+            area = Number(google.maps.geometry.spherical.computeArea(newPolygons[i].getPath()));
+            perimeter = Number(google.maps.geometry.spherical.computeLength(newPolygons[i].getPath()));
 
             //Coordinates added, if we want we can delete the polygon from the array.
             //newPolygons.splice(i,1);
-        }
 
-        //Adding area and perimeter values to input fields
-        $("input").each(function () {
-            if ($(this).val() == "площа") {
-                $(this).siblings("div").children("input:first").val((area / 10000).toFixed(5));
-            }
-            if ($(this).val() == "периметер") {
-                $(this).siblings("div").children("input:first").val((perimeter).toFixed(1));
-            }
-        });
+            //Adding area and perimeter values to input fields
+            infoBoxMessage += "<div>" +
+                "<label>"+jQuery.i18n.prop('msg.Polygon')+" "+(i+1)+": </label> " +
+                "<span>"+jQuery.i18n.prop('msg.Area')+" "
+                    +(area / 10000).toFixed(5)+" "+jQuery.i18n.prop('msg.Area.units')+"; </span>" +
+                "<span>"+jQuery.i18n.prop('msg.Perimeter')+" "
+                    +(perimeter).toFixed(1)+" "+jQuery.i18n.prop('msg.Perimeter.units')+" </span>"+
+                "</div>";
+
+        }
+        $("#infoBox").html(infoBoxMessage);
+
         //We make the link "Add polygon" inactive
         $(".toggle a").addClass("inactiveLink");
         $("#btnAddAreaPoint").attr('disabled', 'disabled');
@@ -507,7 +512,8 @@ $(document).on("click", "#resetForm", function(){
     //$("input[id*='myparam']").removeAttr("disabled");
     $("#typeParameters").html("");
     $("#reasonInclusion").text("");
-    $('#will').attr("disabled","disabled"); 
+    $("#infoBox").html(jQuery.i18n.prop('msg.infoBox'));
+    $('#will').attr("disabled","disabled");
     $('#pass').attr("disabled","disabled"); 
     $('#otherDocs').attr("disabled","disabled"); 
     newPolygons.forEach(function (polygon) {
@@ -537,6 +543,7 @@ $(document).on("click", "#submitForm", function(){
             });
         });
 
+        var i=0;
         points.each(function(){
             var latGrad = Number($(this).find('#myparam1').val());
             var latMin = Number($(this).find('#myparam2').val());
@@ -548,15 +555,14 @@ $(document).on("click", "#submitForm", function(){
             var lat = latGrad + latMin/60 + latSec/3600;
             var lng = lngGrad + lngMin/60 + lngSec/3600;
 
-            var pointIndex = $.inArray(lat,latArray);
-            if ((pointIndex == -1) || (lng != lngArray[pointIndex])) {
+            if ((lat != latArray[i]) || (lng != lngArray[i])) {
                 $(this).find("input").css("background","rgba(255,0,0,0.4)");
                 different = true;
-                console.log("Point out!");
             }
+            i++;
         });
         if(different) {
-            bootbox.alert("Точки на мапі і введені відрізняються!");
+            bootbox.alert(jQuery.i18n.prop('msg.differentPoints'));
             return false;
         }
     }

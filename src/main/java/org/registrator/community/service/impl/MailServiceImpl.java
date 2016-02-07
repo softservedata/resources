@@ -62,11 +62,11 @@ public class MailServiceImpl implements MailService{
                 message.setSubject("Important notification");
             }
         };
-        try{
+//        try{
         	mailSender.send(preparator);
-        }
-        catch(MailException e){
-        	logger.error("Send mail exception to"+recepientEmail);
-        } 
+//        }
+//        catch(MailException e){
+//        	logger.error("Send mail exception to"+recepientEmail);
+//        } 
 	}
 }

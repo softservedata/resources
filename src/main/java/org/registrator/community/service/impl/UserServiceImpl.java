@@ -391,8 +391,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void registerUser(RegistrationForm registrationForm) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User admin = getUserByLogin(auth.getName());
 		TerritorialCommunity territorialCommunity = communityService
 				.findByName(registrationForm.getTerritorialCommunity());
 		User user = new User();
@@ -404,11 +402,7 @@ public class UserServiceImpl implements UserService {
 		user.setMiddleName(registrationForm.getMiddleName());
 		user.setPhoneNumber(registrationForm.getPhoneNumber());
 		user.setRole(roleRepository.findRoleByType(RoleType.USER));
-		if (admin.getRole().getType() == RoleType.ADMIN) {
-			user.setStatus(UserStatus.INACTIVE);
-		} else {
-			user.setStatus(UserStatus.ACTIVE);
-		}
+		user.setStatus(UserStatus.INACTIVE);
 		user.setPhoneNumber(registrationForm.getPhoneNumber());
 		user.setDateOfAccession(registrationForm.getDateOfAccession());
 		user.setTerritorialCommunity(territorialCommunity);
