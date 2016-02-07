@@ -11,7 +11,7 @@ import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.UserService;
-import org.registrator.community.validator.UserNameValidator;
+import org.registrator.community.validator.UserDataValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,7 +34,7 @@ public class ManualRegistrationController {
     private CommunityService communityService;
     
     @Autowired
-    UserNameValidator validator;
+    UserDataValidator validator;
 
     /**
      * Method for loading form for adding new user
@@ -61,13 +61,12 @@ public class ManualRegistrationController {
     @PreAuthorize("hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/manualregistration", method = RequestMethod.POST)
     public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
-        validator.validate(registrationForm, result);
-        model.addAttribute("formAction", "manualregistration");     
+        validator.validate(registrationForm, result);   
         if (result.hasErrors()) {
             List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
             model.addAttribute("territorialCommunities", territorialCommunities);
             logger.warn("Registration form sent to server with following errors: \n" + result.getFieldErrors()
-                    + "\n Error messages displayed to user.");
+                    + "\n Error messages displayed to admin or commissioner.");
             return "regForComm";
         }
         userService.registerUser(registrationForm);

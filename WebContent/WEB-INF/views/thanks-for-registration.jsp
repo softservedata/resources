@@ -11,6 +11,9 @@ body {
 </style>
 </head>
 <body>
+
+<a href="${pageContext.request.contextPath}/login"
+		class="btn btn-success" role="button">Повернутись на головну</a>
 <div name="registration_successful">
 <p><p>Вітаємо - ви успішно зареєстровані.
 <p> * * * * *

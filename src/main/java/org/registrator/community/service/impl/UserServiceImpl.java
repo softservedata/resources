@@ -439,24 +439,6 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	// @Transactional
-	// @Override
-	// public int updateUser(User user) {
-	// return 0;
-	// }
-	//
-	// @Transactional
-	// @Override
-	// public boolean login(String login, String password) {
-	// if (userRepository.findUserByLogin(login) != null
-	// && userRepository.getUsersPasswordHash(login) ==
-	// DigestUtils.md5Hex(password)) {
-	// return true;
-	// } else {
-	// return false;
-	// }
-	// }
-
 	@Transactional
 	@Override
 	public boolean checkUsernameNotExistInDB(String login) {
@@ -530,7 +512,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void CreateTomeAndRecourceNumber(UserDTO userDto) {
 		try {
-			if (!userDto.getResourceNumberDTOJSON().getLogin().equals("")) {
+			if (!userDto.getResourceNumberDTOJSON().getLogin().equals("0")) {
 				System.out.println("3");
 				User user = userRepository.findUserByLogin(userDto.getResourceNumberDTOJSON().getLogin());
 				TomeDTO tomeDto = new TomeDTO(userDto.getResourceNumberDTOJSON().getIdentifier(), user.getFirstName(),

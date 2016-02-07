@@ -4,7 +4,7 @@
 
 <div class="container-fluid" id="header">
 
-	<div class="col-md-8">
+	<div class="col-md-7">
 		<h3>
 			<spring:message code="label.name.part1" />
 		</h3>
@@ -12,8 +12,8 @@
 			<spring:message code="label.name.part2" />
 		</h3>
 	</div>
-	<div class="col-md-4">
-		<div class="col-md-6">
+	<div class="col-md-5">
+		<div class="col-md-7">
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 				<div class="col-md-7">
@@ -25,7 +25,7 @@
 				</div>
 			</c:if>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-5">
 		<select id="changeLanguage" class="form-control">
 			<option value="ua">українська</option>
 			<option value="ru">русский</option>

@@ -48,6 +48,8 @@
 				<tr>
 					<td colspan="2">
 						<span id="geoCoords">
+                            <span class="glyphicon glyphicon-triangle-right"></span>
+                            <span class="glyphicon glyphicon-triangle-bottom" style="display:none;"></span>
 							<spring:message code="label.resource.coordinates"/>:
 						</span>
 					</td>
@@ -55,7 +57,7 @@
                 <tr class="coordinates">
                     <td colspan="2">
                         <c:forEach var="poligon" items="${resource.resourceArea.poligons}">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 polygon">
                             <c:forEach var="point" items="${poligon.points}">
                                 <div class="coordinatesPoint">
                                     <span class="pointLat">

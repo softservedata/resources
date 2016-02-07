@@ -25,7 +25,7 @@ public class AdditionalAppConfig {
 
     @Bean(name = "mailSender")
     public JavaMailSender mailSender(){
-    	JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setDefaultEncoding("UTF-8");
         sender.setHost("smtp.gmail.com");
         sender.setProtocol("smtps");

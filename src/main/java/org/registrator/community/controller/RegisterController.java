@@ -13,7 +13,7 @@ import org.registrator.community.enumeration.RegistrationMethod;
 import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.UserService;
-import org.registrator.community.validator.UserNameValidator;
+import org.registrator.community.validator.UserDataValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +41,12 @@ public class RegisterController {
     private CommunityService communityService;
     
     @Autowired
-    UserNameValidator validator;
+    UserDataValidator validator;
 
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showNewUserRegisterForm(Model model, HttpServletRequest request) {
-        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
+        List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc(); 
         model.addAttribute("territorialCommunities", territorialCommunities);
         model.addAttribute("registrationForm", new RegistrationForm());
         log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
@@ -60,7 +60,6 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processNewUserData(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
         validator.validate(registrationForm, result);
-        model.addAttribute("formAction", "register"); 
         if (result.hasErrors()) {
             List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
             model.addAttribute("territorialCommunities", territorialCommunities);
