@@ -393,14 +393,6 @@ public class UserServiceImpl implements UserService {
 	public void registerUser(RegistrationForm registrationForm) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User admin = getUserByLogin(auth.getName());
-		// if (this.userRepository.findUserByLogin(registrationForm.getLogin())
-		// != null) {
-		// return UserService.ERR_DUP_USER;
-		// }
-		// if (this.userRepository.findUserByEmail(registrationForm.getEmail())
-		// != null) {
-		// return UserService.ERR_DUP_EMAIL;
-		// }
 		TerritorialCommunity territorialCommunity = communityService
 				.findByName(registrationForm.getTerritorialCommunity());
 		User user = new User();
@@ -452,24 +444,6 @@ public class UserServiceImpl implements UserService {
 		}
 
 	}
-
-	// @Transactional
-	// @Override
-	// public int updateUser(User user) {
-	// return 0;
-	// }
-	//
-	// @Transactional
-	// @Override
-	// public boolean login(String login, String password) {
-	// if (userRepository.findUserByLogin(login) != null
-	// && userRepository.getUsersPasswordHash(login) ==
-	// DigestUtils.md5Hex(password)) {
-	// return true;
-	// } else {
-	// return false;
-	// }
-	// }
 
 	@Transactional
 	@Override
@@ -544,7 +518,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void CreateTomeAndRecourceNumber(UserDTO userDto) {
 		try {
-			if (!userDto.getResourceNumberDTOJSON().getLogin().equals("")) {
+			if (!userDto.getResourceNumberDTOJSON().getLogin().equals("0")) {
 				System.out.println("3");
 				User user = userRepository.findUserByLogin(userDto.getResourceNumberDTOJSON().getLogin());
 				TomeDTO tomeDto = new TomeDTO(userDto.getResourceNumberDTOJSON().getIdentifier(), user.getFirstName(),
