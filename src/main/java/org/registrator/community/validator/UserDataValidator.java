@@ -10,7 +10,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class UserNameValidator implements Validator {
+public class UserDataValidator implements Validator {
 
     @Autowired
     public UserRepository userRepository;
@@ -22,6 +22,8 @@ public class UserNameValidator implements Validator {
 
     /**
      * Validate user login, password confirmation and email
+     * @param target
+     * @param errors
      */
     @Override
     public void validate(Object target, Errors errors) {

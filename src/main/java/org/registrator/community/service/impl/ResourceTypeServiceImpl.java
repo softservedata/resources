@@ -28,11 +28,10 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     @Autowired
     private LinearParameterRepository linearParameterRepository;
     @Autowired
-    private DiscreteParameterRepository discreteParameterRepository; 
+    private DiscreteParameterRepository discreteParameterRepository;
     @Autowired
     private ResourceService resourceService;
 
-    
     @Override
     public ResourceType addResourceType(ResourceType resourceType) {
         ResourceType savedResourceType = resourceTypeRepository.saveAndFlush(resourceType);
@@ -43,11 +42,12 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     public ResourceType findById(Integer id) {
         return resourceTypeRepository.findOne(id);
     }
+
     /**
      * Find type of resource by name
+     * 
      * @param name
-     * @return type of resource 
-     * or 0: if we can delete type of resource from DB
+     * @return type of resource or 0: if we can delete type of resource from DB
      */
     @Override
     public ResourceType findByName(String name) {
@@ -58,17 +58,19 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     public ResourceTypeDTO editResourceType(ResourceTypeDTO resourceTypeDTO) {
         return resourceTypeDTO;
     }
+
     /**
      * Delete type of resource if that type doesn't have any resources
+     * 
      * @param resourceType
-     * @return -1: if type of resources exists in the database 
-     * or 0: if we can delete type of resource from DB
+     * @return true if type of resources exists in the database or false if we cannot
+     *         delete this type of resource from DB
      */
     @Override
     public boolean delete(ResourceType resourceType) {
         logger.info("begin method for deleting resource type");
         List<Resource> list = resourceService.findByType(resourceType);
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             resourceTypeRepository.delete(resourceType);
             logger.info("end: return true if list is empty");
             return true;
@@ -76,22 +78,25 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         logger.info("end: return false if list isn't empty");
         return false;
     }
+
     /**
-     * Find all types of resources 
-     * @return list of resources 
+     * Find all types of resources
+     * @return list of resources
      */
     @Override
     public List<ResourceType> findAll() {
         logger.info("start showing all types of resources");
         List<ResourceType> listOfResourceType = resourceTypeRepository.findAll();
-        logger.info("all types of resources are shown and list contains of: " +listOfResourceType.size() + " types");
+        logger.info("all types of resources are shown and list contains of: " + listOfResourceType.size() + " types");
         return listOfResourceType;
     }
 
     /**
-     * Save new type of resource with its discrete and linear parameters in a database
+     * Save new type of resource with its discrete and linear parameters in a
+     * database
+     * 
      * @param resourceType
-     * @return DTO 
+     * @return DTO
      */
     @Override
     public ResourceTypeDTO addResourceTypeDTO(ResourceTypeDTO resourceTypeDTO) {
@@ -104,7 +109,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         List<LinearParameter> lp = new ArrayList<LinearParameter>();
         List<DiscreteParameter> dp = new ArrayList<DiscreteParameter>();
         /*
-         * Here we add linear and discrete parameters to lists
+         * Here we add linear and discrete parameters to list
          */
         for (TypeParameterDTO tpar : ltp) {
             if (("linearParameters").equals(tpar.getParametersType())) {

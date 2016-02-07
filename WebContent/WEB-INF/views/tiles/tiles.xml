@@ -85,11 +85,6 @@
 			value="/WEB-INF/views/templates/allResourcesTypes.jsp" />
 	</definition>
 
-	<definition name="findOneResType" extends="homepage">
-		<put-attribute name="body" type="template"
-			value="/WEB-INF/views/findOneResType.jsp" />
-	</definition>
-
 	<definition name="addResource" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/addResource.jsp" />
@@ -109,10 +104,6 @@
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/editWindow.jsp" />
 	</definition>
-
-	<!-- <definition name="passportWindow" extends="homepage"> <put-attribute 
-		name="body" type="template" value="/WEB-INF/views/templates/passportWindow.jsp" 
-		/> </definition> -->
 
 	<definition name="addResType" extends="homepage">
 		<put-attribute name="body" type="template"
