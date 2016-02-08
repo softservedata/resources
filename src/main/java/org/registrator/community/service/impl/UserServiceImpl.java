@@ -1,5 +1,6 @@
 package org.registrator.community.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
+	private static final int MAX_ATTEMPTS = 2;
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -540,4 +543,77 @@ public class UserServiceImpl implements UserService {
 		}
 
 	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Method, which make updates in user entity for preventing brute force attacks
+	 * @author Vitalii Horban
+	 * @param String login
+	 * @return void
+	 * 
+	 */
+	
+	@Transactional
+	@Override
+	public void updateFailAttempts(String login) {
+		User user =userRepository.findUserByLogin(login);
+		
+		//if user failed to login
+		if (user != null){
+		
+			int previousAttempts=user.getAttempts();
+			user.setAttempts(previousAttempts+1);
+			user.setLastModified(new Timestamp(System.currentTimeMillis()));		
+		
+			if(user.getAttempts()+1>MAX_ATTEMPTS){
+				user.setAccountNonLocked(0);
+//				throw new LockedException("User Account is locked!");
+			}
+			
+		}
+		
+		
+		
+		
+		
+		
+	}
+
+	
+	/**
+	 * Method, which reset user attempts to zero
+	 * @author Vitalii Horban
+	 * @param String login
+	 * @return void
+	 * 
+	 */
+	@Transactional
+	@Override
+	public void resetFailAttempts(String login) {
+		User user =userRepository.findUserByLogin(login);
+		user.setAttempts(0);
+		user.setLastModified(null);
+		
+	}
+
+	
+
+	
+	@Override
+	public User findUserByLogin(String login){
+		return userRepository.findUserByLogin(login);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
