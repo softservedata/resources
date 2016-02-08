@@ -9,6 +9,11 @@
 
 <c:url value="/inquiry/add/addOutputInquiry" var="actionUrl" />
 
+<%--Check if the resource acts on all Ukraine--%>
+<c:if test="${resource.resourceArea.poligons[0].points.size() == 1}">
+    <c:set var="allUrkaine" value="true"/>
+</c:if>
+
 <div>	
 	<form:form modelAttribute="resource" id="form" action="${actionUrl}">
         <c:if test="${empty resource}">
@@ -51,15 +56,19 @@
                             <span class="glyphicon glyphicon-triangle-right"></span>
                             <span class="glyphicon glyphicon-triangle-bottom" style="display:none;"></span>
 							<spring:message code="label.resource.coordinates"/>:
+                            <c:if test="${allUrkaine}">
+                                <spring:message code="label.resource.allUkraine"/>
+                            </c:if>
 						</span>
 					</td>
 				</tr>
-                <tr class="coordinates">
-                    <td colspan="2">
-                        <c:forEach var="poligon" items="${resource.resourceArea.poligons}">
-                            <div class="col-sm-12 polygon">
-                            <c:forEach var="point" items="${poligon.points}">
-                                <div class="coordinatesPoint">
+                <c:if test="${!allUrkaine}">
+                    <tr class="coordinates">
+                        <td colspan="2">
+                            <c:forEach var="poligon" items="${resource.resourceArea.poligons}">
+                                <div class="col-sm-12 polygon">
+                                    <c:forEach var="point" items="${poligon.points}">
+                                        <div class="coordinatesPoint">
                                     <span class="pointLat">
                                         <span class="latitudeDegrees">${point.latitudeDegrees}</span>°
                                         <span class="latitudeMinutes">${point.latitudeMinutes}</span>'
@@ -76,12 +85,13 @@
                                                               value="${point.longitudeSeconds}"/>
                                         </span>"
                                     </span>
+                                        </div>
+                                    </c:forEach>
                                 </div>
                             </c:forEach>
-                            </div>
-                        </c:forEach>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                </c:if>
 				<c:forEach var="linear" items="${resource.resourceLinear}">
 					<tr>
 						<td>${linear.linearParameterDescription},${linear.linearParameterUnit}</td>
@@ -136,18 +146,19 @@
     <%--Connect Google Maps--%>
 
 
-
-    <div id="map_canvas" class="container" style="height: 500px;"
-         centerLat="<c:out value="${
-        resource.resourceArea.poligons[0].points[0].latitudeDegrees +
-        resource.resourceArea.poligons[0].points[0].latitudeMinutes/60 +
-        resource.resourceArea.poligons[0].points[0].latitudeSeconds/3600}"/>"
-         centerLng="<c:out value="${
-        resource.resourceArea.poligons[0].points[0].longitudeDegrees +
-        resource.resourceArea.poligons[0].points[0].longitudeMinutes/60 +
-        resource.resourceArea.poligons[0].points[0].longitudeSeconds/3600}"/>">
-    </div>
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="<c:url value='/resource/js/showResourceMap.js'/>"></script>
+    <c:if test="${!allUrkaine}">
+        <div id="map_canvas" class="container" style="height: 500px;"
+             centerLat="<c:out value="${
+            resource.resourceArea.poligons[0].points[0].latitudeDegrees +
+            resource.resourceArea.poligons[0].points[0].latitudeMinutes/60 +
+            resource.resourceArea.poligons[0].points[0].latitudeSeconds/3600}"/>"
+             centerLng="<c:out value="${
+            resource.resourceArea.poligons[0].points[0].longitudeDegrees +
+            resource.resourceArea.poligons[0].points[0].longitudeMinutes/60 +
+            resource.resourceArea.poligons[0].points[0].longitudeSeconds/3600}"/>">
+        </div>
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="<c:url value='/resource/js/showResourceMap.js'/>"></script>
+    </c:if>
 
 </div>
