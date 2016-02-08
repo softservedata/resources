@@ -18,8 +18,7 @@ import org.registrator.community.enumeration.InquiryType;
 public interface InquiryService {
 	
 	Inquiry addOutputInquiry(String resourceIdentifier, String registratorLogin, String userLogin);
-	
-	//List<TomeDTO> listTomeDTO();
+		
 	List<UserNameDTO> listUserNameDTO(String userLogin);
 	
 	List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType);

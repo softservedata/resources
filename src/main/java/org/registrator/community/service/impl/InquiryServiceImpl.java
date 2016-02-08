@@ -39,9 +39,6 @@ public class InquiryServiceImpl implements InquiryService{
 	private UserRepository userRepository;
 	@Autowired
 	private ResourceRepository resourceRepository;
-//	@Autowired
-//	private TomeRepository tomeRepository;
-	
 
 	
 	/**
@@ -50,10 +47,11 @@ public class InquiryServiceImpl implements InquiryService{
 	@Transactional
 	@Override
 	public Inquiry addOutputInquiry(String resourceIdentifier, String registratorLogin, String userLogin){
+		logger.info("begin addOutputInquiry, param resourceIdentifier = " + resourceIdentifier +
+				", registratorLogin = "+ registratorLogin);	
 		User user = userRepository.findUserByLogin(userLogin);
 		User registrator = userRepository.findUserByLogin(registratorLogin);		
-		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);
-		logger.info("try write new line to inquiry_list table");
+		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
 		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
 		logger.info("wrote line to inquiry_list table");
 		inquiryRepository.saveAndFlush(inquiry);	
@@ -74,31 +72,15 @@ public class InquiryServiceImpl implements InquiryService{
         inquiryRepository.saveAndFlush(inquiry);
 	}
 	
-	/**
-	 * Method for showing form on UI to input the parameters 
-	 * for inquiry to get the certificate aboute the resource 
-	 * forms List<TomeDTO> to fill inquiryAddOut.jsp.
-	 */	
-//	@Override
-//	public List<TomeDTO> listTomeDTO(){
-//		List<TomeDTO> aListTomeDTO = new ArrayList<>();
-//		TomeDTO tomeDTO;
-//		List<Tome> tomes = tomeRepository.findAll();
-//		for (Tome tome : tomes){
-//			tomeDTO = new TomeDTO(tome.getIdentifier(), tome.getRegistrator().getFirstName(), tome.getRegistrator().getLastName(), tome.getRegistrator().getMiddleName());
-//			aListTomeDTO.add(tomeDTO);
-//		}		
-//		return aListTomeDTO;
-//	}
-	
+		
 	/**
 	 * Method for showing form on UI to input the parameters 
 	 * for inquiry to get the certificate about the resource 
-	 * forms List<UserNameDTO> - all registrators linked to logged user to fill inquiryAddOut.jsp.
+	 * forms List<UserNameDTO> - all registrars linked to logged user 
+	 * using the same territorial community to fill inquiryAddOut.jsp.
 	 */	
 	@Override
-	public List<UserNameDTO> listUserNameDTO(String userLogin){	
-		logger.info("begin");
+	public List<UserNameDTO> listUserNameDTO(String userLogin){			
 		User user = userRepository.findUserByLogin(userLogin);
 		TerritorialCommunity territorialCommunity = user.getTerritorialCommunity();
 		List<User> registrators = userRepository.getUsersByRoleAndCommunity(RoleType.REGISTRATOR,
@@ -109,10 +91,8 @@ public class InquiryServiceImpl implements InquiryService{
 		for (User registrator : registrators){
 			userNameDTO = new UserNameDTO(registrator.getFirstName(), registrator.getLastName(),
 					registrator.getMiddleName(), registrator.getLogin());
-			aListUserNameDTO.add(userNameDTO);
-			logger.info(userNameDTO.toString());
-		}	
-		logger.info("end");
+			aListUserNameDTO.add(userNameDTO);			
+		}			
 		return aListUserNameDTO;
 	}
 	
@@ -125,8 +105,7 @@ public class InquiryServiceImpl implements InquiryService{
 	 */
 	@Transactional
 	@Override
-	public List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType){
-		logger.info("begin");
+	public List<InquiryListDTO> listInquiryUser(String userLogin, InquiryType inquiryType){		
 		List<InquiryListDTO> listInquiryDTO = new ArrayList<InquiryListDTO>();
 		InquiryListDTO inquiryListDTO;
 		User user = userRepository.findUserByLogin(userLogin);
@@ -148,8 +127,7 @@ public class InquiryServiceImpl implements InquiryService{
 			inquiryListDTO.setRegistratorName(registrator.getLastName()+ " " +registrator.getFirstName()
 						+ " " +registrator.getMiddleName());
 			listInquiryDTO.add(inquiryListDTO);
-		}
-		logger.info("end");
+		}		
 		return listInquiryDTO;
 	}
 		

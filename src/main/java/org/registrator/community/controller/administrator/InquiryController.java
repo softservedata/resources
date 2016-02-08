@@ -60,14 +60,11 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
-	public String showOutputInquiry(Model model) {
-		logger.info("begin showOutputInquiry");
+	public String showOutputInquiry(Model model) {		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
 		List<UserNameDTO> listUserNameDTO = inquiryService.listUserNameDTO(userLogin);				
 		model.addAttribute("registrators", listUserNameDTO);		
-		logger.info(listUserNameDTO.toString());
-		logger.info("end showOutputInquiry");
 		return "inquiryAddOut";
 	}
 	
@@ -82,13 +79,10 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
-	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  			
-		logger.info("begin addOutputInquiry, param resourceIdentifier = " + resourceIdentifier +
-				", registratorLogin = "+ registratorLogin);		
+	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  	
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
-		inquiryService.addOutputInquiry(resourceIdentifier, registratorLogin, userLogin);
-		logger.info("end addOutputInquiry");
+		inquiryService.addOutputInquiry(resourceIdentifier, registratorLogin, userLogin);		
 		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
 	
@@ -100,15 +94,13 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
-	public String listInqUserOut(Model model) {	
-		logger.info("begin listInqUserOut");		
+	public String listInqUserOut(Model model) {					
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		String role = userService.getUserByLogin(userLogin).getRole().getType().toString();
 		logger.info("user role = " + role);
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
-		model.addAttribute("role", role);
-		logger.info("end listInqUserOut");
+		model.addAttribute("role", role);		
 		return "listInqUserOut";
 	}
 	
@@ -121,11 +113,9 @@ public class InquiryController {
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	public String listInquiryUserInput(Model model) {
-		logger.info("begin listInquiryUserInput");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserInput = inquiryService.listInquiryUser(userLogin, InquiryType.INPUT);
 		model.addAttribute("listInquiryUser", listInquiryUserInput);
-		logger.info("end listInquiryUserInput");
 		return "listInquiryUserInput";
 	}
 	
@@ -137,10 +127,8 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/delete/{inquiryId}")
-	public String deleteInquiry(@PathVariable Integer inquiryId) {
-		logger.info("begin deleteInquiry, param inquiryId = " + inquiryId);
+	public String deleteInquiry(@PathVariable Integer inquiryId) {		
 		inquiryService.removeInquiry(inquiryId);
-		logger.info("end deleteInquiry");
 		return "redirect:/inquiry/add/listInqUserOut";
 	}
 	
