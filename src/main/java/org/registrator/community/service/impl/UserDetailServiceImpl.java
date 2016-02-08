@@ -53,11 +53,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	}
 	
 	private User buildUserForAuthentication(org.registrator.community.entity.User userEntity, List<GrantedAuthority> authorities) {
-		//return new User(userEntity.getFirstName()+"  "+userEntity.getLastName(), userEntity.getPassword(), true, true, true, true, authorities);
+		boolean isEnabled= (userEntity.getEnabled()==1)?true:false;
+		boolean isAccountNonExpired= (userEntity.getAccountNonExpired()==1)?true:false;
+		boolean isCredentialsNonExpired= (userEntity.getCredentialsNonExpired()==1)?true:false;
+		boolean isAccountNonLocked=(userEntity.getAccountNonLocked()==1)?true:false;
 		
-		//userService.login(userEntity.getLogin(), userEntity.getPassword());
-		//return new User(userEntity.getLogin(), userRepository.getUsersPasswordHash(userEntity.getPassword()), authorities);
-		return new User(userEntity.getLogin(), userEntity.getPassword(), authorities);
+		return new User(userEntity.getLogin(), userEntity.getPassword(),isEnabled,isAccountNonExpired, isCredentialsNonExpired,
+				isAccountNonLocked,  authorities);
 	}
 	
 }

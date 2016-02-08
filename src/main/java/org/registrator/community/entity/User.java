@@ -1,6 +1,7 @@
 package org.registrator.community.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -99,7 +100,76 @@ public class User implements Serializable {
     private TerritorialCommunity territorialCommunity;
     
     
-    public String getPhoneNumber() {
+    @Column(name = "attempts")
+ 	private int attempts=0;
+     
+     @Column(name = "last_modified")
+ 	private Timestamp lastModified;
+     
+     @Column(name = "enabled")
+     private int enabled=1;
+     
+     @Column(name = "account_non_expired")
+     private int accountNonExpired=1;
+     
+     @Column(name = "account_non_locked")
+     private int accountNonLocked=1;
+     
+     @Column(name = "credentials_non_expired")
+     private int credentialsNonExpired=1;
+    
+    
+    
+    
+    public int getAttempts() {
+		return attempts;
+	}
+
+	public void setAttempts(int attempts) {
+		this.attempts = attempts;
+	}
+
+	public Timestamp getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Timestamp lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	public int getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+
+	public int getAccountNonExpired() {
+		return accountNonExpired;
+	}
+
+	public void setAccountNonExpired(int accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
+
+	public int getAccountNonLocked() {
+		return accountNonLocked;
+	}
+
+	public void setAccountNonLocked(int accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
+	public int getCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
+
+	public void setCredentialsNonExpired(int credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
+	}
+
+	public String getPhoneNumber() {
         return phoneNumber;
     }
 
