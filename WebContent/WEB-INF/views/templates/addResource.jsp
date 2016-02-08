@@ -22,7 +22,7 @@
 		<div class="form-group">
 			<label class="control-label col-md-3"><spring:message
 					code="label.resource.co-owner.select" />:</label>
-			<div class="col-sm-3">
+			<div class="col-md-3">
 				<input class="form-control" id="owner_search" type="text">
 			</div>
 		</div>
@@ -200,89 +200,111 @@
                     code="label.resource.infoBox" /></span>
 		</div>
 
-		<div class="form-group">
-			<label class="control-label col-md-1"><spring:message
-					code="label.resource.orderPoint" /></label> <label
-				class="control-label col-md-3"><spring:message
-					code="label.resource.latitude" /></label> <label
-				class="control-label col-md-3"><spring:message
-					code="label.resource.longitude" /></label>
-		</div>
-		<div id="areaInput1" class="form-group clonedAreaInput">
-			<div class="col-md-1" style="width: 130px; height: 34px">
-				<input id="pointNumber" class="form-control"
-					name="resourceArea.poligons[0].points[0].orderNumber" value="${1}"
-					readonly>
-			</div>
-			<div class="col-md-1" style="width: 130px; height: 34px">
-				<input id="myparam1" class="form-control"
-					name="resourceArea.poligons[0].points[0].latitudeDegrees"
-					value="${0}" required>
-				<div class="control-group error">
-					<form:errors
-						path="resourceArea.poligons[0].points[0].latitudeDegrees"
-						cssClass="error" style="color:red" />
-				</div>
-			</div>
-			<div class="col-md-1" style="width: 130px; height: 34px">
-				<input id="myparam2" class="form-control"
-					name="resourceArea.poligons[0].points[0].latitudeMinutes"
-					value="${0}" required>
-				<div class="control-group error">
-					<form:errors
-						path="resourceArea.poligons[0].points[0].latitudeMinutes"
-						cssClass="error" style="color:red" />
-				</div>
-			</div>
-			<div class="col-md-1" style="width: 130px; height: 34px">
-				<input id="myparam3" class="form-control"
-					name="resourceArea.poligons[0].points[0].latitudeSeconds"
-					value="${0.0}" required>
-				<div class="control-group error">
-					<form:errors
-						path="resourceArea.poligons[0].points[0].latitudeSeconds"
-						cssClass="error" style="color:red" />
-				</div>
-			</div>
-			<div class="col-md-1" style="width: 130px; height: 34px">
-				<input id="myparam4" class="form-control"
-					name="resourceArea.poligons[0].points[0].longitudeDegrees"
-					value="${0}" required>
-				<div class="control-group error">
-					<form:errors
-						path="resourceArea.poligons[0].points[0].longitudeDegrees"
-						cssClass="error" style="color:red" />
-				</div>
-			</div>
-			<div class="col-md-1" style="width: 130px; height: 34px">
-				<input id="myparam5" class="form-control"
-					name="resourceArea.poligons[0].points[0].longitudeMinutes"
-					value="${0}" required>
-				<div class="control-group error">
-					<form:errors
-						path="resourceArea.poligons[0].points[0].longitudeMinutes"
-						cssClass="error" style="color:red" />
-				</div>
-			</div>
-			<div class="col-md-1" style="width: 130px; height: 34px">
-				<input id="myparam6" class="form-control"
-					name="resourceArea.poligons[0].points[0].longitudeSeconds"
-					value="${0.0}" required>
-				<div class="control-group error">
-					<form:errors
-						path="resourceArea.poligons[0].points[0].longitudeSeconds"
-						cssClass="error" style="color:red" />
-				</div>
+        <div class="col-md-12">
+            <input type="checkbox" id="allUkraine">
+            <label for="allUkraine">Ресурс діє на території всієї України</label>
+        </div>
 
-			</div>
-		</div>
+        <div id="latLngAdd">
+            <div class="form-group">
+                <label class="control-label col-md-1"><spring:message
+                        code="label.resource.orderPoint"/></label> <label
+                    class="control-label col-md-3"><spring:message
+                    code="label.resource.latitude"/></label> <label
+                    class="control-label col-md-3"><spring:message
+                    code="label.resource.longitude"/></label>
+            </div>
+            <div id="areaInput1" class="form-group clonedAreaInput">
+                <div class="col-md-1" style="width: 130px; height: 34px">
+                    <input id="pointNumber" class="form-control"
+                           name="resourceArea.poligons[0].points[0].orderNumber" value="${1}"
+                           readonly>
+                </div>
+                <div class="col-md-1" style="width: 130px; height: 34px">
+                    <input id="myparam1" class="form-control"
+                           name="resourceArea.poligons[0].points[0].latitudeDegrees"
+                           value="${0}" required>
 
-		<div id="mybuttontype">
-			<input type="button" id="btnAddAreaPoint" value="+"
-				class="btn btn-primary" /> <input type="button"
-				id="btnDelAreaPoint" value="-" class="btn btn-primary deleteButton" />
-		</div>
-		<br />
+                    <div class="control-group error">
+                        <form:errors
+                                path="resourceArea.poligons[0].points[0].latitudeDegrees"
+                                cssClass="error" style="color:red"/>
+                    </div>
+                </div>
+                <div class="col-md-1" style="width: 130px; height: 34px">
+                    <input id="myparam2" class="form-control"
+                           name="resourceArea.poligons[0].points[0].latitudeMinutes"
+                           value="${0}" required>
+
+                    <div class="control-group error">
+                        <form:errors
+                                path="resourceArea.poligons[0].points[0].latitudeMinutes"
+                                cssClass="error" style="color:red"/>
+                    </div>
+                </div>
+                <div class="col-md-1" style="width: 130px; height: 34px">
+                    <input id="myparam3" class="form-control"
+                           name="resourceArea.poligons[0].points[0].latitudeSeconds"
+                           value="${0.0}" required>
+
+                    <div class="control-group error">
+                        <form:errors
+                                path="resourceArea.poligons[0].points[0].latitudeSeconds"
+                                cssClass="error" style="color:red"/>
+                    </div>
+                </div>
+                <div class="col-md-1" style="width: 130px; height: 34px">
+                    <input id="myparam4" class="form-control"
+                           name="resourceArea.poligons[0].points[0].longitudeDegrees"
+                           value="${0}" required>
+
+                    <div class="control-group error">
+                        <form:errors
+                                path="resourceArea.poligons[0].points[0].longitudeDegrees"
+                                cssClass="error" style="color:red"/>
+                    </div>
+                </div>
+                <div class="col-md-1" style="width: 130px; height: 34px">
+                    <input id="myparam5" class="form-control"
+                           name="resourceArea.poligons[0].points[0].longitudeMinutes"
+                           value="${0}" required>
+
+                    <div class="control-group error">
+                        <form:errors
+                                path="resourceArea.poligons[0].points[0].longitudeMinutes"
+                                cssClass="error" style="color:red"/>
+                    </div>
+                </div>
+                <div class="col-md-1" style="width: 130px; height: 34px">
+                    <input id="myparam6" class="form-control"
+                           name="resourceArea.poligons[0].points[0].longitudeSeconds"
+                           value="${0.0}" required>
+
+                    <div class="control-group error">
+                        <form:errors
+                                path="resourceArea.poligons[0].points[0].longitudeSeconds"
+                                cssClass="error" style="color:red"/>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div id="mybuttontype">
+                <input type="button" id="btnAddAreaPoint" value="+"
+                       class="btn btn-primary"/>
+                <input type="button"
+                       id="btnDelAreaPoint" value="-"
+                       class="btn btn-primary deleteButton"/>
+                <button class="btn btn-danger" id="clearAllPoints" type="button">
+                    <spring:message code="label.resource.coordinates.clearAll" />
+                </button>
+                <button class="btn btn-danger" id="delAllPolygons" type="button">
+                    <spring:message code="label.resource.coordinates.delAllPolygons" />
+                </button>
+            </div>
+            <br/>
+        </div>
 		<div class="button">
 			<input id="submitForm" type="submit" class="btn btn-success"
 				value=<spring:message code="label.save"/>>

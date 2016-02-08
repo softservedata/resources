@@ -13,12 +13,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.registrator.community.dto.InquiryListDTO;
-import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserNameDTO;
 import org.registrator.community.enumeration.InquiryType;
 import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.PrintService;
-import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +43,7 @@ public class InquiryController {
 	@Autowired
 	private Logger logger;	
 	@Autowired
-	private InquiryService inquiryService;		
-	@Autowired
-	private ResourceService resourceService;			
+	private InquiryService inquiryService;					
 	@Autowired
 	private PrintService printService;
 	@Autowired
@@ -64,14 +60,11 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
-	public String showOutputInquiry(Model model) {
-		logger.info("begin showOutputInquiry");
+	public String showOutputInquiry(Model model) {		
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
 		List<UserNameDTO> listUserNameDTO = inquiryService.listUserNameDTO(userLogin);				
 		model.addAttribute("registrators", listUserNameDTO);		
-		logger.info(listUserNameDTO.toString());
-		logger.info("end showOutputInquiry");
 		return "inquiryAddOut";
 	}
 	
@@ -86,13 +79,10 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/addOutputInquiry", method = RequestMethod.POST)
-	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  			
-		logger.info("begin addOutputInquiry, param resourceIdentifier = " + resourceIdentifier +
-				", registratorLogin = "+ registratorLogin);		
+	public String addOutputInquiry(String resourceIdentifier, String registratorLogin) {  	
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		logger.info("userLogin = " + userLogin);
-		inquiryService.addOutputInquiry(resourceIdentifier, registratorLogin, userLogin);
-		logger.info("end addOutputInquiry");
+		inquiryService.addOutputInquiry(resourceIdentifier, registratorLogin, userLogin);		
 		return  "redirect:/inquiry/add/listInqUserOut";	
 	}
 	
@@ -104,15 +94,13 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInqUserOut", method = RequestMethod.GET)	
-	public String listInqUserOut(Model model) {	
-		logger.info("begin listInqUserOut");		
+	public String listInqUserOut(Model model) {					
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		String role = userService.getUserByLogin(userLogin).getRole().getType().toString();
 		logger.info("user role = " + role);
 		List<InquiryListDTO> listInquiryUserOut = inquiryService.listInquiryUser(userLogin, InquiryType.OUTPUT);
 		model.addAttribute("listInquiryUserOut", listInquiryUserOut);
-		model.addAttribute("role", role);
-		logger.info("end listInqUserOut");
+		model.addAttribute("role", role);		
 		return "listInqUserOut";
 	}
 	
@@ -125,11 +113,9 @@ public class InquiryController {
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
 	@RequestMapping(value = "/listInquiryUserInput", method = RequestMethod.GET)
 	public String listInquiryUserInput(Model model) {
-		logger.info("begin listInquiryUserInput");
 		String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<InquiryListDTO> listInquiryUserInput = inquiryService.listInquiryUser(userLogin, InquiryType.INPUT);
 		model.addAttribute("listInquiryUser", listInquiryUserInput);
-		logger.info("end listInquiryUserInput");
 		return "listInquiryUserInput";
 	}
 	
@@ -141,32 +127,12 @@ public class InquiryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/delete/{inquiryId}")
-	public String deleteInquiry(@PathVariable Integer inquiryId) {
-		logger.info("begin deleteInquiry, param inquiryId = " + inquiryId);
+	public String deleteInquiry(@PathVariable Integer inquiryId) {		
 		inquiryService.removeInquiry(inquiryId);
-		logger.info("end deleteInquiry");
 		return "redirect:/inquiry/add/listInqUserOut";
 	}
 	
-	
-	/**
-     * Show the information about resource by identifier
-     * !copy from ResourceController
-     * 
-     * @param identifier - resource identifier.
-	 * @return showResource.jsp
-     */
-	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER') or hasRole('ROLE_COMMISSIONER')")
-    @RequestMapping(value = "/get/{identifier}", method = RequestMethod.GET)
-    public String getResourceByIdentifier(@PathVariable("identifier") String identifier, Model model) {
-    	logger.info("begin getResourceByIdentifier, param = " + identifier);
-        ResourceDTO resourceDTO = resourceService.findByIdentifier(identifier);
-        model.addAttribute("resource", resourceDTO);
-        logger.info("end getResourceByIdentifier");
-        return "showResource";
-    }
-
-    
+	  
  	
     /**
  	 * @author Vitalii Horban
@@ -298,61 +264,3 @@ public class InquiryController {
  	
 }    
 
-// !!! user can't add resource!!!
-//	/**
-//     * Method for loading form for input the parameter of resource (with
-//     * existing resource types and registrator)
-//     * !copy from ResourceController
-//     */
-//		@RequestMapping(value = "/addresource", method = RequestMethod.GET)
-//	public String addResourceForm(Model model) {
-//		List<ResourceType> listOfResourceType = resourceTypeService.findAll();
-//		List<Tome> tomes = tomeRepository.findAll();
-//		ResourceDTO newresource = new ResourceDTO();
-//		model.addAttribute("listOfResourceType", listOfResourceType);
-//		model.addAttribute("tomes", tomes);
-//		model.addAttribute("newresource", newresource);
-//		return "addResource";
-//	}
-//	
-//		/** 
-//	     * !copy from ResourceController
-//	     */
-//	@RequestMapping(value = "/getParameters", method = RequestMethod.POST)
-//	public String add(@RequestParam("resourceTypeName") String typeName, Model model) {
-//		ResourceType resType = resourceTypeService.findByName(typeName);
-//		
-//		List<DiscreteParameter> discreteParameters = discreteParameterService.findAllByResourceType(resType);
-//        List<LinearParameter> linearParameters = linearParameterService.findAllByResourceType(resType);
-//
-//        model.addAttribute("discreteParameters", discreteParameters);
-//        model.addAttribute("linearParameters", linearParameters);
-//		return "resourceValues";
-//	}
-//	
-//	/**
-//     * Method save the resource in table list_of resources
-//     * similar to ResourceController
-//     */
-//    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
-//    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO,
-//                              BindingResult result, Model model, HttpSession session) {
-//    	//String userLogin =(String) session.getAttribute("userLogin");
-//    	String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-//    	resourceDTO = inquiryService.addInputInquiry(resourceDTO, userLogin);
-//         model.addAttribute("resource", resourceDTO);
-//         return "showResource";
-//    }
-//	
-//  
-
-/*@RequestMapping(value = "/outputInquiry", method = RequestMethod.GET)
-	public String showOutputInquiry(Model model) {
-	logger.info("begin");
-	List<TomeDTO>  listTomeDTO = inquiryService.listTomeDTO();
-	model.addAttribute("tomes", listTomeDTO);
-	Iterable<Resource> resources = resourceRepository.findAll();
-	model.addAttribute("resources", resources);
-	logger.info("end");
-	return "inquiryAddOut";
-}*/

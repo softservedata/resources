@@ -246,7 +246,7 @@ function PolySnapper(opts){
 
 
             };
-            
+
             //now execute the callback
             _onEnabled();
         },
@@ -257,7 +257,9 @@ function PolySnapper(opts){
             that.drawing = false;
             _map.setOptions({draggableCursor:null});
             that.currentpoly.setMap(null);
-            
+
+            google.maps.event.removeListener(clickListener);
+
             _mapDiv.onmousemove = null;
 
             if(_keyReq){
@@ -276,6 +278,8 @@ function PolySnapper(opts){
 
             that.drawing = false;
             _map.setOptions({draggableCursor:null});
+
+            console.log("Save Polygon path: " + that.currentpoly.getPath().getArray());
 
             google.maps.event.removeListener(clickListener);
 

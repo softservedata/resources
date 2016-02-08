@@ -36,7 +36,7 @@
 								<td> ${inquiryUser.userName}	</td>
 								<td> ${inquiryUser.registratorName}	</td>
 								<td hidden="true"> ${inquiryUser.inquiryType}	</td>
-								<td><a href="<c:url value='/inquiry/add/get/${inquiryUser.resourceIdentifier}' />"> 
+								<td><a href="<c:url value='/registrator/resource/get/${inquiryUser.resourceIdentifier}' />"> 
 										${inquiryUser.resourceIdentifier}	</a></td>	
 								<td> ${inquiryUser.resourceStatus}	</td>
 								<td> <div class="block">										
