@@ -40,7 +40,9 @@
 									<td> ${inquiryUserOut.registratorName}	</td>
 								</sec:authorize>
 								<td hidden="true"> ${inquiryUserOut.inquiryType}	</td>
-								<td><a href="<c:url value='/registrator/resource/get/${inquiryUserOut.resourceIdentifier}' />"> ${inquiryUserOut.resourceIdentifier}	</a></td>	
+								<td><a href="<c:url value='/registrator/resource/get/${inquiryUserOut.resourceIdentifier}' />">
+										 ${inquiryUserOut.resourceIdentifier}	
+									</a></td>	
 								<td> <div class="block">
 										<sec:authorize access="hasRole('REGISTRATOR')">	
 											<a href="<c:url value='/inquiry/add/delete/${inquiryUserOut.inquiryId}' />"

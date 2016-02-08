@@ -3,7 +3,7 @@
  */
 
 var Polygons = [];
-var N = 10;		 //ділимо сторону на N частин.
+var N = 5;		 //ділимо сторону на N частин.
 var tolerance = 0.000000001;
 
 function checkIntersectionAllPolygons(polygon, Polygons){
