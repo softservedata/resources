@@ -453,13 +453,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDTO> getUserBySearchTag(String searchTag) {
-		List<User> usersList = userRepository.findOwnersLikeProposed(searchTag);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User registrator = getUserByLogin(auth.getName());
+		List<User> usersList = userRepository.findOwnersLikeProposed(registrator.getTerritorialCommunity(), searchTag);
 		List<UserDTO> userDtos = new ArrayList<UserDTO>();
 		for (User user : usersList) {
-			UserDTO userdto = formUserDTO(user);
+		    UserDTO userdto = new UserDTO();
+		    userdto.setFirstName(user.getFirstName());
+		    userdto.setMiddleName(user.getMiddleName());		    
+		    userdto.setLastName(user.getLastName());
+		    userdto.setLogin(user.getLogin());
 			userDtos.add(userdto);
 		}
-		System.out.println("DtOs" + userDtos);
 		return userDtos;
 	}
 

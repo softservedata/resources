@@ -125,9 +125,11 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         /*
-         * increment registration number of resource for authenticated registrar
+         * increment registration number of resource for authenticated registrar if needed
          */
-        incrementRegistrationNumber(registrator.getLogin());
+        if(resourceEntity.getIdentifier().equals(getRegistrationNumber(registrator.getLogin()))){           
+            incrementRegistrationNumber(registrator.getLogin());
+        }
         return findByIdentifier(resourceEntity.getIdentifier());
     }
 
