@@ -16,6 +16,15 @@
 
 					<div style="color: red;">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>
 
+						<c:if test="${not empty error}">
+					<div class="error">${error}</div>
+				</c:if>
+				<c:if test="${not empty msg}">
+					<div class="msg">${msg}</div>
+				</c:if>
+
+
+
 					<div class="form-group">
 						<label for="inputEmail"><spring:message
                     code="label.login" /></label>

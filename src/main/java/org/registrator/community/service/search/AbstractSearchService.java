@@ -4,18 +4,26 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.registrator.community.components.TableSettingsFactory;
 import org.registrator.community.dao.specification.SpecificationsBuilder;
 import org.registrator.community.dto.search.SearchColumn;
 import org.registrator.community.dto.search.TableSearchRequestDTO;
 import org.registrator.community.dto.search.TableSearchResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public abstract class AbstractSearchService<T,R extends JpaSpecificationExecutor<T> 
 	& PagingAndSortingRepository<T,? extends Serializable>>  implements BaseSearchService<T>{
+	
+	@Autowired
+	private TableSettingsFactory tableSettingsFactory;
 
 	public TableSearchResponseDTO getTableSearchResponse(
 			TableSearchRequestDTO searchRequest,R repository) {
@@ -24,9 +32,12 @@ public abstract class AbstractSearchService<T,R extends JpaSpecificationExecutor
 		List<T> entityList;
 		TableSearchResponseDTO tableResponse;
 		int draw=searchRequest.getDraw();
-		Pageable page = getPageRequest(searchRequest.getStart(), searchRequest.getLength());
+		TableSetting tableSetting = tableSettingsFactory.getTableSetting(searchRequest.getTableName());
+		Pageable page = getPageRequest(searchRequest.getStart(), searchRequest.getLength(),searchRequest.getOrder().get(0).getColumn()
+				,searchRequest.getOrder().get(0).getDir(),tableSetting);
 		
-		List<SearchColumn> columsList = searchRequest.getColumns();
+		List<SearchColumn> columsList = tranformSearchColumnsNameToEntityColumns(searchRequest.getColumns(),tableSetting);
+				
 		if(checkForAllParametersSearch(columsList)){
 			entityList = repository.findAll(page).getContent();
 			count = repository.count();
@@ -53,9 +64,18 @@ public abstract class AbstractSearchService<T,R extends JpaSpecificationExecutor
 		return true;
 	}
 	
-	private Pageable getPageRequest(int start,int length){
+	private Pageable getPageRequest(int start,int length, String orderColumn, String orderType, TableSetting tableSetting){
 		int pageNumber = convertStartToPageNumber(start, length);
-		return new PageRequest(pageNumber, length);
+		String entityColumn = tableSetting.getColumn(Integer.parseInt(orderColumn)).getData();
+		Sort sort = getSort(entityColumn,orderType);
+		return new PageRequest(pageNumber, length, sort);
+	}
+	
+	private Sort getSort(String orderColumn, String orderType){
+		if(orderType.equals("asc")){
+			return new Sort(new Order(Direction.ASC, orderColumn));
+		}
+		return new Sort(new Order(Direction.DESC,orderColumn));
 	}
 	
 	public abstract List<Map<String,String>> fillResponseDataList(List<T> searchEntityList);
@@ -80,5 +100,16 @@ public abstract class AbstractSearchService<T,R extends JpaSpecificationExecutor
 		else{
 			return 0;
 		}
+	}
+	
+	private List<SearchColumn> tranformSearchColumnsNameToEntityColumns(List<SearchColumn> columsList,TableSetting tableSetting){
+		for(SearchColumn column : columsList){
+			if(column.getSearch().getValue() != null && column.getSearch().getValue()!="" ){
+				String entityColumn = tableSetting.getColumn(Integer.parseInt(column.getData())).getData();
+				column.setData(entityColumn);
+			}
+			
+		}
+		return columsList;
 	}
 }

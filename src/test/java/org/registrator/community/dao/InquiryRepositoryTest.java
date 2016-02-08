@@ -3,6 +3,7 @@ package org.registrator.community.dao;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.registrator.community.config.root.TestingConfiguration;
@@ -39,7 +40,8 @@ public class InquiryRepositoryTest {
 		}
 	
 		// test method findByUserAndInquiryType - get inquiry by User and inquiryType
-		/*@Test*/
+		@Test
+		@Ignore
 	    public void testFindByUserAndInquiryType(){
 			User user = userRepository.findUserByLogin("user");
 			List<Inquiry> inquiryList = inquiryRepository.findByUserAndInquiryType(user, InquiryType.OUTPUT); 
