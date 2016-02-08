@@ -3,7 +3,7 @@
  */
 
 var Polygons = [];
-var N = 10;		 //ділимо сторону на N частин.
+var N = 5;		 //ділимо сторону на N частин.
 var tolerance = 0.000000001;
 
 function checkIntersectionAllPolygons(polygon, Polygons){
@@ -26,7 +26,7 @@ function checkEdgeOfFirstOnSecond(polygon1, polygon2){
 	var pointBegin;
 	var pointEnd;
 	console.log("vertices Length = " + vertices.getLength());
-	for (var j = 0; j < vertices.getLength()-2; j++){
+	for (var j = 0; j < vertices.getLength()-1; j++){
 		//console.log("j = " + j);
 		pointBegin = vertices.getAt(j);
 		pointEnd = vertices.getAt(j+1);

@@ -10,17 +10,15 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class PassportDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Size(min = 2, max = 2, message = "Серія повинна містити лише 2")
-	@Pattern(regexp = AddressDTO.ONLY_LITERALS, message = "Серія повинна містити лише літери від А до Я")
+
+	@Pattern(regexp = "[(?=.*[А-ЯІЇЄ]).{2}]*", message = "Поле повинне містити 2 великі літери")
 	private String seria;
-	
-	@Size(min = 6, max = 6, message = "Номер повинен містити лише 6 цифер")
+
+	@Pattern(regexp = "[(?=.*[0-9]).{6}]*", message = "Поле повинне містити 6 цифр")
 	private String number;
-	
-	@Pattern(regexp = AddressDTO.ONLY_LITERALS, message = "Літери лише від А до Я")
+
 	private String published_by_data;
-	
+
 	private String comment;
 
 	public PassportDTO(String seria, String number, String published_by_data) {

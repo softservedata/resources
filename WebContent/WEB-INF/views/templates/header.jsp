@@ -46,7 +46,8 @@
     getLocaleMassages(lang);
     $("#changeLanguage").change(function() {
         var language = $("#changeLanguage").val()
-          $.cookie('org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE', language);
+          $.removeCookie('org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE');
+          $.cookie('org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE', language,{ path: '/' });
           location.reload();
       });
 	function getLocaleMassages(lang) {

@@ -15,8 +15,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
-
-
 @Configuration
 @ComponentScan({"org.registrator.community.components"})
 @PropertySource(value = "classpath:mail.properties")
@@ -31,7 +29,8 @@ public class AdditionalAppConfig {
         sender.setDefaultEncoding("UTF-8");
         sender.setHost("smtp.gmail.com");
         sender.setProtocol("smtps");
-        sender.setPort(25);
+//        sender.setPort(587);
+        sender.setPort(465);
         sender.setUsername("resources.registrator@gmail.com");
         sender.setPassword("m@!RljNg");
        
@@ -40,6 +39,7 @@ public class AdditionalAppConfig {
         javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
         javaMailProperties.setProperty("mail.smtp.socketFactory.fallback", "true");
         sender.setJavaMailProperties(javaMailProperties);
+
         return sender;
     }
     

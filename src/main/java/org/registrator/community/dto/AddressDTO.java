@@ -3,38 +3,28 @@ package org.registrator.community.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class AddressDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	public static final String ONLY_LITERALS = "[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]+";
-
 	public static final String ONLY_DIGITS = "[0-9]+";
-	
-	@Size(min = 5, max = 5, message = "Поштовий індекс повиннен містити 5 цифер")
-	@Pattern(regexp = ONLY_DIGITS, message = "Цифри лише від 0 до 9")
+
+	@Pattern(regexp = "[(?=.*[0-9])]*", message = "Поле повинне містити тільки цифри")
 	private String postcode;
-	
-	@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
+
 	private String region;
-	
-	//@NotEmpty(message = "Поле є обов'язковим для введення")
-	//@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
+
 	private String district;
-	
-	@Pattern(regexp =  ONLY_LITERALS, message = "Літери лише від А до Я")
+
 	private String city;
-	
-	@Pattern(regexp = ONLY_LITERALS, message = "Літери лише від А до Я")
+
 	private String street;
-	
-	@Pattern(regexp = ONLY_DIGITS+"|"+ONLY_DIGITS + ONLY_LITERALS, message = "Приклад: 5 або 5а")
+
 	private String building;
-	
-	@Pattern(regexp = ONLY_DIGITS+"|"+ONLY_DIGITS + ONLY_LITERALS, message = "Приклад: 2 або 2б")
+
 	private String flat;
 
 	public AddressDTO(String postcode, String region, String district, String city, String street, String building,
