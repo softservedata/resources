@@ -7,6 +7,7 @@ import org.registrator.community.service.PasswordRecoveryService;
 import org.registrator.community.service.VerificationTokenService;
 import org.registrator.community.validator.PasswordRecoveryValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,11 +27,13 @@ public class PasswordRecoveryController {
     @Autowired
     private PasswordRecoveryValidator passwordRecoveryValidator;
 
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/forgot_password", method = RequestMethod.GET)
     public String getForgotPasswordPage() {
         return "forgot_password";
     }
     
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/forgot_password", method = RequestMethod.POST)
     public String handleForgotPasswordEmail(@RequestParam("email") String email, HttpServletRequest request, Model model) {
     	String baseLink = (request.getRequestURL()).toString().split("forgot_password")[0];
@@ -39,6 +42,7 @@ public class PasswordRecoveryController {
     	return "forgot_password";
     }   
    
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/password_recovery", method = RequestMethod.GET)
     public String getPasswordRecoveryPage(@RequestParam("hash")String hash,Model model){
     	if(verificationTokenService.isExistValidVerificationToken(hash)){
@@ -49,17 +53,19 @@ public class PasswordRecoveryController {
     	return "redirect:/";
     }
     
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/password_recovery", method = RequestMethod.POST)
-    public String handlePasswordRecoveryForm(PasswordRecoveryDTO passwordRecover, BindingResult bindingResult,Model model){
+    public String handlePasswordRecoveryForm(PasswordRecoveryDTO passwordRecover, BindingResult bindingResult,Model model,HttpServletRequest request){
+    	System.out.println(request.getRequestURL().toString());
     	passwordRecoveryValidator.validate(passwordRecover, bindingResult);
     	if(bindingResult.hasErrors()){
-    		return "password_recovery";
+    		return "redirect:/password_recovery?hash="+passwordRecover.getHash();
     	}
     	boolean changePasswordResult=passwordRecoveryService.recoverPasswordByEmailLink(passwordRecover.getHash(), passwordRecover.getPassword());
     	if(changePasswordResult){
     		model.addAttribute("msg",true);
+    		return "password_recovery";
     	}
-    	model.addAttribute("hash", passwordRecover.getHash());
-    	return "password_recovery";
+    	return "redirect:/password_recovery?hash="+passwordRecover.getHash();
     }
 }
