@@ -23,8 +23,14 @@ public class SpecificationsBuilder<T> {
         List<Specification<T>> specs = new ArrayList<Specification<T>>();
         for (SearchColumn scolumn : colums) {
         	if(scolumn.getSearch().getValue() != null && scolumn.getSearch().getValue()!="" ){
-        		BaseSpecification<T> entitySpecification = new BaseSpecification<T>();
-        		entitySpecification.setCriteria(scolumn);
+        		
+//        		BaseSpecification<T> entitySpecification = new BaseSpecification<T>();
+//        		entitySpecification.setCriteria(scolumn);
+        		BaseSpecification<T> entitySpecification = new BaseSpecification<T>(
+        				scolumn.getData(),scolumn.getSearch().getValue(),scolumn.getSearch().getCompareSign()
+        				);
+//        		entitySpecification.setCriteria(scolumn);
+        		
                 specs.add((Specification<T>) entitySpecification);
         	}	
         }
