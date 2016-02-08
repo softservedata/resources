@@ -11,9 +11,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PasswordRecoveryController {
@@ -55,17 +57,20 @@ public class PasswordRecoveryController {
     
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/password_recovery", method = RequestMethod.POST)
-    public String handlePasswordRecoveryForm(PasswordRecoveryDTO passwordRecover, BindingResult bindingResult,Model model,HttpServletRequest request){
+    public String handlePasswordRecoveryForm(@ModelAttribute("passwordRecoveryDTO") PasswordRecoveryDTO passwordRecoveryDTO, BindingResult bindingResult,Model model,
+    		RedirectAttributes attr,HttpServletRequest request){
     	System.out.println(request.getRequestURL().toString());
-    	passwordRecoveryValidator.validate(passwordRecover, bindingResult);
+    	passwordRecoveryValidator.validate(passwordRecoveryDTO, bindingResult);
     	if(bindingResult.hasErrors()){
-    		return "redirect:/password_recovery?hash="+passwordRecover.getHash();
+    		attr.addFlashAttribute("org.springframework.validation.BindingResult.passwordRecoveryDTO", bindingResult);
+    		attr.addFlashAttribute("passwordRecoveryDTO", passwordRecoveryDTO);
+    		return "redirect:/password_recovery?hash="+passwordRecoveryDTO.getHash();
     	}
-    	boolean changePasswordResult=passwordRecoveryService.recoverPasswordByEmailLink(passwordRecover.getHash(), passwordRecover.getPassword());
+    	boolean changePasswordResult=passwordRecoveryService.recoverPasswordByEmailLink(passwordRecoveryDTO.getHash(), passwordRecoveryDTO.getPassword());
     	if(changePasswordResult){
     		model.addAttribute("msg",true);
     		return "password_recovery";
     	}
-    	return "redirect:/password_recovery?hash="+passwordRecover.getHash();
+    	return "redirect:/password_recovery?hash="+passwordRecoveryDTO.getHash();
     }
 }

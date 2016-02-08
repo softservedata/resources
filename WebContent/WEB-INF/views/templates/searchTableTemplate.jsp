@@ -105,11 +105,7 @@ jQuery(document).ready(function($) {
 							       	   "sTitle" : "<spring:message code="${entry.value.title}" />",
 					                   "mData" : "action",
 					                   "bSortable": false,
-// 					                   defaultContent: '<a href="" class="editor_edit">Edit</a>'
-					                   "defaultContent": '<button id="mybutton">Click!</button>'
-// 					                   	"mRender": function ( data, type, full ) {
-// 					                        return '<a href="edit-registrated-user/?login='+full["2"]+'" class="btn btn-primary use-address"'+
-// 					                        		'role="button">Редагувати</a>';}
+					                   "defaultContent": '<button  class="btn btn-primary" id="${entry.value.buttonId}">Редагувати</button>'
 					                        ,                	   
 					            },
 							</c:if>

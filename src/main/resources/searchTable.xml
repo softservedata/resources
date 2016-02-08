@@ -55,6 +55,7 @@
 						<type>button</type>
 						<title>label.tableTitle.column6.userSearch</title>
 						<data>action</data>
+						<buttonId>edit</buttonId>
 					</column>
 				</columns>	
 		</table>
@@ -138,6 +139,7 @@
 					<type>button</type>
 					<title>label.tableTitle.column8.registerUser</title>
 					<data>action</data>
+					<buttonId>edit</buttonId>
 				</column>
 			</columns>	
 		</table>
