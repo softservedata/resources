@@ -1,32 +1,33 @@
 package org.registrator.community.security;
-/*
-import org.springframework.test.context.ActiveProfiles;
-import org.apache.log4j.Logger;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.RunWith;
+import org.registrator.community.config.LoggingConfig;
+import org.registrator.community.config.root.SpringRootConfig;
 import org.registrator.community.config.root.TestingConfiguration;
 import org.registrator.community.service.PrintService;
 import org.registrator.community.service.ResourceService;
 import org.registrator.community.service.ResourceTypeService;
 import org.registrator.community.service.UserService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestingConfiguration.class)
 @ActiveProfiles("testing")
+@ContextConfiguration(classes={TestingConfiguration.class,LoggingConfig.class,SpringRootConfig.class})
 public class SpringSecurityTest {
 
-//	private static Logger LOG = Logger.getLogger(SpringSecurityTest.class);
 
+	@Autowired
+    private Logger logger;
+	
 	@Autowired
 	public UserService userService;
 
@@ -46,12 +47,12 @@ public class SpringSecurityTest {
 public	TestWatcher testWatcher = new TestWatcher() {
 
 		protected void succeeded(org.junit.runner.Description description) {
-//			LOG.info(description.getMethodName());
+			logger.info(description.getMethodName());
 			System.out.println("<<SUCCESS>> - " + description.getMethodName());
 		};
 
 		protected void failed(Throwable e, org.junit.runner.Description description) {
-//			LOG.error(description.getMethodName());
+			logger.error(description.getMethodName());
 			System.out.println("<<FAILED>> - " + description.getMethodName());
 		};
 
@@ -101,4 +102,4 @@ public	TestWatcher testWatcher = new TestWatcher() {
 	}
 
 }
-*/
+
