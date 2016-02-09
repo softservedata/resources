@@ -50,4 +50,6 @@ public interface UserService {
 	public void resetFailAttempts(String login);
 	
 	public User findUserByLogin(String login);
+	
+	public void resetAllFailAttempts();
 }

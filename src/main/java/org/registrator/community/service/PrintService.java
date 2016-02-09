@@ -1,5 +1,7 @@
 package org.registrator.community.service;
 
+import java.io.ByteArrayOutputStream;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.itextpdf.text.Document;
@@ -7,13 +9,13 @@ import com.itextpdf.text.Document;
 public interface PrintService {
 	
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_REGISTRATOR')")
-	Document printProcuration(Integer inquiryId);
+	ByteArrayOutputStream printProcuration(Integer inquiryId);
 	
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
-	Document printExtract(Integer inquiryId);
+	ByteArrayOutputStream printExtract(Integer inquiryId);
 
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
-	Document printProcurationOnSubmitInfo(Integer inquiryId);
+	ByteArrayOutputStream printProcurationOnSubmitInfo(Integer inquiryId);
 	
 }
 
