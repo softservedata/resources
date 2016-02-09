@@ -30,7 +30,7 @@ public class CronService {
 	
 	/**
 	 * <p>
-	 * reset user attempts to login to zero in 5 minutes from last update
+	 * reset user attempts to login to zero in 5 minutes from last attempt
 	 * </p>
 	 * 
 	 * @return void
