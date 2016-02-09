@@ -30,22 +30,23 @@
 	        	<tr>      	
 	        		<c:forEach items="${tableSetting.columns}" var="entry" varStatus="status">
 	        			<c:if test="${entry.value.type eq 'search'}">
-	        				<th>			
+	        				<th style="padding-right:0px !important; padding-left:10px !important">
+
 		        				<div class="input-group form-inline " >
-		        					<div class="form-group">
-							            <select id="searchTypeIndex${entry.key}" class="form-control" name="category">
+		        					<div class="form-group ">
+							            <select id="searchTypeIndex${entry.key}" class="form-control col-sm-3" name="category">
 							                <c:forEach items="${entry.value.searchType}" var="searchType">
 		        							<c:if test="${searchType eq 'equal'}">
-												<option value="${searchType}">==</option>
+												<option value="${searchType}"><spring:message code="${label.tableTitle.searchType.equals}" /></option>
 											</c:if>
 											<c:if test="${searchType eq 'like'}">
-												<option value="${searchType}">%%</option>
+												<option value="${searchType}"><spring:message code="${llabel.tableTitle.searchType.contains}" /></option>
 											</c:if>
 				                        </c:forEach>
 							            </select>           
 							        </div>
-							        <div class="form-group">
-										<input size="10" maxlength="15" id="inputIndex${entry.key}" class="form-control"  type="text" placeholder="<spring:message code="${entry.value.title}" />" />
+							        <div class="form-group ">
+										<input size="5" maxlength="50" id="inputIndex${entry.key}" class="form-control col-sm-7"  type="text" placeholder="<spring:message code="${entry.value.title}" />" />
 							        </div>
 							   </div>
 	        				</th>
