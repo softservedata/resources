@@ -365,6 +365,12 @@ public class ResourceController {
         return gson.toJson(polygons);
     }
 
+    /**
+     * Method delete resource with given identifier.
+     * 
+     * @param resourceIdentifier - identifier of the resource.
+     * @return searchOnMap.jsp
+     */
     @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/delete/{resourceIdentifier}")
     public String deleteResource(@PathVariable String resourceIdentifier) {

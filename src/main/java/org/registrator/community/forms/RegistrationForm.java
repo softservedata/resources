@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class RegistrationForm{
 
-    private static final String ONLY_LITERALS = "[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]+";
+    private static final String ONLY_LITERALS = "[а-яіїєА-ЯІЇЄa-zA-Z,\\-]+";
     
     @Autowired
     UserRepository userRepository;
@@ -21,6 +21,7 @@ public class RegistrationForm{
     @Autowired
     UserService userService;
 
+    @NotEmpty(message = "{msg.notEmptyField}")
     @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Логін повинен складатись лише з латинських літер і/або цифр, від 6 до 20 символів")
     private String login;
 
@@ -30,30 +31,30 @@ public class RegistrationForm{
     @NotEmpty(message = "{msg.notEmptyField}")
     private String confirmPassword;
 
-    @Size(min=1, max=30, message="Ім\'я повинно містити від {min} до {max} символів")
-    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, цифри не допустимі")
+    @Size(min=1, max=30, message="Ім'я повиннe містити від {min} до {max} символів")
+    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, лише літери")
     private String firstName;
 
     @Size(min=1, max=30, message="Прізвище повинне містити від {min} до {max} символів")
-    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, цифри не допустимі")
+    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, лише літери")
     private String lastName;
 
-    @Pattern(regexp = "[(?=.*[а-яіїєА-ЯІЇЄa-zA-Z,\\s,\\.,\\-]).{1,30}]*", message = "Від 1 до 30 символів, цифри недопустимі")
+    @Pattern(regexp = "[[а-яіїєА-ЯІЇЄa-zA-Z,\\-]){1,30}]*", message = "Від 1 до 30 символів, цифри недопустимі")
     private String middleName;
 
     @NotEmpty(message = "{msg.notEmptyField}")
     @Email(message="Введіть коректну адресу")
     private String email;
 
-    @Pattern(regexp = "[(?=.*[А-ЯІЇЄ]).{2}]*", message = "Поле повинне містити 2 великі літери")
+    @Pattern(regexp = "[[А-ЯІЇЄ]){2}]*", message = "Поле повинне містити 2 великі літери")
     private String seria;
 
-    @Pattern(regexp = "[(?=.*[0-9]).{6}]*", message = "Поле повинне містити 6 цифр")
+    @Pattern(regexp = "[[0-9]){6}]*", message = "Поле повинне містити 6 цифр")
     private String number;
 
     private String publishedByData;
 
-    @Pattern(regexp = "[(?=.*[0-9])]*", message = "Поле повинне містити тільки цифри")
+    @Pattern(regexp = "[[0-9])]*", message = "Поле повинне містити тільки цифри")
     private String postcode;
 
     private String region;
@@ -72,7 +73,7 @@ public class RegistrationForm{
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date dateOfAccession;
     
-    @Pattern (regexp = "[(?=.*[0-9]).{10}]*", message = "Некоректний номер телефону")
+    @Pattern (regexp = "[[0-9]){10}]*", message = "Некоректний номер телефону")
     private String phoneNumber;
 
     @NotEmpty(message = "{msg.notEmptyField}")

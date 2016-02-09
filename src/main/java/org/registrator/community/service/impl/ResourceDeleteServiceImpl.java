@@ -8,6 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service class implements ResourceDeleteService interface.
+ * Give functionality to delete resource.
+ * @author Ann
+ *
+ */
 @Service
 public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 
@@ -16,6 +22,11 @@ public class ResourceDeleteServiceImpl implements ResourceDeleteService {
 	@Autowired
 	private ResourceRepository resourceRepository;
 	
+	/**
+     * Method delete resource with given identifier.
+     * 
+     * @param resourceIdentifier - identifier of the resource.
+     */
 	@Transactional
 	@Override
 	public void deleteResource(String resourceIdentifier) {
