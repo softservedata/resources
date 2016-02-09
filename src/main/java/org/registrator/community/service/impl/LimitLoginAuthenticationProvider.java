@@ -61,7 +61,7 @@ public class LimitLoginAuthenticationProvider extends DaoAuthenticationProvider 
 			if (user != null) {
 				Timestamp lastAttempts = user.getLastModified();
 				error = "User account is locked! <br><br>Username : " + authentication.getName()
-						+ "<br>Last Attempts : " + lastAttempts + "<br>You will be unlocked in 3 minutes";
+						+ "<br>Last Attempts : " + lastAttempts + "<br>You will be unlocked tomorrow at 00:00 ";
 			} else {
 				error = e.getMessage();
 			}
