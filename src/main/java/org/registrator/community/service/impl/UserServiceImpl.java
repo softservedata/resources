@@ -423,7 +423,7 @@ public class UserServiceImpl implements UserService {
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
 			passportRepository.saveAndFlush(passport);
-			log.info("Inserted passport data for user {0}, passport_data_id = {1}", user.getLogin(),
+			log.info("Inserted passport data for user with passport_data_id", user.getLogin(),
 					passport.getPassportId());
 
 			// insert user's address records into "address" table
@@ -438,7 +438,7 @@ public class UserServiceImpl implements UserService {
 			address.setPostCode(registrationForm.getPostcode());
 
 			addressRepository.saveAndFlush(address);
-			log.info("Inserted address data for user {0}, address_id = {1}", user.getLogin(), address.getAddressId());
+			log.info("Inserted address data for user with address_id", user.getLogin(), address.getAddressId());
 		}
 
 	}
