@@ -109,8 +109,8 @@ public class UsersController {
 			model.addAttribute("userDto", editUserDto);
 			logger.info("end");
 			redirectAttributes.addFlashAttribute("tableSetting", tableSettingsFactory.getTableSetting("registerUser"));
+			return "redirect:/administrator/users/get-all-users";
 		}
-		return "redirect:/administrator/users/get-all-users";
 	}
 
 	/**

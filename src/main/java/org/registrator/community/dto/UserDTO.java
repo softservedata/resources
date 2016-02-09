@@ -43,7 +43,9 @@ public class UserDTO implements Serializable {
 	@Valid
 	private PassportDTO passport;
 
+	@Valid
 	private ResourceNumberDTOJSON resourceNumberDTOJSON;
+	
 
 	private String territorialCommunity;
 
@@ -64,7 +66,7 @@ public class UserDTO implements Serializable {
 	}
 	
 	public UserDTO(String firstName, String lastName, String middleName, String role, String login, String email,
-			String status, AddressDTO address, PassportDTO passport,String territorialCommunity) {
+			String status, AddressDTO address, PassportDTO passport,String territorialCommunity,ResourceNumberDTOJSON resourceNumberDTOJSON) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
@@ -75,6 +77,7 @@ public class UserDTO implements Serializable {
 		this.address = address;
 		this.passport = passport;
 		this.territorialCommunity = territorialCommunity;
+		this.resourceNumberDTOJSON = resourceNumberDTOJSON;
 	}
 
 	public UserDTO() {

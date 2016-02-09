@@ -15,6 +15,7 @@ import org.registrator.community.dto.ResourceNumberDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.WillDocumentDTO;
+import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.OtherDocuments;
@@ -305,9 +306,21 @@ public class UserServiceImpl implements UserService {
 		Address address = user.getAddress().get(user.getAddress().size() - 1);
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+		ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
+		Tome tome = tomeRepository.findTomeByRegistrator(user);
+		ResourceNumberDTOJSON resourceNumberDTOJSON = null;
+		if ((tome != null) && (resourceNumber != null)) {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON(resourceNumber.getNumber().toString(),
+					resourceNumber.getRegistratorNumber(), tome.getIdentifier());
+		} else {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON();
+			resourceNumberDTOJSON.setResource_number("0");
+			resourceNumberDTOJSON.setRegistrator_number("0");
+			resourceNumberDTOJSON.setIdentifier("0");
+		}
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto,user.getTerritorialCommunity().getName());
+				passportDto, user.getTerritorialCommunity().getName(), resourceNumberDTOJSON);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -318,6 +331,7 @@ public class UserServiceImpl implements UserService {
 			userdto.setWillDocument(willDocumentDTO);
 		}
 		return formUserDTO(user);
+
 	}
 
 	/**
@@ -473,9 +487,22 @@ public class UserServiceImpl implements UserService {
 		Address address = user.getAddress().get(user.getAddress().size() - 1);
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+		ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
+		Tome tome = tomeRepository.findTomeByRegistrator(user);
+		ResourceNumberDTOJSON resourceNumberDTOJSON = null;
+		if ((tome != null) && (resourceNumber != null)) {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON(resourceNumber.getNumber().toString(),
+					resourceNumber.getRegistratorNumber(), tome.getIdentifier());
+		} else {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON();
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON();
+			resourceNumberDTOJSON.setResource_number("0");
+			resourceNumberDTOJSON.setRegistrator_number("0");
+			resourceNumberDTOJSON.setIdentifier("0");
+		}
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto,user.getTerritorialCommunity().getName());
+				passportDto, user.getTerritorialCommunity().getName(), resourceNumberDTOJSON);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();

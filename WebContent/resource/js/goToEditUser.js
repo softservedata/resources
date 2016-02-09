@@ -1,18 +1,25 @@
-function goToURL(url){
-	location.href = url;
-}
-
-$('#example tbody').on( 'click', '#action', function () {
-			alert( "alert" );
-    } );
-
-
-$(document).ready(function () {
-	$('#example tbody').on( 'click', '#action', function () {
-			alert( "alert" );
-//        var data = table.row( $(this).parents('tr') ).data();
-//        alert( data[0] +"'s salary is: "+ data[ 5 ] );
- //       url='';
- //       goToURL(url);
-    } );
-});
+//$(document).on("click", ".ok", function() {
+//	var currentRow = $(this).closest("tr");
+//	
+//	var login = currentRow.find("td").eq(2).text();
+//	 window.location.href="/administrator/users/edit-registrated-user/?login="+login;
+//	
+////
+////	var json = {
+////		"login" : currentRow.find("td").eq(2).text()
+////	};
+//
+////	$.ajax({
+////		type : "GET",
+////		url : "edit-registrated-user",
+////		dataType : "text",
+////		data : JSON.stringify(json),
+////		contentType : 'application/json; charset=utf-8',
+////		success : function(data){
+////			alert(data);
+////		},
+////		error : function(data){
+////			alert(data);
+////		}
+////	});
+//});
