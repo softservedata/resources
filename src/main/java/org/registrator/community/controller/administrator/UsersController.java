@@ -287,4 +287,14 @@ public class UsersController {
 		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 	}
 
+	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping("/unlockusers")
+    public String home() {
+		userService.resetAllFailAttempts();
+		logger.info("All users atempts are reseted");
+		 return "homepage";
+    }
+	
 }

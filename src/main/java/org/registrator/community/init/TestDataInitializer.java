@@ -7,7 +7,9 @@ import javax.persistence.EntityManagerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.registrator.community.entity.Address;
 import org.registrator.community.entity.Inquiry;
+import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.Role;
@@ -77,6 +79,15 @@ public class TestDataInitializer {
         
         
         userTransaction.commit();
+        Transaction addressTransaction = session.beginTransaction();
+        Address userAddress = new Address(user,"00000","Львівська","Галицький","Львів","Вітовського",
+        		"48","31");
+        PassportInfo userPassportInfo = new PassportInfo(user,"AA","00000","Народом України");
+        
+        session.persist(userAddress);
+        session.persist(userPassportInfo);
+        
+        addressTransaction.commit();
         Transaction resourceTypeTransaction = session.beginTransaction();
         
         ResourceType land = new ResourceType("земельний");

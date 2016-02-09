@@ -45,4 +45,11 @@ public interface UserService {
 	
 	void CreateTomeAndRecourceNumber(UserDTO userDto);
 
+	public void updateFailAttempts(String login);
+	
+	public void resetFailAttempts(String login);
+	
+	public User findUserByLogin(String login);
+	
+	public void resetAllFailAttempts();
 }

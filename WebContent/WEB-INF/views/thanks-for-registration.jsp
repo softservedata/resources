@@ -14,11 +14,10 @@ body {
 
 <a href="${pageContext.request.contextPath}/login"
 		class="btn btn-success" role="button">Повернутись на головну</a>
-<div name="registration_successful">
+<div>
 <p><p>Вітаємо - ви успішно зареєстровані.
 <p> * * * * *
 <p>Ваші дані в процесі опрацювання.
-<p>Коли ваш обліковий запис буде активовано, ви отримаєте сповіщення на електронну пошту.
 <p>Дякуємо за реєстрацію!
 </div>
 </body>

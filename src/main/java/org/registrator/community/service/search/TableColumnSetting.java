@@ -21,6 +21,9 @@ public class TableColumnSetting {
 	@XmlElement(required=false)
 	private String data;
 	
+	@XmlElement(required=false)
+	private String buttonId;
+	
 	@XmlElementWrapper(name = "searchOperation")
 	@XmlElement(name="operationType")
 	private List<String> searchType;
@@ -55,5 +58,13 @@ public class TableColumnSetting {
 
 	public void setSearchType(List<String> searchType) {
 		this.searchType = searchType;
+	}
+
+	public String getButtonId() {
+		return buttonId;
+	}
+
+	public void setButtonId(String buttonId) {
+		this.buttonId = buttonId;
 	}
 }

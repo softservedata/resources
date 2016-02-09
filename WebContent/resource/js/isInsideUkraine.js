@@ -16,7 +16,7 @@ function parse_coordinates(coordinates_string){
 	    var latitude = parseFloat(point_array[0]);
 	    var longitude = parseFloat(point_array[1]);
 	   polygonPath.push(new google.maps.LatLng(latitude, longitude));
-	  // console.log('point i = ' + latitude+ ", " + longitude);
+	  
 	}	    
 	    UA_polygon = new google.maps.Polygon({
 	        path: polygonPath, 
@@ -70,22 +70,12 @@ function isInsideUkraine(polygon){
 	isInside = isPolygonInsidePolygon(polygon, UA_polygon_outside);
 	if (!isInside){
 		console.log("polygon is not inside Ukraine");
+		bootbox.alert(jQuery.i18n.prop('msg.poligonNotInsideUkranie'));
 		return false;
 	}
-	// else we don't know exactly
-	//alert ("we don't know exactly"); //jQuery.i18n.prop('msg.confirmDeleteProcuration')
-	console.log("we don't know exactly");
-	//TO TEST
-	bootbox.confirm("Ви впевнені що ресурс знаходиться на території України?", function(result){
-		console.log("confirm = " + result);
-		isInside = result;
-		console.log("confirm = " + isInside);
-	});
-	//isInside = confirm("Ви впевнені що ресурс знаходиться на території України?");
-	console.log("confirm = " + isInside);
-	return isInside;	
+	// else near the border of Ukraine	
+	console.log("near the border of Ukraine");
+	bootbox.alert(jQuery.i18n.prop('msg.poligonNearUkraineBorder'));	
+	return true;	
 }
-
-
-
 
