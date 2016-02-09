@@ -425,7 +425,7 @@ public class UserServiceImpl implements UserService {
 		user.setDateOfAccession(registrationForm.getDateOfAccession());
 		user.setTerritorialCommunity(territorialCommunity);
 
-		userRepository.saveAndFlush(user);
+		userRepository.save(user);
 		log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());
 
 		if (userRepository.findUserByLogin(user.getLogin()) != null) {
@@ -436,7 +436,7 @@ public class UserServiceImpl implements UserService {
 			passport.setNumber((registrationForm.getNumber()));
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
-			passportRepository.saveAndFlush(passport);
+			passportRepository.save(passport);
 			log.info("Inserted passport data for user with passport_data_id", user.getLogin(),
 					passport.getPassportId());
 
@@ -451,7 +451,7 @@ public class UserServiceImpl implements UserService {
 			address.setFlat(registrationForm.getFlat());
 			address.setPostCode(registrationForm.getPostcode());
 
-			addressRepository.saveAndFlush(address);
+			addressRepository.save(address);
 			log.info("Inserted address data for user with address_id", user.getLogin(), address.getAddressId());
 		}
 
