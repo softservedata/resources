@@ -1,5 +1,6 @@
 package org.registrator.community.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.registrator.community.dao.UserRepository;
@@ -18,29 +19,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CronService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
+
+
 	@Autowired
 	private Logger logger;
+
+	
 	/**
 	 * <p>
-	 * reset user attempts to login to zero every time at midnight
+	 * reset user attempts to login to zero in 5 minutes from last update
 	 * </p>
 	 * 
 	 * @return void
 	 */
-	@Scheduled(cron = "0 0 0 * * *")
+	@Scheduled(fixedDelay = 10000)
 	@Transactional
-	public void resetAllFailAttempts() {
+	public void checkAllFailAttempts() {
 		try {
 			List<User> allUsers = userRepository.findAll();
 			for (User u : allUsers) {
-				u.setAccountNonLocked(1);
-				u.setAttempts(0);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Timestamp lastmodified = (u.getLastModified()!=null)?u.getLastModified():new Timestamp(0);
+				long time = timestamp.getTime() - lastmodified.getTime();
+				int accountNonLocked = u.getAccountNonLocked();
+				if (time > 300000 && accountNonLocked == 0) {
+					u.setAccountNonLocked(1);
+					u.setAttempts(0);
+					logger.info(u.getLogin() + " is unlocked at " + timestamp);
+				}
 			}
 		} catch (Exception e) {
-			logger.error("Failed to resetAllFailAttempts() with cron expressions " + e);
+			e.printStackTrace();
+			logger.error("Failed to checkAllFailAttempts() with cron expressions " + e);
 		}
 
 	}
