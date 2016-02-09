@@ -3,10 +3,8 @@ package org.registrator.community.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.hibernate.mapping.Collection;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.forms.RegistrationForm;
 import org.registrator.community.service.CommunityService;
@@ -18,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 

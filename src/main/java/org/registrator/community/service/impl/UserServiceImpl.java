@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	private static final int MAX_ATTEMPTS = 2;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -310,7 +310,7 @@ public class UserServiceImpl implements UserService {
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto,user.getTerritorialCommunity().getName());
+				passportDto, user.getTerritorialCommunity().getName());
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -423,7 +423,7 @@ public class UserServiceImpl implements UserService {
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
 			passportRepository.saveAndFlush(passport);
-			log.info("Inserted passport data for user {0}, passport_data_id = {1}", user.getLogin(),
+			log.info("Inserted passport data for user with passport_data_id", user.getLogin(),
 					passport.getPassportId());
 
 			// insert user's address records into "address" table
@@ -438,7 +438,7 @@ public class UserServiceImpl implements UserService {
 			address.setPostCode(registrationForm.getPostcode());
 
 			addressRepository.saveAndFlush(address);
-			log.info("Inserted address data for user {0}, address_id = {1}", user.getLogin(), address.getAddressId());
+			log.info("Inserted address data for user with address_id", user.getLogin(), address.getAddressId());
 		}
 
 	}
@@ -456,16 +456,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDTO> getUserBySearchTag(String searchTag) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User registrator = getUserByLogin(auth.getName());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User registrator = getUserByLogin(auth.getName());
 		List<User> usersList = userRepository.findOwnersLikeProposed(registrator.getTerritorialCommunity(), searchTag);
 		List<UserDTO> userDtos = new ArrayList<UserDTO>();
 		for (User user : usersList) {
-		    UserDTO userdto = new UserDTO();
-		    userdto.setFirstName(user.getFirstName());
-		    userdto.setMiddleName(user.getMiddleName());		    
-		    userdto.setLastName(user.getLastName());
-		    userdto.setLogin(user.getLogin());
+			UserDTO userdto = new UserDTO();
+			userdto.setFirstName(user.getFirstName());
+			userdto.setMiddleName(user.getMiddleName());
+			userdto.setLastName(user.getLastName());
+			userdto.setLogin(user.getLogin());
 			userDtos.add(userdto);
 		}
 		return userDtos;
@@ -483,7 +483,7 @@ public class UserServiceImpl implements UserService {
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto,user.getTerritorialCommunity().getName());
+				passportDto, user.getTerritorialCommunity().getName());
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -543,77 +543,88 @@ public class UserServiceImpl implements UserService {
 		}
 
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
-	 * Method, which make updates in user entity for preventing brute force attacks
+	 * <p>
+	 * Method, which make updates in user entity for preventing brute force
+	 * attacks
+	 * </p>
+	 * 
 	 * @author Vitalii Horban
-	 * @param String login
+	 * @param String
+	 *            login
 	 * @return void
 	 * 
 	 */
-	
+
 	@Transactional
 	@Override
 	public void updateFailAttempts(String login) {
-		User user =userRepository.findUserByLogin(login);
-		
-		//if user failed to login
-		if (user != null){
-		
-			int previousAttempts=user.getAttempts();
-			user.setAttempts(previousAttempts+1);
-			user.setLastModified(new Timestamp(System.currentTimeMillis()));		
-		
-			if(user.getAttempts()+1>MAX_ATTEMPTS){
-				user.setAccountNonLocked(0);
-//				throw new LockedException("User Account is locked!");
+
+		try {
+			User user = userRepository.findUserByLogin(login);
+
+			// if user failed to login
+			if (user != null) {
+
+				int previousAttempts = user.getAttempts();
+				user.setAttempts(previousAttempts + 1);
+				user.setLastModified(new Timestamp(System.currentTimeMillis()));
+
+				if (user.getAttempts() + 1 > MAX_ATTEMPTS) {
+					user.setAccountNonLocked(0);
+				}
+
 			}
-			
+		} catch (Exception e) {
+			logger.error("Failed to updateFailAttempts() " + e);
 		}
-		
-		
-		
-		
-		
-		
 	}
 
-	
 	/**
-	 * Method, which reset user attempts to zero
+	 * <p>
+	 * Method, which reset user attempts to zero after authentifacation
+	 * </p>
+	 * 
 	 * @author Vitalii Horban
-	 * @param String login
+	 * 
+	 * @param String
+	 *            login
+	 * 
 	 * @return void
 	 * 
 	 */
 	@Transactional
 	@Override
 	public void resetFailAttempts(String login) {
-		User user =userRepository.findUserByLogin(login);
-		user.setAttempts(0);
-		user.setLastModified(null);
-		
+		try {
+			User user = userRepository.findUserByLogin(login);
+			user.setAttempts(0);
+			user.setLastModified(null);
+		} catch (Exception e) {
+			logger.error("Failed to resetFailAttempts() " + e);
+		}
+
 	}
 
-	
-
-	
 	@Override
-	public User findUserByLogin(String login){
+	public User findUserByLogin(String login) {
 		return userRepository.findUserByLogin(login);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Transactional
+	@Override
+	public void resetAllFailAttempts() {
+		try {
+			List<User> allUsers = userRepository.findAll();
+			for (User u : allUsers) {
+				u.setAccountNonLocked(1);
+				u.setAttempts(0);
+			}
+		} catch (Exception e) {
+			logger.error("Failed to resetAllFailAttempts() " + e);
+		}
+
+	}
+
 }
