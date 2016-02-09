@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * This class give opportunity to reset user attempts every time at midnight
+ * This class give opportunity to reset user attempts in 5 minutes after last attempt
  * </p>
  */
 
