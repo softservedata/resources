@@ -37,10 +37,10 @@
 							            <select id="searchTypeIndex${entry.key}" class="form-control col-sm-3" name="category">
 							                <c:forEach items="${entry.value.searchType}" var="searchType">
 		        							<c:if test="${searchType eq 'equal'}">
-												<option value="${searchType}"><spring:message code="${label.tableTitle.searchType.equals}" /></option>
+												<option value="${searchType}"><spring:message code="label.tableTitle.searchType.equals" /></option>
 											</c:if>
 											<c:if test="${searchType eq 'like'}">
-												<option value="${searchType}"><spring:message code="${llabel.tableTitle.searchType.contains}" /></option>
+												<option value="${searchType}"><spring:message code="label.tableTitle.searchType.contains" /></option>
 											</c:if>
 				                        </c:forEach>
 							            </select>           
