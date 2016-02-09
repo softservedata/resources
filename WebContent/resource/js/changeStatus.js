@@ -1,6 +1,5 @@
 $(document).on('change', '.changestatus', function(event) {
 	var theId = parseInt($(this).attr('id').replace(/[^\d]/g,''), 10);
-	alert(theId);
 	var json = {
 		"status" : $("#userStatusId_"+theId).val(),
 		"login" : $("#login_"+theId).text()
