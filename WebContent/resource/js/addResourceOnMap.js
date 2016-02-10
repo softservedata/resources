@@ -208,7 +208,6 @@ function getResources() {
 
 
 //Function which checks does the new polygon intersect other polygons
-//At the moment we check only do the point of one polygon inside of the other one.
 
 function intersectionCheck(polygon){
     //console.log("Intersection check started!");
@@ -293,29 +292,24 @@ function intersectionCheck(polygon){
         }
     }*/
     
-    intersection = checkIntersectionAllPolygons(polygon, polygons);
     
+    intersection = checkIntersectionAllPolygons(polygon, newPolygons);    
     if (intersection) {
     	bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
-    } else {
-    	isInsideUKRAINE = isInsideUkraine(polygon);
-    	if (!isInsideUKRAINE) {    
-    		bootbox.alert("Ресурс, що не належить території України не може бути внесений");
+    } else { 
+    	intersection = checkIntersectionAllPolygons(polygon, polygons);
+    	if (intersection) {
+    	bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
     	} else {
-	    	newPolygons.push(polygon);
-	        polygon.setEditable(false);
+	    	isInsideUKRAINE = isInsideUkraine(polygon);
+	    	if (isInsideUKRAINE) {
+		    	newPolygons.push(polygon);
+		        polygon.setEditable(false);
+	    	}
     	}
     }
     
-    /* Old version
-    if (!intersection) {
-        newPolygons.push(polygon);
-        polygon.setEditable(false);
-    }
-    else {
-        bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
-    }*/
-    
+       
     $("#dark_bg").hide();
     return intersection;
 }

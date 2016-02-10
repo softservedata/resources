@@ -7,6 +7,15 @@ public class ResourceNumberDTOJSON {
 	private String registrator_number;
 	private String identifier;
 
+	public ResourceNumberDTOJSON(String resource_number,String registrator_number,String identifier) {
+		this.identifier = identifier;
+		this.resource_number = resource_number;
+		this.registrator_number = registrator_number;
+	}
+	
+	public ResourceNumberDTOJSON() {
+	}
+	
 	public String getLogin() {
 		return login;
 	}

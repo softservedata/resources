@@ -36,9 +36,9 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
 				if(user != null){
 					user.setPassword(userPasswordEncoder.encode(password));
 					userRepository.save(user);
+					verificationTokenService.deleteVerificationToken(verificationToken);
 					return true;
 				}
-			verificationTokenService.deleteVerificationToken(verificationToken);
 		}
 		return false;
 	}

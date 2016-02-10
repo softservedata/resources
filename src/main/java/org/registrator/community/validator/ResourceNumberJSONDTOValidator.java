@@ -40,22 +40,22 @@ public class ResourceNumberJSONDTOValidator implements Validator {
 		List<ResourceNumber> registratorNumberList = resourceNumberRepository.findAll();
 		List<Tome> tomeList = tomeRepository.findAll();
 		if (resourceNumber != null) {
-			errors.rejectValue("registrator_number", "За цим користувачем уже закрілений номер");
+			errors.rejectValue("registrator_number", "msg.registration.registratornumber.exist");
 		}
 
 		for (ResourceNumber registratorNumber : registratorNumberList) {
 			if (registratorNumber.getRegistratorNumber().equals(resourceNumberDTOJSON.getRegistrator_number())) {
-				errors.rejectValue("registrator_number", "Реєстраційний номер є унікальний");
+				errors.rejectValue("registrator_number", "msg.registation.registratornumber.unique");
 			}
 		}
 		
 		if (tome != null) {
-			errors.rejectValue("identifier", "За цим користувачем уже закрілений номер");
+			errors.rejectValue("identifier", "msg.registration.tomenumber.exist");
 		}
 		
 		for (Tome tomeNumber : tomeList) {
 			if (resourceNumberDTOJSON.getIdentifier().equals(tomeNumber.getIdentifier())) {
-				errors.rejectValue("identifier", "Реєстраційний номер є унікальний");
+				errors.rejectValue("identifier", "msg.registation.tomenumber.unique");
 			}
 		}
 	}

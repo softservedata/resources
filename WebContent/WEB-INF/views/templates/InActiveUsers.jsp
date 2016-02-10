@@ -30,9 +30,9 @@
 			</tr>
 		</thead>
 		<c:if test="${not empty unregistatedUsers}">
-			<c:forEach items="${unregistatedUsers}" var="userDTO">
+			<c:forEach items="${unregistatedUsers}" var="userDTO" varStatus="i">
 				<tr>
-					<td id="login">${userDTO.login}</td>
+					<td id="login_${i.index}">${userDTO.login}</td>
 					<td id="lastName">${userDTO.lastName}</td>
 					<td id="firstName">${userDTO.firstName}</td>
 					<td id="middleName">${userDTO.middleName}</td>
@@ -41,14 +41,14 @@
 						${userDTO.address.building}, ${user.address.flat}</td>
 					<td id="passpoorts">${userDTO.passport.seria},${user.passport.number},
 						${userDTO.passport.published_by_data}</td>
-					<td><select id="userStatusId" name="status">
-							<c:forEach items="${userStatusList}" var="userStatus">
+					<td><select id="userStatusId_${i.index}" class="changestatus"name="status">
+							<c:forEach items="${userStatusList}" var="userStatus" varStatus="i">
 								<c:choose>
 									<c:when test="${userDto.status == userStatus}">
-										<option selected value="${userStatus}">${userStatus}</option>
+										<option id="status" selected value="${userStatus}">${userStatus}</option>
 									</c:when>
 									<c:otherwise>
-										<option value="${userStatus}">${userStatus}</option>
+										<option id="status"  value="${userStatus}">${userStatus}</option>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>

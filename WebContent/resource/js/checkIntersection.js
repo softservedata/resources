@@ -3,15 +3,14 @@
  */
 
 var Polygons = [];
-var N = 5;		 //ділимо сторону на N частин.
+var N = 10;		 //divide side into N parts.
 var tolerance = 0.000000001;
 
 function checkIntersectionAllPolygons(polygon, Polygons){
 	var intersect = false;
 		
 	console.log("polygons.length = " + Polygons.length);
-	for (var i = 0; i<Polygons.length; i++)	{		
-		//console.log("i = " + i);
+	for (var i = 0; i<Polygons.length; i++)	{	
 		intersect = checkEdgeOfFirstOnSecond(Polygons[i], polygon)  || checkEdgeOfFirstOnSecond(polygon, Polygons[i]);
 		if (intersect) {
 			return intersect;
@@ -19,7 +18,8 @@ function checkIntersectionAllPolygons(polygon, Polygons){
 	}   
 }
 
-//перевіряє чи межа першого полігону перетинає другий
+
+//check whether boundary of polygon1 intersects polygon2
 function checkEdgeOfFirstOnSecond(polygon1, polygon2){
 	var intersection = false;
 	var vertices = polygon1.getPath();
@@ -41,7 +41,7 @@ function checkEdgeOfFirstOnSecond(polygon1, polygon2){
 	return checkInterseptionLinePolygon(pointBegin, pointEnd, polygon2);
 }
 
-//перевіряє чи відрізок (pointBegin, pointEnd) перетинає полігон
+//check whether segment (pointBegin, pointEnd) intersects polygon2
 function checkInterseptionLinePolygon(pointBegin, pointEnd, polygon2){
 	var pointOnVerticesLat;
 	var pointOnVerticesLng;
@@ -49,7 +49,7 @@ function checkInterseptionLinePolygon(pointBegin, pointEnd, polygon2){
 	var isInsidePolygon;
 	var isOnEdge;
 	for (var k=0; k<N; k++) {
-		//take point on the line
+		//take point on the segment
 		pointOnVerticesLat = pointBegin.lat() * (N-k)/N + pointEnd.lat()*k/N;
 		pointOnVerticesLng = pointBegin.lng() * (N-k)/N + pointEnd.lng()*k/N;
 		pointOnVertices = new google.maps.LatLng(pointOnVerticesLat, pointOnVerticesLng);
