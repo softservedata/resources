@@ -1,7 +1,8 @@
-$(document).on('change', '#userStatusId', function(event) {
+$(document).on('change', '.changestatus', function(event) {
+	var theId = parseInt($(this).attr('id').replace(/[^\d]/g,''), 10);
 	var json = {
-		"status" : $("#userStatusId").val(),
-		"login" : $("#login").text()
+		"status" : $("#userStatusId_"+theId).val(),
+		"login" : $("#login_"+theId).text()
 	};
 
 	$.ajax({

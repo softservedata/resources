@@ -239,8 +239,21 @@ function searchOnMapByPoint(latLng, marker) {
             createPolygons(data);
             marker.setMap(map);
             markers.push(marker);
+            var json = [];
+            for(var i = 0; i<polygons.length; i++) {
+                var isWithinPolygon = google.maps.geometry.poly.containsLocation(marker.getPosition(), polygons[i]);
+                if (!isWithinPolygon) {
+                    polygons.splice(i, 1);
+                    boundsArray.splice(i, 1);
+                    i--;
+                }
+                else {
+                    json.push(data[i]);
+                }
+            }
+            console.log("polygons: "+ polygons.length);
             showPolygons(polygons);
-            createDataTable(data);
+            createDataTable(json);
 
             $("#dark_bg").hide();
         },
@@ -286,9 +299,11 @@ function searchOnMapByArea(rectangle) {
             showPolygons(polygons);
             createDataTable(data);
 
-            var resTypeFilter = "<p>Фільтр:</p>";
-            for (var i = 0; i < resTypes.length; i++) {
-                resTypeFilter += '<button class="btn btn-default btn-filter">' + resTypes[i] + '</button>';
+            if(resTypes.length > 0) {
+                var resTypeFilter = "<p>Фільтр:</p>";
+                for (var i = 0; i < resTypes.length; i++) {
+                    resTypeFilter += '<button class="btn btn-default btn-filter">' + resTypes[i] + '</button>';
+                }
             }
             $("#resTypeFilter").html(resTypeFilter);
 
@@ -409,12 +424,15 @@ function createPolygons (json) {
 
 function showPolygons (polygonsArray) {
     var bounds = new google.maps.LatLngBounds();
+    var testBounds = new google.maps.LatLngBounds();
     for(var i= 0; i<polygonsArray.length; i++) {
         polygonsArray[i].setMap(map);
         bounds.union(boundsArray[i]);
     }
-
-    map.fitBounds(bounds);
+    console.log("bounds: " + bounds);
+    if (!bounds.equals(testBounds)) {
+        map.fitBounds(bounds);
+    }
 }
 
 function clearMap(){
@@ -634,6 +652,7 @@ $(document).on("click", "#search", function () {
         dataType: 'json',
         success: function(data){
             createDataTable(data);
+            createPolygons(data);
             $("#dark_bg").hide();
         },
         error: function () {

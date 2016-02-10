@@ -65,7 +65,11 @@
                 <c:if test="${!allUrkaine}">
                     <tr class="coordinates">
                         <td colspan="2">
-                            <c:forEach var="poligon" items="${resource.resourceArea.poligons}">
+                            <c:forEach var="poligon" items="${resource.resourceArea.poligons}" varStatus="polygonIndex">
+                                <div class="col-md-12">
+                                    <spring:message code="label.resource.Polygon"/>
+                                    <c:out value="${polygonIndex.count}"/>:
+                                </div>
                                 <div class="col-sm-12 polygon">
                                     <c:forEach var="point" items="${poligon.points}">
                                         <div class="coordinatesPoint">

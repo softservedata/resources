@@ -1,32 +1,53 @@
-var addNewPoint = function(poligonNumber,
-                           latitudeDegrees, latitudeMinutes, latitudeSeconds,
-                           longitudeDegrees, longitudeMinutes,longitudeSeconds) {
-	var num = $('.clonedAreaInput').length;
-	var prevNum = new Number(num - 1);
-	var newNum = new Number(num + 1);
+function addNewPolygon(polygonNumber) {
+    var newPolygon = $('<div id="polygon_'+(polygonNumber+1)+'"></div>');
+    var newLabel = $('<h4>'+jQuery.i18n.prop('msg.Polygon')+" "+(polygonNumber+1)+':</h4>');
+    newPolygon.append(newLabel);
+    newPolygon.append($('#areaInput1').clone());
+    //newPolygon.find('#myparam1').val('0');
+    newPolygon.find('input:not(#pointNumber)').val(0);
+    newPolygon.find('input').each(function(){
+        $(this).attr( "name",$(this).attr("name").replace(
+            'poligons[0]',
+            'poligons[' + polygonNumber + ']'));
+    });
+    $('#polygon_'+polygonNumber).after(newPolygon);
+}
 
-	if ($('#myparam1').val() == 0) {
-		$('#myparam1').val(latitudeDegrees);
-		$('#myparam2').val(latitudeMinutes);
-		$('#myparam3').val(latitudeSeconds);
-		$('#myparam4').val(longitudeDegrees);
-		$('#myparam5').val(longitudeMinutes);
-		$('#myparam6').val(longitudeSeconds);
+function addNewPoint(polygonNumber,
+                     latitudeDegrees, latitudeMinutes, latitudeSeconds,
+                     longitudeDegrees, longitudeMinutes,longitudeSeconds) {
+	var polygon = $('#polygon_'+(polygonNumber+1));
+    if (polygon.length == 0) {
+        addNewPolygon(polygonNumber);
+        polygon = $('#polygon_'+(polygonNumber+1));
+    }
+	var num = polygon.find('.clonedAreaInput').length;
+	var prevNum = Number(num - 1);
+	var newNum = Number(num + 1);
+
+	if (polygon.find('#myparam1').val() == 0) {
+        console.log("point num: " + num);
+        polygon.find('#myparam1').val(latitudeDegrees);
+        polygon.find('#myparam2').val(latitudeMinutes);
+        polygon.find('#myparam3').val(latitudeSeconds);
+        polygon.find('#myparam4').val(longitudeDegrees);
+        polygon.find('#myparam5').val(longitudeMinutes);
+        polygon.find('#myparam6').val(longitudeSeconds);
 	}
     else {
     	
-    	var newElem = $('#areaInput' + num).clone().attr('id',
+    	var newElem = polygon.find('#areaInput' + num).clone().attr('id',
 				'areaInput' + newNum);
 		newElem.find('input').each(function() {
 			$(this).removeAttr('value');
 			$(this).attr( "name",$(this).attr("name").replace(
 					'points[' + prevNum + ']',
 					'points[' + num + ']'));
-            if (poligonNumber > 0) {
-                $(this).attr( "name",$(this).attr("name").replace(
-                    'poligons[' + (poligonNumber-1) + ']',
-                    'poligons[' + poligonNumber + ']'));
-            }
+            //if (polygonNumber > 0) {
+            //    $(this).attr( "name",$(this).attr("name").replace(
+            //        'poligons[' + (polygonNumber-1) + ']',
+            //        'poligons[' + polygonNumber + ']'));
+            //}
 			});
       
 		newElem.find('input#pointNumber').val(newNum);
@@ -36,10 +57,13 @@ var addNewPoint = function(poligonNumber,
         newElem.find('input#myparam4').val(longitudeDegrees);
         newElem.find('input#myparam5').val(longitudeMinutes);
         newElem.find('input#myparam6').val(longitudeSeconds);
-        
-		$('#areaInput' + num).after(newElem);
-		$('#btnDelAreaPoint').removeAttr('disabled');
+
+        polygon.find('#areaInput' + num).after(newElem);
+		//$('#btnDelAreaPoint').removeAttr('disabled');
+
+
     }
+    //alert("point added");
 
 }
 
@@ -85,7 +109,8 @@ $(document).ready(
                 if ($('#myparam1').val() == 0) {
 					bootbox.alert(jQuery.i18n.prop('msg.enterFirstPoint'));
                 }
-				addNewPoint(0,0,0,0.0,0,0,0.0);
+                var num = $('div[id^=polygon_]').length -1;
+				addNewPoint(num,0,0,0.0,0,0,0.0);
 			});
 
 			$('#btnDelAreaPoint').click(function() {

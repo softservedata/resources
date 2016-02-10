@@ -275,11 +275,12 @@
 						<label class="col-lg-4 control-label" for="textinput"><spring:message
 								code="label.manualregister.community" />* </label>
 						<div class="col-lg-8">
-							<select id="community" name="territorialCommunity" class="form-control"
-								style="width: 230px; height: 34px" disabled>
+							<select id="community" name="territorialCommunity"
+								class="form-control" style="width: 230px; height: 34px" disabled>
 								<c:forEach items="${territorialCommunities}" var="communities">
 									<c:choose>
-										<c:when test="${userDto.territorialCommunity == communities.name}">
+										<c:when
+											test="${userDto.territorialCommunity == communities.name}">
 											<option selected value="${communities.name}">${communities.name}</option>
 										</c:when>
 										<c:otherwise>
@@ -291,24 +292,44 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-lg-4 control-label" for="textinput">Реєстраційний
+							номер об'єкту</label>
 						<div class="col-lg-8">
 							<input id="resourceNumber" class="form-control input-md"
 								type="text" name="resourceNumberDTOJSON.resource_number"
-								value="0" style="display: none">
+								value="${userDto.resourceNumberDTOJSON.resource_number}"
+								readonly>
+						</div>
+						<div class="control-group error">
+							<form:errors path="resourceNumberDTOJSON.resource_number"
+								cssClass="error" style="color:black" />
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-lg-4 control-label" for="textinput">Номер
+							реєстратора</label>
 						<div class="col-lg-8">
 							<input id="registratorNumber" class="form-control input-md"
 								type="text" name="resourceNumberDTOJSON.registrator_number"
-								value="0" style="display: none">
+								value="${userDto.resourceNumberDTOJSON.registrator_number}"
+								readonly>
+							<div class="control-group error">
+								<form:errors path="resourceNumberDTOJSON.registrator_number"
+									cssClass="error" style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-lg-4 control-label" for="textinput">Номер
+							тому</label>
 						<div class="col-lg-8">
 							<input id="identifierNumber" class="form-control input-md"
-								type="text" name="resourceNumberDTOJSON.identifier" value="0"
-								style="display: none">
+								type="text" name="resourceNumberDTOJSON.identifier"
+								value="${userDto.resourceNumberDTOJSON.identifier}" readonly>
+							<div class="control-group error">
+								<form:errors path="resourceNumberDTOJSON.identifier"
+									cssClass="error" style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -344,8 +365,15 @@
 						<h4 class="modal-title">
 							<spring:message code="label.registrator.enterData" />
 						</h4>
+						<h5>
+							<label class="control-label">Реєстраційни номер -
+								804:23:17:026:79000,</label> <label class="control-label">Номер
+								ресурсу - :0212,</label> <label class="control-label">Номер тому
+								- *79000/**1</label>
+						</h5>
 					</div>
 					<div class="modal-body">
+
 						<label class="control-label"><spring:message
 								code="label.registrator.tomeNumber" /></label> <input id="identifier"
 							name="identifier" class="form-control input-md" type="text">

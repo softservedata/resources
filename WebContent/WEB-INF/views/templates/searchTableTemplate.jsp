@@ -21,36 +21,34 @@
          <table class="table table-striped table-bordered table-hover" id="example">
 			<thead>
 				<tr>
-					<c:forEach items="${tableSetting.columnsSetting}" var="columnSetting">
-						<th><spring:message code="${columnSetting.title}" /></th>
-<%-- 						<th>${columnSetting.title}"</th> --%>
+					<c:forEach items="${tableSetting.columns}" var="entry">
+						<th><spring:message code="${entry.value.title}" /></th>
 					</c:forEach>
 	           </tr>
 			</thead>
 	        <tfoot style="display: table-header-group">
 	        	<tr>      	
-	        		<c:forEach items="${tableSetting.columnsSetting}" var="columnSetting" varStatus="status">
-	        			<c:if test="${columnSetting.type eq 'search'}">
-	        				<th>
-<!-- 		        				<span class="col-xs-2"> -->
-<!-- 		        					<select class="form-control"> -->
-<%-- 		        						<c:forEach items="${columnSetting.searchType}" var="searchType"> --%>
-		        							
-<%-- 		        							<c:if test="${searchType eq 'equal'}"> --%>
-<%-- 												<option value="${searchType}">==</option> --%>
-<%-- 											</c:if> --%>
-											
-<%-- 											<c:if test="${searchType eq 'like'}"> --%>
-<%-- 												<option value="${searchType}">%%</option> --%>
-<%-- 											</c:if> --%>
-	
-<%-- 				                        </c:forEach> --%>
-<!-- 	                    			</select> -->
-<!-- 	                			</span> -->
-	                			<div class="col-md-12">
-		        					<input id="inputIndex${status.count-1}" class="form-control"  type="text" placeholder="<spring:message code="${columnSetting.title}" />" />
-<%-- 										<input id="inputIndex${status.count-1}" class="form-control"  type="text" placeholder="${columnSetting.title}" /> --%>
-		        				</div>
+	        		<c:forEach items="${tableSetting.columns}" var="entry" varStatus="status">
+	        			<c:if test="${entry.value.type eq 'search'}">
+	        				<th style="padding-right:0px !important; padding-left:10px !important">
+
+		        				<div class="input-group form-inline " >
+		        					<div class="form-group ">
+							            <select id="searchTypeIndex${entry.key}" class="form-control col-sm-3" name="category">
+							                <c:forEach items="${entry.value.searchType}" var="searchType">
+		        							<c:if test="${searchType eq 'equal'}">
+												<option value="${searchType}"><spring:message code="label.tableTitle.searchType.equals" /></option>
+											</c:if>
+											<c:if test="${searchType eq 'like'}">
+												<option value="${searchType}"><spring:message code="label.tableTitle.searchType.contains" /></option>
+											</c:if>
+				                        </c:forEach>
+							            </select>           
+							        </div>
+							        <div class="form-group ">
+										<input size="5" maxlength="50" id="inputIndex${entry.key}" class="form-control col-sm-7"  type="text" placeholder="<spring:message code="${entry.value.title}" />" />
+							        </div>
+							   </div>
 	        				</th>
 	        			</c:if>
 					</c:forEach>		        	
@@ -62,11 +60,13 @@
 </div>
 
 <script>
+var oTable;
 jQuery(document).ready(function($) {
 	
 	var createTableStatus = false;
 		
-	var oTable;
+// 	var oTable;
+// 	window.myDataTable=oTable;
 	function createTable() {	    	
 
 		oTable = $('#example').DataTable({
@@ -93,32 +93,21 @@ jQuery(document).ready(function($) {
               "sZeroRecords": "Нічого не знайдено"
             },
         "serverSide": true,
-//         "aoColumnDefs" : [
         "aoColumns" : [        
-						<c:forEach items="${tableSetting.columnsSetting}" var="columnSetting" varStatus="status">
-							<c:if test="${columnSetting.type eq 'search'}">
+						<c:forEach items="${tableSetting.columns}" var="entry" varStatus="status">
+							<c:if test="${entry.value.type eq 'search'}">
 								{
-						            "sTitle" : "<spring:message code="${columnSetting.title}" />",
-						            "mData" : "${columnSetting.data}"
+						            "sTitle" : "<spring:message code="${entry.value.title}" />",
+						            "mData" : '${entry.key}'
 						        },
 							</c:if>
-						    <c:if test="${columnSetting.type eq 'button'}">
+						    <c:if test="${entry.value.type eq 'button'}">
 						    {
-							       	   "sTitle" : "<spring:message code="${columnSetting.title}" />",
+							       	   "sTitle" : "<spring:message code="${entry.value.title}" />",
 					                   "mData" : "action",
-// 					                   "sClass" : "center",
-// 					                   "sClass": "action",
 					                   "bSortable": false,
-// 					                   	"sWidth": "15%",
-					                   	"mRender": function ( data, type, full ) {
-					                        return '<a href="edit-registrated-user/?login='+full["login"]+'" class="btn btn-primary"'+
-					                        		'role="button">Редагувати</a>';}
-					                        ,
-// 					                   	"mRender": function(data, type, full) {
-// 					                   	    return '<a class="btn btn-info btn-sm" href=#/' + full[1] + '>' + data + '</a>';
-// 					                   	  }
-// 					                   "sDefaultContent" :   '<button id="action" class="btn btn-primary">Редагувати</button>'
-					                	   
+					                   "defaultContent": '<button  class="btn btn-primary" id="${entry.value.buttonId}">Редагувати</button>'
+					                        ,                	   
 					            },
 							</c:if>
 						</c:forEach>
@@ -135,7 +124,15 @@ jQuery(document).ready(function($) {
        	            	} 	
                }
     });
-		}
+		
+		
+		
+// 		$('#example tbody').on('click', '#mybutton', function () {
+// 			var data = oTable.row( $(this).parents('tr') ).data();
+// 		    alert( data[0] +"s salary is:");
+// 		} );
+	
+	}
 	
     $("#bth-search").click(function(event) {
     	if(createTableStatus==false){
@@ -145,13 +142,38 @@ jQuery(document).ready(function($) {
     		oTable.ajax.reload(null, false);
     	}
 	});
-    
+   
     function addSearchValue(data) {
+    	data.tableName = '${tableSetting.tableName}';
 	    for (var i = 0; i < data.columns.length; i++) {
 	        column = data.columns[i];
-	        column.search.compareSign = "equal";
+	        column.search.compareSign = $('#searchTypeIndex'+i).val();
 	        column.search.value = $('#inputIndex'+i).val();
 	    }
 	}
+    
+// 	$('#example').on('click', '#mybutton', function () {
+// 		var data = oTable.row( $(this).parents('tr') ).data();
+// 	    alert( data[0] +"s salary is:");
+// 	} );
+    
+//     $('#example').on('click', '#mybutton', function (e) {
+//         e.preventDefault();
+//         var data = table.row( $(this).parents('tr') ).data();
+//        alert( "s salary is:");
+//    } );
+    
+
+    
+//     $('#example tbody').on( 'click', 'button', function () {
+//         var data = table.row( $(this).parents('tr') ).data();
+//         alert( data[0] +"'s salary is: "+ data[ 0 ] );
+//     } );
+    
+   
+//         $('#example .myButton').on('click',function() {
+//         	alert( "s salary is:");
+//         });
+    
 } );
 </script>

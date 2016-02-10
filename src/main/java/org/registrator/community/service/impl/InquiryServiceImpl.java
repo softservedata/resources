@@ -43,33 +43,37 @@ public class InquiryServiceImpl implements InquiryService{
 	
 	/**
 	 * Method saves the data in the table inquiry_list.
+	 * 
+	 * @param resourceIdentifier - identifier of the resource
+	 * @param registratorLogin - login of the chosen registrator
+	 * @param userLogin - login of the logged user
+	 * @return  inquiry entity
 	 */
 	@Transactional
 	@Override
 	public Inquiry addOutputInquiry(String resourceIdentifier, String registratorLogin, String userLogin){
-		logger.info("begin addOutputInquiry, param resourceIdentifier = " + resourceIdentifier +
-				", registratorLogin = "+ registratorLogin);	
 		User user = userRepository.findUserByLogin(userLogin);
 		User registrator = userRepository.findUserByLogin(registratorLogin);		
 		Resource resource = resourceRepository.findByIdentifier(resourceIdentifier);		
 		Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
 		logger.info("wrote line to inquiry_list table");
-		inquiryRepository.saveAndFlush(inquiry);	
+		inquiryRepository.save(inquiry);	
 		return inquiry;
 	}
 	
 	/**
      * Method save input inquiry in database for selected user and saved resource
-     * @param ownerLogin
-     * @param resourceEntity
-     * @param registrator
+     * 
+     * @param userLogin - login of the user 
+     * @param resourceEntity - resource 
+     * @param registrator - entity of the registrator who adds the resource
      */
 	@Transactional
 	@Override
-	public void addInputInquiry(String ownerLogin, Resource resourceEntity, User registrator){
-		User user = userRepository.findUserByLogin(ownerLogin);
+	public void addInputInquiry(String userLogin, Resource resourceEntity, User registrator){
+		User user = userRepository.findUserByLogin(userLogin);
         Inquiry inquiry = new Inquiry("INPUT", resourceEntity.getDate(), user, registrator, resourceEntity);
-        inquiryRepository.saveAndFlush(inquiry);
+        inquiryRepository.save(inquiry);
 	}
 	
 		
@@ -78,6 +82,9 @@ public class InquiryServiceImpl implements InquiryService{
 	 * for inquiry to get the certificate about the resource 
 	 * forms List<UserNameDTO> - all registrars linked to logged user 
 	 * using the same territorial community to fill inquiryAddOut.jsp.
+	 * 
+	 * @param userLogin - login of the logged user
+	 * @return list to fill inquiryAddOut.jsp
 	 */	
 	@Override
 	public List<UserNameDTO> listUserNameDTO(String userLogin){			
@@ -102,6 +109,10 @@ public class InquiryServiceImpl implements InquiryService{
 	 * (if role of logged user is USER)
 	 * or for showing all inquiries to registator of type inquiryType
 	 * forms List<InquiryListDTO> to fill listInqUserOut.jsp or listInquiryUserInput.jsp.
+	 * 
+	 * @param userLogin - login of the logged user
+	 * @param inquiryType - type of the inquiry (InquiryType.INPUT or InquiryType.OUTPUT)
+	 * @return list of InquiryListDTO
 	 */
 	@Transactional
 	@Override
@@ -133,6 +144,8 @@ public class InquiryServiceImpl implements InquiryService{
 		
 	/**
 	 * Method for deleting chosen inquiry by Id.
+	 * 
+	 * inquiryId - id of the chosen inquiry
 	 */
 	@Transactional
 	@Override

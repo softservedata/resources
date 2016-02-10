@@ -9,6 +9,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class TableSearchRequestDTO {
 	
+	@NotNull
+	private String tableName; 
+
 	/**
 	 * Draw counter. This is used by DataTables to ensure that the Ajax returns
 	 * from server-side processing requests are drawn in sequence by DataTables
@@ -48,6 +51,16 @@ public class TableSearchRequestDTO {
 	 */
 	@NotEmpty
     private List<SearchColumn> columns;
+	
+	private List<Order> order;
+	
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
 
 	public int getDraw() {
 		return draw;
@@ -87,5 +100,13 @@ public class TableSearchRequestDTO {
 
 	public void setSearch(Search search) {
 		this.search = search;
+	}
+
+	public List<Order> getOrder() {
+		return order;
+	}
+
+	public void setOrder(List<Order> order) {
+		this.order = order;
 	}
 }

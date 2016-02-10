@@ -33,6 +33,4 @@ $(document).on('change', '#roleId', function() {
 		})
 		
 	}
-	//event.preventDefault();
-
 });

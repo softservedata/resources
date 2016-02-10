@@ -16,6 +16,7 @@ import org.registrator.community.dto.ResourceNumberDTO;
 import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.WillDocumentDTO;
+import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.OtherDocuments;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	private static final int MAX_ATTEMPTS = 2;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -308,9 +309,21 @@ public class UserServiceImpl implements UserService {
 		Address address = user.getAddress().get(user.getAddress().size() - 1);
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+		ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
+		Tome tome = tomeRepository.findTomeByRegistrator(user);
+		ResourceNumberDTOJSON resourceNumberDTOJSON = null;
+		if ((tome != null) && (resourceNumber != null)) {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON(resourceNumber.getNumber().toString(),
+					resourceNumber.getRegistratorNumber(), tome.getIdentifier());
+		} else {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON();
+			resourceNumberDTOJSON.setResource_number("0");
+			resourceNumberDTOJSON.setRegistrator_number("0");
+			resourceNumberDTOJSON.setIdentifier("0");
+		}
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto,user.getTerritorialCommunity().getName());
+				passportDto, user.getTerritorialCommunity().getName(), resourceNumberDTOJSON);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -321,6 +334,7 @@ public class UserServiceImpl implements UserService {
 			userdto.setWillDocument(willDocumentDTO);
 		}
 		return formUserDTO(user);
+
 	}
 
 	/**
@@ -411,7 +425,7 @@ public class UserServiceImpl implements UserService {
 		user.setDateOfAccession(registrationForm.getDateOfAccession());
 		user.setTerritorialCommunity(territorialCommunity);
 
-		userRepository.saveAndFlush(user);
+		userRepository.save(user);
 		log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());
 
 		if (userRepository.findUserByLogin(user.getLogin()) != null) {
@@ -422,8 +436,8 @@ public class UserServiceImpl implements UserService {
 			passport.setNumber((registrationForm.getNumber()));
 			passport.setPublishedByData(registrationForm.getPublishedByData());
 
-			passportRepository.saveAndFlush(passport);
-			log.info("Inserted passport data for user {0}, passport_data_id = {1}", user.getLogin(),
+			passportRepository.save(passport);
+			log.info("Inserted passport data for user with passport_data_id", user.getLogin(),
 					passport.getPassportId());
 
 			// insert user's address records into "address" table
@@ -437,8 +451,8 @@ public class UserServiceImpl implements UserService {
 			address.setFlat(registrationForm.getFlat());
 			address.setPostCode(registrationForm.getPostcode());
 
-			addressRepository.saveAndFlush(address);
-			log.info("Inserted address data for user {0}, address_id = {1}", user.getLogin(), address.getAddressId());
+			addressRepository.save(address);
+			log.info("Inserted address data for user with address_id", user.getLogin(), address.getAddressId());
 		}
 
 	}
@@ -456,16 +470,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDTO> getUserBySearchTag(String searchTag) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User registrator = getUserByLogin(auth.getName());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User registrator = getUserByLogin(auth.getName());
 		List<User> usersList = userRepository.findOwnersLikeProposed(registrator.getTerritorialCommunity(), searchTag);
 		List<UserDTO> userDtos = new ArrayList<UserDTO>();
 		for (User user : usersList) {
-		    UserDTO userdto = new UserDTO();
-		    userdto.setFirstName(user.getFirstName());
-		    userdto.setMiddleName(user.getMiddleName());		    
-		    userdto.setLastName(user.getLastName());
-		    userdto.setLogin(user.getLogin());
+			UserDTO userdto = new UserDTO();
+			userdto.setFirstName(user.getFirstName());
+			userdto.setMiddleName(user.getMiddleName());
+			userdto.setLastName(user.getLastName());
+			userdto.setLogin(user.getLogin());
 			userDtos.add(userdto);
 		}
 		return userDtos;
@@ -481,9 +495,22 @@ public class UserServiceImpl implements UserService {
 		Address address = user.getAddress().get(user.getAddress().size() - 1);
 		AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
 				address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+		ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
+		Tome tome = tomeRepository.findTomeByRegistrator(user);
+		ResourceNumberDTOJSON resourceNumberDTOJSON = null;
+		if ((tome != null) && (resourceNumber != null)) {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON(resourceNumber.getNumber().toString(),
+					resourceNumber.getRegistratorNumber(), tome.getIdentifier());
+		} else {
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON();
+			resourceNumberDTOJSON = new ResourceNumberDTOJSON();
+			resourceNumberDTOJSON.setResource_number("0");
+			resourceNumberDTOJSON.setRegistrator_number("0");
+			resourceNumberDTOJSON.setIdentifier("0");
+		}
 		UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
 				user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
-				passportDto,user.getTerritorialCommunity().getName());
+				passportDto, user.getTerritorialCommunity().getName(), resourceNumberDTOJSON);
 		if (!user.getWillDocument().isEmpty()) {
 			WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
 			WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
@@ -543,77 +570,88 @@ public class UserServiceImpl implements UserService {
 		}
 
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
-	 * Method, which make updates in user entity for preventing brute force attacks
+	 * <p>
+	 * Method, which make updates in user entity for preventing brute force
+	 * attacks
+	 * </p>
+	 * 
 	 * @author Vitalii Horban
-	 * @param String login
+	 * @param String
+	 *            login
 	 * @return void
 	 * 
 	 */
-	
+
 	@Transactional
 	@Override
 	public void updateFailAttempts(String login) {
-		User user =userRepository.findUserByLogin(login);
-		
-		//if user failed to login
-		if (user != null){
-		
-			int previousAttempts=user.getAttempts();
-			user.setAttempts(previousAttempts+1);
-			user.setLastModified(new Timestamp(System.currentTimeMillis()));		
-		
-			if(user.getAttempts()+1>MAX_ATTEMPTS){
-				user.setAccountNonLocked(0);
-//				throw new LockedException("User Account is locked!");
+
+		try {
+			User user = userRepository.findUserByLogin(login);
+
+			// if user failed to login
+			if (user != null) {
+
+				int previousAttempts = user.getAttempts();
+				user.setAttempts(previousAttempts + 1);
+				user.setLastModified(new Timestamp(System.currentTimeMillis()));
+
+				if (user.getAttempts() + 1 > MAX_ATTEMPTS) {
+					user.setAccountNonLocked(0);
+				}
+
 			}
-			
+		} catch (Exception e) {
+			logger.error("Failed to updateFailAttempts() " + e);
 		}
-		
-		
-		
-		
-		
-		
 	}
 
-	
 	/**
-	 * Method, which reset user attempts to zero
+	 * <p>
+	 * Method, which reset user attempts to zero after authentifacation
+	 * </p>
+	 * 
 	 * @author Vitalii Horban
-	 * @param String login
+	 * 
+	 * @param String
+	 *            login
+	 * 
 	 * @return void
 	 * 
 	 */
 	@Transactional
 	@Override
 	public void resetFailAttempts(String login) {
-		User user =userRepository.findUserByLogin(login);
-		user.setAttempts(0);
-		user.setLastModified(null);
-		
+		try {
+			User user = userRepository.findUserByLogin(login);
+			user.setAttempts(0);
+			user.setLastModified(null);
+		} catch (Exception e) {
+			logger.error("Failed to resetFailAttempts() " + e);
+		}
+
 	}
 
-	
-
-	
 	@Override
-	public User findUserByLogin(String login){
+	public User findUserByLogin(String login) {
 		return userRepository.findUserByLogin(login);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Transactional
+	@Override
+	public void resetAllFailAttempts() {
+		try {
+			List<User> allUsers = userRepository.findAll();
+			for (User u : allUsers) {
+				u.setAccountNonLocked(1);
+				u.setAttempts(0);
+			}
+		} catch (Exception e) {
+			logger.error("Failed to resetAllFailAttempts() " + e);
+		}
+
+	}
+
 }
