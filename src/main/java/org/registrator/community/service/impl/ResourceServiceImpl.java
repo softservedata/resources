@@ -347,17 +347,19 @@ public class ResourceServiceImpl implements ResourceService {
         Double maxLng = -180.0;
 
         for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
-            if (minLat > point.getDecimalLatitude()) {
-                minLat = point.getDecimalLatitude();
-            }
-            if (maxLat < point.getDecimalLatitude()) {
-                maxLat = point.getDecimalLatitude();
-            }
-            if (minLng > point.getDecimalLongitude()) {
-                minLng = point.getDecimalLongitude();
-            }
-            if (maxLng < point.getDecimalLongitude()) {
-                maxLng = point.getDecimalLongitude();
+            if (point.getOrderNumber() != 0) {
+                if (minLat > point.getDecimalLatitude()) {
+                    minLat = point.getDecimalLatitude();
+                }
+                if (maxLat < point.getDecimalLatitude()) {
+                    maxLat = point.getDecimalLatitude();
+                }
+                if (minLng > point.getDecimalLongitude()) {
+                    minLng = point.getDecimalLongitude();
+                }
+                if (maxLng < point.getDecimalLongitude()) {
+                    maxLng = point.getDecimalLongitude();
+                }
             }
         }
 

@@ -1,7 +1,7 @@
 var map;
 var polygons = [];
 var newPolygons = [];
-var polygonFromCoordinates = new google.maps.Polygon();
+var polygonsFromCoordinates = [];
 var PS = null;
 var isInsideUKRAINE = true;
 
@@ -321,18 +321,16 @@ function intersectionCheck(polygon){
 }
 
 function cleanPoints() {
-    var num = $('.clonedAreaInput').length;
-    while (num > 2) {
-        num = $('.clonedAreaInput').length;
-        $('#areaInput' + num).remove();
-        if (num <= 2) {
-            $('#btnDelAreaPoint').attr('disabled', 'disabled');
+    while($('div[id^=polygon_]').length > 1) {
+        $('div[id^=polygon_]').last().remove();
+    }
+    while ($('.clonedAreaInput').length > 1) {
+        $('.clonedAreaInput').last().remove();
+        if ($('.clonedAreaInput').length == 1) {
             $("#btnAddAreaPoint").removeAttr('disabled');
         }
     }
-    $('.clonedAreaInput input').val(function() {
-        return this.defaultValue;
-    });
+    $('.clonedAreaInput input:not(#pointNumber)').val(0);
 }
 
 function checkWithTolerance(value1, value2, tolerance) {
@@ -419,9 +417,9 @@ $("#addPointsFromMap").click(function () {
         $("#infoBox").html(infoBoxMessage);
 
         //We make the link "Add polygon" inactive
-        $(".toggle a").addClass("inactiveLink");
-        $("#btnAddAreaPoint").attr('disabled', 'disabled');
-        $('#btnDelAreaPoint').attr('disabled', 'disabled');
+        //$(".toggle a").addClass("inactiveLink");
+        //$("#btnAddAreaPoint").attr('disabled', 'disabled');
+        //$('#btnDelAreaPoint').attr('disabled', 'disabled');
         //$('.clonedAreaInput input').attr('disabled', 'disabled');
         $("#dark_bg").hide();
     }
@@ -431,47 +429,57 @@ $("#addPointsFromMap").click(function () {
 });
 
 $(document).on("click", "#addPointsToMap", function(){
-    var points = $('.clonedAreaInput');
-    if(points.length > 2){
+    var allPoints = $('.clonedAreaInput');
+    var polygonsDiv = $('div[id^=polygon_]');
+    //console.log("PolygonsDiv length "+polygonsDiv.length);
+    var infoBoxMsg;
+    if(allPoints.length > 2){
         newPolygons.forEach(function(polygon){
             polygon.setMap(null);
         });
         newPolygons = [];
         $("#infoBox").html(jQuery.i18n.prop('msg.infoBox'));
-        polygonFromCoordinates.setMap(null);
-        var polygonPath = [];
-        points.each(function(){
-            var latGrad = Number($(this).find('#myparam1').val());
-            var latMin = Number($(this).find('#myparam2').val());
-            var latSec = Number($(this).find('#myparam3').val());
-            var lngGrad = Number($(this).find('#myparam4').val());
-            var lngMin = Number($(this).find('#myparam5').val());
-            var lngSec = Number($(this).find('#myparam6').val());
-
-            var lat = latGrad + latMin/60 + latSec/3600;
-            var lng = Number(lngGrad + lngMin/60 + lngSec/3600);
-            console.log("adding lat: " + lat + " lng: " + lng);
-
-            var newpoint = new google.maps.LatLng(lat, lng);
-            console.log("point  lat: " + newpoint.lat() + " lng: " + newpoint.lng());
-            polygonPath.push(newpoint);
+        polygonsFromCoordinates.forEach(function(polygon){
+            polygon.setMap(null);
         });
 
-        polygonFromCoordinates = new google.maps.Polygon({
-            path: polygonPath, // Координаты
-            strokeColor: "#FF0000", // Цвет обводки
-            strokeOpacity: 0.8, // Прозрачность обводки
-            strokeWeight: 2, // Ширина обводки
-            fillColor: "#0000FF", // Цвет заливки
-            fillOpacity: 0.3, // Прозрачность заливки
-            map: map
-        });
+        polygonsDiv.each(function () {
+            var polygonPath = [];
+            $(this).find('.clonedAreaInput').each(function () {
+                var latGrad = Number($(this).find('#myparam1').val());
+                var latMin = Number($(this).find('#myparam2').val());
+                var latSec = Number($(this).find('#myparam3').val());
+                var lngGrad = Number($(this).find('#myparam4').val());
+                var lngMin = Number($(this).find('#myparam5').val());
+                var lngSec = Number($(this).find('#myparam6').val());
 
-        intersectionCheck(polygonFromCoordinates);
-        $("#infoBox").html(calculateAreaPerimeter(polygonFromCoordinates));
+                var lat = latGrad + latMin / 60 + latSec / 3600;
+                var lng = Number(lngGrad + lngMin / 60 + lngSec / 3600);
+                //console.log("adding lat: " + lat + " lng: " + lng);
+
+                var newpoint = new google.maps.LatLng(lat, lng);
+                //console.log("point  lat: " + newpoint.lat() + " lng: " + newpoint.lng());
+                polygonPath.push(newpoint);
+            });
+
+            var polygonFromCoordinates = new google.maps.Polygon({
+                path: polygonPath, // Координаты
+                strokeColor: "#FF0000", // Цвет обводки
+                strokeOpacity: 0.8, // Прозрачность обводки
+                strokeWeight: 2, // Ширина обводки
+                fillColor: "#00FF00", // Цвет заливки
+                fillOpacity: 0.3, // Прозрачность заливки
+                map: map
+            });
+
+            intersectionCheck(polygonFromCoordinates);
+            polygonsFromCoordinates.push(polygonFromCoordinates);
+            infoBoxMsg += calculateAreaPerimeter(polygonFromCoordinates);
+        });
+        $("#infoBox").html(infoBoxMsg);
     }
     else {
-        bootbox.alert("Введіть мінімум 3 точки");
+        bootbox.alert(jQuery.i18n.prop('msg.minPoints'));
     }
 });
 
@@ -664,5 +672,33 @@ $(document).on("click", "#submitForm", function(){
     else {
         bootbox.alert(jQuery.i18n.prop('msg.enterPolygon'));
         return false;
+    }
+});
+
+$(document).on("click", ".delPoint", function(){
+    var thisDel = $(this);
+    if($(this).closest("div[id^=polygon_]").find(".clonedAreaInput").length > 1) {
+        $(this).closest("div[id^=areaInput]").remove();
+    }
+    else {
+        if ($("div[id^=polygon_]").length > 1) {
+            bootbox.confirm(jQuery.i18n.prop('msg.delPolygon'),function(){
+                thisDel.closest('div[id^=polygon_]').remove();
+            });
+        }
+        else {
+            $(this).closest("div[id^=areaInput]").find('input').val(function() {
+                return this.defaultValue;
+            });
+            bootbox.alert(jQuery.i18n.prop('msg.lastPoint'));
+        }
+    }
+});
+
+$(document).on("click", "#addPolygon", function(){
+    if($('div[id^=polygon_]').last().find('.clonedAreaInput').length >=3 ) {
+        var num = $('div[id^=polygon_]').length;
+        console.log("Polygons count: " + num);
+        addNewPolygon(num);
     }
 });
