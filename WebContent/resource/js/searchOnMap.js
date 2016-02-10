@@ -652,6 +652,7 @@ $(document).on("click", "#search", function () {
         dataType: 'json',
         success: function(data){
             createDataTable(data);
+            createPolygons(data);
             $("#dark_bg").hide();
         },
         error: function () {
