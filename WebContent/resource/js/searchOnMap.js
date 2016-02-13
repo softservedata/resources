@@ -289,7 +289,7 @@ function searchOnMapByArea(rectangle) {
         },
         type: "POST",
         url: baseUrl.toString() + "/registrator/resource/getResourcesByAreaLimits",
-        timeout: 20000,
+        timeout: 60000,
         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         dataType: 'json',
         success: function (data) {

@@ -404,17 +404,9 @@ $("#addPointsFromMap").click(function () {
 
             //Calculation of area and perimeter of all new polygons.
             infoBoxMessage += calculateAreaPerimeter(newPolygons[i], i);
-
-            //Coordinates added, if we want we can delete the polygon from the array.
-            //newPolygons.splice(i,1);
         }
         $("#infoBox").html(infoBoxMessage);
 
-        //We make the link "Add polygon" inactive
-        //$(".toggle a").addClass("inactiveLink");
-        //$("#btnAddAreaPoint").attr('disabled', 'disabled');
-        //$('#btnDelAreaPoint').attr('disabled', 'disabled');
-        //$('.clonedAreaInput input').attr('disabled', 'disabled');
         $("#dark_bg").hide();
     }
     else {
@@ -426,7 +418,7 @@ $(document).on("click", "#addPointsToMap", function(){
     var allPoints = $('.clonedAreaInput');
     var polygonsDiv = $('div[id^=polygon_]');
     //console.log("PolygonsDiv length "+polygonsDiv.length);
-    var infoBoxMsg;
+    var infoBoxMsg = "";
     if(allPoints.length > 2){
         newPolygons.forEach(function(polygon){
             polygon.setMap(null);
@@ -437,7 +429,7 @@ $(document).on("click", "#addPointsToMap", function(){
             polygon.setMap(null);
         });
 
-        polygonsDiv.each(function () {
+        polygonsDiv.each(function (index) {
             var polygonPath = [];
             $(this).find('.clonedAreaInput').each(function () {
                 var latGrad = Number($(this).find('#myparam1').val());
@@ -468,7 +460,7 @@ $(document).on("click", "#addPointsToMap", function(){
 
             intersectionCheck(polygonFromCoordinates);
             polygonsFromCoordinates.push(polygonFromCoordinates);
-            infoBoxMsg += calculateAreaPerimeter(polygonFromCoordinates);
+            infoBoxMsg += calculateAreaPerimeter(polygonFromCoordinates, index);
         });
         $("#infoBox").html(infoBoxMsg);
     }
@@ -478,8 +470,6 @@ $(document).on("click", "#addPointsToMap", function(){
 });
 
 google.maps.event.addDomListener(window, 'load', initialize);
-
-//importScripts(baseUrl.toString()+"/resources/js/ukraineCoord.js");
 
 $("#cp-wrap").on("click", "a", function(){
 
@@ -640,7 +630,7 @@ $(document).on("click", "#submitForm", function(){
             //For unknown reasons when we create a new google point LatLng
             //the lng value changes a little bit. That's why we had to create
             //function checkWithTolerance where we calculate the difference
-            //between two points and compare them with tolerance.
+            //between two points and compare it with tolerance.
             var tolerance = 0.0000000000001;
 
             if ((!checkWithTolerance(lat, latArray[i], tolerance)) ||
@@ -671,19 +661,51 @@ $(document).on("click", "#submitForm", function(){
 
 $(document).on("click", ".delPoint", function(){
     var thisDel = $(this);
-    if($(this).closest("div[id^=polygon_]").find(".clonedAreaInput").length > 1) {
+    var polygonDiv = $(this).closest("div[id^=polygon_]");
+    if(polygonDiv.find(".clonedAreaInput").length > 1) {
+        var pointNum = $(this).closest("div[id^=areaInput]").find("#pointNumber").val();
         $(this).closest("div[id^=areaInput]").remove();
+        //Changing the index of next points
+        polygonDiv.find(".clonedAreaInput").each(function(index){
+           if (index >= pointNum-1) {
+               $(this).find("#pointNumber").val(index+1);
+               $(this).attr("id",$(this).attr("id").replace(
+                   'areaInput'+(index+2),
+                   'areaInput'+(index+1)
+               ));
+               $(this).find('input').each(function() {
+                   $(this).attr( "name",$(this).attr("name").replace(
+                       'points[' + (index+1) + ']',
+                       'points[' + index + ']'));
+               });
+
+           }
+        });
     }
     else {
         if ($("div[id^=polygon_]").length > 1) {
             bootbox.confirm(jQuery.i18n.prop('msg.delPolygon'),function(){
-                thisDel.closest('div[id^=polygon_]').remove();
+                var polygonNum = Number(polygonDiv.find(".polygonIndex").html())-1;
+                polygonDiv.remove();
+                //Changing the polygon indexes in all input fields
+                $("div[id^=polygon_]").each(function(index){
+                    if (index >= polygonNum) {
+                        $(this).attr("id", $(this).attr("id").replace(
+                            'polygon_'+(index+2), 'polygon_'+(index+1))
+                        );
+                        $(this).find(".polygonIndex").html(index+1);
+                        $(this).find('input').each(function(){
+                            $(this).attr( "name",$(this).attr("name").replace(
+                                'poligons['+(index+1)+']',
+                                'poligons[' + index + ']'));
+                        });
+                    }
+                });
             });
         }
         else {
-            $(this).closest("div[id^=areaInput]").find('input').val(function() {
-                return this.defaultValue;
-            });
+            $(this).closest("div[id^=areaInput]").find('#pointNumber').val(1);
+            $(this).closest("div[id^=areaInput]").find('input:not(#pointNumber)').val(0);
             bootbox.alert(jQuery.i18n.prop('msg.lastPoint'));
         }
     }
@@ -694,5 +716,8 @@ $(document).on("click", "#addPolygon", function(){
         var num = $('div[id^=polygon_]').length;
         console.log("Polygons count: " + num);
         addNewPolygon(num);
+    }
+    else {
+        bootbox.alert(jQuery.i18n.prop('msg.minPoints'));
     }
 });
