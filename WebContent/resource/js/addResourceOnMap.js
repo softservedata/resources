@@ -415,11 +415,28 @@ $("#addPointsFromMap").click(function () {
 });
 
 $(document).on("click", "#addPointsToMap", function(){
-    var allPoints = $('.clonedAreaInput');
     var polygonsDiv = $('div[id^=polygon_]');
-    //console.log("PolygonsDiv length "+polygonsDiv.length);
+    var enoughPoints = true;
     var infoBoxMsg = "";
-    if(allPoints.length > 2){
+    var alertMsg = "";
+
+    polygonsDiv.each(function (index) {
+        if ($(this).find('.clonedAreaInput').length < 3) {
+            if (alertMsg.length > 0) {
+                alertMsg += "<br>";
+            }
+            alertMsg += jQuery.i18n.prop('msg.Polygon') +" "+
+                (index+1) + ": " +
+                jQuery.i18n.prop('msg.minPoints');
+            enoughPoints = false;
+        }
+    });
+
+    if (alertMsg.length > 0) {
+        bootbox.alert(alertMsg);
+    }
+
+    if(enoughPoints){
         newPolygons.forEach(function(polygon){
             polygon.setMap(null);
         });
@@ -441,10 +458,8 @@ $(document).on("click", "#addPointsToMap", function(){
 
                 var lat = latGrad + latMin / 60 + latSec / 3600;
                 var lng = Number(lngGrad + lngMin / 60 + lngSec / 3600);
-                //console.log("adding lat: " + lat + " lng: " + lng);
 
                 var newpoint = new google.maps.LatLng(lat, lng);
-                //console.log("point  lat: " + newpoint.lat() + " lng: " + newpoint.lng());
                 polygonPath.push(newpoint);
             });
 
@@ -453,7 +468,7 @@ $(document).on("click", "#addPointsToMap", function(){
                 strokeColor: "#FF0000", // Цвет обводки
                 strokeOpacity: 0.8, // Прозрачность обводки
                 strokeWeight: 2, // Ширина обводки
-                fillColor: "#00FF00", // Цвет заливки
+                fillColor: "#008000", // Цвет заливки
                 fillOpacity: 0.3, // Прозрачность заливки
                 map: map
             });
@@ -463,9 +478,6 @@ $(document).on("click", "#addPointsToMap", function(){
             infoBoxMsg += calculateAreaPerimeter(polygonFromCoordinates, index);
         });
         $("#infoBox").html(infoBoxMsg);
-    }
-    else {
-        bootbox.alert(jQuery.i18n.prop('msg.minPoints'));
     }
 });
 

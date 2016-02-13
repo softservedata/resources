@@ -31,10 +31,10 @@ function addNewPoint(polygonNumber,
         console.log("point num: " + num);
         polygon.find('#myparam1').val(latitudeDegrees);
         polygon.find('#myparam2').val(latitudeMinutes);
-        polygon.find('#myparam3').val(latitudeSeconds);
+        polygon.find('#myparam3').val(latitudeSeconds.toFixed(7));
         polygon.find('#myparam4').val(longitudeDegrees);
         polygon.find('#myparam5').val(longitudeMinutes);
-        polygon.find('#myparam6').val(longitudeSeconds);
+        polygon.find('#myparam6').val(longitudeSeconds.toFixed(7));
 	}
     else {
     	
