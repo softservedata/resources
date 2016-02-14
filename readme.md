@@ -18,7 +18,7 @@ During the first start database tables will be created and filled with the start
   username: admin
   password: admin
 
-After sign in with admin credentials You can add additional users.
+After sign in with admin credentials You can add additional users. 
 Strongly recommended to change password for admin.
 
 Team members
