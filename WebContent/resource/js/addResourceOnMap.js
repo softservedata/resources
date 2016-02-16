@@ -371,8 +371,6 @@ $("#addPointsFromMap").click(function () {
 
     if (newPolygons.length > 0) {
         $("#dark_bg").show();
-        var area = new Number();
-        var perimeter = new Number();
         var infoBoxMessage = "";
 
         //If user entered the correct polygon and it doesn't intersect with existing polygons

@@ -25,15 +25,19 @@ public interface ResourceService {
     
     Set<String> getDescriptionBySearchTag(String searchTag);
 
-    Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType);
+    Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType, Integer page);
 
-    Set<String> getAllByPoint(Double lat, Double lng);
+    Set<String> getAllByPoint(Double lat, Double lng, Integer page);
 
     Set<String> getAllByParameters(ResourseSearchJson parameters);
 
     List<PolygonJSON> createPolygonJSON (String identifier, int i);
     
     String getRegistrationNumber(String login);
+
+    Integer countAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng);
+
+    Integer countAllByPoint(Double lat,Double lng);
     
 }
 

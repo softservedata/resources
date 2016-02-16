@@ -47,6 +47,8 @@ import org.registrator.community.service.ResourceLinearValueService;
 import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -175,9 +177,10 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType) {
+    public Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType, Integer page) {
         Set<String> identifiers = new HashSet<>();
-        List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng);
+        Pageable pageable = new PageRequest(page, 200);
+        List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng, pageable);
         for (Polygon polygon : polygons) {
             if ("all".equals(resType)) {
                 identifiers.add(polygon.getResource().getIdentifier());
@@ -189,9 +192,10 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Set<String> getAllByPoint(Double lat, Double lng) {
+    public Set<String> getAllByPoint(Double lat, Double lng, Integer page) {
         Set<String> identifiers = new HashSet<>();
-        List<Polygon> polygons = polygonRepository.findByPoint(lat, lng);
+        Pageable pageable = new PageRequest(page, 200);
+        List<Polygon> polygons = polygonRepository.findByPoint(lat, lng, pageable);
         for (Polygon polygon : polygons) {
             identifiers.add(polygon.getResource().getIdentifier());
         }
@@ -601,6 +605,18 @@ public class ResourceServiceImpl implements ResourceService {
         Integer incrementedNumber = resourceNumber.getNumber() + 1;
         resourceNumber.setNumber(incrementedNumber);
         resourceNumberRepository.save(resourceNumber);
+    }
+
+    @Override
+    public Integer countAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng) {
+        Integer count = polygonRepository.countByLimits(minLat, maxLat, minLng, maxLng);
+        return count;
+    }
+
+    @Override
+    public Integer countAllByPoint(Double lat,Double lng) {
+        Integer count = polygonRepository.countByPoint(lat, lng);
+        return count;
     }
 
 }
