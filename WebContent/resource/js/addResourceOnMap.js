@@ -166,6 +166,7 @@ function getResources() {
             "maxLat": maxLat,
             "minLng": minLng,
             "maxLng": maxLng,
+            "page":0,
             "resType": resType
         },
         type: "POST",
@@ -175,10 +176,10 @@ function getResources() {
         contentType: "application/x-www-form-urlencoded;charset=UTF-8",
         dataType: 'json',
         success: function (data) {
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < data.polygons.length; i++) {
 
                 var polygonPath = [];
-                var points = data[i].points;
+                var points = data.polygons[i].points;
                 for (var j = 0; j < points.length; j++) {
                     polygonPath.push(new google.maps.LatLng(points[j].latitude, points[j].longitude));
                 }
@@ -641,7 +642,7 @@ $(document).on("click", "#submitForm", function(){
             //the lng value changes a little bit. That's why we had to create
             //function checkWithTolerance where we calculate the difference
             //between two points and compare it with tolerance.
-            var tolerance = 0.0000000000001;
+            var tolerance = 0.0000000001;
 
             if ((!checkWithTolerance(lat, latArray[i], tolerance)) ||
                 (!checkWithTolerance(lng, lngArray[i], tolerance))) {

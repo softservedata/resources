@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.google.gson.Gson;
 import org.registrator.community.dao.AddressRepository;
-import org.registrator.community.dao.AreaRepository;
 import org.registrator.community.dao.CommunityRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.PolygonRepository;
@@ -14,9 +15,9 @@ import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.RoleRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
+import org.registrator.community.dto.PointDTO;
 import org.registrator.community.dto.PoligonAreaDTO;
 import org.registrator.community.entity.Address;
-import org.registrator.community.entity.Area;
 import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.Polygon;
@@ -53,8 +54,6 @@ public class StressController {
     private RoleRepository roleRepository1;
     @Autowired
     private ResourceRepository resourceRepository;
-    @Autowired
-    private AreaRepository areaRepository;
     @Autowired
     private ResourceDiscreteValueRepository resourceDiscreteValueRepository;
     @Autowired
@@ -172,24 +171,20 @@ public class StressController {
                 rdv2.setValue(10.0);
                 resourceDiscreteValueRepository.save(rdv2);
 
-                List<Area> listArea = new ArrayList<Area>();
+                List<PointDTO> pointDTOs = new ArrayList<>();
 
                 double lat[] = {lat1, lat2};
                 double lng[] = {lng1, lng2};
-                int orderNumber = 0;
 
                 for (int k = 0; k < lat.length; k++) {
                     for (int l = 0; l < lng.length; l++) {
 
-                        Area area = new Area();
+                        PointDTO pointDTO = new PointDTO();
 
-                        area.setLatitude(lat[k]);
-                        area.setLongitude(lng[l]);
-                        area.setOrderNumber(orderNumber);
+                        pointDTO.setLat(lat[k]);
+                        pointDTO.setLng(lng[l]);
 
-                        orderNumber++;
-
-                        listArea.add(area);
+                        pointDTOs.add(pointDTO);
                     }
                 }
 
@@ -214,12 +209,8 @@ public class StressController {
 //                /*areaRepository.save(area);*/
 //                listArea.add(area);
 //            }
-                Polygon polygon = getPolygonEntity(resource, listArea);
+                Polygon polygon = getPolygonEntity(resource, pointDTOs);
                 polygonRepository.save(polygon);
-                for (Area area2 : listArea) {
-                    area2.setPolygon(polygon);
-                }
-                areaRepository.save(listArea);
             
                 /*
                 Polygon polygon = new Polygon();
@@ -236,32 +227,36 @@ public class StressController {
 
         return "stress";
     }
-    private Polygon getPolygonEntity(Resource resourceEntity, List<Area> listArea) {
+    private Polygon getPolygonEntity(Resource resourceEntity, List<PointDTO> pointDTOs) {
         Polygon polygonEntity = new Polygon();
         Double minLat = 90.0;
         Double maxLat = -90.0;
         Double minLng = 180.0;
         Double maxLng = -180.0;
 
-        for (Area area: listArea) {
-            if (minLat > area.getLatitude()) {
-                minLat = area.getLatitude();
+        for (PointDTO pointDTO: pointDTOs) {
+            if (minLat > pointDTO.getLat()) {
+                minLat = pointDTO.getLng();
             }
-            if (maxLat < area.getLatitude()) {
-                maxLat = area.getLatitude();
+            if (maxLat < pointDTO.getLat()) {
+                maxLat = pointDTO.getLng();
             }
-            if (minLng > area.getLongitude()) {
-                minLng = area.getLongitude();
+            if (minLng > pointDTO.getLat()) {
+                minLng = pointDTO.getLng();
             }
-            if (maxLng < area.getLongitude()) {
-                maxLng = area.getLongitude();
+            if (maxLng < pointDTO.getLat()) {
+                maxLng = pointDTO.getLng();
             }
         }
+
+        Gson gson = new Gson();
+        String coordinates = gson.toJson(pointDTOs);
 
         polygonEntity.setMinLat(minLat);
         polygonEntity.setMaxLat(maxLat);
         polygonEntity.setMinLng(minLng);
         polygonEntity.setMaxLng(maxLng);
+        polygonEntity.setCoordinates(coordinates);
         polygonEntity.setResource(resourceEntity);
 
         return polygonEntity;

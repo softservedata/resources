@@ -9,15 +9,12 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.registrator.community.dto.JSON.SearchResultJSON;
+import org.registrator.community.dto.PointDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.JSON.ResourseSearchJson;
-import org.registrator.community.entity.DiscreteParameter;
-import org.registrator.community.entity.LinearParameter;
-import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.User;
+import org.registrator.community.entity.*;
 import org.registrator.community.service.DiscreteParameterService;
 import org.registrator.community.service.LinearParameterService;
 import org.registrator.community.service.ResourceDeleteService;

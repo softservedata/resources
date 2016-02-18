@@ -9,6 +9,7 @@ public class ResourseSearchJson {
     private List<Integer> linearParamsIds;
     private List<Double> linearParamsValues;
     private Integer resourceTypeId;
+    private Integer page;
 
     public List<Integer> getDiscreteParamsIds() {
         return discreteParamsIds;
@@ -56,6 +57,14 @@ public class ResourseSearchJson {
 
     public void setResourceTypeId(Integer resourceTypeId) {
         this.resourceTypeId = resourceTypeId;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
     public String toString() {

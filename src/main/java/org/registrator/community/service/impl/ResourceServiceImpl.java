@@ -8,7 +8,8 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import org.registrator.community.dao.AreaRepository;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.registrator.community.dao.DiscreteParameterRepository;
 import org.registrator.community.dao.LinearParameterRepository;
 import org.registrator.community.dao.PolygonRepository;
@@ -19,18 +20,10 @@ import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.ResourceTypeRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
-import org.registrator.community.dto.PointAreaDTO;
-import org.registrator.community.dto.PoligonAreaDTO;
-import org.registrator.community.dto.ResourceAreaDTO;
-import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDiscreteValueDTO;
-import org.registrator.community.dto.ResourceLinearValueDTO;
-import org.registrator.community.dto.SegmentLinearDTO;
-import org.registrator.community.dto.ValueDiscreteDTO;
+import org.registrator.community.dto.*;
 import org.registrator.community.dto.JSON.PointJSON;
 import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.JSON.ResourseSearchJson;
-import org.registrator.community.entity.Area;
 import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Polygon;
@@ -68,9 +61,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private PolygonRepository polygonRepository;
-
-    @Autowired
-    private AreaRepository areaRepository;
 
     @Autowired
     private ResourceLinearValueRepository linearValueRepository;
@@ -241,13 +231,13 @@ public class ResourceServiceImpl implements ResourceService {
         for (Polygon polygon : polygons) {
             PolygonJSON polygonJSON = new PolygonJSON();
             List<PointJSON> points = new ArrayList<>();
-            List<Area> areas = areaRepository.findByPolygon(polygon);
+            Gson gson = new Gson();
+            List<PointDTO> pointDTOs = gson.fromJson(polygon.getCoordinates(), new TypeToken<List<PointDTO>>() {}.getType());
 
-            for (Area area : areas) {
+            for (PointDTO pointDTO: pointDTOs) {
                 PointJSON point = new PointJSON();
-                point.setLatitude(area.getLatitude());
-                point.setLongitude(area.getLongitude());
-                point.setPoint_order(area.getOrderNumber());
+                point.setLatitude(pointDTO.getLat());
+                point.setLongitude(pointDTO.getLng());
                 points.add(point);
             }
 
@@ -316,9 +306,8 @@ public class ResourceServiceImpl implements ResourceService {
         for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
 
             Polygon polygonEntity = getPolygonEntity(resourceEntity, poligonAreaDTO);
+            polygonEntity.setCoordinates(createCoordinatesJson(poligonAreaDTO));
             polygonEntity = polygonRepository.save(polygonEntity);
-            List<Area> areas = parseToAreaList(poligonAreaDTO, polygonEntity);
-            areaRepository.save(areas);
         }
 
         /* save list of resource linear values if exist */
@@ -380,23 +369,23 @@ public class ResourceServiceImpl implements ResourceService {
      * Create list of Area objects from poligonAreaDTO
      * 
      * @param poligonAreaDTO
-     * @param polygonEntity
      * @return List<Area>
      */
 
-    private List<Area> parseToAreaList(PoligonAreaDTO poligonAreaDTO, Polygon polygonEntity) {
-        List<Area> areas = new ArrayList<Area>();
+    private String createCoordinatesJson(PoligonAreaDTO poligonAreaDTO) {
+        String coordinates;
+        List<PointDTO> pointDTOs = new ArrayList<>();
         for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
             if (point.getOrderNumber() != 0) {
-                Area area = new Area();
-                area.setPolygon(polygonEntity);
-                area.setOrderNumber(point.getOrderNumber());
-                area.setLatitude(point.getDecimalLatitude());
-                area.setLongitude(point.getDecimalLongitude());
-                areas.add(area);
+                PointDTO pointDTO = new PointDTO();
+                pointDTO.setLat(point.getDecimalLatitude());
+                pointDTO.setLng(point.getDecimalLongitude());
+                pointDTOs.add(pointDTO);
             }
         }
-        return areas;
+        Gson gson = new Gson();
+        coordinates = gson.toJson(pointDTOs);
+        return coordinates;
     }
 
     /**
@@ -571,21 +560,26 @@ public class ResourceServiceImpl implements ResourceService {
         List<PoligonAreaDTO> poligonsDTO = new ArrayList<PoligonAreaDTO>();
 
         for (Polygon polygon : polygons) {
-            List<Area> areas = new ArrayList<>();
-            areas.addAll(areaRepository.findByPolygon(polygon));
+//            List<Area> areas = new ArrayList<>();
+//            areas.addAll(areaRepository.findByPolygon(polygon));
+
+            Gson gson = new Gson();
 
             PoligonAreaDTO poligon = new PoligonAreaDTO();
-            List<PointAreaDTO> pointDTOs = new ArrayList<PointAreaDTO>();
+            List<PointAreaDTO> pointDTOs = new ArrayList<>();
+            List<PointDTO> coordinates = gson.fromJson(polygon.getCoordinates(), new TypeToken<List<PointDTO>>(){}.getType());
 
-            for (Area area : areas) {
+            for (PointDTO coordinate : coordinates) {
                 PointAreaDTO pointDTO = new PointAreaDTO();
-                pointDTO.setOrderNumber(area.getOrderNumber());
-                pointDTO.setLatitudeValues(area.getLatitude());
-                pointDTO.setLongitudeValues(area.getLongitude());
+//                pointDTO.setOrderNumber(area.getOrderNumber());
+                pointDTO.setLatitudeValues(coordinate.getLat());
+                pointDTO.setLongitudeValues(coordinate.getLng());
                 pointDTOs.add(pointDTO);
             }
             poligon.setPoints(pointDTOs);
             poligonsDTO.add(poligon);
+            System.out.println("==========================================");
+            System.out.println("Gson list: " + coordinates);
         }
         resourceArea.setPoligons(poligonsDTO);
         resourceDTO.setResourceArea(resourceArea);
