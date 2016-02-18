@@ -22,39 +22,39 @@ public class RegistrationForm{
     UserService userService;
 
     @NotEmpty(message = "{msg.notEmptyField}")
-    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Логін повинен складатись лише з латинських літер і/або цифр, від 6 до 20 символів")
+    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "{msg.registration.login}")
     private String login;
 
-    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "Пароль повинен складатись з латинських літер і/або цифр, від 6 до 20 символів")
+    @Pattern(regexp = "[a-zA-Z0-9].{5,20}",message = "{msg.registration.password}")
     private String password;
 
     @NotEmpty(message = "{msg.notEmptyField}")
     private String confirmPassword;
 
-    @Size(min=1, max=30, message="Ім'я повиннe містити від {min} до {max} символів")
-    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, лише літери")
+    @Size(min=1, max=30, message="{msg.registration.nameRestriction}")
+    @Pattern(regexp = ONLY_LITERALS, message = "{msg.registration.onlyLetters}")
     private String firstName;
 
-    @Size(min=1, max=30, message="Прізвище повинне містити від {min} до {max} символів")
-    @Pattern(regexp = ONLY_LITERALS, message = "Некоректне введення, лише літери")
+    @Size(min=1, max=30, message="{msg.registration.secondname}")
+    @Pattern(regexp = ONLY_LITERALS, message = "{msg.registration.onlyLetters}")
     private String lastName;
 
-    @Pattern(regexp = "[[а-яіїєА-ЯІЇЄa-zA-Z,\\-]){1,30}]*", message = "Від 1 до 30 символів, цифри недопустимі")
+    @Pattern(regexp = "[[а-яіїєА-ЯІЇЄa-zA-Z,\\-]){1,30}]*", message = "{msg.registration.restriction}")
     private String middleName;
 
     @NotEmpty(message = "{msg.notEmptyField}")
-    @Email(message="Введіть коректну адресу")
+    @Email(message="{msg.registration.wrongemail}")
     private String email;
 
-    @Pattern(regexp = "[[А-ЯІЇЄ]){2}]*", message = "Поле повинне містити 2 великі літери")
+    @Pattern(regexp = "[[А-ЯІЇЄ]){2}]*", message = "{msg.registration.onlytwoletters}")
     private String seria;
 
-    @Pattern(regexp = "[[0-9]){6}]*", message = "Поле повинне містити 6 цифр")
+    @Pattern(regexp = "[[0-9]){6}]*", message = "{msg.registration.only6digits}")
     private String number;
 
     private String publishedByData;
 
-    @Pattern(regexp = "[[0-9])]*", message = "Поле повинне містити тільки цифри")
+    @Pattern(regexp = "[[0-9])]*", message = "{msg.registration.onlydigits}")
     private String postcode;
 
     private String region;
@@ -73,7 +73,7 @@ public class RegistrationForm{
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date dateOfAccession;
     
-    @Pattern (regexp = "[[0-9]){10}]*", message = "Некоректний номер телефону")
+    @Pattern (regexp = "[[0-9]){10}]*", message = "fsdfsdfdsf")
     private String phoneNumber;
 
     @NotEmpty(message = "{msg.notEmptyField}")
