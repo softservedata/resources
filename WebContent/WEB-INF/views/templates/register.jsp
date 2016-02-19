@@ -18,7 +18,7 @@ text-align: center;
 
 <div id="register_container">
 	<form:form action=""
-		class="form-horizontal" role="form" modelAttribute="registrationForm"
+		class="form-horizontal" role="form" modelAttribute="userRegistrationDTO"
 		method="POST" name="registrationForm">
 		<div class="form-group col-sm-12">
 			<div class="personal_header col-lg-4">

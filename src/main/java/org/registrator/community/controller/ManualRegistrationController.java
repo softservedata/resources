@@ -62,6 +62,7 @@ public class ManualRegistrationController {
         if (result.hasErrors()) {
             List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
             model.addAttribute("territorialCommunities", territorialCommunities);
+            model.addAttribute("registrationForm", registrationForm);
             logger.warn("Registration form sent to server with following errors: \n" + result.getFieldErrors()
                     + "\n Error messages displayed to admin or commissioner.");
             return "regForComm";
