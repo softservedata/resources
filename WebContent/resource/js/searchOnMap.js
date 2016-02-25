@@ -349,7 +349,8 @@ function searchByParameters(page) {
         timeout: 60000,
         dataType: 'json',
         success: function(data){
-            createDataTable(data);
+            createDataTable(data.polygons);
+            createPolygons(data, page);
             $("#dark_bg").hide();
         },
         error: function () {
@@ -410,60 +411,63 @@ function createPolygons (json, page) {
     //Remove the old resource type filter buttons
     $("#resTypeFilter").html("");
 
-    for (var i = 0; i < json.polygons.length; i++) {
+    if(json.polygons.length > 0) {
+        for (var i = 0; i < json.polygons.length; i++) {
 
-        var polygonPath = [];
-        var points = json.polygons[i].points;
-        var bounds = new google.maps.LatLngBounds();
+            var polygonPath = [];
+            var points = json.polygons[i].points;
+            var bounds = new google.maps.LatLngBounds();
 
-        for (var j = 0; j < points.length; j++) {
-            var myLatLng = new google.maps.LatLng(points[j].latitude, points[j].longitude);
-            polygonPath.push(myLatLng);
-            bounds.extend(myLatLng);
-        }
-
-        boundsArray.push(bounds);
-
-        //Changing fill color depending on resource type
-        if(resTypes.length <= polygonFillColors.length) {
-            if ($.inArray(json.polygons[i].resourceType, resTypes) == (-1)) {
-                resTypes.push(json.polygons[i].resourceType);
-                fillColorIndex = resTypes.length - 1;
-                fillColor = polygonFillColors[fillColorIndex];
-            } else {
-                fillColorIndex = $.inArray(json.polygons[i].resourceType, resTypes);
-                fillColor = polygonFillColors[fillColorIndex];
+            for (var j = 0; j < points.length; j++) {
+                var myLatLng = new google.maps.LatLng(points[j].latitude, points[j].longitude);
+                polygonPath.push(myLatLng);
+                bounds.extend(myLatLng);
             }
-        } else {
-            fillColor = "#ff0000";
+
+            boundsArray.push(bounds);
+
+            //Changing fill color depending on resource type
+            if (resTypes.length <= polygonFillColors.length) {
+                if ($.inArray(json.polygons[i].resourceType, resTypes) == (-1)) {
+                    resTypes.push(json.polygons[i].resourceType);
+                    fillColorIndex = resTypes.length - 1;
+                    fillColor = polygonFillColors[fillColorIndex];
+                } else {
+                    fillColorIndex = $.inArray(json.polygons[i].resourceType, resTypes);
+                    fillColor = polygonFillColors[fillColorIndex];
+                }
+            } else {
+                fillColor = "#ff0000";
+            }
+
+            var polygon = new google.maps.Polygon({
+                path: polygonPath, // Координаты
+                strokeColor: "#FF0000", // Цвет обводки
+                strokeOpacity: 0.8, // Прозрачность обводки
+                strokeWeight: 2, // Ширина обводки
+                fillColor: fillColor, // Цвет заливки
+                fillOpacity: 0.4, // Прозрачность заливки
+                zIndex: 5,
+                resType: json.polygons[i].resourceType,
+                resDescription: json.polygons[i].resourceDescription,
+                identifier: json.polygons[i].identifier
+            });
+
+            google.maps.event.addListener(polygon, 'click', function (event) {
+                contentString = "<tr>" +
+                    "<td>" + this.resDescription + "</td>" +
+                    "<td>" + this.resType + "</td>" +
+                    "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + this.identifier + "'><i>Детальніше</i></a> </td>" +
+                    "</tr>";
+                infowindow.setContent(infoWindowContent + contentString);
+                infowindow.setPosition(event.latLng);
+                infowindow.open(map);
+            });
+
+            polygons.push(polygon);
         }
-
-        var polygon = new google.maps.Polygon({
-            path: polygonPath, // Координаты
-            strokeColor: "#FF0000", // Цвет обводки
-            strokeOpacity: 0.8, // Прозрачность обводки
-            strokeWeight: 2, // Ширина обводки
-            fillColor: fillColor, // Цвет заливки
-            fillOpacity: 0.4, // Прозрачность заливки
-            zIndex: 5,
-            resType: json.polygons[i].resourceType,
-            resDescription: json.polygons[i].resourceDescription,
-            identifier: json.polygons[i].identifier
-        });
-
-        google.maps.event.addListener(polygon, 'click', function (event) {
-            contentString = "<tr>" +
-                "<td>" + this.resDescription + "</td>" +
-                "<td>" + this.resType + "</td>" +
-                "<td><a href='" + baseUrl.toString() + "/registrator/resource/get/" + this.identifier + "'><i>Детальніше</i></a> </td>" +
-                "</tr>";
-            infowindow.setContent(infoWindowContent + contentString);
-            infowindow.setPosition(event.latLng);
-            infowindow.open(map);
-        });
-
-        polygons.push(polygon);
     }
+
     createPagination(json.countPolygons, page);
 }
 

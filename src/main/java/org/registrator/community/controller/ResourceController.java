@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.registrator.community.dto.JSON.SearchResultJSON;
-import org.registrator.community.dto.PointDTO;
+import org.registrator.community.dto.ParameterSearchResultDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
@@ -194,27 +194,32 @@ public class ResourceController {
      * Depending on received parameters create List of resourceDTO and send them
      * to view
      * 
-     * @param json
-     *            - search parameters in JSON format
+     * @param json - search parameters in JSON format
      * @param model
      * @return
      */
+
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
     @RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
     public String resourceSearch(@RequestBody ResourseSearchJson json, Model model) {
-
-        Set<String> identifiers = resourceService.getAllByParameters(json);
+        SearchResultJSON result = new SearchResultJSON();
+        ParameterSearchResultDTO searchResult = resourceService.getAllByParameters(json);
+        long countResults = searchResult.getCount();
+        List<Resource> resources = searchResult.getResources();
         List<PolygonJSON> polygons = new ArrayList<>();
 
         int countPolygons = 0;
-        for (String identifier : identifiers) {
-            polygons.addAll(resourceService.createPolygonJSON(identifier, countPolygons));
+        for (Resource resource : resources) {
+            polygons.addAll(resourceService.createPolygonJSON(resource, countPolygons));
             countPolygons = polygons.size();
         }
 
+        result.setPolygons(polygons);
+        result.setCountPolygons(countResults);
+
         Gson gson = new Gson();
-        return gson.toJson(polygons);
+        return gson.toJson(result);
     }
 
     @ResponseBody
@@ -255,11 +260,11 @@ public class ResourceController {
         Integer countResults = resourceService.countAllByAreaLimits(minLat, maxLat, minLng, maxLng);
 
         int countPolygons = 0;
-        Set<String> identifiers = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType, page);
+        Set<Resource> resources = resourceService.getAllByAreaLimits(minLat, maxLat, minLng, maxLng, resType, page);
         List<PolygonJSON> polygons = new ArrayList<>();
 
-        for (String identifier : identifiers) {
-            polygons.addAll(resourceService.createPolygonJSON(identifier, countPolygons));
+        for (Resource resource : resources) {
+            polygons.addAll(resourceService.createPolygonJSON(resource, countPolygons));
             countPolygons = polygons.size();
         }
 
@@ -289,12 +294,12 @@ public class ResourceController {
         SearchResultJSON result = new SearchResultJSON();
         Integer countResults = resourceService.countAllByPoint(lat, lng);
 
-        Set<String> identifiers = resourceService.getAllByPoint(lat, lng, page);
+        Set<Resource> resources = resourceService.getAllByPoint(lat, lng, page);
         List<PolygonJSON> polygons = new ArrayList<>();
 
         int countPolygons = 0;
-        for (String identifier : identifiers) {
-            polygons.addAll(resourceService.createPolygonJSON(identifier, countPolygons));
+        for (Resource resource: resources) {
+            polygons.addAll(resourceService.createPolygonJSON(resource, countPolygons));
             countPolygons = polygons.size();
         }
 
@@ -354,7 +359,7 @@ public class ResourceController {
 
         int countPolygons = 0;
         for (Resource resource : resources) {
-            polygons.addAll(resourceService.createPolygonJSON(resource.getIdentifier(), countPolygons));
+            polygons.addAll(resourceService.createPolygonJSON(resource, countPolygons));
             countPolygons = polygons.size();
         }
 

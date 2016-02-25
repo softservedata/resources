@@ -6,10 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.expr.BooleanExpression;
 import org.registrator.community.dao.DiscreteParameterRepository;
 import org.registrator.community.dao.LinearParameterRepository;
 import org.registrator.community.dao.PolygonRepository;
@@ -24,15 +29,7 @@ import org.registrator.community.dto.*;
 import org.registrator.community.dto.JSON.PointJSON;
 import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.JSON.ResourseSearchJson;
-import org.registrator.community.entity.DiscreteParameter;
-import org.registrator.community.entity.LinearParameter;
-import org.registrator.community.entity.Polygon;
-import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceDiscreteValue;
-import org.registrator.community.entity.ResourceLinearValue;
-import org.registrator.community.entity.ResourceNumber;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.User;
+import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.ResourceDiscreteValueService;
@@ -88,6 +85,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private ResourceNumberRepository resourceNumberRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Method parse the resourceDTO into entity objects and save them into
@@ -167,65 +167,84 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType, Integer page) {
-        Set<String> identifiers = new HashSet<>();
+    public Set<Resource> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType, Integer page) {
+        Set<Resource> resources = new HashSet<>();
         Pageable pageable = new PageRequest(page, 200);
         List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng, pageable);
         for (Polygon polygon : polygons) {
             if ("all".equals(resType)) {
-                identifiers.add(polygon.getResource().getIdentifier());
+                resources.add(polygon.getResource());
             } else if (resType.equals(polygon.getResource().getType().getTypeName())) {
-                identifiers.add(polygon.getResource().getIdentifier());
+                resources.add(polygon.getResource());
             }
         }
-        return identifiers;
+
+        return resources;
     }
 
     @Override
-    public Set<String> getAllByPoint(Double lat, Double lng, Integer page) {
-        Set<String> identifiers = new HashSet<>();
+    public Set<Resource> getAllByPoint(Double lat, Double lng, Integer page) {
+        Set<Resource> resources = new HashSet<>();
         Pageable pageable = new PageRequest(page, 200);
         List<Polygon> polygons = polygonRepository.findByPoint(lat, lng, pageable);
         for (Polygon polygon : polygons) {
-            identifiers.add(polygon.getResource().getIdentifier());
+            resources.add(polygon.getResource());
         }
-        return identifiers;
+        return resources;
     }
 
     @Override
-    public Set<String> getAllByParameters(ResourseSearchJson parameters) {
-        Set<String> identifiers = new HashSet<>();
-        Set<String> identifiersDiscrete = new HashSet<>();
-        Set<String> identifiersLinear = new HashSet<>();
+    public ParameterSearchResultDTO getAllByParameters(ResourseSearchJson parameters) {
+        ParameterSearchResultDTO result = new ParameterSearchResultDTO();
+
+        JPAQuery query = new JPAQuery(entityManager);
+        QResource qResource = QResource.resource;
+        BooleanExpression expression = null;
+        BooleanExpression rdvExpression = null;
+        BooleanExpression rlvExpression = null;
+        int pageSize = 200;
+        int pageOffset = parameters.getPage()*pageSize;
 
         if (parameters.getDiscreteParamsIds().size() > 0) {
-            identifiersDiscrete
-                    .addAll(resourceDiscreteValueService.findResourcesByParamsList(parameters.getDiscreteParamsIds(),
-                            parameters.getDiscreteParamsCompares(), parameters.getDiscreteParamsValues()));
-            if (identifiers.size() > 0) {
-                identifiers.retainAll(identifiersDiscrete);
-            } else {
-                identifiers.addAll(identifiersDiscrete);
-            }
+            rdvExpression = resourceDiscreteValueExpression(
+                    parameters.getDiscreteParamsIds(),
+                    parameters.getDiscreteParamsValues(),
+                    parameters.getDiscreteParamsCompares());
         }
+
         if (parameters.getLinearParamsIds().size() > 0) {
-            identifiersLinear.addAll(resourceLinearValueService
-                    .findResourcesByLinParamList(parameters.getLinearParamsIds(), parameters.getLinearParamsValues()));
-            if (identifiers.size() > 0) {
-                identifiers.retainAll(identifiersLinear);
-            } else {
-                identifiers.addAll(identifiersLinear);
+            rlvExpression = resourceLinearValueExpression(
+                    parameters.getLinearParamsIds(),
+                    parameters.getLinearParamsValues());
+        }
+
+        if (rdvExpression != null) {
+            expression = rdvExpression;
+        }
+        if (rlvExpression != null) {
+            if (expression == null) {
+                expression = rlvExpression;
+            }
+            else {
+                expression = expression.and(rlvExpression);
             }
         }
 
-        return identifiers;
+        query = query.from(qResource).where(expression);
+
+        long count = query.count();
+        List<Resource> resources = query.limit(pageSize).offset(pageOffset).list(qResource);
+
+        result.setCount(count);
+        result.setResources(resources);
+
+        return result;
     }
 
     @Override
-    public List<PolygonJSON> createPolygonJSON(String identifier, int i) {
+    public List<PolygonJSON> createPolygonJSON(Resource resource, int i) {
         List<PolygonJSON> polygonsJSON = new ArrayList<>();
 
-        Resource resource = resourceRepository.findByIdentifier(identifier);
         List<Polygon> polygons = polygonRepository.findByResource(resource);
 
         for (Polygon polygon : polygons) {
@@ -612,5 +631,68 @@ public class ResourceServiceImpl implements ResourceService {
         Integer count = polygonRepository.countByPoint(lat, lng);
         return count;
     }
+
+    /**
+     * Creates boolean expression for JPAQuery for resource search depending on resource discrete values
+     * @param idList - List with discrete parameters ids
+     * @param valueList - List with search values
+     * @param signList - List with compare signs
+     * @return BooleanExpression
+     */
+    private BooleanExpression resourceDiscreteValueExpression (List<Integer> idList, List<Double> valueList, List<String> signList) {
+        BooleanExpression expression = null;
+        QResourceDiscreteValue rdv = QResourceDiscreteValue.resourceDiscreteValue;
+        QResource qResource = QResource.resource;
+
+        for (int i=0; i<idList.size(); i++) {
+            if(valueList.get(i) != null) {
+                DiscreteParameter dp = discreteParameterRepository.findByDiscreteParameterId(idList.get(i));
+                BooleanExpression exp = rdv.discreteParameter.eq(dp);
+
+                switch (signList.get(i)){
+                    case "less": exp = exp.and(rdv.value.lt(valueList.get(i))); break;
+                    case "equal": exp = exp.and(rdv.value.eq(valueList.get(i))); break;
+                    case "greater": exp = exp.and(rdv.value.gt(valueList.get(i))); break;
+                }
+
+                if(expression == null) {
+                    expression = qResource.in(new JPASubQuery().from(rdv).where(exp).list(rdv.resource));
+                }
+                else {
+                    expression = expression.and(qResource.in(new JPASubQuery().from(rdv).where(exp).list(rdv.resource)));
+                }
+            }
+        }
+
+        return expression;
+    }
+
+    /**
+     * Creates boolean expression for JPAQuery for resource search depending on resource linear values
+     * @param idList - List with Linear Parameters ids
+     * @param valueList - List with search values
+     * @return BooleanExpression
+     */
+    private BooleanExpression resourceLinearValueExpression (List<Integer> idList, List<Double> valueList) {
+        BooleanExpression expression = null;
+        QResourceLinearValue rlv = QResourceLinearValue.resourceLinearValue;
+        QResource qResource = QResource.resource;
+
+        for (int i = 0; i < idList.size(); i++) {
+            if (valueList.get(i) != null) {
+                double val = valueList.get(i);
+                LinearParameter lp = linearParameterRepository.findByLinearParameterId(idList.get(i));
+                BooleanExpression exp = rlv.linearParameter.eq(lp).and(rlv.minValue.lt(val)).and(rlv.maxValue.gt(val));
+                if (expression == null) {
+                    expression = qResource.in(new JPASubQuery().from(rlv).where(exp).list(rlv.resource));
+                }
+                else {
+                    expression = expression.and(qResource.in(new JPASubQuery().from(rlv).where(exp).list(rlv.resource)));
+                }
+            }
+        }
+        return expression;
+    }
+
 
 }

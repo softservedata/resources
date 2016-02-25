@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class SearchResultJSON {
     private List<PolygonJSON> polygons;
-    private Integer countPolygons;
+    private long countPolygons;
 
     public List<PolygonJSON> getPolygons() {
         return polygons;
@@ -17,11 +17,11 @@ public class SearchResultJSON {
         this.polygons = polygons;
     }
 
-    public Integer getCountPolygons() {
+    public long getCountPolygons() {
         return countPolygons;
     }
 
-    public void setCountPolygons(Integer countPolygons) {
+    public void setCountPolygons(long countPolygons) {
         this.countPolygons = countPolygons;
     }
 }

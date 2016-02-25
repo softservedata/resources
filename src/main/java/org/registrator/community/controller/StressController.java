@@ -3,6 +3,7 @@ package org.registrator.community.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.google.gson.Gson;
@@ -156,10 +157,13 @@ public class StressController {
 
 //            System.out.println("RESOURCE" + resource.toString());
 
+                double rdv1Val = Math.round(Math.random() * 10000);
+                double rdv2Val = Math.round(Math.random() * 5000);
+
                 ResourceDiscreteValue rdv1 = new ResourceDiscreteValue();
                 rdv1.setDiscreteParameter(dis1);// PERIMETER!!
                 rdv1.setResource(resource);
-                rdv1.setValue(10.0);
+                rdv1.setValue(rdv1Val);
                 resourceDiscreteValueRepository.saveAndFlush(rdv1);
 //            System.out.println("RDV1" + rdv1.toString());// hashcode
 //            System.out.println(rdv1 != null);
@@ -168,7 +172,7 @@ public class StressController {
                 ResourceDiscreteValue rdv2 = new ResourceDiscreteValue();
                 rdv2.setDiscreteParameter(dis2);// SQUARE
                 rdv2.setResource(resource);
-                rdv2.setValue(10.0);
+                rdv2.setValue(rdv2Val);
                 resourceDiscreteValueRepository.save(rdv2);
 
                 List<PointDTO> pointDTOs = new ArrayList<>();
@@ -236,15 +240,15 @@ public class StressController {
 
         for (PointDTO pointDTO: pointDTOs) {
             if (minLat > pointDTO.getLat()) {
-                minLat = pointDTO.getLng();
+                minLat = pointDTO.getLat();
             }
             if (maxLat < pointDTO.getLat()) {
-                maxLat = pointDTO.getLng();
+                maxLat = pointDTO.getLat();
             }
-            if (minLng > pointDTO.getLat()) {
+            if (minLng > pointDTO.getLng()) {
                 minLng = pointDTO.getLng();
             }
-            if (maxLng < pointDTO.getLat()) {
+            if (maxLng < pointDTO.getLng()) {
                 maxLng = pointDTO.getLng();
             }
         }
