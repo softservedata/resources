@@ -12,6 +12,8 @@ The following dependencies are necessary:
   
 Building and starting the server
 
+To build the app locally please choose the maven profile "local".
+
 Before running the app, create a database called registrator_db with charset encoding UTF-8 (more specifically with collation utf8_unicode_ci). Then deploy the application to web server.
 During the first start database tables will be created and filled with the start-up data. To get access to the application use the following credentials:
 
