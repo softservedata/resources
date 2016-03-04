@@ -503,7 +503,7 @@ public class UserServiceImplTest {
 	/**
 	 * Unit Test of functionality create tome, create resource number
 	 */
-	@Test()
+	@Test
 	public void CreateTomeAndRecourceNumber() {
 		// test data
 		UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
