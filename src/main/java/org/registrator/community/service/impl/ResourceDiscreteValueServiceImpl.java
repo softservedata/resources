@@ -53,7 +53,9 @@ public class ResourceDiscreteValueServiceImpl implements ResourceDiscreteValueSe
     public Set<String> findResourcesByDiscreteParam(Integer discreteParameterId,
                                                     String compareSign,
                                                     Double searchValue) {
+        long startTime = System.currentTimeMillis();
         DiscreteParameter discreteParameter = discreteParameterRepository.findByDiscreteParameterId(discreteParameterId);
+        System.out.println("============= discretePrameter created: "+ (System.currentTimeMillis() - startTime));
         Set<ResourceDiscreteValue> values = new HashSet<>();
         Set<String> identifiers = new HashSet<>();
 
@@ -64,6 +66,7 @@ public class ResourceDiscreteValueServiceImpl implements ResourceDiscreteValueSe
         } else {
             values.addAll(findAllByValueAndDiscreteParameter(searchValue, discreteParameter));
         }
+        System.out.println("============= values added: "+ (System.currentTimeMillis() - startTime));
 
         for (ResourceDiscreteValue value : values) {
             identifiers.add(value.getResource().getIdentifier());

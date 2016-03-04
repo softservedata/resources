@@ -1,7 +1,5 @@
 package org.registrator.community.dto.JSON;
 
-import org.registrator.community.entity.Area;
-
 import java.util.List;
 
 /**

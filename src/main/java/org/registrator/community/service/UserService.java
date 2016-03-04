@@ -3,10 +3,10 @@ package org.registrator.community.service;
 import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.dto.UserRegistrationDTO;
 import org.registrator.community.dto.JSON.UserStatusDTOJSON;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
-import org.registrator.community.forms.RegistrationForm;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
@@ -29,7 +29,7 @@ public interface UserService {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	List<UserDTO> getAllInactiveUsers();
 
-	void registerUser(RegistrationForm registrationForm);
+	void registerUser(UserRegistrationDTO registrationForm);
 
 	int updateUser(User user);
 
