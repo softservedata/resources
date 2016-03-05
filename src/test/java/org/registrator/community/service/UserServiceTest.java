@@ -1,4 +1,4 @@
-package org.registrator.community.service.impl;
+package org.registrator.community.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +36,7 @@ import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.UserService;
+import org.registrator.community.service.impl.UserServiceImpl;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -47,8 +48,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class UserServiceImplTest {
-	private static final Logger log = LoggerFactory.getLogger(UserServiceImplTest.class);
+public class UserServiceTest {
+	private static final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
 
 	@InjectMocks
 	private static UserService userService = new UserServiceImpl();
