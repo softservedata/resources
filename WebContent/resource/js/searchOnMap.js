@@ -411,7 +411,7 @@ function createPolygons (json, page) {
     //Remove the old resource type filter buttons
     $("#resTypeFilter").html("");
 
-    if(json.polygons.length > 0) {
+    if(json.polygons!= undefined) {
         for (var i = 0; i < json.polygons.length; i++) {
 
             var polygonPath = [];
