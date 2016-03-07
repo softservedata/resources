@@ -83,9 +83,11 @@ public class TestDataInitializer {
         Address userAddress = new Address(user,"00000","Львівська","Галицький","Львів","Вітовського",
         		"48","31");
         PassportInfo userPassportInfo = new PassportInfo(user,"AA","00000","Народом України");
+        Address registratorAddress = new Address(registrator, "11111", "Львівська", "Личаківський", "Львів", "Княгині Ольги", "21", "12");
         
         session.persist(userAddress);
         session.persist(userPassportInfo);
+        session.persist(registratorAddress);
         
         addressTransaction.commit();
         Transaction resourceTypeTransaction = session.beginTransaction();
@@ -110,6 +112,9 @@ public class TestDataInitializer {
         
         Inquiry inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
         session.persist(inquiry);
+
+        Inquiry inquiryInput = new Inquiry("INPUT", new Date(), user, registrator, resource);
+        session.persist(inquiryInput);
         
         inquiryTransaction.commit();
         Transaction tokenTransaction = session.beginTransaction();
