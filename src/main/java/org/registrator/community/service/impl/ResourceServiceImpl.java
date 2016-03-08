@@ -6,9 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import org.registrator.community.dao.AreaRepository;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.expr.BooleanExpression;
 import org.registrator.community.dao.DiscreteParameterRepository;
 import org.registrator.community.dao.LinearParameterRepository;
 import org.registrator.community.dao.PolygonRepository;
@@ -19,27 +25,11 @@ import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.ResourceTypeRepository;
 import org.registrator.community.dao.TomeRepository;
 import org.registrator.community.dao.UserRepository;
-import org.registrator.community.dto.PointAreaDTO;
-import org.registrator.community.dto.PoligonAreaDTO;
-import org.registrator.community.dto.ResourceAreaDTO;
-import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDiscreteValueDTO;
-import org.registrator.community.dto.ResourceLinearValueDTO;
-import org.registrator.community.dto.SegmentLinearDTO;
-import org.registrator.community.dto.ValueDiscreteDTO;
+import org.registrator.community.dto.*;
 import org.registrator.community.dto.JSON.PointJSON;
 import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.JSON.ResourseSearchJson;
-import org.registrator.community.entity.Area;
-import org.registrator.community.entity.DiscreteParameter;
-import org.registrator.community.entity.LinearParameter;
-import org.registrator.community.entity.Polygon;
-import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceDiscreteValue;
-import org.registrator.community.entity.ResourceLinearValue;
-import org.registrator.community.entity.ResourceNumber;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.User;
+import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.ResourceDiscreteValueService;
@@ -47,6 +37,8 @@ import org.registrator.community.service.ResourceLinearValueService;
 import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -66,9 +58,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private PolygonRepository polygonRepository;
-
-    @Autowired
-    private AreaRepository areaRepository;
 
     @Autowired
     private ResourceLinearValueRepository linearValueRepository;
@@ -96,6 +85,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private ResourceNumberRepository resourceNumberRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Method parse the resourceDTO into entity objects and save them into
@@ -175,75 +167,96 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Set<String> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType) {
-        Set<String> identifiers = new HashSet<>();
-        List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng);
+    public Set<Resource> getAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng, String resType, Integer page) {
+        Set<Resource> resources = new HashSet<>();
+        Pageable pageable = new PageRequest(page, 200);
+        List<Polygon> polygons = polygonRepository.findByLimits(minLat, maxLat, minLng, maxLng, pageable);
         for (Polygon polygon : polygons) {
             if ("all".equals(resType)) {
-                identifiers.add(polygon.getResource().getIdentifier());
+                resources.add(polygon.getResource());
             } else if (resType.equals(polygon.getResource().getType().getTypeName())) {
-                identifiers.add(polygon.getResource().getIdentifier());
+                resources.add(polygon.getResource());
             }
         }
-        return identifiers;
+
+        return resources;
     }
 
     @Override
-    public Set<String> getAllByPoint(Double lat, Double lng) {
-        Set<String> identifiers = new HashSet<>();
-        List<Polygon> polygons = polygonRepository.findByPoint(lat, lng);
+    public Set<Resource> getAllByPoint(Double lat, Double lng, Integer page) {
+        Set<Resource> resources = new HashSet<>();
+        Pageable pageable = new PageRequest(page, 200);
+        List<Polygon> polygons = polygonRepository.findByPoint(lat, lng, pageable);
         for (Polygon polygon : polygons) {
-            identifiers.add(polygon.getResource().getIdentifier());
+            resources.add(polygon.getResource());
         }
-        return identifiers;
+        return resources;
     }
 
     @Override
-    public Set<String> getAllByParameters(ResourseSearchJson parameters) {
-        Set<String> identifiers = new HashSet<>();
-        Set<String> identifiersDiscrete = new HashSet<>();
-        Set<String> identifiersLinear = new HashSet<>();
+    public ParameterSearchResultDTO getAllByParameters(ResourseSearchJson parameters) {
+        ParameterSearchResultDTO result = new ParameterSearchResultDTO();
+
+        JPAQuery query = new JPAQuery(entityManager);
+        QResource qResource = QResource.resource;
+        BooleanExpression expression = null;
+        BooleanExpression rdvExpression = null;
+        BooleanExpression rlvExpression = null;
+        int pageSize = 200;
+        int pageOffset = parameters.getPage()*pageSize;
 
         if (parameters.getDiscreteParamsIds().size() > 0) {
-            identifiersDiscrete
-                    .addAll(resourceDiscreteValueService.findResourcesByParamsList(parameters.getDiscreteParamsIds(),
-                            parameters.getDiscreteParamsCompares(), parameters.getDiscreteParamsValues()));
-            if (identifiers.size() > 0) {
-                identifiers.retainAll(identifiersDiscrete);
-            } else {
-                identifiers.addAll(identifiersDiscrete);
-            }
+            rdvExpression = resourceDiscreteValueExpression(
+                    parameters.getDiscreteParamsIds(),
+                    parameters.getDiscreteParamsValues(),
+                    parameters.getDiscreteParamsCompares());
         }
+
         if (parameters.getLinearParamsIds().size() > 0) {
-            identifiersLinear.addAll(resourceLinearValueService
-                    .findResourcesByLinParamList(parameters.getLinearParamsIds(), parameters.getLinearParamsValues()));
-            if (identifiers.size() > 0) {
-                identifiers.retainAll(identifiersLinear);
-            } else {
-                identifiers.addAll(identifiersLinear);
+            rlvExpression = resourceLinearValueExpression(
+                    parameters.getLinearParamsIds(),
+                    parameters.getLinearParamsValues());
+        }
+
+        if (rdvExpression != null) {
+            expression = rdvExpression;
+        }
+        if (rlvExpression != null) {
+            if (expression == null) {
+                expression = rlvExpression;
+            }
+            else {
+                expression = expression.and(rlvExpression);
             }
         }
 
-        return identifiers;
+        query = query.from(qResource).where(expression);
+
+        long count = query.count();
+        List<Resource> resources = query.limit(pageSize).offset(pageOffset).list(qResource);
+
+        result.setCount(count);
+        result.setResources(resources);
+
+        return result;
     }
 
     @Override
-    public List<PolygonJSON> createPolygonJSON(String identifier, int i) {
+    public List<PolygonJSON> createPolygonJSON(Resource resource, int i) {
         List<PolygonJSON> polygonsJSON = new ArrayList<>();
 
-        Resource resource = resourceRepository.findByIdentifier(identifier);
         List<Polygon> polygons = polygonRepository.findByResource(resource);
 
         for (Polygon polygon : polygons) {
             PolygonJSON polygonJSON = new PolygonJSON();
             List<PointJSON> points = new ArrayList<>();
-            List<Area> areas = areaRepository.findByPolygon(polygon);
+            Gson gson = new Gson();
+            List<PointDTO> pointDTOs = gson.fromJson(polygon.getCoordinates(), new TypeToken<List<PointDTO>>() {}.getType());
 
-            for (Area area : areas) {
+            for (PointDTO pointDTO: pointDTOs) {
                 PointJSON point = new PointJSON();
-                point.setLatitude(area.getLatitude());
-                point.setLongitude(area.getLongitude());
-                point.setPoint_order(area.getOrderNumber());
+                point.setLatitude(pointDTO.getLat());
+                point.setLongitude(pointDTO.getLng());
                 points.add(point);
             }
 
@@ -312,9 +325,8 @@ public class ResourceServiceImpl implements ResourceService {
         for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
 
             Polygon polygonEntity = getPolygonEntity(resourceEntity, poligonAreaDTO);
+            polygonEntity.setCoordinates(createCoordinatesJson(poligonAreaDTO));
             polygonEntity = polygonRepository.save(polygonEntity);
-            List<Area> areas = parseToAreaList(poligonAreaDTO, polygonEntity);
-            areaRepository.save(areas);
         }
 
         /* save list of resource linear values if exist */
@@ -376,23 +388,23 @@ public class ResourceServiceImpl implements ResourceService {
      * Create list of Area objects from poligonAreaDTO
      * 
      * @param poligonAreaDTO
-     * @param polygonEntity
      * @return List<Area>
      */
 
-    private List<Area> parseToAreaList(PoligonAreaDTO poligonAreaDTO, Polygon polygonEntity) {
-        List<Area> areas = new ArrayList<Area>();
+    private String createCoordinatesJson(PoligonAreaDTO poligonAreaDTO) {
+        String coordinates;
+        List<PointDTO> pointDTOs = new ArrayList<>();
         for (PointAreaDTO point : poligonAreaDTO.getPoints()) {
             if (point.getOrderNumber() != 0) {
-                Area area = new Area();
-                area.setPolygon(polygonEntity);
-                area.setOrderNumber(point.getOrderNumber());
-                area.setLatitude(point.getDecimalLatitude());
-                area.setLongitude(point.getDecimalLongitude());
-                areas.add(area);
+                PointDTO pointDTO = new PointDTO();
+                pointDTO.setLat(point.getDecimalLatitude());
+                pointDTO.setLng(point.getDecimalLongitude());
+                pointDTOs.add(pointDTO);
             }
         }
-        return areas;
+        Gson gson = new Gson();
+        coordinates = gson.toJson(pointDTOs);
+        return coordinates;
     }
 
     /**
@@ -567,21 +579,26 @@ public class ResourceServiceImpl implements ResourceService {
         List<PoligonAreaDTO> poligonsDTO = new ArrayList<PoligonAreaDTO>();
 
         for (Polygon polygon : polygons) {
-            List<Area> areas = new ArrayList<>();
-            areas.addAll(areaRepository.findByPolygon(polygon));
+//            List<Area> areas = new ArrayList<>();
+//            areas.addAll(areaRepository.findByPolygon(polygon));
+
+            Gson gson = new Gson();
 
             PoligonAreaDTO poligon = new PoligonAreaDTO();
-            List<PointAreaDTO> pointDTOs = new ArrayList<PointAreaDTO>();
+            List<PointAreaDTO> pointDTOs = new ArrayList<>();
+            List<PointDTO> coordinates = gson.fromJson(polygon.getCoordinates(), new TypeToken<List<PointDTO>>(){}.getType());
 
-            for (Area area : areas) {
+            for (PointDTO coordinate : coordinates) {
                 PointAreaDTO pointDTO = new PointAreaDTO();
-                pointDTO.setOrderNumber(area.getOrderNumber());
-                pointDTO.setLatitudeValues(area.getLatitude());
-                pointDTO.setLongitudeValues(area.getLongitude());
+//                pointDTO.setOrderNumber(area.getOrderNumber());
+                pointDTO.setLatitudeValues(coordinate.getLat());
+                pointDTO.setLongitudeValues(coordinate.getLng());
                 pointDTOs.add(pointDTO);
             }
             poligon.setPoints(pointDTOs);
             poligonsDTO.add(poligon);
+            System.out.println("==========================================");
+            System.out.println("Gson list: " + coordinates);
         }
         resourceArea.setPoligons(poligonsDTO);
         resourceDTO.setResourceArea(resourceArea);
@@ -602,5 +619,80 @@ public class ResourceServiceImpl implements ResourceService {
         resourceNumber.setNumber(incrementedNumber);
         resourceNumberRepository.save(resourceNumber);
     }
+
+    @Override
+    public Integer countAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng) {
+        Integer count = polygonRepository.countByLimits(minLat, maxLat, minLng, maxLng);
+        return count;
+    }
+
+    @Override
+    public Integer countAllByPoint(Double lat,Double lng) {
+        Integer count = polygonRepository.countByPoint(lat, lng);
+        return count;
+    }
+
+    /**
+     * Creates boolean expression for JPAQuery for resource search depending on resource discrete values
+     * @param idList - List with discrete parameters ids
+     * @param valueList - List with search values
+     * @param signList - List with compare signs
+     * @return BooleanExpression
+     */
+    private BooleanExpression resourceDiscreteValueExpression (List<Integer> idList, List<Double> valueList, List<String> signList) {
+        BooleanExpression expression = null;
+        QResourceDiscreteValue rdv = QResourceDiscreteValue.resourceDiscreteValue;
+        QResource qResource = QResource.resource;
+
+        for (int i=0; i<idList.size(); i++) {
+            if(valueList.get(i) != null) {
+                DiscreteParameter dp = discreteParameterRepository.findByDiscreteParameterId(idList.get(i));
+                BooleanExpression exp = rdv.discreteParameter.eq(dp);
+
+                switch (signList.get(i)){
+                    case "less": exp = exp.and(rdv.value.lt(valueList.get(i))); break;
+                    case "equal": exp = exp.and(rdv.value.eq(valueList.get(i))); break;
+                    case "greater": exp = exp.and(rdv.value.gt(valueList.get(i))); break;
+                }
+
+                if(expression == null) {
+                    expression = qResource.in(new JPASubQuery().from(rdv).where(exp).list(rdv.resource));
+                }
+                else {
+                    expression = expression.and(qResource.in(new JPASubQuery().from(rdv).where(exp).list(rdv.resource)));
+                }
+            }
+        }
+
+        return expression;
+    }
+
+    /**
+     * Creates boolean expression for JPAQuery for resource search depending on resource linear values
+     * @param idList - List with Linear Parameters ids
+     * @param valueList - List with search values
+     * @return BooleanExpression
+     */
+    private BooleanExpression resourceLinearValueExpression (List<Integer> idList, List<Double> valueList) {
+        BooleanExpression expression = null;
+        QResourceLinearValue rlv = QResourceLinearValue.resourceLinearValue;
+        QResource qResource = QResource.resource;
+
+        for (int i = 0; i < idList.size(); i++) {
+            if (valueList.get(i) != null) {
+                double val = valueList.get(i);
+                LinearParameter lp = linearParameterRepository.findByLinearParameterId(idList.get(i));
+                BooleanExpression exp = rlv.linearParameter.eq(lp).and(rlv.minValue.lt(val)).and(rlv.maxValue.gt(val));
+                if (expression == null) {
+                    expression = qResource.in(new JPASubQuery().from(rlv).where(exp).list(rlv.resource));
+                }
+                else {
+                    expression = expression.and(qResource.in(new JPASubQuery().from(rlv).where(exp).list(rlv.resource)));
+                }
+            }
+        }
+        return expression;
+    }
+
 
 }
