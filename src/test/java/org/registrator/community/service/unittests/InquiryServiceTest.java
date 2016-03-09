@@ -1,4 +1,4 @@
-package org.registrator.community.service.integrtests;
+package org.registrator.community.service.unittests;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;

@@ -1,4 +1,4 @@
-package org.registrator.community.service.incasetests;
+package org.registrator.community.service.integrtests;
 
 import java.util.ArrayList;
 import java.util.Date;
