@@ -1,24 +1,28 @@
 package org.registrator.community.dao;
 
 import org.registrator.community.dto.JSON.ResourseSearchJson;
-import org.registrator.community.entity.*;
+import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.LinearParameter;
+import org.registrator.community.entity.Resource;
 import org.registrator.community.enumeration.ResourceParameterCompare;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Implements search of resources by parameters. Adds additional behavior to ResourceRepository
  */
-
-@Component
-public class ResourceFindByParamsImpl {
+@Repository
+@Transactional(readOnly = true)
+public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializable {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -42,7 +46,6 @@ public class ResourceFindByParamsImpl {
      */
     private static final int PAGE_SIZE = 200;
 
-    public ResourceFindByParamsImpl() {}
 
     /**
      * Search of resources by parameters. All parameters comparisons are combined with AND logical operation

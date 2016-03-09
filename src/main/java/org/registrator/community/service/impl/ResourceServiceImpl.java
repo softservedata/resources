@@ -63,12 +63,6 @@ public class ResourceServiceImpl implements ResourceService {
     private DiscreteParameterRepository discreteParameterRepository;
 
     @Autowired
-    private ResourceDiscreteValueService resourceDiscreteValueService;
-
-    @Autowired
-    private ResourceLinearValueService resourceLinearValueService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -77,11 +71,8 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private ResourceNumberRepository resourceNumberRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Autowired
-    ResourceFindByParamsImpl resourceFindByParams;
+    private ResourceFindByParams resourceFindByParams;
 
     /**
      * Method parse the resourceDTO into entity objects and save them into
