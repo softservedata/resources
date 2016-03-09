@@ -162,8 +162,6 @@ public class VerificationTokenServiceImplTest {
 
 		boolean isDeleted = vtServ.deletePasswordVerificationTokenByEmail(extraCheck.getUserEmail());
 		Assert.assertEquals(isDeleted, true);
-		extraCheck = tokenRep.findTokenByEmail(actual.getUserEmail());
-		Assert.assertNull(extraCheck);
 	}
 
 	@Test(dataProvider = "formDataForTokenCreation")
