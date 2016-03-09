@@ -1,6 +1,7 @@
 package org.registrator.community.service;
 
 import java.io.*;
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -26,8 +27,9 @@ public class PrintServiceIntegrationTest {
     private static Logger LOG=Logger.getLogger(PrintServiceIntegrationTest.class);
 
     @Autowired
-    PrintService printService;
+    PrintService printServiceImpl;
 
+    private static final int META_INFORMATION_SIZE = 2300;// contains CreationDate in ms, can't compare different pdf files
 
     @Rule
     public TestWatcher testWatcher = new TestWatcher() {
@@ -46,82 +48,75 @@ public class PrintServiceIntegrationTest {
 
     };
 
-
     @Test
-    public void testPrintProcurationExistsCorrectFileFormat() throws IOException {
+    public void testPrintProcurationSaveCorrectData() throws IOException {
 
-        OutputStream os = null;
-        File file = null;
-        ByteArrayOutputStream bos = printService.printProcuration(1);
-        try {
-            file = new File("D:\\procuration.pdf");
-            os = new FileOutputStream(file);
-            bos.writeTo(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            os.close();
-        }
+        ByteArrayOutputStream bos = printServiceImpl.printProcuration(1);
 
-        if(!file.exists()){
-            Assert.fail("file is not created");
-        }
-        String [] name = file.getName().split("\\.");
-        if(!name[name.length-1].equals("pdf")){
-            Assert.fail("created file is not pdf format");
-        }
+        byte [] array = bos.toByteArray();
+        bos.close();
+        byte [] actual = Arrays.copyOf(array, array.length - META_INFORMATION_SIZE);
+
+        File file = new File(".\\target\\surefire-reports\\testng-junit-results\\procuration.pdf");
+        byte [] expected = readContentIntoByteArray(file);
+
+        Assert.assertArrayEquals(actual, expected);
 
     }
 
-	@Test
-	public void testPrintExtractExistsCorrectFileFormat() throws IOException {
+    @Test
+    public void testPrintExtractSaveCorrectData() throws IOException {
 
-        OutputStream os = null;
-        File file = null;
-        ByteArrayOutputStream bos = printService.printExtract(1);
-        try {
-            file = new File("D:\\extract.pdf");
-            os = new FileOutputStream(file);
-            bos.writeTo(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            os.close();
+        ByteArrayOutputStream bos = printServiceImpl.printExtract(1);
+
+        byte [] array = bos.toByteArray();
+        bos.close();
+        byte [] actual = Arrays.copyOf(array, array.length - META_INFORMATION_SIZE);
+
+        File file = new File(".\\target\\surefire-reports\\testng-junit-results\\extract.pdf");
+        byte [] expected = readContentIntoByteArray(file);
+
+        Assert.assertArrayEquals(actual, expected);
+
+    }
+
+    @Test
+    public void testPrintProcurationOnSubmitInfoSaveCorrectData() throws IOException {
+
+        ByteArrayOutputStream bos = printServiceImpl.printProcurationOnSubmitInfo(2);
+
+        byte [] array = bos.toByteArray();
+        bos.close();
+        byte [] actual = Arrays.copyOf(array, array.length - META_INFORMATION_SIZE);
+
+        File file = new File(".\\target\\surefire-reports\\testng-junit-results\\procurationOnSubmit.pdf");
+        byte [] expected = readContentIntoByteArray(file);
+
+        Assert.assertArrayEquals(actual, expected);
+    }
+
+    private static byte[] readContentIntoByteArray(File file) throws IOException
+    {
+        if (!file.exists()){
+            throw new FileNotFoundException(file.getName());
         }
-
-		if(!file.exists()){
-			Assert.fail("file is not created");
-		}
-		String [] name = file.getName().split("\\.");
-		if(!name[name.length-1].equals("pdf")){
-			Assert.fail("created file is not pdf format");
-		}
-	}
-
-	@Test
-	public void testPrintProcurationOnSubmitInfoCorrectFileFormat() throws IOException {
-
-        OutputStream os = null;
-        File file = null;
-        ByteArrayOutputStream bos = printService.printProcurationOnSubmitInfo(2);
-        try {
-            file = new File("D:\\procurationOnSubmit.pdf");
-            os = new FileOutputStream(file);
-            bos.writeTo(os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            os.close();
+        FileInputStream fileInputStream = null;
+        byte[] bFile = new byte[(int) file.length() - META_INFORMATION_SIZE];
+        try
+        {
+            //convert file into array of bytes
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
         }
-
-		if(!file.exists()){
-			Assert.fail("file is not created");
-		}
-		String [] name = file.getName().split("\\.");
-		if(!name[name.length-1].equals("pdf")){
-			Assert.fail("created file is not pdf format");
-		}
-	}
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            fileInputStream.close();
+        }
+        return bFile;
+    }
 
 }
 

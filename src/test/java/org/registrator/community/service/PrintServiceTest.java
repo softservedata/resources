@@ -31,14 +31,21 @@ public class PrintServiceTest {
     @Mock
     private Logger logger;
 
-    private static final int META_INFORMATION_SIZE = 2200;
-    private static final Integer ID = 1; // InquiryID
+    private static final Integer OUTPUT_ID = 1; // Inquiry ID with OUTPUT Type
+    private static final Integer INPUT_ID = 2; // Inquiry ID with INPUT Type
     private static TerritorialCommunity globalTerritorialCommunity;
     private static User user, registrator;
     private static ResourceType land;
     private static Tome tome;
     private static Resource resource;
-    private static Inquiry inquiry;
+    private static Inquiry inquiryOutput;
+    private static Inquiry inquiryInput;
+    private static Polygon polygon;
+    private static DiscreteParameter discreteParameterPerimetr;
+    private static DiscreteParameter discreteParameterSquire;
+    private static ResourceDiscreteValue resourceDiscretePerimetrValue;
+    private static ResourceDiscreteValue resourceDiscreteSquireValue;
+
 
     @BeforeMethod
     public void init() {
@@ -69,115 +76,163 @@ public class PrintServiceTest {
         tome = new Tome(registrator, "12345");
 
         resource = new Resource(land, "111111", "ліс", registrator, new Date(), "active", tome, "підстава на внесення");
+        resource.setResourcesId(1);
 
-        inquiry = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
+        inquiryOutput = new Inquiry("OUTPUT", new Date(), user, registrator, resource);
+        inquiryInput = new Inquiry("INPUT", new Date(), user, registrator, resource);
+
+        polygon = new Polygon(24.0, 49.0, 26.0, 50.0, resource);
+        polygon.setCoordinates("[{\"lat\":49,\"lng\":24},{\"lat\":50,\"lng\":26}]");
+
+        discreteParameterPerimetr = new DiscreteParameter(land, "периметр", "м");
+        discreteParameterPerimetr.setDiscreteParameterId(1);
+        //discreteParameterPerimetr = spy(discreteParameterPerimetr);
+        //doReturn(1).when(discreteParameterPerimetr).getDiscreteParameterId();
+
+        discreteParameterSquire = new DiscreteParameter(land, "площа", "га");
+        discreteParameterSquire.setDiscreteParameterId(2);
+
+        land.setDiscreteParameters(Arrays.asList(discreteParameterPerimetr, discreteParameterSquire));
+
+        resourceDiscretePerimetrValue = new ResourceDiscreteValue(resource, discreteParameterPerimetr, 50.0);
+        resourceDiscreteSquireValue = new ResourceDiscreteValue(resource, discreteParameterSquire, 400.0);
+
+    }
+
+    @Test
+    public void testPrintProcurationInvokesEntitiesWithCorrectParameter() throws Exception{
+
+        when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
+
+        printServiceImpl.printProcuration(OUTPUT_ID);
+
+        verify(inquiryRepository, times(2)).getOne(OUTPUT_ID);
+
+    }
+
+    @Test
+    public void testPrintExtractInvokesEntitiesWithCorrectParameter() throws Exception{
+
+        when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
+
+        printServiceImpl.printExtract(OUTPUT_ID);
+
+        verify(inquiryRepository, times(2)).getOne(OUTPUT_ID);
+        verify(polygonRepository).findByResource(resource);
+        verify(resourceDiscrete).findByResource(resource);
+    }
+
+    @Test
+    public void testPrintProcurationOnSubmitInfoInvokesEntitiesWithCorrectParameter() throws Exception{
+
+        when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
+
+        printServiceImpl.printProcurationOnSubmitInfo(INPUT_ID);
+
+        verify(inquiryRepository, times(2)).getOne(INPUT_ID);
+        verify(polygonRepository).findByResource(resource);
+        verify(resourceDiscrete).findByResource(resource);
+    }
+
+    //@Test(expectedExceptions = NullPointerException.class) // Should be incorrect InquiryType Exception
+    public void testPrintProcurationThrowsExceptionInvalidInquiryType() throws NullPointerException{
+
+        when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
+
+        printServiceImpl.printProcuration(INPUT_ID);
 
     }
 
 
     @Test
-    public void testProcuration() throws Exception{
+    public void testPrintProcurationExistsNotNullCorrectFileFormat() throws Exception{
 
-        when(inquiryRepository.getOne(ID)).thenReturn(inquiry);
+        when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
 
-        ByteArrayOutputStream bos = printServiceImpl.printProcuration(ID);
-        byte [] array = bos.toByteArray();
-        //byte [] subArray = new byte[array.length - 2200];
-        byte [] subArray = Arrays.copyOf(array, array.length - META_INFORMATION_SIZE);
-
-        File file = new File("D:\\procuration.pdf");
-        byte [] arrayFromFile = readContentIntoByteArray(file);
-
-        System.out.println("array.length " + array.length);
-        System.out.println("subArray.length " + subArray.length);
-        System.out.println("arrayFromFile.length " + arrayFromFile.length);
+        ByteArrayOutputStream bos = printServiceImpl.printProcuration(OUTPUT_ID);
 
         OutputStream os = null;
+        File file = null;
         try {
-            File f = new File("D:\\procurationTest.pdf");
-            os = new FileOutputStream(f);
+            file = new File(".\\target\\surefire-reports\\testng-junit-results\\procuration.pdf");
+            os = new FileOutputStream(file);
             bos.writeTo(os);
+            bos.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             os.close();
         }
 
-        Assert.assertArrayEquals(subArray, arrayFromFile);
-
+        checkExistsNotNullCorrectFileFormat(file);
     }
 
-    private static byte[] readContentIntoByteArray(File file) throws Exception
-    {
-        if (!file.exists()){
-            throw new FileNotFoundException(file.getName());
-        }
-        FileInputStream fileInputStream = null;
-        byte[] bFile = new byte[(int) file.length() - META_INFORMATION_SIZE];
-        try
-        {
-            //convert file into array of bytes
-            fileInputStream = new FileInputStream(file);
-            fileInputStream.read(bFile);
-        }
-        catch (IOException e)
-        {
+
+    @Test
+    public void testPrintExtractExistsNotNullCorrectFileFormat() throws Exception{
+
+        when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
+        when(polygonRepository.findByResource(resource)).thenReturn(Arrays.asList(polygon));
+        when(resourceDiscrete.findByResource(resource)).thenReturn(Arrays.asList(resourceDiscretePerimetrValue, resourceDiscreteSquireValue));
+
+        ByteArrayOutputStream bos = printServiceImpl.printExtract(OUTPUT_ID);
+
+        OutputStream os = null;
+        File file = null;
+        try {
+            file = new File(".\\target\\surefire-reports\\testng-junit-results\\extract.pdf");
+            os = new FileOutputStream(file);
+            bos.writeTo(os);
+            bos.close();
+        } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            os.close();
         }
-        finally {
-            fileInputStream.close();
-        }
-        return bFile;
+
+        checkExistsNotNullCorrectFileFormat(file);
     }
 
-    /*@Test
-    public void testPrintProcurationUsesInquiryRepository() throws Exception {
 
-        //userAddressList = new ArrayList<>();
-        userAddressList.add(userAddress);
+    @Test
+    public void testPrintProcurationOnSubmitInfoExistsNotNullCorrectFileFormat() throws IOException {
 
-        //registratorAddressList = new ArrayList<>();
-        registratorAddressList.add(registratorAddress);
+        when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
+        when(polygonRepository.findByResource(resource)).thenReturn(Arrays.asList(polygon));
+        when(resourceDiscrete.findByResource(resource)).thenReturn(Arrays.asList(resourceDiscretePerimetrValue, resourceDiscreteSquireValue));
 
-        when(user.getFirstName()).thenReturn("FirstName");
-        when(user.getMiddleName()).thenReturn("MiddleName");
-        when(user.getLastName()).thenReturn("LastName");
-        when(user.getAddress()).thenReturn(userAddressList);
+        ByteArrayOutputStream bos = printServiceImpl.printProcurationOnSubmitInfo(INPUT_ID);
 
-        doReturn(userAddress).when(user.getAddress()).get(user.getAddress().size() - 1);
+        OutputStream os = null;
+        File file = null;
+        try {
+            file = new File(".\\target\\surefire-reports\\testng-junit-results\\procurationOnSubmit.pdf");
+            os = new FileOutputStream(file);
+            bos.writeTo(os);
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            os.close();
+        }
 
-        when(user.getAddress().get(userAddressList.size())).thenReturn(userAddress);
-        when(userAddress.getPostCode()).thenReturn("PostCode");
-        when(userAddress.getCity()).thenReturn("City");
-        when(userAddress.getStreet()).thenReturn("Street");
-        when(userAddress.getBuilding()).thenReturn("Building");
-        when(userAddress.getFlat()).thenReturn("Flat");
-
-        when(inquiry.getRegistrator()).thenReturn(registrator);
-        when(inquiry.getRegistrator().getFirstName()).thenReturn("FirstName");
-        when(inquiry.getRegistrator().getMiddleName()).thenReturn("MiddleName");
-        when(inquiry.getRegistrator().getLastName()).thenReturn("LastName");
-        when(inquiry.getRegistrator().getAddress()).thenReturn(registratorAddressList);
-        when(registratorAddress.getPostCode()).thenReturn("PostCode");
-        when(registratorAddress.getCity()).thenReturn("City");
-        when(registratorAddress.getStreet()).thenReturn("Street");
-        when(registratorAddress.getBuilding()).thenReturn("Building");
-        when(registratorAddress.getFlat()).thenReturn("Flat");
+        checkExistsNotNullCorrectFileFormat(file);
+    }
 
 
-        printServiceImpl.printProcuration(ID);
+    public static void checkExistsNotNullCorrectFileFormat(File file){
 
-        verify(inquiryRepository, times(2)).getOne(ID);
-        verify(inquiry).getInquiryType();
-        verify(inquiry).getUser();
-        verify(user, times(3)).getAddress();
-        //verify(user).getFirstName();
+        if(!file.exists()){
+            Assert.fail("file is not created");
+        }
+        if(file.length() == 0){
+            Assert.fail("file is empty");
+        }
+        String [] name = file.getName().split("\\.");
+        if(!name[name.length-1].equals("pdf")){
+            Assert.fail("created file is not pdf format");
+        }
+    }
 
-
-
-        //verify(inquiry, times(1)).getRegistrator();
-        //verify(userAddress).getPostCode();
-
-    }*/
 }
 
