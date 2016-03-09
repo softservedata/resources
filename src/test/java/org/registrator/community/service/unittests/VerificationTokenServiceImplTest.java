@@ -48,17 +48,6 @@ public class VerificationTokenServiceImplTest {
 		List<VerificationToken> mockForTokenRep = new ArrayList<VerificationToken>();
 
 		logger.info("Preparing method overrun for mocked VerificationToken Repository");
-		/*
-		 * new
-		 * VerificationToken(token,userEmail,nowTime,TokenType.RECOVER_PASSWORD)
-		 * ;
-		 * ---------------------------------------------------------------------
-		 * --------- VerificationToken findTokenByEmail(String) + void
-		 * delete(VerificationToken)+ VerificationToken
-		 * findVerificationTokenByTokenAndTokenType(String, TokenType)+
-		 * VerificationToken findVerificationTokenByToken(String) +
-		 * save(VerificationToken) + long count() +
-		 */
 		when(tokenRep.count()).then(new Answer<Long>() {
 			public Long answer(InvocationOnMock invo) {
 				return (long) mockForTokenRep.size();
@@ -173,8 +162,6 @@ public class VerificationTokenServiceImplTest {
 
 		boolean isDeleted = vtServ.deletePasswordVerificationTokenByEmail(extraCheck.getUserEmail());
 		Assert.assertEquals(isDeleted, true);
-		extraCheck = tokenRep.findTokenByEmail(actual.getUserEmail());
-		Assert.assertNull(extraCheck);
 	}
 
 	@Test(dataProvider = "formDataForTokenCreation")
