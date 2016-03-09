@@ -15,16 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.expr.BooleanExpression;
-import org.registrator.community.dao.DiscreteParameterRepository;
-import org.registrator.community.dao.LinearParameterRepository;
-import org.registrator.community.dao.PolygonRepository;
-import org.registrator.community.dao.ResourceDiscreteValueRepository;
-import org.registrator.community.dao.ResourceLinearValueRepository;
-import org.registrator.community.dao.ResourceNumberRepository;
-import org.registrator.community.dao.ResourceRepository;
-import org.registrator.community.dao.ResourceTypeRepository;
-import org.registrator.community.dao.TomeRepository;
-import org.registrator.community.dao.UserRepository;
+import org.registrator.community.dao.*;
 import org.registrator.community.dto.*;
 import org.registrator.community.dto.JSON.PointJSON;
 import org.registrator.community.dto.JSON.PolygonJSON;
@@ -88,6 +79,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    ResourceFindByParamsImpl resourceFindByParams;
 
     /**
      * Method parse the resourceDTO into entity objects and save them into
@@ -193,51 +187,13 @@ public class ResourceServiceImpl implements ResourceService {
         return resources;
     }
 
+
     @Override
     public ParameterSearchResultDTO getAllByParameters(ResourseSearchJson parameters) {
+        List<Resource> resources = resourceFindByParams.findByParams(parameters);
         ParameterSearchResultDTO result = new ParameterSearchResultDTO();
-
-        JPAQuery query = new JPAQuery(entityManager);
-        QResource qResource = QResource.resource;
-        BooleanExpression expression = null;
-        BooleanExpression rdvExpression = null;
-        BooleanExpression rlvExpression = null;
-        int pageSize = 200;
-        int pageOffset = parameters.getPage()*pageSize;
-
-        if (parameters.getDiscreteParamsIds().size() > 0) {
-            rdvExpression = resourceDiscreteValueExpression(
-                    parameters.getDiscreteParamsIds(),
-                    parameters.getDiscreteParamsValues(),
-                    parameters.getDiscreteParamsCompares());
-        }
-
-        if (parameters.getLinearParamsIds().size() > 0) {
-            rlvExpression = resourceLinearValueExpression(
-                    parameters.getLinearParamsIds(),
-                    parameters.getLinearParamsValues());
-        }
-
-        if (rdvExpression != null) {
-            expression = rdvExpression;
-        }
-        if (rlvExpression != null) {
-            if (expression == null) {
-                expression = rlvExpression;
-            }
-            else {
-                expression = expression.and(rlvExpression);
-            }
-        }
-
-        query = query.from(qResource).where(expression);
-
-        long count = query.count();
-        List<Resource> resources = query.limit(pageSize).offset(pageOffset).list(qResource);
-
-        result.setCount(count);
+        result.setCount(resources.size());
         result.setResources(resources);
-
         return result;
     }
 
@@ -632,67 +588,6 @@ public class ResourceServiceImpl implements ResourceService {
         return count;
     }
 
-    /**
-     * Creates boolean expression for JPAQuery for resource search depending on resource discrete values
-     * @param idList - List with discrete parameters ids
-     * @param valueList - List with search values
-     * @param signList - List with compare signs
-     * @return BooleanExpression
-     */
-    private BooleanExpression resourceDiscreteValueExpression (List<Integer> idList, List<Double> valueList, List<String> signList) {
-        BooleanExpression expression = null;
-        QResourceDiscreteValue rdv = QResourceDiscreteValue.resourceDiscreteValue;
-        QResource qResource = QResource.resource;
-
-        for (int i=0; i<idList.size(); i++) {
-            if(valueList.get(i) != null) {
-                DiscreteParameter dp = discreteParameterRepository.findByDiscreteParameterId(idList.get(i));
-                BooleanExpression exp = rdv.discreteParameter.eq(dp);
-
-                switch (signList.get(i)){
-                    case "less": exp = exp.and(rdv.value.lt(valueList.get(i))); break;
-                    case "equal": exp = exp.and(rdv.value.eq(valueList.get(i))); break;
-                    case "greater": exp = exp.and(rdv.value.gt(valueList.get(i))); break;
-                }
-
-                if(expression == null) {
-                    expression = qResource.in(new JPASubQuery().from(rdv).where(exp).list(rdv.resource));
-                }
-                else {
-                    expression = expression.and(qResource.in(new JPASubQuery().from(rdv).where(exp).list(rdv.resource)));
-                }
-            }
-        }
-
-        return expression;
-    }
-
-    /**
-     * Creates boolean expression for JPAQuery for resource search depending on resource linear values
-     * @param idList - List with Linear Parameters ids
-     * @param valueList - List with search values
-     * @return BooleanExpression
-     */
-    private BooleanExpression resourceLinearValueExpression (List<Integer> idList, List<Double> valueList) {
-        BooleanExpression expression = null;
-        QResourceLinearValue rlv = QResourceLinearValue.resourceLinearValue;
-        QResource qResource = QResource.resource;
-
-        for (int i = 0; i < idList.size(); i++) {
-            if (valueList.get(i) != null) {
-                double val = valueList.get(i);
-                LinearParameter lp = linearParameterRepository.findByLinearParameterId(idList.get(i));
-                BooleanExpression exp = rlv.linearParameter.eq(lp).and(rlv.minValue.lt(val)).and(rlv.maxValue.gt(val));
-                if (expression == null) {
-                    expression = qResource.in(new JPASubQuery().from(rlv).where(exp).list(rlv.resource));
-                }
-                else {
-                    expression = expression.and(qResource.in(new JPASubQuery().from(rlv).where(exp).list(rlv.resource)));
-                }
-            }
-        }
-        return expression;
-    }
 
 
 }
