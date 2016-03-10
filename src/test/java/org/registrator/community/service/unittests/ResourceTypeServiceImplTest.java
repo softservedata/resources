@@ -4,14 +4,15 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.registrator.community.dao.DiscreteParameterRepository;
@@ -38,101 +39,91 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ResourceTypeServiceImplTest {
-	ResourceTypeRepository resTypeRep = mock(ResourceTypeRepository.class);
-	LinearParameterRepository linParRep = mock(LinearParameterRepository.class);
-	DiscreteParameterRepository discParRep = mock(DiscreteParameterRepository.class);
-	ResourceService resServ = mock(ResourceService.class);
-	Logger logger = LoggerFactory.getLogger(ResourceTypeServiceImplTest.class);
-	ResourceTypeService resTServ = new ResourceTypeServiceImpl();
-	int testRuns = 10;
-	int resId = 0;
+	@Mock
+	private ResourceTypeRepository resourceTypeRepository;
+	@Mock
+	private LinearParameterRepository linearParameterRepository;
+	@Mock
+	private DiscreteParameterRepository discreteParameterRepository;
+	@Mock
+	private ResourceService resourceService;
+	@Mock
+	private Logger logger;
+
+	@InjectMocks
+	private ResourceTypeService resTServ = new ResourceTypeServiceImpl();
+
+	private static final int DESIRED_RESOURCES = 10;
+	private int resId = 0;
 
 	@BeforeClass
-	public void reflectOperations()
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		logger.info("Performing reflect operations to replace the inner bonds of the class with other classes");
+	public void bindMocks() {
+		MockitoAnnotations.initMocks(this);
 
-		Class<?> cls = resTServ.getClass();
-
-		Field field = cls.getDeclaredField("resourceTypeRepository");
-		field.setAccessible(true);
-		field.set(resTServ, resTypeRep);
-
-		field = cls.getDeclaredField("linearParameterRepository");
-		field.setAccessible(true);
-		field.set(resTServ, linParRep);
-
-		field = cls.getDeclaredField("discreteParameterRepository");
-		field.setAccessible(true);
-		field.set(resTServ, discParRep);
-
-		field = cls.getDeclaredField("resourceService");
-		field.setAccessible(true);
-		field.set(resTServ, resServ);
-
-		field = cls.getDeclaredField("logger");
-		field.setAccessible(true);
-		field.set(resTServ, logger);
+		Logger inLogger = LoggerFactory.getLogger(this.getClass());
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invo) {
+				String message = invo.getArgumentAt(0, String.class);
+				inLogger.info(message);
+				return null;
+			}
+		}).when(logger).info(anyString());
 	}
 
 	@BeforeClass
 	public void prepareMockForResourceTypeRep() {
-		/*
-		 * ResourceType resourceTypeRepository.saveAndFlush(resourceType); +
-		 * ResourceType resourceTypeRepository.findOne(id); + ResourceType
-		 * resourceTypeRepository.findByName(name); + List<ResourceType>
-		 * resourceTypeRepository.findAll(); + void
-		 * resourceTypeRepository.delete(resourceType); + int
-		 * resourceTypeRepository.count()
-		 * 
-		 * Object: resTypeRep
-		 */
 		logger.info("Preparing the Mock object to suite the needed calls");
 
 		List<ResourceType> mockList = new ArrayList<ResourceType>();
 
-		when(resTypeRep.saveAndFlush(any(ResourceType.class))).then(new Answer<ResourceType>() {
-			public ResourceType answer(InvocationOnMock invo) {
-				ResourceType arg = invo.getArgumentAt(0, ResourceType.class);
-				mockList.add(arg);
-				return arg;
-			}
-		});
-
-		when(resTypeRep.findOne(anyInt())).then(new Answer<ResourceType>() {
-			public ResourceType answer(InvocationOnMock invo) {
-				Integer arg = invo.getArgumentAt(0, Integer.class);
-				for (ResourceType res : mockList) {
-					int resId = (res.getTypeId() != null) ? res.getTypeId() : -1;// TODO
-																					// watch
-																					// for
-																					// NullExceptions
-					if (resId == arg) {
-						return res;
+		when(resourceTypeRepository.saveAndFlush(any(ResourceType.class)))
+				.then(new Answer<ResourceType>() {
+					public ResourceType answer(InvocationOnMock invo) {
+						ResourceType arg = invo.getArgumentAt(0,
+								ResourceType.class);
+						mockList.add(arg);
+						return arg;
 					}
-				}
-				return null;
-			}
-		});
+				});
 
-		when(resTypeRep.findByName(anyString())).then(new Answer<ResourceType>() {
-			public ResourceType answer(InvocationOnMock invo) {
-				String arg = invo.getArgumentAt(0, String.class);
-				for (ResourceType res : mockList) {
-					String resName = res.getTypeName();
-					if (resName.equals(arg)) {
-						return res;
+		when(resourceTypeRepository.findOne(anyInt())).then(
+				new Answer<ResourceType>() {
+					public ResourceType answer(InvocationOnMock invo) {
+						Integer arg = invo.getArgumentAt(0, Integer.class);
+						for (ResourceType res : mockList) {
+							int resId = (res.getTypeId() != null) ? res
+									.getTypeId() : -1;// TODO
+														// watch
+														// for
+														// NullExceptions
+							if (resId == arg) {
+								return res;
+							}
+						}
+						return null;
 					}
-				}
-				return null;
-			}
-		});
+				});
 
-		when(resTypeRep.findAll()).then(new Answer<List<ResourceType>>() {
-			public List<ResourceType> answer(InvocationOnMock invo) {
-				return mockList;
-			}
-		});
+		when(resourceTypeRepository.findByName(anyString())).then(
+				new Answer<ResourceType>() {
+					public ResourceType answer(InvocationOnMock invo) {
+						String arg = invo.getArgumentAt(0, String.class);
+						for (ResourceType res : mockList) {
+							String resName = res.getTypeName();
+							if (resName.equals(arg)) {
+								return res;
+							}
+						}
+						return null;
+					}
+				});
+
+		when(resourceTypeRepository.findAll()).then(
+				new Answer<List<ResourceType>>() {
+					public List<ResourceType> answer(InvocationOnMock invo) {
+						return mockList;
+					}
+				});
 
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invo) {
@@ -140,9 +131,9 @@ public class ResourceTypeServiceImplTest {
 				mockList.remove(arg);
 				return null;
 			}
-		}).when(resTypeRep).delete(any(ResourceType.class));
+		}).when(resourceTypeRepository).delete(any(ResourceType.class));
 
-		when(resTypeRep.count()).then(new Answer<Long>() {
+		when(resourceTypeRepository.count()).then(new Answer<Long>() {
 			public Long answer(InvocationOnMock invo) {
 				Long size = new Long(mockList.size());
 				return size;
@@ -151,59 +142,44 @@ public class ResourceTypeServiceImplTest {
 	}
 
 	@BeforeClass
-	public void prepareMockForLinearParamRep() {
-		/*
-		 * linearParameterRepository.save(lp); ???
-		 */
-		logger.info("Preparing the Mock object to suite the needed calls");
-	}
-
-	@BeforeClass
-	public void prepareMockForDiscreteParamRep() {
-		/*
-		 * discreteParameterRepository.save(dp); ???
-		 */
-		logger.info("Preparing the Mock object to suite the needed calls");
-	}
-
-	@BeforeClass
 	public void prepareMockForResourceServ() {
-		/*
-		 * List<Resource> resourceService.findByType(resourceType); ResourceDTO
-		 * addNewResource(ResourceDTO resourceDTO, String ownerLogin, User
-		 * registrator);
-		 * 
-		 * Object: resServ
-		 */
 		logger.info("Preparing the Mock object to suite the needed calls");
 
 		List<Resource> mockList = new ArrayList<Resource>();
 
-		when(resServ.findByType(any(ResourceType.class))).then(new Answer<List<Resource>>() {
-			public List<Resource> answer(InvocationOnMock invo) {
-				ResourceType arg = invo.getArgumentAt(0, ResourceType.class);
-				String argTypeName = arg.getTypeName();
+		when(resourceService.findByType(any(ResourceType.class))).then(
+				new Answer<List<Resource>>() {
+					public List<Resource> answer(InvocationOnMock invo) {
+						ResourceType arg = invo.getArgumentAt(0,
+								ResourceType.class);
+						String argTypeName = arg.getTypeName();
 
-				List<Resource> result = new ArrayList<Resource>();
-				for (Resource res : mockList) {
+						List<Resource> result = new ArrayList<Resource>();
+						for (Resource res : mockList) {
 
-					String resType = res.getType().getTypeName(); // TODO Watch
-																	// for Null
+							String resType = res.getType().getTypeName(); // TODO
+																			// Watch
+																			// for
+																			// Null
 
-					if (resType.equals(argTypeName)) {
-						result.add(res);
+							if (resType.equals(argTypeName)) {
+								result.add(res);
+							}
+						}
+						return result;
 					}
-				}
-				return result;
-			}
-		});
+				});
 
-		when(resServ.addNewResource(any(ResourceDTO.class), any(String.class), any(User.class)))
-				.then(new Answer<ResourceDTO>() {
+		when(
+				resourceService.addNewResource(any(ResourceDTO.class),
+						any(String.class), any(User.class))).then(
+				new Answer<ResourceDTO>() {
 					public ResourceDTO answer(InvocationOnMock invo) {
-						ResourceDTO arg = invo.getArgumentAt(0, ResourceDTO.class);
+						ResourceDTO arg = invo.getArgumentAt(0,
+								ResourceDTO.class);
 
-						ResourceType resType = resTypeRep.findByName(arg.getResourceType());
+						ResourceType resType = resourceTypeRepository
+								.findByName(arg.getResourceType());
 						String resId = arg.getIdentifier();
 						String resDesc = arg.getDescription();
 						User resRegistrator = new User();
@@ -212,8 +188,9 @@ public class ResourceTypeServiceImplTest {
 						Tome resTome = new Tome();
 						String resReason = arg.getReasonInclusion();
 
-						Resource res = new Resource(resType, resId, resDesc, resRegistrator, resDate, resStatus,
-								resTome, resReason);
+						Resource res = new Resource(resType, resId, resDesc,
+								resRegistrator, resDate, resStatus, resTome,
+								resReason);
 						mockList.add(res);
 
 						return arg;
@@ -225,7 +202,7 @@ public class ResourceTypeServiceImplTest {
 
 	@DataProvider
 	public Object[][] formResourceTypes() {
-		Object[][] result = new Object[testRuns][];
+		Object[][] result = new Object[DESIRED_RESOURCES][];
 		// new ResourceType(String name) + uniqResourceId
 
 		String resMask = "ResourceType#%03d";
@@ -240,7 +217,7 @@ public class ResourceTypeServiceImplTest {
 
 	@DataProvider
 	public Object[][] formAndFlushResourceTypes() {
-		Object[][] result = new Object[testRuns][];
+		Object[][] result = new Object[DESIRED_RESOURCES][];
 		// new ResourceType(String name) + uniqResourceId
 
 		String resMask = "ResourceType#%03d";
@@ -251,7 +228,7 @@ public class ResourceTypeServiceImplTest {
 			ResourceType res = new ResourceType(String.format(resMask, resId));
 			res.setTypeId(resId++);
 			result[i] = new Object[] { res };
-			resTypeRep.saveAndFlush(res);
+			resourceTypeRepository.saveAndFlush(res);
 
 			if (i % 2 == 0) {
 				ResourceDTO resDTO = new ResourceDTO();
@@ -261,7 +238,7 @@ public class ResourceTypeServiceImplTest {
 				resDTO.setStatus(ResourceStatus.ACTIVE);
 				resDTO.setReasonInclusion("Reason");
 
-				resServ.addNewResource(resDTO, "dummy", user);
+				resourceService.addNewResource(resDTO, "dummy", user);
 			}
 		}
 		return result;
@@ -269,10 +246,11 @@ public class ResourceTypeServiceImplTest {
 
 	@DataProvider
 	public Object[][] formResourceTypesWithParams() {
-		Object[][] result = new Object[testRuns][];
+		Object[][] result = new Object[DESIRED_RESOURCES][];
 
 		String resMask = "ResourceType#%03d";
-		String[] paramTypes = new String[] { "linearParameters", "discreteParameters" };
+		String[] paramTypes = new String[] { "linearParameters",
+				"discreteParameters" };
 
 		List<TypeParameterDTO> paramList = new ArrayList<TypeParameterDTO>();
 
@@ -291,26 +269,28 @@ public class ResourceTypeServiceImplTest {
 		}
 		return result;
 	}
+
 	// Tests
 
 	@Test(dataProvider = "formResourceTypes")
 	public void addResourceType(ResourceType res) {
 		logger.info("Performing add and save operation tests");
 
-		long size = resTypeRep.count();
+		long size = resourceTypeRepository.count();
 
 		ResourceType formed = resTServ.addResourceType(res);
 
 		Assert.assertEquals(res.getTypeName(), formed.getTypeName());
 		Assert.assertEquals(res.getTypeId(), formed.getTypeId());
-		Assert.assertEquals((size + 1), resTypeRep.count());
+		Assert.assertEquals((size + 1), resourceTypeRepository.count());
 	}
 
 	@Test(dataProvider = "formResourceTypes")
 	public void findById(ResourceType res) {
 		logger.info("Performing search by ID operation tests");
 
-		ResourceType expected = resTypeRep.saveAndFlush(res), actual = resTServ.findById(res.getTypeId());
+		ResourceType expected = resourceTypeRepository.saveAndFlush(res), actual = resTServ
+				.findById(res.getTypeId());
 
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getTypeName(), actual.getTypeName());
@@ -321,7 +301,8 @@ public class ResourceTypeServiceImplTest {
 	public void findByName(ResourceType res) {
 		logger.info("Performing search by ID operation tests");
 
-		ResourceType expected = resTypeRep.saveAndFlush(res), actual = resTServ.findByName(res.getTypeName());
+		ResourceType expected = resourceTypeRepository.saveAndFlush(res), actual = resTServ
+				.findByName(res.getTypeName());
 
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getTypeName(), actual.getTypeName());
@@ -332,10 +313,11 @@ public class ResourceTypeServiceImplTest {
 	public void findAll(ResourceType res) {
 		logger.info("Performing repository overview operation tests");
 
-		resTypeRep.saveAndFlush(res);
+		resourceTypeRepository.saveAndFlush(res);
 
-		long repSize = resTypeRep.count();
-		List<ResourceType> expected = resTypeRep.findAll(), actual = resTServ.findAll();
+		long repSize = resourceTypeRepository.count();
+		List<ResourceType> expected = resourceTypeRepository.findAll(), actual = resTServ
+				.findAll();
 
 		Assert.assertEquals(repSize, expected.size());
 		Assert.assertEquals(repSize, actual.size());
@@ -364,7 +346,7 @@ public class ResourceTypeServiceImplTest {
 	public void delete(ResourceType res) {
 		logger.info("Performing find and delete operation tests");
 
-		List<Resource> resourcesOfGivenType = resServ.findByType(res);
+		List<Resource> resourcesOfGivenType = resourceService.findByType(res);
 		logger.info("expected size: " + resourcesOfGivenType.size());
 
 		boolean expected, actual;
@@ -379,16 +361,18 @@ public class ResourceTypeServiceImplTest {
 		Assert.assertEquals(actual, expected);
 
 		if (resourcesOfGivenType.size() == 0) {
-			ResourceType expectedToBeNull = resTypeRep.findOne(res.getTypeId());
+			ResourceType expectedToBeNull = resourceTypeRepository.findOne(res
+					.getTypeId());
 			Assert.assertNull(expectedToBeNull);
 		}
 	}
 
 	@Test(dataProvider = "formResourceTypesWithParams")
-	public void addResourceTypeDTO(ResourceType res, List<TypeParameterDTO> paramList) {
+	public void addResourceTypeDTO(ResourceType res,
+			List<TypeParameterDTO> paramList) {
 		logger.info("Performing ResourceTypeDTO creation operation tests");
 
-		resTypeRep.saveAndFlush(res);
+		resourceTypeRepository.saveAndFlush(res);
 
 		ResourceTypeDTO expected = new ResourceTypeDTO();
 		expected.setTypeName(res.getTypeName());
@@ -399,10 +383,12 @@ public class ResourceTypeServiceImplTest {
 
 		for (TypeParameterDTO tpar : typeList) {
 			if (("linearParameters").equals(tpar.getParametersType())) {
-				linearParList.add(new LinearParameter(res, tpar.getDescription(), tpar.getUnitName()));
+				linearParList.add(new LinearParameter(res, tpar
+						.getDescription(), tpar.getUnitName()));
 			}
 			if (("discreteParameters").equals(tpar.getParametersType())) {
-				discreteParList.add(new DiscreteParameter(res, tpar.getDescription(), tpar.getUnitName()));
+				discreteParList.add(new DiscreteParameter(res, tpar
+						.getDescription(), tpar.getUnitName()));
 			}
 		}
 
@@ -416,13 +402,16 @@ public class ResourceTypeServiceImplTest {
 
 		Assert.assertEquals(actual.getTypeName(), expected.getTypeName());
 
-		List<TypeParameterDTO> actualParamList = actual.getParameters(), expectedParamList = expected.getParameters();
+		List<TypeParameterDTO> actualParamList = actual.getParameters(), expectedParamList = expected
+				.getParameters();
 		Assert.assertEquals(actualParamList.size(), expectedParamList.size());
 
 		for (int i = 0; i < actualParamList.size(); i++) {
-			TypeParameterDTO arg0 = actualParamList.get(i), arg1 = expectedParamList.get(i);
+			TypeParameterDTO arg0 = actualParamList.get(i), arg1 = expectedParamList
+					.get(i);
 
-			Assert.assertEquals(arg0.getParametersType(), arg1.getParametersType());
+			Assert.assertEquals(arg0.getParametersType(),
+					arg1.getParametersType());
 			Assert.assertEquals(arg0.getDescription(), arg1.getDescription());
 			Assert.assertEquals(arg0.getUnitName(), arg1.getUnitName());
 		}
