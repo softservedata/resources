@@ -4,7 +4,6 @@ import org.registrator.community.dto.JSON.ResourseSearchJson;
 import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.LinearParameter;
 import org.registrator.community.entity.Resource;
-import org.registrator.community.enumeration.ResourceParameterCompare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,19 +32,9 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
     private DiscreteParameterRepository discreteParameterRepository;
 
     /**
-     * List of parameters for a query
-     */
-    private List<QueryParameter> queryParameters;
-
-    private CriteriaBuilder criteriaBuilder;
-    private CriteriaQuery<Resource> selection;
-    private Root<Resource> criteriaRoot;
-
-    /**
      * Default result size returned from a server
      */
     private static final int PAGE_SIZE = 200;
-
 
     /**
      * Search of resources by parameters. All parameters comparisons are combined with AND logical operation
@@ -53,49 +42,53 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
      * @return List fo found resources
      */
     public List<Resource> findByParams(ResourseSearchJson parameters) {
-        parseParameters(parameters);
+
+        List<QueryParameter> queryParameters = parseParameters(parameters);
+
+        int pageOffset = parameters.getPage() * PAGE_SIZE;
+
+        return getResultList(queryParameters, pageOffset);
+
+    }
+
+    /**
+     * @return result of the search
+     */
+    private List<Resource> getResultList(List<QueryParameter> queryParameters, int pageOffset) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Resource> criteria = criteriaBuilder.createQuery(Resource.class);
+        Root<Resource> criteriaRoot = criteria.from(Resource.class);
+        CriteriaQuery<Resource> selection = criteria.select(criteriaRoot).distinct(true);
 
         if (selection.getRestriction() == null) {
             selection.where(criteriaBuilder.and()); // always true
         }
 
         for (QueryParameter parameter : queryParameters) {
+
             selection.where(criteriaBuilder.and(
                     selection.getRestriction(),
-                    parameter.getRestriction())
+                    parameter.getRestriction(criteriaBuilder, criteriaRoot))
             );
 
         }
 
-        int pageOffset = parameters.getPage()* PAGE_SIZE;
         TypedQuery<Resource> query = entityManager.createQuery(selection);
 
         query.setFirstResult(pageOffset);
         query.setMaxResults(PAGE_SIZE);
         return query.getResultList();
+
     }
 
-    /**
-     * Parsing of clien-side parameters to internal representation
+
+    /*
+     * Parsing of client-side parameters to internal representation
      * @param parameters parameters got from a client-side
      */
-    private void parseParameters(ResourseSearchJson parameters) {
+    private List<QueryParameter> parseParameters(ResourseSearchJson parameters) {
 
-        criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Resource> criteria = criteriaBuilder.createQuery(Resource.class);
-        criteriaRoot = criteria.from(Resource.class);
-        selection = criteria.select(criteriaRoot).distinct(true);
-
-        buildParametersList(parameters);
-    }
-
-    /**
-     * This method needed to deal with fact that we have different parameter types DiscreteParameter and LinearParameter
-     * it is a subject to further refactoring
-     * @param parameters
-     */
-    private void buildParametersList(ResourseSearchJson parameters) {
-        queryParameters = new ArrayList<>();
+        List<QueryParameter> queryParameters = new ArrayList<>();
 
         queryParameters.addAll(getDiscreteParametersList(
                 parameters.getDiscreteParamsIds(),
@@ -107,35 +100,36 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
                 parameters.getLinearParamsValues())
         );
 
+        return queryParameters;
+
     }
 
 
-    /** Creaters list of QueryParameter from list of DiscreteParameter
-     */
-    // TODO this is needed to be refactored when DiscreteParameter and LinearParameter will be in one hierarchy
+    // Creates list of QueryParameter from list of DiscreteParameter
     private List<QueryParameter> getDiscreteParametersList(List<Integer> idList, List<String> signList, List<Double> valueList) {
 
         List<QueryParameter> result = new ArrayList<>();
         for (int i = 0; i < idList.size(); i++) {
             if (valueList.get(i) != null) {
-                DiscreteParameter parameter = discreteParameterRepository.findByDiscreteParameterId(idList.get(i));
-                result.add(new QueryParameter(parameter, ResourceParameterCompare.from(signList.get(i)),
-                        valueList.get(i)));
+                DiscreteParameter parameterEntity = discreteParameterRepository.findByDiscreteParameterId(idList.get(i));
+                QueryParameter queryParameter = new QueryParameter(parameterEntity, ResourceParameterCompare.from(signList.get(i)),
+                        valueList.get(i));
+                result.add(queryParameter);
             }
         }
         return result;
     }
 
-    /** Creaters list of QueryParameter from list of DiscreteParameter
-     */
-    // TODO this is needed to be refactored when DiscreteParameter and LinearParameter will be in one hierarchy
+    // Creates list of QueryParameter from list of LinearParameter
     private List<QueryParameter> getLinearParametersList(List<Integer> idList, List<Double> valueList) {
 
         List<QueryParameter> result = new ArrayList<>();
         for (int i = 0; i < idList.size(); i++) {
             if (valueList.get(i) != null) {
-                LinearParameter parameter = linearParameterRepository.findByLinearParameterId(idList.get(i));
-                result.add(new QueryParameter(parameter, ResourceParameterCompare.LINEAR, valueList.get(i)));
+                LinearParameter parameterEntity = linearParameterRepository.findByLinearParameterId(idList.get(i));
+                QueryParameter queryParameter= new QueryParameter(parameterEntity, ResourceParameterCompare.LINEAR,
+                        valueList.get(i));
+                result.add(queryParameter);
             }
         }
         return result;
@@ -144,23 +138,17 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
     /**
      * Combination of resource parameter, compare operation of a query and value of parameter
      */
-    // TODO this is a basis for refactoring ResourseSearchJson class
-    public class QueryParameter {
+    private static class QueryParameter {
         private Object parameterEntity;
         private ResourceParameterCompare operation;
         private double value;
         private Join<Resource, ?> join;
 
-        public QueryParameter(Object parameter, ResourceParameterCompare operation,
-                              double value) {
+        public QueryParameter(Object parameter, ResourceParameterCompare operation, double value) {
             this.parameterEntity = parameter;
             this.operation = operation;
             this.value = value;
-            if (parameterEntity instanceof DiscreteParameter) {
-                this.join = criteriaRoot.join("resourceDiscreteValues");
-            } else {
-                this.join = criteriaRoot.join("resourceLinearValues");
-            }
+
 
         }
 
@@ -188,7 +176,7 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
         /**
          * @return value for the search
          */
-        public double getValue() {
+        public Double getValue() {
             return value;
         }
 
@@ -196,11 +184,89 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
          * Creates restriction for this parameter, compare operation and value
          * @return resrriction for a where clause of a query
          */
-        public Predicate getRestriction() {
+        public Predicate getRestriction(CriteriaBuilder criteriaBuilder, Root<Resource> criteriaRoot) {
+            if (parameterEntity instanceof DiscreteParameter) {
+                this.join = criteriaRoot.join("resourceDiscreteValues");
+            } else {
+                this.join = criteriaRoot.join("resourceLinearValues");
+            }
+
             return criteriaBuilder.and(
                     criteriaBuilder.equal(getParameterPath(), parameterEntity), // equality for parameter id
                     operation.getRestriction(criteriaBuilder, this)             // restriction from compare sign
             );
+        }
+    }
+    
+    private enum ResourceParameterCompare {
+
+        LESS("less") {
+            @Override
+            public Predicate getRestriction(CriteriaBuilder cb, QueryParameter parameter) {
+                return cb.lessThan(parameter.getValuePath("value"), parameter.getValue());
+            }
+        },
+        GREATER("greater") {
+            @Override
+            public Predicate getRestriction(CriteriaBuilder cb, QueryParameter parameter) {
+                return cb.greaterThan(parameter.getValuePath("value"), parameter.getValue());
+            }
+        },
+        EQUAL("equal") {
+            @Override
+            public Predicate getRestriction(CriteriaBuilder cb, QueryParameter parameter) {
+
+                return cb.equal(parameter.getValuePath("value"), parameter.getValue());
+            }
+        },
+        LINEAR("linear"){
+            @Override
+            public Predicate getRestriction(CriteriaBuilder cb, QueryParameter parameter) {
+                return cb.and(
+                        cb.lessThan(parameter.getValuePath("minValue"), parameter.getValue()),
+                        cb.greaterThan(parameter.getValuePath("maxValue"), parameter.getValue())
+                );
+            }
+        };
+
+        /**
+         * String representation of enumeration instance, used to pass parameters from client
+         */
+        private String compareSign;
+
+        /**
+         * Constructor of enumeration instances
+         * @param compareSign representation of operation on client-side
+         */
+        ResourceParameterCompare(String compareSign) {
+            this.compareSign = compareSign;
+        }
+
+        /**
+         * Create Predicate restriction for this operation
+         *
+         * @param cb
+         * @param parameter query parameter for operation, consist of actual resource parameter and value for the search
+         * @return restriction for this logical operation
+         */
+        public abstract Predicate getRestriction(CriteriaBuilder cb, QueryParameter parameter);
+
+        /**
+         * Return instances of this enumeration for String representation.
+         *
+         * @param compareSign String representation of operation.
+         *                    If no operation is found IllegalArgumentException will be thrown.
+         * @return corresponding instance of a class
+         *
+         */
+        public static ResourceParameterCompare from(String compareSign) {
+            for (ResourceParameterCompare value : values()) {
+                if (value.compareSign.equalsIgnoreCase(compareSign)) {
+                    return value;
+                }
+            }
+            throw new IllegalArgumentException(String.format("There is no comparison operation with compare sign '%s'",
+                    compareSign));
         }
     }
 

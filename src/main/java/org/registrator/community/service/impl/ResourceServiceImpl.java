@@ -1,36 +1,30 @@
 package org.registrator.community.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.expr.BooleanExpression;
 import org.registrator.community.dao.*;
-import org.registrator.community.dto.*;
 import org.registrator.community.dto.JSON.PointJSON;
 import org.registrator.community.dto.JSON.PolygonJSON;
 import org.registrator.community.dto.JSON.ResourseSearchJson;
+import org.registrator.community.dto.*;
 import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.service.InquiryService;
-import org.registrator.community.service.ResourceDiscreteValueService;
-import org.registrator.community.service.ResourceLinearValueService;
 import org.registrator.community.service.ResourceService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -73,6 +67,10 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private ResourceFindByParams resourceFindByParams;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
 
     /**
      * Method parse the resourceDTO into entity objects and save them into
@@ -181,6 +179,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public ParameterSearchResultDTO getAllByParameters(ResourseSearchJson parameters) {
+
         List<Resource> resources = resourceFindByParams.findByParams(parameters);
         ParameterSearchResultDTO result = new ParameterSearchResultDTO();
         result.setCount(resources.size());
@@ -544,8 +543,8 @@ public class ResourceServiceImpl implements ResourceService {
             }
             poligon.setPoints(pointDTOs);
             poligonsDTO.add(poligon);
-            System.out.println("==========================================");
-            System.out.println("Gson list: " + coordinates);
+            logger.info("==========================================");
+            logger.info("Gson list: " + coordinates);
         }
         resourceArea.setPoligons(poligonsDTO);
         resourceDTO.setResourceArea(resourceArea);
@@ -578,7 +577,6 @@ public class ResourceServiceImpl implements ResourceService {
         Integer count = polygonRepository.countByPoint(lat, lng);
         return count;
     }
-
 
 
 }
