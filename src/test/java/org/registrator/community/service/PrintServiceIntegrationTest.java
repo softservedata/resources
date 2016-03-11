@@ -48,7 +48,7 @@ public class PrintServiceIntegrationTest {
 
     };
 
-    @Test
+    //@Test
     public void testPrintProcurationSaveCorrectData() throws IOException {
 
         ByteArrayOutputStream bos = printServiceImpl.printProcuration(1);
@@ -64,7 +64,7 @@ public class PrintServiceIntegrationTest {
 
     }
 
-    @Test
+    //@Test
     public void testPrintExtractSaveCorrectData() throws IOException {
 
         ByteArrayOutputStream bos = printServiceImpl.printExtract(1);
@@ -80,7 +80,7 @@ public class PrintServiceIntegrationTest {
 
     }
 
-    @Test
+    //@Test
     public void testPrintProcurationOnSubmitInfoSaveCorrectData() throws IOException {
 
         ByteArrayOutputStream bos = printServiceImpl.printProcurationOnSubmitInfo(2);
