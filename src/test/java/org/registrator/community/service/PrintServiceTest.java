@@ -1,6 +1,5 @@
 package org.registrator.community.service;
 
-import org.junit.Assert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -10,6 +9,8 @@ import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.service.impl.PrintServiceImpl;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import java.io.*;
@@ -21,15 +22,13 @@ import static org.mockito.Mockito.*;
 public class PrintServiceTest {
 
     @InjectMocks
-    private PrintService printServiceImpl = new PrintServiceImpl();
+    private PrintService printService = new PrintServiceImpl();
     @Mock
     private InquiryRepository inquiryRepository;
     @Mock
     private PolygonRepository polygonRepository;
     @Mock
     private ResourceDiscreteValueService resourceDiscrete;
-    @Mock
-    private Logger logger;
 
     private static final Integer OUTPUT_ID = 1; // Inquiry ID with OUTPUT Type
     private static final Integer INPUT_ID = 2; // Inquiry ID with INPUT Type
@@ -46,9 +45,10 @@ public class PrintServiceTest {
     private static ResourceDiscreteValue resourceDiscretePerimetrValue;
     private static ResourceDiscreteValue resourceDiscreteSquireValue;
 
+    private Logger logger = LoggerFactory.getLogger(PrintServiceTest.class);
 
     @BeforeMethod
-    public void init() {
+    public void init(){
 
         MockitoAnnotations.initMocks(this);
         globalTerritorialCommunity = new TerritorialCommunity();
@@ -86,8 +86,6 @@ public class PrintServiceTest {
 
         discreteParameterPerimetr = new DiscreteParameter(land, "периметр", "м");
         discreteParameterPerimetr.setDiscreteParameterId(1);
-        //discreteParameterPerimetr = spy(discreteParameterPerimetr);
-        //doReturn(1).when(discreteParameterPerimetr).getDiscreteParameterId();
 
         discreteParameterSquire = new DiscreteParameter(land, "площа", "га");
         discreteParameterSquire.setDiscreteParameterId(2);
@@ -102,59 +100,70 @@ public class PrintServiceTest {
     @Test
     public void testPrintProcurationInvokesEntitiesWithCorrectParameter() throws Exception{
 
+        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
 
-        printServiceImpl.printProcuration(OUTPUT_ID);
+        printService.printProcuration(OUTPUT_ID);
 
         verify(inquiryRepository, times(2)).getOne(OUTPUT_ID);
+        logger.debug("end test");
 
     }
 
     @Test
     public void testPrintExtractInvokesEntitiesWithCorrectParameter() throws Exception{
 
+        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
 
-        printServiceImpl.printExtract(OUTPUT_ID);
+        printService.printExtract(OUTPUT_ID);
 
         verify(inquiryRepository, times(2)).getOne(OUTPUT_ID);
         verify(polygonRepository).findByResource(resource);
         verify(resourceDiscrete).findByResource(resource);
+        logger.debug("end test");
+
     }
 
     @Test
     public void testPrintProcurationOnSubmitInfoInvokesEntitiesWithCorrectParameter() throws Exception{
 
+        logger.debug("begin test");
         when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
 
-        printServiceImpl.printProcurationOnSubmitInfo(INPUT_ID);
+        printService.printProcurationOnSubmitInfo(INPUT_ID);
 
         verify(inquiryRepository, times(2)).getOne(INPUT_ID);
         verify(polygonRepository).findByResource(resource);
         verify(resourceDiscrete).findByResource(resource);
+        logger.debug("end test");
+
     }
 
     //@Test(expectedExceptions = NullPointerException.class) // Should be incorrect InquiryType Exception
     public void testPrintProcurationThrowsExceptionInvalidInquiryType() throws NullPointerException{
 
+        logger.debug("begin test");
         when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
 
-        printServiceImpl.printProcuration(INPUT_ID);
+        printService.printProcuration(INPUT_ID);
+        logger.debug("end test");
 
     }
 
 
-    //@Test
+    @Test
     public void testPrintProcurationExistsNotNullCorrectFileFormat() throws Exception{
 
+        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
 
-        ByteArrayOutputStream bos = printServiceImpl.printProcuration(OUTPUT_ID);
+        ByteArrayOutputStream bos = printService.printProcuration(OUTPUT_ID);
 
         OutputStream os = null;
         File file = null;
         try {
-            file = new File(".\\target\\surefire-reports\\testng-junit-results\\procuration.pdf");
+            file = new File(".\\target\\procuration.pdf");
             os = new FileOutputStream(file);
             bos.writeTo(os);
             bos.close();
@@ -165,22 +174,25 @@ public class PrintServiceTest {
         }
 
         checkExistsNotNullCorrectFileFormat(file);
+        logger.debug("end test");
+
     }
 
 
-    //@Test
+    @Test
     public void testPrintExtractExistsNotNullCorrectFileFormat() throws Exception{
 
+        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
         when(polygonRepository.findByResource(resource)).thenReturn(Arrays.asList(polygon));
         when(resourceDiscrete.findByResource(resource)).thenReturn(Arrays.asList(resourceDiscretePerimetrValue, resourceDiscreteSquireValue));
 
-        ByteArrayOutputStream bos = printServiceImpl.printExtract(OUTPUT_ID);
+        ByteArrayOutputStream bos = printService.printExtract(OUTPUT_ID);
 
         OutputStream os = null;
         File file = null;
         try {
-            file = new File(".\\target\\surefire-reports\\testng-junit-results\\extract.pdf");
+            file = new File(".\\target\\extract.pdf");
             os = new FileOutputStream(file);
             bos.writeTo(os);
             bos.close();
@@ -191,22 +203,25 @@ public class PrintServiceTest {
         }
 
         checkExistsNotNullCorrectFileFormat(file);
+        logger.debug("end test");
+
     }
 
 
-    //@Test
+    @Test
     public void testPrintProcurationOnSubmitInfoExistsNotNullCorrectFileFormat() throws IOException {
 
+        logger.debug("begin test");
         when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
         when(polygonRepository.findByResource(resource)).thenReturn(Arrays.asList(polygon));
         when(resourceDiscrete.findByResource(resource)).thenReturn(Arrays.asList(resourceDiscretePerimetrValue, resourceDiscreteSquireValue));
 
-        ByteArrayOutputStream bos = printServiceImpl.printProcurationOnSubmitInfo(INPUT_ID);
+        ByteArrayOutputStream bos = printService.printProcurationOnSubmitInfo(INPUT_ID);
 
         OutputStream os = null;
         File file = null;
         try {
-            file = new File(".\\target\\surefire-reports\\testng-junit-results\\procurationOnSubmit.pdf");
+            file = new File(".\\target\\procurationOnSubmit.pdf");
             os = new FileOutputStream(file);
             bos.writeTo(os);
             bos.close();
@@ -217,6 +232,8 @@ public class PrintServiceTest {
         }
 
         checkExistsNotNullCorrectFileFormat(file);
+        logger.debug("end test");
+
     }
 
 

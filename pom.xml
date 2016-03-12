@@ -54,6 +54,17 @@
 			<version>${org.mockito.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-testng</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		<dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
