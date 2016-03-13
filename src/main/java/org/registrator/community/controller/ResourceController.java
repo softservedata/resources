@@ -13,7 +13,7 @@ import org.registrator.community.dto.ParameterSearchResultDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
-import org.registrator.community.dto.JSON.ResourseSearchJson;
+import org.registrator.community.dto.JSON.ResourceSearchJSON;
 import org.registrator.community.entity.*;
 import org.registrator.community.service.DiscreteParameterService;
 import org.registrator.community.service.LinearParameterService;
@@ -202,7 +202,7 @@ public class ResourceController {
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
     @RequestMapping(value = "/resourceSearch", method = RequestMethod.POST)
-    public String resourceSearch(@RequestBody ResourseSearchJson json, Model model) {
+    public String resourceSearch(@RequestBody ResourceSearchJSON json, Model model) {
         SearchResultJSON result = new SearchResultJSON();
         ParameterSearchResultDTO searchResult = resourceService.getAllByParameters(json);
         long countResults = searchResult.getCount();

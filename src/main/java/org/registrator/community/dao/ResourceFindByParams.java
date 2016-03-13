@@ -1,6 +1,6 @@
 package org.registrator.community.dao;
 
-import org.registrator.community.dto.JSON.ResourseSearchJson;
+import org.registrator.community.dto.JSON.ResourceSearchJSON;
 import org.registrator.community.entity.Resource;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public interface ResourceFindByParams {
      * @param parameters resource parameters and values for searching
      * @return List fo found resources
      */
-    List<Resource> findByParams(ResourseSearchJson parameters);
+    List<Resource> findByParams(ResourceSearchJSON parameters);
 }

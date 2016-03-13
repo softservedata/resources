@@ -3,7 +3,7 @@ package org.registrator.community.service;
 import java.util.List;
 import java.util.Set;
 
-import org.registrator.community.dto.JSON.ResourseSearchJson;
+import org.registrator.community.dto.JSON.ResourceSearchJSON;
 import org.registrator.community.dto.ParameterSearchResultDTO;
 import org.registrator.community.dto.ResourceDTO;
 import org.registrator.community.dto.JSON.PolygonJSON;
@@ -29,7 +29,7 @@ public interface ResourceService {
 
     Set<Resource> getAllByPoint(Double lat, Double lng, Integer page);
 
-    ParameterSearchResultDTO getAllByParameters(ResourseSearchJson parameters);
+    ParameterSearchResultDTO getAllByParameters(ResourceSearchJSON parameters);
 
     List<PolygonJSON> createPolygonJSON (Resource resource, int i);
     

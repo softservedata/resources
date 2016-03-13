@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.registrator.community.dao.*;
 import org.registrator.community.dto.JSON.PointJSON;
 import org.registrator.community.dto.JSON.PolygonJSON;
-import org.registrator.community.dto.JSON.ResourseSearchJson;
+import org.registrator.community.dto.JSON.ResourceSearchJSON;
 import org.registrator.community.dto.*;
 import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.ResourceStatus;
@@ -178,7 +178,7 @@ public class ResourceServiceImpl implements ResourceService {
 
 
     @Override
-    public ParameterSearchResultDTO getAllByParameters(ResourseSearchJson parameters) {
+    public ParameterSearchResultDTO getAllByParameters(ResourceSearchJSON parameters) {
 
         List<Resource> resources = resourceFindByParams.findByParams(parameters);
         ParameterSearchResultDTO result = new ParameterSearchResultDTO();
