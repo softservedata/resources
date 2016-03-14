@@ -409,6 +409,7 @@
                     <executions>
                         <execution>
                             <id>pre-unit-test</id>
+                            <phase>test</phase>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
@@ -473,8 +474,10 @@
                     <version>1.0.9</version>
                     <executions>
                         <execution>
+                        		<phase>generate-sources</phase>
                             <goals>
                                 <goal>process</goal>
+                                <goal>test-process</goal>
                             </goals>
                             <configuration>
                                 <outputDirectory>target/generated-sources/java</outputDirectory>
