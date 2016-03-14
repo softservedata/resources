@@ -30,45 +30,37 @@ import org.testng.annotations.Test;
 public class VerificationTokenServiceImplTest {
 	@Mock
 	private VerificationTokenRepository verificationTokenRepository;
-	@Mock
-	private Logger logger;
 	
 	@InjectMocks
 	private VerificationTokenService verificationTokenService = new VerificationTokenServiceImpl();
 
+	private Logger logger = LoggerFactory.getLogger(verificationTokenService.getClass());
 	private final static int DESIRED_RESOURCES = 10;
 	private final static int PLUS_TIME = VerificationTokenServiceImpl.PASSWORD_TOKEN_EXPIRY_TIME;
 	
 
 	@BeforeClass
 	public void bindMocks(){
+		logger.debug("Performing InjectMock operations");
 		MockitoAnnotations.initMocks(this);
-		
-		Logger inLogger = LoggerFactory.getLogger(this.getClass());
-		doAnswer(new Answer<Void>(){
-			public Void answer(InvocationOnMock invo){
-				String message = invo.getArgumentAt(0, String.class);
-				inLogger.info(message);
-				return null;
-			}
-		}).when(logger).info(anyString());
 	}
 
 	@BeforeClass
 	public void prepareMockVerTokenRep() {
-		List<VerificationToken> mockForTokenRep = new ArrayList<VerificationToken>();
+		logger.debug("Preparing VerificationToken repository emulation");
+		List<VerificationToken> mockList = new ArrayList<VerificationToken>();
 
 		logger.info("Preparing method overrun for mocked VerificationToken Repository");
 		when(verificationTokenRepository.count()).then(new Answer<Long>() {
 			public Long answer(InvocationOnMock invo) {
-				return (long) mockForTokenRep.size();
+				return (long) mockList.size();
 			}
 		});
 
 		when(verificationTokenRepository.save(any(VerificationToken.class))).then(new Answer<VerificationToken>() {
 			public VerificationToken answer(InvocationOnMock invo) {
 				VerificationToken token = invo.getArgumentAt(0, VerificationToken.class);
-				mockForTokenRep.add(token);
+				mockList.add(token);
 				return token;
 			}
 		});
@@ -76,7 +68,7 @@ public class VerificationTokenServiceImplTest {
 		when(verificationTokenRepository.findVerificationTokenByToken(anyString())).then(new Answer<VerificationToken>() {
 			public VerificationToken answer(InvocationOnMock invo) {
 				String tokenName = invo.getArgumentAt(0, String.class);
-				for (VerificationToken token : mockForTokenRep) {
+				for (VerificationToken token : mockList) {
 					if (token.getToken() == tokenName) {
 						return token;
 					}
@@ -91,7 +83,7 @@ public class VerificationTokenServiceImplTest {
 						String tokenName = invo.getArgumentAt(0, String.class);
 						TokenType type = invo.getArgumentAt(1, TokenType.class);
 
-						for (VerificationToken token : mockForTokenRep) {
+						for (VerificationToken token : mockList) {
 							if (token.getTokenType() == type && token.getToken() == tokenName) {
 								return token;
 							}
@@ -103,7 +95,7 @@ public class VerificationTokenServiceImplTest {
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invo) {
 				VerificationToken token = invo.getArgumentAt(0, VerificationToken.class);
-				mockForTokenRep.remove(token);
+				mockList.remove(token);
 				return null;
 			}
 		}).when(verificationTokenRepository).delete(any(VerificationToken.class));
@@ -112,7 +104,7 @@ public class VerificationTokenServiceImplTest {
 			public VerificationToken answer(InvocationOnMock invo) {
 				String email = invo.getArgumentAt(0, String.class);
 
-				for (VerificationToken token : mockForTokenRep) {
+				for (VerificationToken token : mockList) {
 					if (token.getUserEmail().equals(email)) {
 						return token;
 					}
@@ -126,11 +118,10 @@ public class VerificationTokenServiceImplTest {
 
 	@DataProvider(name = "formDataForTokenCreation")
 	public Object[][] formDataForTokens() {
+		logger.debug("Generating basic input data for VerificationToken formation");
 		Object[][] tmp = new Object[DESIRED_RESOURCES][];
 		Date now = new Date();
 		Random rand = new Random();
-
-		logger.info("DataProviders: Running the \"DataForTokenCreation\" DataProvider");
 
 		String fakeRandomUUID = verificationTokenService.createHashForPasswordToken() + rand.nextInt(1000);
 		String email = "someMailAddress#%03d@mail.me";
@@ -146,19 +137,18 @@ public class VerificationTokenServiceImplTest {
 
 	@Test
 	public void createHashForPasswordToken() {
-		logger.info("Testing the random hash string creation method");
+		logger.debug("Start");
 
 		for (int i = 0; i < DESIRED_RESOURCES; i++) {
 			String generated = verificationTokenService.createHashForPasswordToken();
 			Assert.assertNotNull(generated);
 		}
+		logger.debug("End");
 	}
 
-	@Test(dataProvider = "formDataForTokenCreation")
+	@Test(dataProvider = "formDataForTokenCreation", dependsOnMethods = "deleteVerificationToken")
 	public void saveAndDeletePasswordVerificationToken(String uuid, String email, Date date) {
-		logger.info(
-				"Testing the creation and the removal of the Password VerificationToken. Using data (hashString, email, date) :"
-						+ uuid + ", " + email + ", " + date);
+		logger.debug("Start");
 
 		Date forSynt = new Date(date.getTime() + PLUS_TIME);
 
@@ -173,12 +163,12 @@ public class VerificationTokenServiceImplTest {
 
 		boolean isDeleted = verificationTokenService.deletePasswordVerificationTokenByEmail(extraCheck.getUserEmail());
 		Assert.assertEquals(isDeleted, true);
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formDataForTokenCreation")
 	public void deleteVerificationToken(String uuid, String email, Date date) {
-		logger.info("Testing the FindAndDelete VerificationToken method. Using data (hashString, email, date) :" + uuid
-				+ ", " + email + ", " + date);
+		logger.debug("Start");
 
 		date.setTime(date.getTime() + PLUS_TIME);
 		VerificationToken syntetical = new VerificationToken(uuid, email, date, TokenType.RECOVER_PASSWORD);
@@ -186,25 +176,24 @@ public class VerificationTokenServiceImplTest {
 		verificationTokenService.deleteVerificationToken(syntetical);
 		syntetical = verificationTokenRepository.findVerificationTokenByToken(syntetical.getToken());
 		Assert.assertNull(syntetical);
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formDataForTokenCreation")
 	public void findVerificationTokenByTokenAndTokenType(String uuid, String email, Date date) {
-		logger.info(
-				"Testing the find the VerificationToken method, which is using Token name and TokenType data (hashString, email, date) :"
-						+ uuid + ", " + email + ", " + date);
+		logger.debug("Start");
 
 		date.setTime(date.getTime() + PLUS_TIME);
 		VerificationToken syntetical = new VerificationToken(uuid, email, date, TokenType.RECOVER_PASSWORD);
 		verificationTokenRepository.save(syntetical);
 		syntetical = verificationTokenService.findVerificationTokenByTokenAndTokenType(syntetical.getToken(), syntetical.getTokenType());
 		Assert.assertNotNull(syntetical);
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formDataForTokenCreation")
 	public void isExistValidVerificationToken(String uuid, String email, Date date) {
-		logger.info("Testing the isValid(by time) VerificationToken method. Using data (hashString, email, date) :"
-				+ uuid + ", " + email + ", " + date);
+		logger.debug("Start");
 
 		date.setTime(date.getTime() + PLUS_TIME);
 		VerificationToken syntetical = new VerificationToken(uuid, email, date, TokenType.RECOVER_PASSWORD);
@@ -212,6 +201,7 @@ public class VerificationTokenServiceImplTest {
 		boolean manualCheck = syntetical.getExpiryDate().getTime() > System.currentTimeMillis(),
 				formedCheck = verificationTokenService.isExistValidVerificationToken(syntetical.getToken());
 		Assert.assertEquals(manualCheck, formedCheck);
+		logger.debug("End");
 	}
 
 }
