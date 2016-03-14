@@ -63,9 +63,6 @@ public class ResourceDiscreteValueServiceTest {
         MockitoAnnotations.initMocks(this);
 
         logger = LoggerFactory.getLogger("");
-        MemberModifier
-                .field(ResourceDiscreteValueServiceImpl.class, "logger")
-                .set(valueService, logger);
 
         when(parameterRepository.findByDiscreteParameterId(ID_PARAMETER)).thenReturn(parameter);
 
