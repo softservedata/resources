@@ -3,9 +3,9 @@ package org.registrator.community.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.registrator.community.dao.*;
-import org.registrator.community.dto.JSON.PointJSON;
-import org.registrator.community.dto.JSON.PolygonJSON;
-import org.registrator.community.dto.JSON.ResourceSearchJSON;
+import org.registrator.community.dto.json.PointJson;
+import org.registrator.community.dto.json.PolygonJson;
+import org.registrator.community.dto.json.ResourceSearchJson;
 import org.registrator.community.dto.*;
 import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.ResourceStatus;
@@ -178,7 +178,7 @@ public class ResourceServiceImpl implements ResourceService {
 
 
     @Override
-    public ParameterSearchResultDTO getAllByParameters(ResourceSearchJSON parameters) {
+    public ParameterSearchResultDTO getAllByParameters(ResourceSearchJson parameters) {
 
         List<Resource> resources = resourceFindByParams.findByParams(parameters);
         ParameterSearchResultDTO result = new ParameterSearchResultDTO();
@@ -188,32 +188,32 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<PolygonJSON> createPolygonJSON(Resource resource, int i) {
-        List<PolygonJSON> polygonsJSON = new ArrayList<>();
+    public List<PolygonJson> createPolygonJSON(Resource resource, int i) {
+        List<PolygonJson> polygonsJSON = new ArrayList<>();
 
         List<Polygon> polygons = polygonRepository.findByResource(resource);
 
         for (Polygon polygon : polygons) {
-            PolygonJSON polygonJSON = new PolygonJSON();
-            List<PointJSON> points = new ArrayList<>();
+            PolygonJson polygonJson = new PolygonJson();
+            List<PointJson> points = new ArrayList<>();
             Gson gson = new Gson();
             List<PointDTO> pointDTOs = gson.fromJson(polygon.getCoordinates(), new TypeToken<List<PointDTO>>() {}.getType());
 
             for (PointDTO pointDTO: pointDTOs) {
-                PointJSON point = new PointJSON();
+                PointJson point = new PointJson();
                 point.setLatitude(pointDTO.getLat());
                 point.setLongitude(pointDTO.getLng());
                 points.add(point);
             }
 
-            polygonJSON.setResourceDescription(resource.getDescription());
-            polygonJSON.setIdentifier(resource.getIdentifier());
-            polygonJSON.setResourceType(resource.getType().getTypeName());
-            polygonJSON.setDate(new SimpleDateFormat("dd.MM.yyyy").format(resource.getDate()));
-            polygonJSON.setDT_RowId("row" + i);
-            polygonJSON.setPoints(points);
+            polygonJson.setResourceDescription(resource.getDescription());
+            polygonJson.setIdentifier(resource.getIdentifier());
+            polygonJson.setResourceType(resource.getType().getTypeName());
+            polygonJson.setDate(new SimpleDateFormat("dd.MM.yyyy").format(resource.getDate()));
+            polygonJson.setDT_RowId("row" + i);
+            polygonJson.setPoints(points);
 
-            polygonsJSON.add(polygonJSON);
+            polygonsJSON.add(polygonJson);
             i++;
         }
         return polygonsJSON;

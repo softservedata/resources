@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
+import org.registrator.community.dto.json.ResourceNumberJson;
 
 public class UserDTO extends UserBasicInfoDTO implements Serializable {
 
@@ -18,7 +18,7 @@ public class UserDTO extends UserBasicInfoDTO implements Serializable {
     private String status;
 
     @Valid
-    private ResourceNumberDTOJSON resourceNumberDTOJSON;
+    private ResourceNumberJson resourceNumberJson;
 
     private WillDocumentDTO willDocument;
     private List<String> otherDocuments;
@@ -37,9 +37,9 @@ public class UserDTO extends UserBasicInfoDTO implements Serializable {
 
     public UserDTO(String firstName, String lastName, String middleName, String role, String login, String email,
             String status, AddressDTO address, PassportDTO passport, String territorialCommunity,
-            ResourceNumberDTOJSON resourceNumberDTOJSON) {
+            ResourceNumberJson resourceNumberJson) {
         this(firstName, lastName, middleName, role, login, email, status, address, passport);
-        this.resourceNumberDTOJSON = resourceNumberDTOJSON;
+        this.resourceNumberJson = resourceNumberJson;
     }  
 
     public String getLogin() {
@@ -66,12 +66,12 @@ public class UserDTO extends UserBasicInfoDTO implements Serializable {
         this.status = status;
     }
 
-    public ResourceNumberDTOJSON getResourceNumberDTOJSON() {
-        return resourceNumberDTOJSON;
+    public ResourceNumberJson getResourceNumberJson() {
+        return resourceNumberJson;
     }
 
-    public void setResourceNumberDTOJSON(ResourceNumberDTOJSON resourceNumberDTOJSON) {
-        this.resourceNumberDTOJSON = resourceNumberDTOJSON;
+    public void setResourceNumberJson(ResourceNumberJson resourceNumberJson) {
+        this.resourceNumberJson = resourceNumberJson;
     }
 
     public WillDocumentDTO getWillDocument() {

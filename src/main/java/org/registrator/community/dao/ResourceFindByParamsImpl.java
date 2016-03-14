@@ -1,6 +1,6 @@
 package org.registrator.community.dao;
 
-import org.registrator.community.dto.JSON.ResourceSearchJSON;
+import org.registrator.community.dto.json.ResourceSearchJson;
 import org.registrator.community.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,7 +46,7 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
      * @param parameters resource parameters and values for searching
      * @return List of resources
      */
-    public List<Resource> findByParams(ResourceSearchJSON parameters) {
+    public List<Resource> findByParams(ResourceSearchJson parameters) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Resource> criteria = criteriaBuilder.createQuery(Resource.class);
         Root<Resource> criteriaRoot = criteria.from(Resource.class);
