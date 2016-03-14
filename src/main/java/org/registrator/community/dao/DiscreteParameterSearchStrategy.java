@@ -1,6 +1,6 @@
 package org.registrator.community.dao;
 
-import org.registrator.community.dto.JSON.ResourceSearchParameterJSON;
+import org.registrator.community.dto.json.ResourceSearchParameterJson;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceDiscreteValue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +30,13 @@ public class DiscreteParameterSearchStrategy implements ResourceSearchStrategy {
      *
      */
     @Override
-    public void addCriteriaRestriction(List<ResourceSearchParameterJSON> parameters,
+    public void addCriteriaRestriction(List<ResourceSearchParameterJson> parameters,
                                        CriteriaQuery<Resource> selection) {
 
         Root<?> criteriaRoot = selection.getRoots().iterator().next();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        for (ResourceSearchParameterJSON parameter : parameters) {
+        for (ResourceSearchParameterJson parameter : parameters) {
             Join<Resource, ResourceDiscreteValue> join = criteriaRoot.join("resourceDiscreteValues");
 
             Predicate restriction;

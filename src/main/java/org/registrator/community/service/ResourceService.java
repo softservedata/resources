@@ -3,10 +3,10 @@ package org.registrator.community.service;
 import java.util.List;
 import java.util.Set;
 
-import org.registrator.community.dto.JSON.ResourceSearchJSON;
+import org.registrator.community.dto.json.ResourceSearchJson;
 import org.registrator.community.dto.ParameterSearchResultDTO;
 import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.JSON.PolygonJSON;
+import org.registrator.community.dto.json.PolygonJson;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
@@ -29,9 +29,9 @@ public interface ResourceService {
 
     Set<Resource> getAllByPoint(Double lat, Double lng, Integer page);
 
-    ParameterSearchResultDTO getAllByParameters(ResourceSearchJSON parameters);
+    ParameterSearchResultDTO getAllByParameters(ResourceSearchJson parameters);
 
-    List<PolygonJSON> createPolygonJSON (Resource resource, int i);
+    List<PolygonJson> createPolygonJSON (Resource resource, int i);
     
     String getRegistrationNumber(String login);
 

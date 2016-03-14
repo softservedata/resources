@@ -1,19 +1,19 @@
-package org.registrator.community.dto.JSON;
+package org.registrator.community.dto.json;
 
 import java.util.List;
 
 /**
  * Created by Oleksiy on 15.02.2016.
  */
-public class SearchResultJSON {
-    private List<PolygonJSON> polygons;
+public class SearchResultJson {
+    private List<PolygonJson> polygons;
     private long countPolygons;
 
-    public List<PolygonJSON> getPolygons() {
+    public List<PolygonJson> getPolygons() {
         return polygons;
     }
 
-    public void setPolygons(List<PolygonJSON> polygons) {
+    public void setPolygons(List<PolygonJson> polygons) {
         this.polygons = polygons;
     }
 

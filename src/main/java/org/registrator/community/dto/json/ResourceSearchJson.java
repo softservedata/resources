@@ -1,21 +1,21 @@
-package org.registrator.community.dto.JSON;
+package org.registrator.community.dto.json;
 
 import java.util.List;
 
 /**
  * Request parameters from a client-side to search for resource by parameters values.
  */
-public class ResourceSearchJSON {
-    private List<ResourceSearchParameterJSON> discreteParameters;
-    private List<ResourceSearchParameterJSON> linearParameters;
+public class ResourceSearchJson {
+    private List<ResourceSearchParameterJson> discreteParameters;
+    private List<ResourceSearchParameterJson> linearParameters;
     private Integer resourceTypeId;
     private Integer page;
 
-    public List<ResourceSearchParameterJSON> getDiscreteParameters() {
+    public List<ResourceSearchParameterJson> getDiscreteParameters() {
         return discreteParameters;
     }
 
-    public List<ResourceSearchParameterJSON> getLinearParameters() {
+    public List<ResourceSearchParameterJson> getLinearParameters() {
         return linearParameters;
     }
 

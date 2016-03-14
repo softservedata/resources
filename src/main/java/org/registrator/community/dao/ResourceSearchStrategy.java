@@ -1,6 +1,6 @@
 package org.registrator.community.dao;
 
-import org.registrator.community.dto.JSON.ResourceSearchParameterJSON;
+import org.registrator.community.dto.json.ResourceSearchParameterJson;
 import org.registrator.community.entity.Resource;
 
 import javax.persistence.criteria.CriteriaQuery;
@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface ResourceSearchStrategy {
 
-    void addCriteriaRestriction(List<ResourceSearchParameterJSON> parameters, CriteriaQuery<Resource> selection);
+    void addCriteriaRestriction(List<ResourceSearchParameterJson> parameters, CriteriaQuery<Resource> selection);
 }

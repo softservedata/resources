@@ -1,6 +1,6 @@
 package org.registrator.community.dao;
 
-import org.registrator.community.dto.JSON.ResourceSearchParameterJSON;
+import org.registrator.community.dto.json.ResourceSearchParameterJson;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceLinearValue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +35,14 @@ public class LinearParameterSearchStrategy implements ResourceSearchStrategy{
      * @param selection root selection of Resource.class
      */
     @Override
-    public void addCriteriaRestriction(List<ResourceSearchParameterJSON> parameters,
+    public void addCriteriaRestriction(List<ResourceSearchParameterJson> parameters,
                                        CriteriaQuery<Resource> selection) {
 
 
         Root<?> criteriaRoot = selection.getRoots().iterator().next();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        for (ResourceSearchParameterJSON parameter : parameters) {
+        for (ResourceSearchParameterJson parameter : parameters) {
             Join<Resource, ResourceLinearValue> join = criteriaRoot.join("resourceLinearValues");
 
             selection.where(

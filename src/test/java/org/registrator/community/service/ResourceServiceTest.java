@@ -3,9 +3,9 @@ package org.registrator.community.service;
 import org.mockito.*;
 import org.powermock.api.support.membermodification.MemberModifier;
 import org.registrator.community.dao.*;
-import org.registrator.community.dto.JSON.PolygonJSON;
+import org.registrator.community.dto.json.PolygonJson;
 import org.registrator.community.dto.*;
-import org.registrator.community.dto.JSON.ResourceSearchJSON;
+import org.registrator.community.dto.json.ResourceSearchJson;
 import org.registrator.community.entity.*;
 import org.registrator.community.service.impl.ResourceServiceImpl;
 import org.slf4j.Logger;
@@ -338,12 +338,12 @@ public class ResourceServiceTest   {
     @Test
     public void createPolygonJSON() {
         logger.debug(BEGIN);
-        List<PolygonJSON> result = resourceService.createPolygonJSON(validResource, 0);
+        List<PolygonJson> result = resourceService.createPolygonJSON(validResource, 0);
 
         assertEquals(result.size(), 1);
-        PolygonJSON polygonJSON = result.get(0);
-        assertEquals(polygonJSON.getResourceType(), testTypeResource);
-        assertEquals(polygonJSON.getIdentifier(), validID);
+        PolygonJson polygonJson = result.get(0);
+        assertEquals(polygonJson.getResourceType(), testTypeResource);
+        assertEquals(polygonJson.getIdentifier(), validID);
 
         logger.debug(END);
     }
@@ -506,7 +506,7 @@ public class ResourceServiceTest   {
 
     @Test
     public void getAllByParameters() throws Exception {
-        ResourceSearchJSON parameters = mock(ResourceSearchJSON.class);
+        ResourceSearchJson parameters = mock(ResourceSearchJson.class);
         List<Resource> resources = mock(List.class);
         when(resourceFindByParams.findByParams(parameters)).thenReturn(resources);
         ParameterSearchResultDTO result = resourceService.getAllByParameters(parameters);

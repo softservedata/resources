@@ -1,11 +1,11 @@
-package org.registrator.community.dto.JSON;
+package org.registrator.community.dto.json;
 
 import org.registrator.community.enumeration.ParameterValueCompare;
 
 /**
  * Created by roman.golyuk on 13.03.2016.
  */
-public class ResourceSearchParameterJSON {
+public class ResourceSearchParameterJson {
     private Integer id;
     private ParameterValueCompare compare;
     private Double value;

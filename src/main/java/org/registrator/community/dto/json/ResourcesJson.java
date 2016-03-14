@@ -1,4 +1,4 @@
-package org.registrator.community.dto.JSON;
+package org.registrator.community.dto.json;
 
 import org.registrator.community.enumeration.ResourceStatus;
 
@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Oleksiy on 20.12.2015.
  */
-public class ResourcesJSON {
+public class ResourcesJson {
 
     private Integer id;
     private Integer typeId;
