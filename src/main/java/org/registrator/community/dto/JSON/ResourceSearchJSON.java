@@ -19,7 +19,6 @@ public class ResourceSearchJSON {
         return linearParameters;
     }
 
-
     public Integer getResourceTypeId() {
         return resourceTypeId;
     }
