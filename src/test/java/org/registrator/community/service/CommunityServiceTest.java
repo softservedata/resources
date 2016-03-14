@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.registrator.community.dao.CommunityRepository;
 import org.registrator.community.dao.UserRepository;
 import org.registrator.community.entity.TerritorialCommunity;
@@ -44,7 +45,8 @@ public class CommunityServiceTest {
 	@BeforeMethod
     public void init() {
         MockitoAnnotations.initMocks(this);
-        tc = new TerritorialCommunity(NAME);
+        tc = new TerritorialCommunity();
+        tc.setName(NAME);
 		tc.setTerritorialCommunityId(ID);
     }
 	
@@ -98,15 +100,22 @@ public class CommunityServiceTest {
 	}
 	
 	@Test
-	public void deleteCommunity(){
+	public void deleteCommunity() throws IllegalAccessException{
 		testLogger.info("Start");
-		Assert.assertTrue(communityService.deleteCommunity(tc));// try to delete, if success then return true
-		Mockito.verify(logger, Mockito.atLeastOnce()).info(Mockito.anyString());// do not forgot about logging
-		Mockito.verify(communityRepository).delete(tc); // check whether method have been call
-		Mockito.when(userRepository.findByTerritorialCommunity(tc)).thenReturn(new ArrayList<User>(Arrays.asList(new User())));// imitation of constraint
-		Assert.assertFalse(communityService.deleteCommunity(tc)); // try to delete with constraint so method must return false
-		Mockito.verifyZeroInteractions(communityRepository);// check whether  method "communityRepository.delete" have not been call at least one time
-		Mockito.verify(logger, Mockito.atLeastOnce()).info(Mockito.anyString());// do not forgot about logging
+		
+		 // inject logger into tested service
+        logger = LoggerFactory.getLogger("");
+        MemberModifier
+        	.field(CommunityServiceImpl.class, "logger")
+            .set(communityService, logger);
+        
+        
+		Assert.assertTrue(communityService.deleteCommunity(tc));                  // try to delete, if success then return true
+		Mockito.verify(communityRepository).delete(tc);                           // check whether method have been called
+		Mockito.when(userRepository.findByTerritorialCommunity(tc))
+		.thenReturn(new ArrayList<User>(Arrays.asList(new User())));              // imitation of constraint
+		Assert.assertFalse(communityService.deleteCommunity(tc));                 // try to delete with constraint so method must return false
+		Mockito.verifyZeroInteractions(communityRepository);                      // check whether  method "communityRepository.delete" have not been call at least one time
 		testLogger.info("End");
 	}
 	
