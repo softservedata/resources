@@ -3,52 +3,28 @@ package org.registrator.community.service;
 import java.io.*;
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.RunWith;
 import org.registrator.community.config.LoggingConfig;
 import org.registrator.community.config.root.SpringRootConfig;
 import org.registrator.community.config.root.TestingConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.testng.Assert.assertEquals;
+
 @ActiveProfiles("testing")
 @ContextConfiguration(classes={TestingConfiguration.class,LoggingConfig.class,SpringRootConfig.class})
-@WebAppConfiguration
-public class PrintServiceIntegrationTest {
-
-    private static Logger LOG=Logger.getLogger(PrintServiceIntegrationTest.class);
+public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     PrintService printServiceImpl;
 
     private static final int META_INFORMATION_SIZE = 2300;// contains CreationDate in ms, can't compare different pdf files
 
-    @Rule
-    public TestWatcher testWatcher = new TestWatcher() {
 
-        protected void succeeded(org.junit.runner.Description description) {
-            LOG.info(description.getMethodName());
-            System.out.println("<<SUCCESS>> - " + description.getMethodName());
-
-        }
-
-        protected void failed(Throwable e, org.junit.runner.Description description) {
-
-            LOG.error(description.getMethodName());
-            System.out.println("<<FAILED>> - " + description.getMethodName());
-        }
-
-    };
-
-    //@Test
+    @Test
     public void testPrintProcurationSaveCorrectData() throws IOException {
 
         ByteArrayOutputStream bos = printServiceImpl.printProcuration(1);
@@ -57,14 +33,14 @@ public class PrintServiceIntegrationTest {
         bos.close();
         byte [] actual = Arrays.copyOf(array, array.length - META_INFORMATION_SIZE);
 
-        File file = new File(".\\target\\surefire-reports\\testng-junit-results\\procuration.pdf");
+        File file = new File(".\\target\\procuration.pdf");
         byte [] expected = readContentIntoByteArray(file);
 
-        Assert.assertArrayEquals(actual, expected);
+        assertEquals(actual, expected);
 
     }
 
-    //@Test
+    @Test
     public void testPrintExtractSaveCorrectData() throws IOException {
 
         ByteArrayOutputStream bos = printServiceImpl.printExtract(1);
@@ -73,14 +49,14 @@ public class PrintServiceIntegrationTest {
         bos.close();
         byte [] actual = Arrays.copyOf(array, array.length - META_INFORMATION_SIZE);
 
-        File file = new File(".\\target\\surefire-reports\\testng-junit-results\\extract.pdf");
+        File file = new File(".\\target\\extract.pdf");
         byte [] expected = readContentIntoByteArray(file);
 
-        Assert.assertArrayEquals(actual, expected);
+        assertEquals(actual, expected);
 
     }
 
-    //@Test
+    @Test
     public void testPrintProcurationOnSubmitInfoSaveCorrectData() throws IOException {
 
         ByteArrayOutputStream bos = printServiceImpl.printProcurationOnSubmitInfo(2);
@@ -89,10 +65,11 @@ public class PrintServiceIntegrationTest {
         bos.close();
         byte [] actual = Arrays.copyOf(array, array.length - META_INFORMATION_SIZE);
 
-        File file = new File(".\\target\\surefire-reports\\testng-junit-results\\procurationOnSubmit.pdf");
+        File file = new File(".\\target\\procurationOnSubmit.pdf");
         byte [] expected = readContentIntoByteArray(file);
 
-        Assert.assertArrayEquals(actual, expected);
+        assertEquals(actual, expected);
+
     }
 
     private static byte[] readContentIntoByteArray(File file) throws IOException

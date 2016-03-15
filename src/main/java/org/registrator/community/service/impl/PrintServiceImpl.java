@@ -376,7 +376,6 @@ public class PrintServiceImpl implements PrintService {
 				}
 			}
 
-			System.out.println("Descrite values" + discreteValues);
 			String dateInquireYear = String.valueOf(inquireDate.getYear());
 			char parsedDateInquire[] = dateInquireYear.toCharArray();
 			dateInquireYear = "" + parsedDateInquire[1] + parsedDateInquire[2];

@@ -444,6 +444,7 @@
                     <version>${maven.surefire.plugin.version}</version>
                     <configuration>
                         <skipTests>false</skipTests>
+						<runOrder>reversealphabetical</runOrder>
                         <argLine>${surefireArgLine}</argLine>
                     </configuration>
 
@@ -575,6 +576,7 @@
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <skipTests>false</skipTests>
+					<runOrder>reversealphabetical</runOrder>
                     <argLine>${surefireArgLine}</argLine>
                 </configuration>
 
