@@ -21,9 +21,8 @@ import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.UserRegistrationDTO;
-import org.registrator.community.dto.WillDocumentDTO;
-import org.registrator.community.dto.JSON.ResourceNumberDTOJSON;
-import org.registrator.community.dto.JSON.UserStatusDTOJSON;
+import org.registrator.community.dto.json.ResourceNumberJson;
+import org.registrator.community.dto.json.UserStatusJson;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.ResourceNumber;
@@ -34,8 +33,6 @@ import org.registrator.community.entity.User;
 import org.registrator.community.entity.WillDocument;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
-import org.registrator.community.service.CommunityService;
-import org.registrator.community.service.UserService;
 import org.registrator.community.service.impl.UserServiceImpl;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -44,7 +41,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -164,7 +160,7 @@ public class UserServiceTest {
 	@Test(dataProvider = "providerUserStatus")
 	public void changeUserStatus(UserStatus status) {
 		// test data
-		UserStatusDTOJSON userStatusDto = new UserStatusDTOJSON(user.getLogin(), status.toString());
+		UserStatusJson userStatusDto = new UserStatusJson(user.getLogin(), status.toString());
 		// mocks
 		mockUserRepository();
 		// test action
@@ -519,9 +515,9 @@ public class UserServiceTest {
 				new PassportDTO(user.getPassport().get(user.getPassport().size() - 1).getSeria(),
 						user.getPassport().get(user.getPassport().size() - 1).getNumber(),
 						user.getPassport().get(user.getPassport().size() - 1).getPublishedByData()));
-		ResourceNumberDTOJSON resourceNumberDtoJson = new ResourceNumberDTOJSON("1", "1", "1");
+		ResourceNumberJson resourceNumberDtoJson = new ResourceNumberJson("1", "1", "1");
 		resourceNumberDtoJson = Mockito.spy(resourceNumberDtoJson);
-		userDto.setResourceNumberDTOJSON(resourceNumberDtoJson);
+		userDto.setResourceNumberJson(resourceNumberDtoJson);
 		// mocks
 		List<Tome> fakeTomeRepo = new ArrayList<Tome>();
 		mockUserRepository();
@@ -540,7 +536,7 @@ public class UserServiceTest {
 		Assert.assertNotNull(fakeTomeRepo.get(0));
 		
 		//fakeTomeRepo.clear();
-		//userDto.setResourceNumberDTOJSON(null);
+		//userDto.setResourceNumberJson(null);
 		//userService.CreateTomeAndRecourceNumber(userDto);// exception
 		//Assert.assertTrue(fakeTomeRepo.isEmpty());
 	}

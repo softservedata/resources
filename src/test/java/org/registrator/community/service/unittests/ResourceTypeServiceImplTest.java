@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.registrator.community.dao.DiscreteParameterRepository;
 import org.registrator.community.dao.LinearParameterRepository;
 import org.registrator.community.dao.ResourceTypeRepository;
@@ -47,32 +48,29 @@ public class ResourceTypeServiceImplTest {
 	private DiscreteParameterRepository discreteParameterRepository;
 	@Mock
 	private ResourceService resourceService;
-	@Mock
-	private Logger logger;
-
 	@InjectMocks
-	private ResourceTypeService resTServ = new ResourceTypeServiceImpl();
+	private ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl();
 
+	private Logger logger = LoggerFactory.getLogger(resourceTypeService.getClass());
 	private static final int DESIRED_RESOURCES = 10;
 	private int resId = 0;
 
 	@BeforeClass
 	public void bindMocks() {
+		logger.debug("Performing InjectMock operations");
 		MockitoAnnotations.initMocks(this);
 
-		Logger inLogger = LoggerFactory.getLogger(this.getClass());
-		doAnswer(new Answer<Void>() {
-			public Void answer(InvocationOnMock invo) {
-				String message = invo.getArgumentAt(0, String.class);
-				inLogger.info(message);
-				return null;
-			}
-		}).when(logger).info(anyString());
+		try {
+			MemberModifier.field(resourceTypeService.getClass(), "logger").set(
+					resourceTypeService, logger);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@BeforeClass
 	public void prepareMockForResourceTypeRep() {
-		logger.info("Preparing the Mock object to suite the needed calls");
+		logger.debug("Preparing ResourceType repository emulation");
 
 		List<ResourceType> mockList = new ArrayList<ResourceType>();
 
@@ -91,11 +89,7 @@ public class ResourceTypeServiceImplTest {
 					public ResourceType answer(InvocationOnMock invo) {
 						Integer arg = invo.getArgumentAt(0, Integer.class);
 						for (ResourceType res : mockList) {
-							int resId = (res.getTypeId() != null) ? res
-									.getTypeId() : -1;// TODO
-														// watch
-														// for
-														// NullExceptions
+							int resId = (res.getTypeId() != null) ? res.getTypeId() : -1;
 							if (resId == arg) {
 								return res;
 							}
@@ -143,7 +137,7 @@ public class ResourceTypeServiceImplTest {
 
 	@BeforeClass
 	public void prepareMockForResourceServ() {
-		logger.info("Preparing the Mock object to suite the needed calls");
+		logger.debug("Preparing Resource service emulation");
 
 		List<Resource> mockList = new ArrayList<Resource>();
 
@@ -157,10 +151,7 @@ public class ResourceTypeServiceImplTest {
 						List<Resource> result = new ArrayList<Resource>();
 						for (Resource res : mockList) {
 
-							String resType = res.getType().getTypeName(); // TODO
-																			// Watch
-																			// for
-																			// Null
+							String resType = res.getType().getTypeName();
 
 							if (resType.equals(argTypeName)) {
 								result.add(res);
@@ -202,23 +193,24 @@ public class ResourceTypeServiceImplTest {
 
 	@DataProvider
 	public Object[][] formResourceTypes() {
+		logger.debug("Generating basic input for ResourceType formation");
+
 		Object[][] result = new Object[DESIRED_RESOURCES][];
-		// new ResourceType(String name) + uniqResourceId
 
 		String resMask = "ResourceType#%03d";
 
 		for (int i = 0; i < result.length; i++) {
 			ResourceType res = new ResourceType(String.format(resMask, resId));
 			res.setTypeId(resId++);
-			result[i] = new Object[] { res };
+			result[i] = new Object[]{res};
 		}
 		return result;
 	}
 
 	@DataProvider
 	public Object[][] formAndFlushResourceTypes() {
+		logger.debug("Generating ReposityType and flushing it in the repository for find and delete test");
 		Object[][] result = new Object[DESIRED_RESOURCES][];
-		// new ResourceType(String name) + uniqResourceId
 
 		String resMask = "ResourceType#%03d";
 		User user = new User();
@@ -227,7 +219,7 @@ public class ResourceTypeServiceImplTest {
 		for (int i = 0; i < result.length; i++) {
 			ResourceType res = new ResourceType(String.format(resMask, resId));
 			res.setTypeId(resId++);
-			result[i] = new Object[] { res };
+			result[i] = new Object[]{res};
 			resourceTypeRepository.saveAndFlush(res);
 
 			if (i % 2 == 0) {
@@ -246,11 +238,12 @@ public class ResourceTypeServiceImplTest {
 
 	@DataProvider
 	public Object[][] formResourceTypesWithParams() {
+		logger.debug("Generating ResourceType data with additional data");
 		Object[][] result = new Object[DESIRED_RESOURCES][];
 
 		String resMask = "ResourceType#%03d";
-		String[] paramTypes = new String[] { "linearParameters",
-				"discreteParameters" };
+		String[] paramTypes = new String[]{"linearParameters",
+				"discreteParameters"};
 
 		List<TypeParameterDTO> paramList = new ArrayList<TypeParameterDTO>();
 
@@ -265,7 +258,7 @@ public class ResourceTypeServiceImplTest {
 
 			paramList.add(tpDTO);
 
-			result[i] = new Object[] { res, paramList };
+			result[i] = new Object[]{res, paramList};
 		}
 		return result;
 	}
@@ -274,49 +267,52 @@ public class ResourceTypeServiceImplTest {
 
 	@Test(dataProvider = "formResourceTypes")
 	public void addResourceType(ResourceType res) {
-		logger.info("Performing add and save operation tests");
+		logger.debug("Start");
 
 		long size = resourceTypeRepository.count();
 
-		ResourceType formed = resTServ.addResourceType(res);
+		ResourceType formed = resourceTypeService.addResourceType(res);
 
 		Assert.assertEquals(res.getTypeName(), formed.getTypeName());
 		Assert.assertEquals(res.getTypeId(), formed.getTypeId());
 		Assert.assertEquals((size + 1), resourceTypeRepository.count());
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formResourceTypes")
 	public void findById(ResourceType res) {
-		logger.info("Performing search by ID operation tests");
+		logger.debug("Start");
 
-		ResourceType expected = resourceTypeRepository.saveAndFlush(res), actual = resTServ
+		ResourceType expected = resourceTypeRepository.saveAndFlush(res), actual = resourceTypeService
 				.findById(res.getTypeId());
 
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getTypeName(), actual.getTypeName());
 		Assert.assertEquals(expected.getTypeId(), actual.getTypeId());
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formResourceTypes")
 	public void findByName(ResourceType res) {
-		logger.info("Performing search by ID operation tests");
+		logger.debug("Start");
 
-		ResourceType expected = resourceTypeRepository.saveAndFlush(res), actual = resTServ
+		ResourceType expected = resourceTypeRepository.saveAndFlush(res), actual = resourceTypeService
 				.findByName(res.getTypeName());
 
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getTypeName(), actual.getTypeName());
 		Assert.assertEquals(expected.getTypeId(), actual.getTypeId());
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formResourceTypes")
 	public void findAll(ResourceType res) {
-		logger.info("Performing repository overview operation tests");
+		logger.debug("Start");
 
 		resourceTypeRepository.saveAndFlush(res);
 
 		long repSize = resourceTypeRepository.count();
-		List<ResourceType> expected = resourceTypeRepository.findAll(), actual = resTServ
+		List<ResourceType> expected = resourceTypeRepository.findAll(), actual = resourceTypeService
 				.findAll();
 
 		Assert.assertEquals(repSize, expected.size());
@@ -325,52 +321,53 @@ public class ResourceTypeServiceImplTest {
 		expected.removeAll(actual);
 
 		Assert.assertEquals(expected.size(), 0);
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formResourceTypes")
 	public void editResourceType(ResourceType res) {
-		logger.info("Performing resource edit operation tests");
+		logger.debug("Start");
 
 		ResourceTypeDTO expected = new ResourceTypeDTO();
 
 		expected.setTypeName(res.getTypeName());
 		expected.setParameters(new ArrayList<TypeParameterDTO>());
 
-		ResourceTypeDTO actual = resTServ.editResourceType(expected);
+		ResourceTypeDTO actual = resourceTypeService.editResourceType(expected);
 
 		Assert.assertEquals(actual.getTypeName(), expected.getTypeName());
 		Assert.assertEquals(actual.getParameters(), expected.getParameters());
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formAndFlushResourceTypes")
 	public void delete(ResourceType res) {
-		logger.info("Performing find and delete operation tests");
+		logger.debug("Start");
 
 		List<Resource> resourcesOfGivenType = resourceService.findByType(res);
-		logger.info("expected size: " + resourcesOfGivenType.size());
 
 		boolean expected, actual;
 
 		if (resourcesOfGivenType.size() > 0) {
 			expected = false;
-			actual = resTServ.delete(res);
+			actual = resourceTypeService.delete(res);
 		} else {
 			expected = true;
-			actual = resTServ.delete(res);
+			actual = resourceTypeService.delete(res);
 		}
 		Assert.assertEquals(actual, expected);
 
 		if (resourcesOfGivenType.size() == 0) {
-			ResourceType expectedToBeNull = resourceTypeRepository.findOne(res
-					.getTypeId());
+			ResourceType expectedToBeNull = resourceTypeRepository.findOne(res.getTypeId());
 			Assert.assertNull(expectedToBeNull);
 		}
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "formResourceTypesWithParams")
 	public void addResourceTypeDTO(ResourceType res,
 			List<TypeParameterDTO> paramList) {
-		logger.info("Performing ResourceTypeDTO creation operation tests");
+		logger.debug("Start");
 
 		resourceTypeRepository.saveAndFlush(res);
 
@@ -398,7 +395,7 @@ public class ResourceTypeServiceImplTest {
 		tmp.setTypeName(res.getTypeName());
 		tmp.setParameters(paramList);
 
-		ResourceTypeDTO actual = resTServ.addResourceTypeDTO(tmp);
+		ResourceTypeDTO actual = resourceTypeService.addResourceTypeDTO(tmp);
 
 		Assert.assertEquals(actual.getTypeName(), expected.getTypeName());
 
@@ -415,7 +412,7 @@ public class ResourceTypeServiceImplTest {
 			Assert.assertEquals(arg0.getDescription(), arg1.getDescription());
 			Assert.assertEquals(arg0.getUnitName(), arg1.getUnitName());
 		}
-
+		logger.debug("End");
 	}
 
 }

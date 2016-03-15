@@ -9,15 +9,14 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Assert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.dao.ResourceRepository;
 import org.registrator.community.dao.UserRepository;
@@ -51,44 +50,41 @@ public class InquiryServiceTest {
 	private ResourceRepository resourceRepository;
 	@InjectMocks
 	private InquiryService inquiryService = new InquiryServiceImpl();
-	@Mock
-	private Logger logger;
 
+	private Logger logger = LoggerFactory.getLogger(inquiryService.getClass());
 	private Date date = new Date();
 	private static final int DESIRED_RESOURCES = 10;
+	private int inquiryId = 0;
 
 	@BeforeClass
 	public void bindMocks() {
+		logger.debug("Performing InjectMock operations");
 		MockitoAnnotations.initMocks(this);
-		
-		Logger inLogger = LoggerFactory.getLogger(this.getClass());
-		doAnswer(new Answer<Void>(){
-			public Void answer(InvocationOnMock invo){
-				String message = invo.getArgumentAt(0, String.class);
-				inLogger.info(message);
-				return null;
-			}
-		}).when(logger).info(anyString());
+
+		try {
+			MemberModifier.field(inquiryService.getClass(), "logger").set(
+					inquiryService, logger);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Mock repository preparations and bindings
 
 	@BeforeClass
 	public void prepareUserRepMock() {
-		List<User> mockForUserRep = new ArrayList<User>();
-
-		logger.info("Preparing method overrun for mocked User Repository");
-
+		logger.debug("Preparing User repository emulation");
+		List<User> mockList = new ArrayList<User>();
 		when(userRepository.count()).then(new Answer<Long>() {
 			public Long answer(InvocationOnMock invocation) throws Throwable {
-				return (long) mockForUserRep.size();
+				return (long) mockList.size();
 			}
 		});
 		when(userRepository.save(any(User.class))).then(new Answer<User>() {
 			@Override
 			public User answer(InvocationOnMock invocation) throws Throwable {
 				User givenArg = invocation.getArgumentAt(0, User.class);
-				mockForUserRep.add(givenArg);
+				mockList.add(givenArg);
 				return givenArg;
 			}
 
@@ -98,7 +94,7 @@ public class InquiryServiceTest {
 			@Override
 			public User answer(InvocationOnMock invocation) throws Throwable {
 				Integer num = invocation.getArgumentAt(0, Integer.class);
-				return mockForUserRep.get(num);
+				return mockList.get(num);
 			}
 		});
 
@@ -108,7 +104,7 @@ public class InquiryServiceTest {
 							throws Throwable {
 						String userName = invocation.getArgumentAt(0,
 								String.class);
-						for (User usr : mockForUserRep) {
+						for (User usr : mockList) {
 							if (usr.getLogin().equals(userName)) {
 								return usr;
 							}
@@ -126,7 +122,7 @@ public class InquiryServiceTest {
 						TerritorialCommunity tc = invocation.getArgumentAt(1,
 								TerritorialCommunity.class);
 
-						for (User usr : mockForUserRep) {
+						for (User usr : mockList) {
 							if (usr.getRole().getType() == RoleType.REGISTRATOR
 									&& usr.getTerritorialCommunity() != null
 									&& usr.getTerritorialCommunity().equals(tc)) {
@@ -139,7 +135,7 @@ public class InquiryServiceTest {
 
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) throws Throwable {
-				mockForUserRep.clear();
+				mockList.clear();
 				return null;
 			}
 		}).when(userRepository).deleteAll();
@@ -147,13 +143,12 @@ public class InquiryServiceTest {
 
 	@BeforeClass
 	public void prepareResourceRepMock() {
-		List<Resource> mockForResRep = new ArrayList<Resource>();
-
-		logger.info("Preparing method overrun for mocked Resource Repository");
+		logger.debug("Preparing Resource repository emulation");
+		List<Resource> mockList = new ArrayList<Resource>();
 
 		when(resourceRepository.count()).then(new Answer<Long>() {
 			public Long answer(InvocationOnMock invocation) throws Throwable {
-				return (long) mockForResRep.size();
+				return (long) mockList.size();
 			}
 		});
 		when(resourceRepository.findByIdentifier(anyString())).then(
@@ -162,7 +157,7 @@ public class InquiryServiceTest {
 							throws Throwable {
 						String resource = invocation.getArgumentAt(0,
 								String.class);
-						for (Resource res : mockForResRep) {
+						for (Resource res : mockList) {
 							if (res.getIdentifier() == resource)
 								return res;
 						}
@@ -175,7 +170,7 @@ public class InquiryServiceTest {
 							throws Throwable {
 						Resource res = invocation.getArgumentAt(0,
 								Resource.class);
-						mockForResRep.add(res);
+						mockList.add(res);
 						return res;
 					}
 				});
@@ -183,13 +178,12 @@ public class InquiryServiceTest {
 
 	@BeforeClass
 	public void prepareInquiryRepMock() {
-		List<Inquiry> mockForInqRep = new ArrayList<Inquiry>();
-
-		logger.info("Preparing method overrun for mocked Inquiry Repository");
+		logger.debug("Preparing Inquiry repository emulation");
+		List<Inquiry> mockList = new ArrayList<Inquiry>();
 
 		when(inquiryRepository.count()).then(new Answer<Long>() {
 			public Long answer(InvocationOnMock invocation) throws Throwable {
-				return (long) mockForInqRep.size();
+				return (long) mockList.size();
 			}
 		});
 		when(inquiryRepository.save(any(Inquiry.class))).then(
@@ -198,19 +192,19 @@ public class InquiryServiceTest {
 							throws Throwable {
 						Inquiry inq = invocation
 								.getArgumentAt(0, Inquiry.class);
-						mockForInqRep.add(inq);
+						mockList.add(inq);
 						return inq;
 					}
 				});
 		when(inquiryRepository.findOne(anyInt())).then(new Answer<Inquiry>() {
 			public Inquiry answer(InvocationOnMock invocation) throws Throwable {
 				Integer num = invocation.getArgumentAt(0, Integer.class);
-				return mockForInqRep.get(num);
+				return mockList.get(num);
 			}
 		});
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) throws Throwable {
-				mockForInqRep.clear();
+				mockList.clear();
 				return null;
 			}
 		}).when(inquiryRepository).deleteAll();
@@ -218,7 +212,7 @@ public class InquiryServiceTest {
 		when(inquiryRepository.getOne(anyInt())).then(new Answer<Inquiry>() {
 			public Inquiry answer(InvocationOnMock invocation) throws Throwable {
 				Integer num = invocation.getArgumentAt(0, Integer.class);
-				for (Inquiry inq : mockForInqRep) {
+				for (Inquiry inq : mockList) {
 					if (inq.getInquiryId() != null && inq.getInquiryId() == num) {
 						return inq;
 					}
@@ -229,10 +223,10 @@ public class InquiryServiceTest {
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) throws Throwable {
 				Integer num = invocation.getArgumentAt(0, Integer.class);
-				for (int i = 0; i < mockForInqRep.size(); i++) {
-					Inquiry inq = mockForInqRep.get(i);
+				for (int i = 0; i < mockList.size(); i++) {
+					Inquiry inq = mockList.get(i);
 					if (inq.getInquiryId() == num) {
-						mockForInqRep.remove(inq);
+						mockList.remove(inq);
 					}
 				}
 				return null;
@@ -251,7 +245,7 @@ public class InquiryServiceTest {
 								InquiryType.class);
 						List<Inquiry> result = new ArrayList<Inquiry>();
 
-						for (Inquiry inq : mockForInqRep) {
+						for (Inquiry inq : mockList) {
 							if (inq.getUser().equals(user)
 									&& inq.getInquiryType().equals(inqT)) {
 								result.add(inq);
@@ -273,7 +267,7 @@ public class InquiryServiceTest {
 								InquiryType.class);
 						List<Inquiry> result = new ArrayList<Inquiry>();
 
-						for (Inquiry inq : mockForInqRep) {
+						for (Inquiry inq : mockList) {
 							if (inq.getInquiryType().equals(inqT)) {
 								result.add(inq);
 							}
@@ -288,12 +282,11 @@ public class InquiryServiceTest {
 
 	@DataProvider(name = "ProviderForInquiries")
 	public Object[][] formDataForInquiries() {
-		Object[][] tmp = new Object[DESIRED_RESOURCES][3];
+		logger.debug("Generating basic input data for Inquiry buildup");
+		Object[][] tmp = new Object[DESIRED_RESOURCES][];
 
-		logger.info("DataProviders: Running the \"ProviderForInquiries\" DataProvider");
-
-		Role[] roles = new Role[] { new Role(RoleType.REGISTRATOR, "desc"),
-				new Role(RoleType.USER, "desc") };
+		Role[] roles = new Role[]{new Role(RoleType.REGISTRATOR, "desc"),
+				new Role(RoleType.USER, "desc")};
 
 		for (int i = 0; i < roles.length; i++) {
 			User usr = new User("user." + roles[i].toString().toLowerCase(),
@@ -318,7 +311,7 @@ public class InquiryServiceTest {
 					date, ResourceStatus.ACTIVE.toString(), tome, "Reason");
 			resourceRepository.save(rs);
 
-			tmp[i] = new Object[] { registrator, user, rs };
+			tmp[i] = new Object[]{registrator, user, rs};
 		}
 
 		return tmp;
@@ -326,11 +319,10 @@ public class InquiryServiceTest {
 
 	@DataProvider(name = "ProviderForListUserNameMethod")
 	public Object[][] formDataForListTypeTests() {
-		Object[][] tmp = new Object[DESIRED_RESOURCES][1];
+		logger.debug("Generating input data for List users method");
+		Object[][] tmp = new Object[DESIRED_RESOURCES][];
 
-		logger.info("DataProviders: Running the \"ProviderForListUserNameMethod\" DataProvider");
-
-		Role[] roles = new Role[] { new Role(RoleType.REGISTRATOR, "desc") };
+		Role[] roles = new Role[]{new Role(RoleType.REGISTRATOR, "desc")};
 		TerritorialCommunity tc = new TerritorialCommunity();
 
 		for (int i = 0; i < DESIRED_RESOURCES; i++) {
@@ -347,24 +339,24 @@ public class InquiryServiceTest {
 				usr = userRepository.findUserByLogin(userLog);
 				usr.setTerritorialCommunity(tc);
 			}
-			tmp[i] = new Object[] { usr };
+			tmp[i] = new Object[]{usr};
 		}
 		return tmp;
 	}
 
 	@DataProvider(name = "ProviderForInquiryListTests")
 	public Object[][] formDataForInquiryListTypeTests() {
-		InquiryType[] inqTypes = new InquiryType[] { InquiryType.INPUT,
-				InquiryType.OUTPUT };
-		Role[] roles = new Role[] { new Role(RoleType.REGISTRATOR, "desc"),
-				new Role(RoleType.USER, "desc") };
+		logger.debug("Generating data for Inquiry list test");
+
+		InquiryType[] inqTypes = new InquiryType[]{InquiryType.INPUT,
+				InquiryType.OUTPUT};
+		Role[] roles = new Role[]{new Role(RoleType.REGISTRATOR, "desc"),
+				new Role(RoleType.USER, "desc")};
 		Tome tome = new Tome();
 		ResourceType rt = new ResourceType();
 		String resIdent = "land#", resDef = "This is land";
 
 		Object[][] tmp = new Object[DESIRED_RESOURCES * inqTypes.length][2];
-
-		logger.info("DataProviders: Running the \"ProviderForInquiryListTests\" DataProvider");
 
 		User registrator = new User("userRegistratorForInqList", "password",
 				roles[0], roles[0].toString(), "is", "User", "m@il.ua",
@@ -389,7 +381,7 @@ public class InquiryServiceTest {
 				inquiryRepository.save(inquiry);
 
 				User insU = (i % 2 == 0) ? user : registrator;
-				tmp[j++] = new Object[] { inqTypes[n], insU };
+				tmp[j++] = new Object[]{inqTypes[n], insU};
 			}
 		}
 		return tmp;
@@ -397,18 +389,63 @@ public class InquiryServiceTest {
 
 	// Tests
 
+	@Test(dataProvider = "ProviderForInquiries")
+	public void testForOutputInquiryFormation(User reg, User user, Resource res) {
+		logger.debug("Start");
+
+		Inquiry expected = new Inquiry(InquiryType.OUTPUT.toString(), date,
+				user, reg, res), actual = inquiryService.addOutputInquiry(
+				res.getIdentifier(), reg.getLogin(), user.getLogin());
+
+		Assert.assertEquals(expected.getInquiryType(), actual.getInquiryType());
+		Assert.assertEquals(expected.getResource(), actual.getResource());
+		Assert.assertEquals(expected.getRegistrator(), actual.getRegistrator());
+		Assert.assertEquals(expected.getUser(), actual.getUser());
+
+		logger.debug("End");
+	}
+
+	@Test(dataProvider = "ProviderForInquiries")
+	public void testForInputInquiryFormation(User reg, User user, Resource res) {
+		logger.debug("Start");
+
+		long countBefore = inquiryRepository.count() + 1;
+
+		inquiryService.addInputInquiry(user.getLogin(), res, reg);
+		Assert.assertEquals(countBefore, inquiryRepository.count());
+
+		logger.debug("End");
+	}
+
+	@Test(dataProvider = "ProviderForInquiries")
+	public void testForRemoveInquiry(User reg, User user, Resource res) {
+		logger.debug("Start");
+
+		Inquiry expected = new Inquiry(InquiryType.OUTPUT.toString(), date,
+				user, reg, res);
+
+		expected.setInquiryId(inquiryId++);
+		inquiryRepository.save(expected);
+
+		expected = inquiryRepository.getOne(expected.getInquiryId());
+
+		Assert.assertNotNull(expected);
+
+		inquiryService.removeInquiry(expected.getInquiryId());
+
+		Inquiry actual = inquiryRepository.getOne(expected.getInquiryId());
+		Assert.assertNull(actual);
+
+		logger.debug("End");
+	}
+		
 	@Test(dataProvider = "ProviderForInquiryListTests")
 	public void testForListInquiryUser(InquiryType inqT, User user) {
+		logger.debug("Start");
+
 		List<InquiryListDTO> expected = new ArrayList<InquiryListDTO>();
 		user = userRepository.findUserByLogin(user.getLogin());
 		InquiryListDTO inquiryListDTO;
-
-		logger.info("Testing the formation on Inquiry list, using(User, InquiryType): "
-				+ user.getLogin()
-				+ " ("
-				+ user.getRole()
-				+ "), "
-				+ inqT.toString());
 
 		List<Inquiry> inquiries;
 		if (user.getRole().getType().equals(RoleType.USER)) {
@@ -450,16 +487,19 @@ public class InquiryServiceTest {
 			Assert.assertEquals(comp0.getResourceStatus(),
 					comp1.getResourceStatus());
 		}
+		logger.debug("End");
 	}
 
 	@Test(dataProvider = "ProviderForListUserNameMethod")
 	public void testForListUserNameFormation(User user) {
+		logger.debug("Start");
+
 		User usr = userRepository.findUserByLogin(user.getLogin());
 		TerritorialCommunity tc = usr.getTerritorialCommunity();
 		List<User> registrators = userRepository.getUsersByRoleAndCommunity(
 				RoleType.REGISTRATOR, tc);
 
-		logger.info("Testing the formation of the UserNameDTO, builded using User obj: "
+		logger.debug("Testing the formation of the UserNameDTO, builded using User obj: "
 				+ user.getLogin());
 
 		List<UserNameDTO> expected = new ArrayList<UserNameDTO>(
@@ -477,76 +517,9 @@ public class InquiryServiceTest {
 		Assert.assertEquals(expected.size(), actual.size());
 		actual.removeAll(expected);
 		Assert.assertEquals(actual.size(), 0);
+
+		logger.debug("End");
 	}
 
-	@Test(dataProvider = "ProviderForInquiries")
-	public void testForOutputInquiryFormation(User reg, User user, Resource res) {
-		Inquiry expected = new Inquiry(InquiryType.OUTPUT.toString(), date,
-				user, reg, res), actual = inquiryService.addOutputInquiry(
-				res.getIdentifier(), reg.getLogin(), user.getLogin());
 
-		logger.info("Testing the formation the Output Inquiry, using(User registrator, User user, Resource): "
-				+ reg.getLogin()
-				+ " ("
-				+ reg.getRole()
-				+ "), "
-				+ user.getLogin()
-				+ " ("
-				+ user.getRole()
-				+ "), "
-				+ res.toString());
-
-		Assert.assertEquals(expected.getInquiryType(), actual.getInquiryType());
-		Assert.assertEquals(expected.getResource(), actual.getResource());
-		Assert.assertEquals(expected.getRegistrator(), actual.getRegistrator());
-		Assert.assertEquals(expected.getUser(), actual.getUser());
-	}
-
-	@Test(dataProvider = "ProviderForInquiries")
-	public void testForInputInquiryFormation(User reg, User user, Resource res) {
-		long countBefore = inquiryRepository.count() + 1;
-		logger.info("Testing the formation the Input Inquiry, using(User registrator, User user, Resource): "
-				+ reg.getLogin()
-				+ " ("
-				+ reg.getRole()
-				+ "), "
-				+ user.getLogin()
-				+ " ("
-				+ user.getRole()
-				+ "), "
-				+ res.toString());
-
-		inquiryService.addInputInquiry(user.getLogin(), res, reg);
-		Assert.assertEquals(countBefore, inquiryRepository.count());
-	}
-
-	Random rand = new Random();
-
-	@Test(dataProvider = "ProviderForInquiries")
-	public void testForRemoveInquiry(User reg, User user, Resource res) {
-		Inquiry expected = new Inquiry(InquiryType.OUTPUT.toString(), date,
-				user, reg, res);
-
-		logger.info("Testing the deletion the formed Inquiry, using(User registrator, User user, Resource): "
-				+ reg.getLogin()
-				+ " ("
-				+ reg.getRole()
-				+ "), "
-				+ user.getLogin()
-				+ " ("
-				+ user.getRole()
-				+ "), "
-				+ res.toString());
-
-		expected.setInquiryId(rand.nextInt(100));
-		inquiryRepository.save(expected);
-
-		expected = inquiryRepository.getOne(expected.getInquiryId());
-
-		Assert.assertNotNull(expected);
-
-		inquiryService.removeInquiry(expected.getInquiryId());
-		expected = inquiryRepository.getOne(expected.getInquiryId());
-		Assert.assertNull(expected);
-	}
 }
