@@ -6,9 +6,11 @@ import org.registrator.community.entity.DiscreteParameter;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceDiscreteValue;
 import org.registrator.community.service.ResourceDiscreteValueService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +25,9 @@ public class ResourceDiscreteValueServiceImpl implements ResourceDiscreteValueSe
 
     @Autowired
     private DiscreteParameterRepository discreteParameterRepository;
+
+    @Autowired
+    private Logger logger;
 
     @Override
     public List<ResourceDiscreteValue> findByResource(Resource resource) {
@@ -55,7 +60,7 @@ public class ResourceDiscreteValueServiceImpl implements ResourceDiscreteValueSe
                                                     Double searchValue) {
         long startTime = System.currentTimeMillis();
         DiscreteParameter discreteParameter = discreteParameterRepository.findByDiscreteParameterId(discreteParameterId);
-        System.out.println("============= discretePrameter created: "+ (System.currentTimeMillis() - startTime));
+        logger.info("============= discretePrameter created: "+ (System.currentTimeMillis() - startTime));
         Set<ResourceDiscreteValue> values = new HashSet<>();
         Set<String> identifiers = new HashSet<>();
 
@@ -66,7 +71,7 @@ public class ResourceDiscreteValueServiceImpl implements ResourceDiscreteValueSe
         } else {
             values.addAll(findAllByValueAndDiscreteParameter(searchValue, discreteParameter));
         }
-        System.out.println("============= values added: "+ (System.currentTimeMillis() - startTime));
+        logger.info("============= values added: "+ (System.currentTimeMillis() - startTime));
 
         for (ResourceDiscreteValue value : values) {
             identifiers.add(value.getResource().getIdentifier());

@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.UserRegistrationDTO;
-import org.registrator.community.dto.JSON.UserStatusDTOJSON;
+import org.registrator.community.dto.json.UserStatusJson;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
 
-	void changeUserStatus(UserStatusDTOJSON userStatusDto);
+	void changeUserStatus(UserStatusJson userStatusDto);
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
 	List<UserDTO> getAllRegistratedUsers();
 

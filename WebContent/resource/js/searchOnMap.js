@@ -319,26 +319,44 @@ function searchOnMapByArea(rectangle, page) {
 }
 
 function searchByParameters(page) {
+
+
     var json = new Object();
-    json.discreteParamsIds = [];
-    json.discreteParamsCompares = [];
-    json.discreteParamsValues = [];
-    json.linearParamsIds = [];
-    json.linearParamsValues = [];
+    json.discreteParameters = [];
+    json.linearParameters = [];
+
     json.resourceTypeId = $("#resourcesTypeSelect").val();
     json.page = page || 0;
 
     $("#dark_bg").show();
 
     $(".discreteParameter").each(function () {
-        json.discreteParamsIds.push($(this).attr("param_id"));
-        json.discreteParamsCompares.push($(this).find(".compare").val());
-        json.discreteParamsValues.push($(this).find(".value").val());
+        var id_param = $(this).attr("param_id");
+        var compare_sign = $(this).find(".compare").val();
+        var value = $(this).find(".value").val();
+        if (value) {
+            var node = new Object();
+            node.id = id_param;
+            node.compare = compare_sign;
+            node.value = value;
+            json.discreteParameters.push(node);
+
+        }
     });
 
+    var compare_sign = "linear";
     $(".linearParameter").each(function () {
-        json.linearParamsIds.push($(this).attr("param_id"));
-        json.linearParamsValues.push($(this).find(".value").val());
+        var id_param = $(this).attr("param_id");
+        var value = $(this).find(".value").val();
+        if (value) {
+
+            var node = new Object();
+            node.id = id_param;
+            node.compare = compare_sign;
+            node.value = value;
+            json.linearParameters.push(node);
+
+        }
     });
 
     $.ajax({
@@ -411,7 +429,7 @@ function createPolygons (json, page) {
     //Remove the old resource type filter buttons
     $("#resTypeFilter").html("");
 
-    if(json.polygons.length > 0) {
+    if(json.polygons!= undefined) {
         for (var i = 0; i < json.polygons.length; i++) {
 
             var polygonPath = [];
