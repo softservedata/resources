@@ -19,7 +19,7 @@ import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
-import org.registrator.community.dto.JSON.UserStatusDTOJSON;
+import org.registrator.community.dto.json.UserStatusJson;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
 import org.registrator.community.entity.ResourceNumber;
@@ -315,7 +315,7 @@ public class UserServiceTest {
 	@Test(dataProvider = "providerChangeUserStatus", dependsOnMethods={"findUserByLogin"})
 	public void changeUserStatus(String login, UserStatus status) {
 		log.info(START);
-		UserStatusDTOJSON userStatusDto = new UserStatusDTOJSON(login, status.toString());
+		UserStatusJson userStatusDto = new UserStatusJson(login, status.toString());
 		log.info(String.format("login: '%s', status: '%s'", login, status.toString()));
 		userService.changeUserStatus(userStatusDto);
 		Assert.assertEquals(userService.findUserByLogin(login).getStatus(), status);// correct data
