@@ -2,6 +2,7 @@ package org.registrator.community.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import org.mockito.InjectMocks;
@@ -10,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.registrator.community.dao.AddressRepository;
 import org.registrator.community.dao.PassportRepository;
 import org.registrator.community.dao.ResourceNumberRepository;
@@ -19,6 +21,8 @@ import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.UserDTO;
+import org.registrator.community.dto.UserRegistrationDTO;
+import org.registrator.community.dto.json.ResourceNumberJson;
 import org.registrator.community.dto.json.UserStatusJson;
 import org.registrator.community.entity.Address;
 import org.registrator.community.entity.PassportInfo;
@@ -51,29 +55,26 @@ public class UserServiceTest {
 	private static final String END = "End";
 
 	@InjectMocks
-	private static UserService userService = new UserServiceImpl();
+	private UserService userService = new UserServiceImpl();
 	@Mock
-	private static UserRepository userRepository;
+	private UserRepository userRepository;
 	@Mock
-	private static Logger logger;
+	private RoleRepository roleRepository;
 	@Mock
-	private static RoleRepository roleRepository;
+	private CommunityService communityService;
 	@Mock
-	private static CommunityService communityService;
+	private PassportRepository passportRepository;
 	@Mock
-	private static PassportRepository passportRepository;
+	private AddressRepository addressRepository;
 	@Mock
-	private static AddressRepository addressRepository;
+	private ResourceNumberRepository resourceNumberRepository;
 	@Mock
-	private static ResourceNumberRepository resourceNumberRepository;
+	private TomeRepository tomeRepository;
 	@Mock
-	private static TomeRepository tomeRepository;
-	@Mock
-	private static PasswordEncoder userPasswordEncoder;
+	private PasswordEncoder userPasswordEncoder;
 	
 	private List<User> fakeUserRepository = new ArrayList<User>();
 	private void mockUserRepository(){
-		//Mock our UserRepository
 		Mockito.when(userRepository.findUserByLogin(Mockito.anyString())).then(new Answer<User>() {
 			@Override
 			public User answer(InvocationOnMock invocation) throws Throwable {
@@ -171,28 +172,38 @@ public class UserServiceTest {
 			}
 		});
 	}
+	
+	private List<Tome> fakeTomeRepository = new ArrayList<Tome>();
+	private void mockTomeRepository(){
+		Mockito.when(tomeRepository.save(Mockito.any(Tome.class))).then(new Answer<Tome>() {
+			@Override
+			public Tome answer(InvocationOnMock invocation) throws Throwable {
+				fakeTomeRepository.add(invocation.getArgumentAt(0, Tome.class));
+				return invocation.getArgumentAt(0, Tome.class);
+			}
+		});
+	}
 
 	@BeforeMethod
-	public void init() {
-		logger = log;//give job to our real logger
+	public void beforeMethod() throws IllegalArgumentException, IllegalAccessException {
 		MockitoAnnotations.initMocks(this);
+		MemberModifier.field(userService.getClass(), "logger").set(userService, LoggerFactory.getLogger(UserServiceTest.class));
+
 		// initialize test data before each method
 		Role roleUser = new Role(RoleType.USER, "description");
 		Role roleRegistrator = new Role(RoleType.REGISTRATOR, "description");
 		Role roleCommissioner = new Role(RoleType.COMMISSIONER, "description");
 		Role roleAdmin = new Role(RoleType.ADMIN, "description");
-		fakeRoleRepository.add(roleUser);//id = 0
-		fakeRoleRepository.add(roleRegistrator);//id = 1
-		fakeRoleRepository.add(roleAdmin);//id = 2
-		fakeRoleRepository.add(roleCommissioner);//id = 3
+		// equal to enum ordinal
+		roleUser.setRoleId(0);
+		roleRegistrator.setRoleId(1);
+		roleAdmin.setRoleId(2);
+		roleCommissioner.setRoleId(3);
+		fakeRoleRepository.add(roleUser);
+		fakeRoleRepository.add(roleRegistrator);
+		fakeRoleRepository.add(roleAdmin);
+		fakeRoleRepository.add(roleCommissioner);
 		
-		TerritorialCommunity communityUkraine = new TerritorialCommunity();
-		TerritorialCommunity communityLviv = new TerritorialCommunity();
-		communityUkraine.setName("Україна");
-		communityLviv.setName("Львів");
-		fakeCommunityRepository.add(communityUkraine);
-		fakeCommunityRepository.add(communityLviv);
-
 		User user = new User("user", "user", roleUser, "Василь", "Труба", "Георгійович",
 				"vasul.tryba@gmail.com", UserStatus.ACTIVE.toString(), "09800000002");
 		User registrator = new User("registrator", "registrator", roleRegistrator, "Володимир",
@@ -206,6 +217,17 @@ public class UserServiceTest {
 		fakeUserRepository.add(commissioner);
 		fakeUserRepository.add(admin);
 		
+		TerritorialCommunity communityUkraine = new TerritorialCommunity();
+		TerritorialCommunity communityLviv = new TerritorialCommunity();
+		communityUkraine.setName("Україна");
+		communityLviv.setName("Львів");
+		user.setTerritorialCommunity(communityUkraine);
+		registrator.setTerritorialCommunity(communityUkraine);
+		commissioner.setTerritorialCommunity(communityUkraine);
+		admin.setTerritorialCommunity(communityUkraine);
+		fakeCommunityRepository.add(communityUkraine);
+		fakeCommunityRepository.add(communityLviv);
+
 		Address userAddress = new Address(user, "00000", "Львівська", "Галицький", "Львів", "Вітовського", "48", "31");
 		Address registratorAddress = new Address(registrator, "11111", "Львівська", "Личаківський", "Львів", "Княгині Ольги", "21", "12");
 		Address commissionerAddress = new Address(commissioner, "22222", "Київська", "Шевченківський", "Київ", "Т.Г.Шевченка", "13", "31");
@@ -218,13 +240,6 @@ public class UserServiceTest {
 		fakeAddressRepository.add(registratorAddress);
 		fakeAddressRepository.add(commissionerAddress);
 		fakeAddressRepository.add(adminAddress);
-		
-
-		user.setTerritorialCommunity(communityUkraine);
-		registrator.setTerritorialCommunity(communityUkraine);
-		commissioner.setTerritorialCommunity(communityUkraine);
-		admin.setTerritorialCommunity(communityUkraine);
-		
 		
 		PassportInfo userPassport = new PassportInfo(user, "AA", "00000", "Народом України");
 		PassportInfo registratorPassport = new PassportInfo(registrator, "ББ", "11111", "Народом України");
@@ -239,48 +254,54 @@ public class UserServiceTest {
 		fakePassportRepository.add(commissionerPassport);
 		fakePassportRepository.add(adminPassport);
 		
-		
 		user.setUserId(1);
 		registrator.setUserId(2);
 		admin.setUserId(3);
 		commissioner.setUserId(4);
 		
-		
-
 		mockUserRepository();
 		mockRoleRepository();
 		mockCommunityRepository();
 		mockAddressRepository();
 		mockPassportRepository();
+		mockTomeRepository();
 	}
 	
 	@AfterMethod
 	public void afterMethod(){
-		//clear fake repositories after each method
+		//clear fake repositories after each test method
 		fakeUserRepository.clear();
 		fakeRoleRepository.clear();
-		fakePassportRepository.clear();
+		fakeCommunityRepository.clear();
 		fakeAddressRepository.clear();
+		fakePassportRepository.clear();
+		fakeTomeRepository.clear();
 	}
 
 	/**
-	 * Unit Test of login functionality
+	 * Unit Test of function userService.login
+	 * @param login user name
+	 * @param password password
+	 * @param isPositive is expected test result positive
 	 */
 	@Test(dataProvider="providerLogin")
 	public void login(String login, String password, boolean isPositive) {
-		log.info(START);
-		log.info(String.format("credentials: Log:'%s' Pass:'%s'",login,password));
+		log.debug(START);
+		log.debug(String.format("credentials: Log:'%s' Pass:'%s'",login,password));
 		Assert.assertEquals(userService.login(login, password), isPositive);// correct
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of getting user by login functionality
+	 * Unit Test of function userService.getUserByLogin
+	 * @param login user name
+	 * @param expected expected User return value
+	 * @param isPositive is expected test result positive
 	 */
 	@Test(dataProvider="providerGetUserByLogin")
 	public void getUserByLogin(String login, User expected,  boolean isPositive) {
-		log.info(START);
-		log.info(String.format("login: %s [%s]", login, isPositive));
+		log.debug(START);
+		log.debug(String.format("login: %s [%s]", login, isPositive));
 		if(isPositive){
 			User actual = userService.getUserByLogin(login);
 			Assert.assertNotNull(actual);// correct data
@@ -288,57 +309,63 @@ public class UserServiceTest {
 		}else{
 			Assert.assertNull(userService.getUserByLogin(login));// incorrect data
 		}
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of finding user by login functionality (duplicate method of
-	 * previous one 'getUserByLogin')
+	 * Unit Test of function userService.findUserByLogin
+	 * @param login user name
+	 * @param expected expected User return value
+	 * @param isPositive is expected test result positive
 	 */
 	@Test(dataProvider="providerGetUserByLogin")
 	public void findUserByLogin(String login, User expected,  boolean isPositive) {
-		log.info(START);
-		log.info(String.format("login: %s [%s]", login, isPositive));
+		log.debug(START);
+		log.debug(String.format("login: %s [%s]", login, isPositive));
 		if(isPositive){
-			User actual = userService.getUserByLogin(login);
+			User actual = userService.findUserByLogin(login);
 			Assert.assertNotNull(actual);// correct data
 			assertEqualsUsers(actual, expected);
 		}else{
 			Assert.assertNull(userService.getUserByLogin(login));// incorrect data
 		}
-		log.info(END);
+		log.debug(END);
 	}
 
 	/**
-	 * Unit Test of changing user status functionality
+	 * Unit Test of function userService.changeUserStatus
+	 * @param login user name
+	 * @param status expected status
 	 */
 	@Test(dataProvider = "providerChangeUserStatus", dependsOnMethods={"findUserByLogin"})
 	public void changeUserStatus(String login, UserStatus status) {
-		log.info(START);
-		UserStatusJson userStatusDto = new UserStatusJson(login, status.toString());
-		log.info(String.format("login: '%s', status: '%s'", login, status.toString()));
-		userService.changeUserStatus(userStatusDto);
+		log.debug(START);
+		UserStatusJson userStatusJson = new UserStatusJson(login, status.toString());
+		log.debug(String.format("login: '%s', status: '%s'", login, status.toString()));
+		userService.changeUserStatus(userStatusJson);
 		Assert.assertEquals(userService.findUserByLogin(login).getStatus(), status);// correct data
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of changing user role functionality
+	 * Unit Test of function userService.changeUserRole
+	 * @param login user name
+	 * @param roleType expected role (id eq enum.ordinal)
 	 */
 	@Test(dataProvider = "providerChangeUserRole", dependsOnMethods = { "findUserByLogin" })
 	public void changeUserRole(String login, RoleType roleType) {
-		log.info(START);
+		log.debug(START);
 		userService.changeUserRole(login, roleType.ordinal());
 		Assert.assertEquals(userService.findUserByLogin(login).getRole().getType(), roleType);
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of editing user information functionality
+	 * Unit Test of function userService.editUserInformation
 	 */
 	@Test(dependsOnMethods = { "findUserByLogin" })
 	public void editUserInformation() {
-		log.info(START);
+		log.debug(START);
 		// test data
 		final UserDTO expected = new UserDTO("Петро", "Замоканий", "Афанасійович", RoleType.REGISTRATOR.toString(),
 				"user","petro@gmail.com", UserStatus.BLOCK.toString(), 
@@ -351,45 +378,45 @@ public class UserServiceTest {
 		//negative
 		Mockito.when(userRepository.findUserByLogin("user")).thenReturn(null);
 		Assert.assertNull(userService.editUserInformation(expected), "Saved null user");//
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of getting all statuses for registered users functionality
+	 * Unit Test of function userService.fillInUserStatusforRegistratedUsers
 	 * Registered user have statuses: ACTIVE, BLOCK
 	 */
 	@Test
 	public void fillInUserStatusforRegistratedUsers() {
-		log.info(START);
+		log.debug(START);
 		// test data
 		final List<UserStatus> expected = Arrays.asList(UserStatus.ACTIVE, UserStatus.BLOCK);
 		// test action
 		List<UserStatus> actual = userService.fillInUserStatusforRegistratedUsers();
 		Assert.assertTrue(actual.containsAll(expected) && expected.containsAll(actual));
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of getting all statuses for inactive users functionality
+	 * Unit Test of function userService.fillInUserStatusforInactiveUsers
 	 * Inactive user have status: ACTIVE, BLOCK, INACTIVE
 	 */
 	@Test
 	public void fillInUserStatusforInactiveUsers() {
-		log.info(START);
+		log.debug(START);
 		// test data
 		final List<UserStatus> expected = Arrays.asList(UserStatus.ACTIVE, UserStatus.BLOCK, UserStatus.INACTIVE);
 		// test action
 		List<UserStatus> actual = userService.fillInUserStatusforInactiveUsers();
 		Assert.assertTrue(actual.containsAll(expected) && expected.containsAll(actual));
-		log.info(END);
+		log.debug(END);
 	}
 
 	/**
-	 * Unit Test of getting complex information about all users functionality
+	 * Unit Test of function userService.getUserDtoList
 	 */
 	@Test
 	public void getUserDtoList() {
-		log.info(START);
+		log.debug(START);
 		//create expected result
 		List<UserDTO> expected = new ArrayList<UserDTO>();
 		for(int i=0;i<fakeUserRepository.size();i++){
@@ -407,15 +434,17 @@ public class UserServiceTest {
 				}
 			}
 		}
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of getting complex information about user functionality
+	 * Unit Test of function userService.getUserDto
+	 * @param login user name
+	 * @param isPositive is expected test result positive
 	 */
 	@Test(dataProvider="providerGetUserDto" ,dependsOnMethods = { "getUserByLogin" })
 	public void getUserDto(String login, boolean isPositive) {
-		log.info(START);
+		log.debug(START);
 		boolean exception = false;
 		UserDTO expected = createUserDto(login);
 		if(isPositive)
@@ -437,7 +466,7 @@ public class UserServiceTest {
 			Mockito.when(tomeRepository.findTomeByRegistrator(Mockito.any(User.class))).thenReturn(tom);
 			Mockito.when(resourceNumberRepository.findResourceNumberByUser(Mockito.any())).thenReturn(resourceNumber);
 			Assert.assertNotNull(userService.getUserDto("user"));
-			log.info(END);
+			log.debug(END);
 		}catch(NullPointerException e){
 			//for negative test we wait for exception
 			exception = true;
@@ -446,12 +475,12 @@ public class UserServiceTest {
 	}
 	
 	/**
-	 * Unit Test of getting all registered users functionality
+	 * Unit Test of function userService.getAllRegistratedUsers
 	 * @param logins logins of users, which status we'll change to inactive for test
 	 */
 	@Test(dataProvider="providerGetAllUsers", dependsOnMethods = { "findUserByLogin", "fillInUserStatusforRegistratedUsers" })
 	public void getAllRegistratedUsers(List<String> logins) {
-		log.info(START);
+		log.debug(START);
 		// prepare test data
 		for(String login: logins)
 			userService.findUserByLogin(login).setStatus(UserStatus.INACTIVE);
@@ -472,16 +501,16 @@ public class UserServiceTest {
 				if (actualDto.getLogin() == expectedDto.getLogin())
 					assertEqualsUsersDto(actualDto, expectedDto);
 		}
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of getting all inactive users functionality
+	 * Unit Test of function userService.getAllInactiveUsers
 	 * @param logins logins of users, which status we'll change to inactive for test
 	 */
 	@Test(dataProvider="providerGetAllUsers", dependsOnMethods = { "getUserDtoList" })
 	public void getAllInactiveUsers(List<String> logins) {
-		log.info(START);
+		log.debug(START);
 		// prepare test data
 		for(String login: logins){
 			userService.findUserByLogin(login).setStatus(UserStatus.INACTIVE);
@@ -502,25 +531,29 @@ public class UserServiceTest {
 				if (actualDto.getLogin() == expectedDto.getLogin())
 					assertEqualsUsersDto(actualDto, expectedDto);
 		}
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of check user on existing functionality
+	 * Unit Test of function userService.checkUsernameNotExistInDB
+	 * @param login user name
+	 * @param isExist is user exist in database
 	 */
 	@Test(dataProvider="providerGetUserDto")
 	public void checkUsernameNotExistInDB(String login, boolean isExist) {
-		log.info(START);
+		log.debug(START);
 		Assert.assertEquals(userService.checkUsernameNotExistInDB(login),!isExist,"");
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of getting user by search tag(last name *) functionality
+	 * Unit Test of function userService.getUserBySearchTag
+	 * @param registrator user with registrator role
+	 * @param searchTag part or full match of user last name in same TC
 	 */
 	@Test(dataProvider="providerGetUserBySearchTag", dependsOnMethods = { "getUserByLogin" })
 	public void getUserBySearchTag(User registrator, String searchTag) {
-		log.info(START);
+		log.debug(START);
 		// prepare expected
 		List<UserDTO> expected = new ArrayList<UserDTO>();
 		for(User user: fakeUserRepository)
@@ -546,29 +579,32 @@ public class UserServiceTest {
 			}
 		}
 		Assert.assertEquals(expected.isEmpty(), true);
-		log.info(END);
+		log.debug(END);
 	}
 	
 	/**
-	 * Unit Test of getting user by email functionality
+	 * Unit Test of function userService.findUserByEmail
+	 * @param expected expected User return value
+	 * @param login user name
+	 * @param isPositive is expected test result positive
 	 */
 	@Test(dataProvider="providerGetUserByEmail")
 	public void findUserByEmail(User expected, String login, boolean isPositive) {
-		log.info(START);
+		log.debug(START);
 		User actual = userService.findUserByEmail(login);
 		if(isPositive)
 			assertEqualsUsers(actual, expected);
 		else
 			Assert.assertEquals(actual, expected);
-		log.info(END);
+		log.debug(END);
 	}
 
 	/**
-	 * Unit Test of incrementing fail attempts functionality
+	 * Unit Test of function userService.updateFailAttempts
 	 */
 	@Test
 	public void updateFailAttempts() {
-		log.info(START);
+		log.debug(START);
 		// test data
 		User user = fakeUserRepository.get(0);
 		int expected = user.getAttempts()+1;
@@ -580,14 +616,155 @@ public class UserServiceTest {
 		user.setAttempts(expected-1);
 		userService.updateFailAttempts(user.getLogin());
 		Assert.assertEquals(user.getAttempts(), expected);
-		log.info(END);
+		log.debug(END);
 	}
 	
-	
+	/**
+	 * Unit Test of function userService.resetFailAttempts
+	 */
+	@Test(dataProvider="providerResetFailAttempts")
+	public void resetFailAttempts(String login, int attempts) {
+		log.debug(START);
+		// test data, we will change data directly in fake repo
+		User testUser = null;
+		for(User user: fakeUserRepository){
+			if(login==user.getLogin()){
+				testUser = user;
+				break;
+			}
+		}
+		testUser.setAttempts(2);
+		int expected = 0;
+		// test action
+		userService.resetFailAttempts(login);
+		Assert.assertEquals(testUser.getAttempts(), expected);
+		log.debug(END);
+	}
+
+	/**
+	 * Unit Test of function userService.resetAllFailAttempts
+	 */
+	@Test
+	public void resetAllFailAttempts() {
+		log.debug(START);
+		// test data
+		final int expected = 0;
+		for(int i=0;i<fakeUserRepository.size();i++)
+			fakeUserRepository.get(i).setAttempts(i);
+		// test action
+		userService.resetAllFailAttempts();
+		for(int i=0;i<fakeUserRepository.size();i++)
+			Assert.assertEquals(fakeUserRepository.get(i).getAttempts(), expected, String.format("Fail attempts not reseted in user '%s'", fakeUserRepository.get(i).getLogin()));
+		log.debug(END);
+	}
+
+	/**
+	 * Unit Test of function userService.resetAllFailAttempts
+	 */
+	@Test
+	public void registerUser() {
+		log.debug(START);
+		// test data
+		UserRegistrationDTO registrationForm = new UserRegistrationDTO();
+		registrationForm.setAddress(new AddressDTO("06060","Львівська","Галицький","Львів","Вітовського",
+        		"55","22"));
+		registrationForm.setConfirmPassword("pikaso");
+		registrationForm.setDateOfAccession(Calendar.getInstance().getTime());
+		registrationForm.setEmail("pikaso@gmail.com");
+		registrationForm.setFirstName("Іван");
+		registrationForm.setLastName("Сидор");
+		registrationForm.setLogin("pikaso");
+		registrationForm.setMiddleName("Сергійович");
+		registrationForm.setPassport(new PassportDTO("AA","00600","Народом України"));
+		registrationForm.setPassword("pikaso");
+		registrationForm.setPhoneNumber("0950000000");
+		registrationForm.setTerritorialCommunity("Україна");
+		// test action
+		boolean isPassportOk=false, isAddressOk = false;
+		userService.registerUser(registrationForm);
+		for(User user : fakeUserRepository){
+			if(user.getLogin()==registrationForm.getLogin()){
+				Assert.assertEquals(user.getLogin(), registrationForm.getLogin());
+				Assert.assertEquals(user.getEmail(), registrationForm.getEmail());
+				Assert.assertEquals(user.getFirstName(), registrationForm.getFirstName());
+				Assert.assertEquals(user.getLastName(), registrationForm.getLastName());
+				Assert.assertEquals(user.getMiddleName(), registrationForm.getMiddleName());
+				Assert.assertEquals(user.getPhoneNumber(), registrationForm.getPhoneNumber());
+				Assert.assertEquals(user.getTerritorialCommunity().getName(), registrationForm.getTerritorialCommunity());
+				for(Address address: fakeAddressRepository){
+					if(address.getUser().getLogin()==user.getLogin()){
+						Assert.assertEquals(address.getBuilding(), registrationForm.getAddress().getBuilding());
+						Assert.assertEquals(address.getCity(), registrationForm.getAddress().getCity());
+						Assert.assertEquals(address.getDistrict(), registrationForm.getAddress().getDistrict());
+						Assert.assertEquals(address.getFlat(), registrationForm.getAddress().getFlat());
+						Assert.assertEquals(address.getPostCode(), registrationForm.getAddress().getPostcode());
+						Assert.assertEquals(address.getRegion(), registrationForm.getAddress().getRegion());
+						Assert.assertEquals(address.getStreet(), registrationForm.getAddress().getStreet());
+						isAddressOk=true;
+						break;
+					}
+				}
+				for(PassportInfo passport: fakePassportRepository){
+					if(passport.getUser().getLogin()==user.getLogin()){
+						Assert.assertEquals(passport.getNumber(), registrationForm.getPassport().getNumber());
+						Assert.assertEquals(passport.getPublishedByData(), registrationForm.getPassport().getPublished_by_data());
+						Assert.assertEquals(passport.getSeria(), registrationForm.getPassport().getSeria());
+						isPassportOk=true;
+						break;
+					}
+				}
+				break;
+			}
+		}
+		Assert.assertTrue(isAddressOk,"Address not saved");
+		Assert.assertTrue(isPassportOk,"Passport not saved");
+		log.debug(END);
+	}
+
+
+	/**
+	 * Unit Test of function userService.CreateTomeAndRecourceNumber
+	 */
+	@Test
+	public void CreateTomeAndRecourceNumber() {
+		log.debug(START);
+		// test data
+		UserDTO userDto = new UserDTO(fakeUserRepository.get(0).getFirstName(), fakeUserRepository.get(0).getLastName(), fakeUserRepository.get(0).getMiddleName(),
+				fakeUserRepository.get(0).getRole().getType().toString(), fakeUserRepository.get(0).getLogin(), fakeUserRepository.get(0).getEmail(), fakeUserRepository.get(0).getStatus().toString(),
+				new AddressDTO(fakeUserRepository.get(0).getAddress().get(fakeUserRepository.get(0).getAddress().size() - 1).getPostCode(),
+						fakeUserRepository.get(0).getAddress().get(fakeUserRepository.get(0).getAddress().size() - 1).getRegion(),
+						fakeUserRepository.get(0).getAddress().get(fakeUserRepository.get(0).getAddress().size() - 1).getDistrict(),
+						fakeUserRepository.get(0).getAddress().get(fakeUserRepository.get(0).getAddress().size() - 1).getCity(),
+						fakeUserRepository.get(0).getAddress().get(fakeUserRepository.get(0).getAddress().size() - 1).getStreet(),
+						fakeUserRepository.get(0).getAddress().get(fakeUserRepository.get(0).getAddress().size() - 1).getBuilding(),
+						fakeUserRepository.get(0).getAddress().get(fakeUserRepository.get(0).getAddress().size() - 1).getFlat()),
+				new PassportDTO(fakeUserRepository.get(0).getPassport().get(fakeUserRepository.get(0).getPassport().size() - 1).getSeria(),
+						fakeUserRepository.get(0).getPassport().get(fakeUserRepository.get(0).getPassport().size() - 1).getNumber(),
+						fakeUserRepository.get(0).getPassport().get(fakeUserRepository.get(0).getPassport().size() - 1).getPublishedByData()));
+		final String expected = "1";
+		final String expectedLogin = fakeUserRepository.get(0).getLogin();
+		ResourceNumberJson resourceNumberDtoJson = new ResourceNumberJson(expected, expected, expected);
+		resourceNumberDtoJson.setLogin(expectedLogin);
+		resourceNumberDtoJson = Mockito.spy(resourceNumberDtoJson);
+		userDto.setResourceNumberJson(resourceNumberDtoJson);
+		// test action
+		userService.CreateTomeAndRecourceNumber(userDto);// entered
+		Assert.assertNotNull(fakeTomeRepository.get(0));
+		Assert.assertEquals(fakeTomeRepository.get(0).getIdentifier(), expected);
+		Assert.assertEquals(fakeTomeRepository.get(0).getRegistrator().getLogin(), expectedLogin);
+		/*
+		fakeTomeRepository.clear();
+		userDto.setResourceNumberDTOJSON(null);
+		userService.CreateTomeAndRecourceNumber(userDto);// exception
+		Assert.assertTrue(fakeTomeRepository.isEmpty());
+		*/
+		log.debug(END);
+	}
+
+
 	
 	/**
-	 * Data for UserService.providerTestLogin();
-	 * positive & negative
+	 * Data for userService.login
 	 */
 	@DataProvider
 	public static Object[][] providerLogin() {
@@ -600,8 +777,8 @@ public class UserServiceTest {
     }
 	
 	/**
-	 * Data for UserService.testGetUserByLogin();
-	 * positive & negative
+	 * Data for userService.getUserByLogin
+	 *  and userService.findUserByLogin
 	 */
 	@DataProvider
 	public static Object[][] providerGetUserByLogin() {
@@ -622,8 +799,7 @@ public class UserServiceTest {
     }
 	
 	/**
-	 * Data for UserService.testChangeUserStatus();
-	 * positive
+	 * Data for userService.changeUserStatus
 	 */
 	@DataProvider
 	public static Object[][] providerChangeUserStatus() {
@@ -638,8 +814,7 @@ public class UserServiceTest {
     }
 	
 	/**
-	 * Data for UserService.testChangeUserRole();
-	 * positive
+	 * Data for userService.changeUserRole
 	 */
 	@DataProvider
 	public static Object[][] providerChangeUserRole() {
@@ -653,7 +828,8 @@ public class UserServiceTest {
     }
 	
 	/**
-	 * Data for UserService.getAllInactiveUsers()/getAllRegisteredUsers();
+	 * Data for userService.getAllInactiveUsers
+	 *  and userService.getAllRegisteredUsers
 	 */
 	@DataProvider
 	public static Object[][] providerGetAllUsers() {
@@ -666,7 +842,7 @@ public class UserServiceTest {
     }
 	
 	/**
-	 * Data for UserService.getUserDto();
+	 * Data for userService.getUserDto
 	 */
 	@DataProvider
 	public static Object[][] providerGetUserDto() {
@@ -677,7 +853,7 @@ public class UserServiceTest {
     }
 	
 	/**
-	 * Data for UserService.getUserBySearchTag;
+	 * Data for userService.getUserBySearchTag
 	 */
 	@DataProvider
 	public static Object[][] providerGetUserBySearchTag() {
@@ -692,7 +868,7 @@ public class UserServiceTest {
     }
 	
 	/**
-	 * Data for UserService.getUserBySearchTag;
+	 * Data for userService.getUserByEmail
 	 */
 	@DataProvider
 	public static Object[][] providerGetUserByEmail() {
@@ -711,7 +887,22 @@ public class UserServiceTest {
 		return new Object[][] { {user,user.getEmail(), true}, {null, "notmy@gmail.com", false} };
     }
 	
-
+	/**
+	 * Data for userService.resetFailAttempts;
+	 */
+	@DataProvider
+	public static Object[][] providerResetFailAttempts() {
+		return new Object[][] { 
+				{"user",1}, {"admin",2}, 
+				{"registrator",0}, {"commissioner",3}, 
+			};
+    }
+	
+	/**
+	 * TESTNG Compare of two Users objects 
+	 * @param actual actual user object
+	 * @param expected expected user object
+	 */
 	private void assertEqualsUsers(User actual, User expected) {
 		Assert.assertEquals(actual.getLogin(), expected.getLogin(), "Different login");
 		Assert.assertEquals(actual.getEmail(), expected.getEmail(), "Different email");
@@ -741,6 +932,11 @@ public class UserServiceTest {
 		}
 	}
 	
+	/**
+	 * TESTNG Compare of two UserDTOs objects 
+	 * @param actual actual userDto object
+	 * @param expected expected userDto object
+	 */
 	private void assertEqualsUsersDto(UserDTO actual, UserDTO expected) {
 		Assert.assertEquals(actual.getLogin(), expected.getLogin());
 		Assert.assertEquals(actual.getEmail(), expected.getEmail());
@@ -764,7 +960,7 @@ public class UserServiceTest {
 	}
 
 	/**
-	 * Form UserDTO from user.login
+	 * Create UserDTO from user.login
 	 * @param login user name
 	 * @return userDTO, else null if user with 'login' don't exist
 	 */
