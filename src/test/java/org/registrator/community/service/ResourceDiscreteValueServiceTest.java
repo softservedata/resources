@@ -47,8 +47,6 @@ public class ResourceDiscreteValueServiceTest {
     @Mock(answer = Answers.RETURNS_SMART_NULLS)
     private DiscreteParameterRepository parameterRepository;
 
-    private static final String BEGIN = "begin test";
-    private static final String END = "end test";
     private static final double VALUE_SEARCH = 47.0;
     private static final Integer ID_PARAMETER = 47;
 
@@ -63,9 +61,6 @@ public class ResourceDiscreteValueServiceTest {
         MockitoAnnotations.initMocks(this);
 
         logger = LoggerFactory.getLogger("");
-        MemberModifier
-                .field(ResourceDiscreteValueServiceImpl.class, "logger")
-                .set(valueService, logger);
 
         when(parameterRepository.findByDiscreteParameterId(ID_PARAMETER)).thenReturn(parameter);
 
@@ -80,7 +75,6 @@ public class ResourceDiscreteValueServiceTest {
 
     @Test
     public void findByResource() throws Exception {
-        logger.debug(BEGIN);
         List<ResourceDiscreteValue> expected = asList(resourceValue);
         when(valueRepository.findByResource(resource)).thenReturn(expected);
 
@@ -88,13 +82,11 @@ public class ResourceDiscreteValueServiceTest {
 
         verify(valueRepository, times(1)).findByResource(resource);
         assertEquals(actual, expected);
-        logger.debug(END);
     }
 
 
     @Test
     public void findAllByDiscreteParameter() throws Exception {
-        logger.debug(BEGIN);
         List<ResourceDiscreteValue> expected = asList(resourceValue);
         when(valueRepository.findAllByDiscreteParameter(parameter)).thenReturn(expected);
 
@@ -102,12 +94,12 @@ public class ResourceDiscreteValueServiceTest {
 
         verify(valueRepository, times(1)).findAllByDiscreteParameter(parameter);
         assertEquals(actual, expected);
-        logger.debug(END);
+
     }
 
     @Test
     public void findAllByValueAndDiscreteParameter() throws Exception {
-        logger.debug(BEGIN);
+        
         List<ResourceDiscreteValue> expected =  asList(resourceValue);
         when(valueRepository.findAllByValueAndDiscreteParameter(VALUE_SEARCH, parameter)).thenReturn(expected);
 
@@ -115,12 +107,12 @@ public class ResourceDiscreteValueServiceTest {
                 valueService.findAllByValueAndDiscreteParameter(VALUE_SEARCH, parameter);
         verify(valueRepository, times(1)).findAllByValueAndDiscreteParameter(VALUE_SEARCH, parameter);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
     @Test
     public void findAllByBiggerValueAndDiscreteParameter() throws Exception {
-        logger.debug(BEGIN);
+        
         List<ResourceDiscreteValue> expected =  asList(resourceValue);
         when(valueRepository.findAllByBiggerValueAndDiscreteParameter(VALUE_SEARCH, parameter)).thenReturn(expected);
 
@@ -128,12 +120,12 @@ public class ResourceDiscreteValueServiceTest {
                 valueService.findAllByBiggerValueAndDiscreteParameter(VALUE_SEARCH, parameter);
         verify(valueRepository, times(1)).findAllByBiggerValueAndDiscreteParameter(VALUE_SEARCH, parameter);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
     @Test
     public void findAllBySmallerValueAndDiscreteParameter() throws Exception {
-        logger.debug(BEGIN);
+        
 
         List<ResourceDiscreteValue> expected =  asList(resourceValue);
         when(valueRepository.findAllBySmallerValueAndDiscreteParameter(VALUE_SEARCH, parameter)).thenReturn(expected);
@@ -142,13 +134,13 @@ public class ResourceDiscreteValueServiceTest {
                 valueService.findAllBySmallerValueAndDiscreteParameter(VALUE_SEARCH, parameter);
         verify(valueRepository, times(1)).findAllBySmallerValueAndDiscreteParameter(VALUE_SEARCH, parameter);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
 
     @Test
     public void findResourcesbyDiscreteParamLess() throws Exception {
-        logger.debug(BEGIN);
+        
 
         List<ResourceDiscreteValue> resourceDiscreteValues =  asList(resourceValue);
         when(valueRepository.findAllBySmallerValueAndDiscreteParameter(VALUE_SEARCH, parameter))
@@ -164,12 +156,12 @@ public class ResourceDiscreteValueServiceTest {
         verify(valueRepository, times(1)).findAllBySmallerValueAndDiscreteParameter(eq(VALUE_SEARCH), any());
         assertEquals(actual, expected);
 
-        logger.debug(END);
+        
     }
 
     @Test
     public void findResourcesbyDiscreteParamGreater() throws Exception {
-        logger.debug(BEGIN);
+        
 
         List<ResourceDiscreteValue> resourceDiscreteValues =  asList(resourceValue);
         when(valueRepository.findAllByBiggerValueAndDiscreteParameter(VALUE_SEARCH, parameter))
@@ -185,12 +177,12 @@ public class ResourceDiscreteValueServiceTest {
         verify(valueRepository, times(1)).findAllByBiggerValueAndDiscreteParameter(eq(VALUE_SEARCH), any());
         assertEquals(actual, expected);
 
-        logger.debug(END);
+        
     }
 
     @Test
     public void findResourcesbyDiscreteParamEqual() throws Exception {
-        logger.debug(BEGIN);
+        
 
         List<ResourceDiscreteValue> resourceDiscreteValues =  asList(resourceValue);
         when(valueRepository.findAllByValueAndDiscreteParameter(VALUE_SEARCH, parameter))
@@ -206,7 +198,7 @@ public class ResourceDiscreteValueServiceTest {
         verify(valueRepository, times(1)).findAllByValueAndDiscreteParameter(eq(VALUE_SEARCH), any());
         assertEquals(actual, expected);
 
-        logger.debug(END);
+        
     }
 
     @Test(dataProvider = "findParamsProvider")
@@ -215,7 +207,7 @@ public class ResourceDiscreteValueServiceTest {
     		List<String> compareSignList, 
     		List<Double> valuesList) throws Exception {
     	
-        logger.debug(BEGIN);
+        
         List<ResourceDiscreteValue> resourceDiscreteValues =  asList(resourceValue);
         when(valueRepository.findAllBySmallerValueAndDiscreteParameter(VALUE_SEARCH, parameter))
                 .thenReturn(resourceDiscreteValues);

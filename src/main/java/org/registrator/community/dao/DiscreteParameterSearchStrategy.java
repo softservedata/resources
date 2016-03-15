@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Strategy to add Criteria joins and restrictions for searching resources by discrete parameters
@@ -30,10 +31,11 @@ public class DiscreteParameterSearchStrategy implements ResourceSearchStrategy {
      *
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void addCriteriaRestriction(List<ResourceSearchParameterJson> parameters,
                                        CriteriaQuery<Resource> selection) {
 
-        Root<?> criteriaRoot = selection.getRoots().iterator().next();
+        Root<Resource> criteriaRoot = (Root<Resource>) selection.getRoots().iterator().next();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         for (ResourceSearchParameterJson parameter : parameters) {

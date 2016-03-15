@@ -66,7 +66,7 @@ public class ResourceLinearValueServiceTest{
 
     @Test
     public void findByResource() throws Exception {
-        logger.debug(BEGIN);
+        
         List<ResourceLinearValue> expected = asList(resourceValue);
         when(valueRepository.findByResource(resource)).thenReturn(expected);
 
@@ -74,12 +74,12 @@ public class ResourceLinearValueServiceTest{
 
         verify(valueRepository, times(1)).findByResource(resource);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
     @Test
     public void findAllByLinearParameter() throws Exception {
-        logger.debug(BEGIN);
+        
         List<ResourceLinearValue> expected = asList(resourceValue);
         when(valueRepository.findAllByLinearParameter(parameter)).thenReturn(expected);
 
@@ -87,12 +87,12 @@ public class ResourceLinearValueServiceTest{
 
         verify(valueRepository, times(1)).findAllByLinearParameter(parameter);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
     @Test
     public void findAllByValueAndLinearParameter() throws Exception {
-        logger.debug(BEGIN);
+        
         List<ResourceLinearValue> expected =  asList(resourceValue);
         when(valueRepository.findByValueAndLinearParameterId(VALUE_SEARCH, parameter)).thenReturn(expected);
 
@@ -100,12 +100,12 @@ public class ResourceLinearValueServiceTest{
                 valueService.findAllByValueAndLinearParameter(VALUE_SEARCH, parameter);
         verify(valueRepository, times(1)).findByValueAndLinearParameterId(VALUE_SEARCH, parameter);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
     @Test
     public void findResourcesbyLinearParam() throws Exception {
-        logger.debug(BEGIN);
+        
         String identifier = "test";
         Resource resource = mock(Resource.class);
         when(resource.getIdentifier()).thenReturn(identifier);
@@ -122,13 +122,13 @@ public class ResourceLinearValueServiceTest{
             valueService.findResourcesbyLinearParam(ID_PARAMETER, VALUE_SEARCH);
         verify(parameterRepository, times(1)).findByLinearParameterId(ID_PARAMETER);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
 
     }
 
     @Test
     public void findResourcesByLinParamList() {
-        logger.debug(BEGIN);
+        
 
 
         String identifier = "test";
@@ -165,7 +165,7 @@ public class ResourceLinearValueServiceTest{
 
         assertEquals(actual, expected);
 
-        logger.debug(END);
+        
     }
 
 

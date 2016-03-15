@@ -189,7 +189,7 @@ public class ResourceServiceTest   {
     
     @Test
     public void findResourceByIdentifierValidId() {
-        logger.debug(BEGIN);
+        
         when(resourceRepository.findByIdentifier(validID)).thenReturn(validResource);
 
         ResourceLinearValue excludedLinear = mock(ResourceLinearValue.class, RETURNS_MOCKS);
@@ -204,29 +204,29 @@ public class ResourceServiceTest   {
 
         ResourceDTO resourceDTO = resourceService.findByIdentifier(validID);
         assertEquals(resourceDTO.getIdentifier(), validID, "Find by valid ID should return valid ResourceDTO");
-        logger.debug(END);
+        
     }
 
     @Test
     public void findResourceByIdentifierNonValidId() {
-        logger.debug(BEGIN);
+        
         ResourceDTO resourceDTO = resourceService.findByIdentifier(nonValidID);
 
         assertTrue(resourceDTO == null, "Find by non valid ID should return null");
-        logger.debug(END);
+        
     }
 
     @Test
     public void findResourceByIdentifierNullId() {
-        logger.debug(BEGIN);
+        
         ResourceDTO resourceDTO = resourceService.findByIdentifier(null);
         assertTrue(resourceDTO == null, "Find by null should return null");
-        logger.debug(END);
+        
     }
 
     @Test(dependsOnMethods = {"findResourceByIdentifierValidId"})
     public void addNewResourceValid() {
-        logger.debug(BEGIN);
+        
     	// ResourceServiceImpl use findByIdentifier internally to return created resource
     	// stubbing this behavior
         resourceService = spy(resourceService);
@@ -241,13 +241,13 @@ public class ResourceServiceTest   {
         ResourceDTO result = resourceService.addNewResource(validResourceDTO, ownerLogin, registrator);
         assertEquals(result.getIdentifier(), validResourceDTO.getIdentifier(), "Creation of valid Resource should be successful");
         verify(inquiryService, times(1)).addInputInquiry(same(ownerLogin), any(), same(registrator));
-        logger.debug(END);
+        
     }
 
     @Test(dependsOnMethods = {"findResourceByIdentifierValidId", "addNewResourceValid"})
     @SuppressWarnings("unchecked")
     public void addNewResourceCheckSaveResourceParameters() {
-        logger.debug(BEGIN);
+        
         resourceService = spy(resourceService);
         doReturn(validResourceDTO).when(resourceService).findByIdentifier(validID);
         when(resourceRepository.save(any(Resource.class))).thenReturn(validResource);
@@ -268,12 +268,12 @@ public class ResourceServiceTest   {
         verify(polygonRepository, atLeast(1)).save(any(Polygon.class));
         verify(linearValueRepository, times(1)).save(any(List.class));
         verify(discreteValueRepository, times(1)).save(any(List.class));
-        logger.debug(END);
+        
     }
 
     @Test(dependsOnMethods = {"findResourceByIdentifierValidId", "addNewResourceValid"})
     public void addNewResourceEmptyOwner() {
-        logger.debug(BEGIN);
+        
         resourceService = spy(resourceService);
         doReturn(validResourceDTO).when(resourceService).findByIdentifier(validID);
         when(resourceRepository.save(any(Resource.class))).thenReturn(validResource);
@@ -281,13 +281,13 @@ public class ResourceServiceTest   {
         ResourceDTO result = resourceService.addNewResource(validResourceDTO, ownerLogin, registrator);
         assertEquals(result.getIdentifier(), validResourceDTO.getIdentifier(), "Creation Resource with empty owner should be successful");
         verify(inquiryService, times(0)).addInputInquiry(same(ownerLogin), any(), same(registrator));
-        logger.debug(END);
+        
     }
     
     
     @Test(dependsOnMethods = {"findResourceByIdentifierValidId", "addNewResourceValid"})
     public void addNewResourceIncrementRegistrationNumber() {
-        logger.debug(BEGIN);
+        
         resourceService = spy(resourceService);
         doReturn(validResourceDTO).when(resourceService).findByIdentifier(validID);
         when(resourceRepository.save(any(Resource.class))).thenReturn(validResource);
@@ -305,22 +305,22 @@ public class ResourceServiceTest   {
         assertEquals(result.getIdentifier(), validResourceDTO.getIdentifier(), "Creation Resource with empty owner should be successful");
         verify(inquiryService, times(0)).addInputInquiry(same(ownerLogin), any(), same(registrator));
         verify(resourceNumber, times(1)).setNumber(same(number + 1));
-        logger.debug(END);
+        
     }
 
     @Test
     public void count() {
-        logger.debug(BEGIN);
+        
     	long expected = 100L;
     	when (resourceRepository.count()).thenAnswer(invocation -> expected);
     	long actual = resourceService.count();
     	assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
     @Test(dataProvider = "numbersToString")
     public void getRegistrationNumber(Integer number, String numberRepresentaion) {
-        logger.debug(BEGIN);
+        
         String registarionNumber = "test";
         ResourceNumber resourceNumber = mock(ResourceNumber.class);
         when(resourceNumber.getNumber()).thenReturn(number);
@@ -331,13 +331,13 @@ public class ResourceServiceTest   {
         String result = resourceService.getRegistrationNumber(registratorLogin);
 
         assertEquals(result, registarionNumber + numberRepresentaion);
-        logger.debug(END);
+        
     }
 
 
     @Test
     public void createPolygonJSON() {
-        logger.debug(BEGIN);
+        
         List<PolygonJson> result = resourceService.createPolygonJSON(validResource, 0);
 
         assertEquals(result.size(), 1);
@@ -345,37 +345,37 @@ public class ResourceServiceTest   {
         assertEquals(polygonJson.getResourceType(), testTypeResource);
         assertEquals(polygonJson.getIdentifier(), validID);
 
-        logger.debug(END);
+        
     }
 
     @Test
     void findByTypeUseRepository() {
-        logger.debug(BEGIN);
+        
         ResourceType resourceType = mock(ResourceType.class);
         List<Resource> expected = asList(validResource);
         when(resourceRepository.findByType(resourceType)).thenReturn(expected);
         List<Resource> actual = resourceService.findByType(resourceType);
         assertEquals(actual, expected);
         verify(resourceRepository, times(1)).findByType(any());
-        logger.debug(END);
+        
     }
 
     @Test
     void getDescriptionBySearchTagUseRepository() {
-        logger.debug(BEGIN);
+        
         String queryParam = "testString";
         Set<String> expected = Collections.emptySet();
         when(resourceRepository.findDescriptionsLikeProposed(queryParam)).thenReturn(expected);
         Set<String> actual = resourceService.getDescriptionBySearchTag(queryParam);
         verify(resourceRepository, times(1)).findDescriptionsLikeProposed(queryParam);
         assertEquals(actual, expected);
-        logger.debug(END);
+        
     }
 
 
     @Test
     void getAllByAreaLimitsAllResources() {
-        logger.debug(BEGIN);
+        
 
         double minLat = randomDouble(MIN_LAT, MAX_LAT);
         double maxLat = randomDouble(minLat, MAX_LAT);
@@ -394,13 +394,13 @@ public class ResourceServiceTest   {
         	findByLimits(eq(minLat), eq(maxLat), eq(minLon), eq(maxLon), any(Pageable.class));
         assertEquals(actual, expected);
 
-        logger.debug(END);
+        
     }
 
     @Test
     void getAllByAreaLimitsByResourceType() {
 
-        logger.debug(BEGIN);
+        
         double minLat = randomDouble(MIN_LAT, MAX_LAT);
         double maxLat = randomDouble(minLat, MAX_LAT);
         double minLon = randomDouble(MIN_LON, MAX_LON);
@@ -420,13 +420,13 @@ public class ResourceServiceTest   {
         assertEquals(actual, expected);
         verify(polygonRepository, times(1)).
                 findByLimits(eq(minLat), eq(maxLat), eq(minLon), eq(maxLon), any(Pageable.class));
-        logger.debug(END);
+        
     }
 
 
     @Test
     void getAllByPointUseRepository() {
-        logger.debug(BEGIN);
+        
         double lat = randomDouble(MIN_LAT, MAX_LAT);
         double lon = randomDouble(MIN_LON, MAX_LON);
 
@@ -439,12 +439,12 @@ public class ResourceServiceTest   {
 
         assertEquals(actual, expected);
         verify(polygonRepository, times(1)).findByPoint(eq(lat), eq(lon), any(Pageable.class));
-        logger.debug(END);
+        
     }
 
     @Test
     void countAllByAreaLimitsUseRepository() {
-        logger.debug(BEGIN);
+        
 
         double minLat = randomDouble(MIN_LAT, MAX_LAT);
         double maxLat = randomDouble(minLat, MAX_LAT);
@@ -457,12 +457,12 @@ public class ResourceServiceTest   {
         assertEquals(actual, expected);
         verify(polygonRepository, times(1)).countByLimits(minLat, maxLat, minLon, maxLon);
 
-        logger.debug(END);
+        
     }
 
     @Test
     void countAllByPointUseRepository() {
-        logger.debug(BEGIN);
+        
         double lat = randomDouble(MIN_LAT, MAX_LAT);
         double lon = randomDouble(MIN_LON, MAX_LON);
 
@@ -473,7 +473,7 @@ public class ResourceServiceTest   {
 
         assertEquals(actual, expected);
         verify(polygonRepository, times(1)).countByPoint(lat, lon);
-        logger.debug(END);
+        
     }
 
     @DataProvider
