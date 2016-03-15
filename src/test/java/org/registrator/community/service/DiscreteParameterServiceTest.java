@@ -22,7 +22,6 @@ import org.testng.annotations.Test;
 
 public class DiscreteParameterServiceTest {
 
-	private Logger testLogger = LoggerFactory.getLogger(DiscreteParameterServiceTest.class);
 
 	// test data
 	private final Integer ID = 1;
@@ -49,31 +48,20 @@ public class DiscreteParameterServiceTest {
 		dp.setDiscreteParameterId(ID);
 	}
 
-	@BeforeClass
-	public void startClass() {
-		testLogger.info("Start: DiscreteParameterServiceTest");
-	}
-
-	@AfterClass
-	public void endClass() {
-		testLogger.info("End: DiscreteParameterServiceTest");
-	}
+	
 
 	@Test
 	public void findById() {
-		testLogger.info("start");
 		Mockito.when(discreteParameterRepository.findByDiscreteParameterId(ID)).thenReturn(dp);
 		Assert.assertEquals(discreteParameterService.findById(ID).getDiscreteParameterId(), ID);
 		Assert.assertEquals(discreteParameterService.findById(ID).getResourceType().getTypeId(), ID);
 		Assert.assertEquals(discreteParameterService.findById(ID).getResourceType().getTypeName(), TYPENAME);
 		Assert.assertEquals(discreteParameterService.findById(ID).getDescription(), DESCRIPTION);
 		Assert.assertEquals(discreteParameterService.findById(ID).getUnitName(), UNITNAME);
-		testLogger.info("end");
 	}
 
 	@Test
 	public void findAllByResourceType() {
-		testLogger.info("start");
 		Mockito.when(discreteParameterRepository.findAllByResourceType(rt))
 				.thenReturn(new ArrayList<DiscreteParameter>(Arrays.asList(dp)));
 		List<DiscreteParameter> expectedList = discreteParameterService.findAllByResourceType(rt);
@@ -84,7 +72,6 @@ public class DiscreteParameterServiceTest {
 		Assert.assertEquals(discreteParameter.getResourceType().getTypeName(), TYPENAME);
 		Assert.assertEquals(discreteParameter.getDescription(), DESCRIPTION);
 		Assert.assertEquals(discreteParameter.getUnitName(), UNITNAME);
-		testLogger.info("end");
 	}
 
 }

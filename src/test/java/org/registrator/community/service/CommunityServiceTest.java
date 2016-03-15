@@ -15,14 +15,12 @@ import org.registrator.community.service.impl.CommunityServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class CommunityServiceTest {
 	
-	private Logger testLogger = LoggerFactory.getLogger(CommunityServiceTest.class);
+	
 	
 	// test data
 	private final Integer ID = 1;
@@ -50,58 +48,40 @@ public class CommunityServiceTest {
 		tc.setTerritorialCommunityId(ID);
     }
 	
-	@BeforeClass
-	public void startClass(){
-		testLogger.info("Start: CommunityServiceTest");
-	}
-	
-	@AfterClass
-	public void endClass(){
-		testLogger.info("End: CommunityServiceTest");
-	}
 	
 	
 	@Test
 	public void findAll(){
-		testLogger.info("Start");
 		Mockito.when(communityRepository.findAll()).thenReturn(new ArrayList<TerritorialCommunity>(Arrays.asList(tc)));
 		TerritorialCommunity actualTC = communityService.findAll().get(0);
 		Assert.assertEquals(actualTC.getName(), NAME);
 		Assert.assertEquals(actualTC.getTerritorialCommunityId(), ID);
-		testLogger.info("End");
 	}
 	
 	@Test
 	public void findByName(){
-		testLogger.info("Start");
 		Mockito.when(communityRepository.findByName(NAME)).thenReturn(tc);
 		Assert.assertEquals(communityService.findByName(NAME).getName(), NAME);
 		Assert.assertEquals(communityService.findByName(NAME).getTerritorialCommunityId(), ID);
-		testLogger.info("End");
 	}
 	
 	@Test
 	public void addCommunity(){
-		testLogger.info("Start");
 		Mockito.when(communityRepository.saveAndFlush(tc)).thenReturn(tc);
 		Assert.assertEquals(communityService.addCommunity(tc).getName(), NAME);
 		Assert.assertEquals(communityService.addCommunity(tc).getTerritorialCommunityId(), ID);
-		testLogger.info("End");
 	}
 	
 	@Test
 	public void findById(){
-		testLogger.info("Start");
 		Mockito.when(communityRepository.findOne(ID)).thenReturn(tc);
 		//Mockito.doReturn(tc).when(communityRepository).findOne(ID);
 		Assert.assertEquals(communityService.findById(ID).getName(), NAME);
 		Assert.assertEquals(communityService.findById(ID).getTerritorialCommunityId(), ID);
-		testLogger.info("End");
 	}
 	
 	@Test
 	public void deleteCommunity() throws IllegalAccessException{
-		testLogger.info("Start");
 		
 		 // inject logger into tested service
         logger = LoggerFactory.getLogger("");
@@ -116,17 +96,14 @@ public class CommunityServiceTest {
 		.thenReturn(new ArrayList<User>(Arrays.asList(new User())));              // imitation of constraint
 		Assert.assertFalse(communityService.deleteCommunity(tc));                 // try to delete with constraint so method must return false
 		Mockito.verifyZeroInteractions(communityRepository);                      // check whether  method "communityRepository.delete" have not been call at least one time
-		testLogger.info("End");
 	}
 	
 	@Test
 	public void findAllByAsc(){
-		testLogger.info("Start");
 		Mockito.when(communityRepository.findAllByAsc()).thenReturn(new ArrayList<TerritorialCommunity>(Arrays.asList(tc)));
 		TerritorialCommunity actualTC = communityService.findAllByAsc().get(0);
 		Assert.assertEquals(actualTC.getName(), NAME);
 		Assert.assertEquals(actualTC.getTerritorialCommunityId(), ID);
-		testLogger.info("End");
 	}
 
 }
