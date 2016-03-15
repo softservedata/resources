@@ -8,8 +8,6 @@ import org.registrator.community.dao.PolygonRepository;
 import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.service.impl.PrintServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -44,8 +42,6 @@ public class PrintServiceTest {
     private static DiscreteParameter discreteParameterSquire;
     private static ResourceDiscreteValue resourceDiscretePerimetrValue;
     private static ResourceDiscreteValue resourceDiscreteSquireValue;
-
-    private Logger logger = LoggerFactory.getLogger(PrintServiceTest.class);
 
     @BeforeMethod
     public void init(){
@@ -100,20 +96,17 @@ public class PrintServiceTest {
     @Test
     public void testPrintProcurationInvokesEntitiesWithCorrectParameter() throws Exception{
 
-        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
 
         printService.printProcuration(OUTPUT_ID);
 
         verify(inquiryRepository, times(2)).getOne(OUTPUT_ID);
-        logger.debug("end test");
 
     }
 
     @Test
     public void testPrintExtractInvokesEntitiesWithCorrectParameter() throws Exception{
 
-        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
 
         printService.printExtract(OUTPUT_ID);
@@ -121,14 +114,12 @@ public class PrintServiceTest {
         verify(inquiryRepository, times(2)).getOne(OUTPUT_ID);
         verify(polygonRepository).findByResource(resource);
         verify(resourceDiscrete).findByResource(resource);
-        logger.debug("end test");
 
     }
 
     @Test
     public void testPrintProcurationOnSubmitInfoInvokesEntitiesWithCorrectParameter() throws Exception{
 
-        logger.debug("begin test");
         when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
 
         printService.printProcurationOnSubmitInfo(INPUT_ID);
@@ -136,18 +127,15 @@ public class PrintServiceTest {
         verify(inquiryRepository, times(2)).getOne(INPUT_ID);
         verify(polygonRepository).findByResource(resource);
         verify(resourceDiscrete).findByResource(resource);
-        logger.debug("end test");
 
     }
 
     //@Test(expectedExceptions = NullPointerException.class) // Should be incorrect InquiryType Exception
     public void testPrintProcurationThrowsExceptionInvalidInquiryType() throws NullPointerException{
 
-        logger.debug("begin test");
         when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
 
         printService.printProcuration(INPUT_ID);
-        logger.debug("end test");
 
     }
 
@@ -155,7 +143,6 @@ public class PrintServiceTest {
     @Test
     public void testPrintProcurationExistsNotNullCorrectFileFormat() throws Exception{
 
-        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
 
         ByteArrayOutputStream bos = printService.printProcuration(OUTPUT_ID);
@@ -174,7 +161,6 @@ public class PrintServiceTest {
         }
 
         checkExistsNotNullCorrectFileFormat(file);
-        logger.debug("end test");
 
     }
 
@@ -182,7 +168,6 @@ public class PrintServiceTest {
     @Test
     public void testPrintExtractExistsNotNullCorrectFileFormat() throws Exception{
 
-        logger.debug("begin test");
         when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryOutput);
         when(polygonRepository.findByResource(resource)).thenReturn(Arrays.asList(polygon));
         when(resourceDiscrete.findByResource(resource)).thenReturn(Arrays.asList(resourceDiscretePerimetrValue, resourceDiscreteSquireValue));
@@ -203,7 +188,6 @@ public class PrintServiceTest {
         }
 
         checkExistsNotNullCorrectFileFormat(file);
-        logger.debug("end test");
 
     }
 
@@ -211,7 +195,6 @@ public class PrintServiceTest {
     @Test
     public void testPrintProcurationOnSubmitInfoExistsNotNullCorrectFileFormat() throws IOException {
 
-        logger.debug("begin test");
         when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryInput);
         when(polygonRepository.findByResource(resource)).thenReturn(Arrays.asList(polygon));
         when(resourceDiscrete.findByResource(resource)).thenReturn(Arrays.asList(resourceDiscretePerimetrValue, resourceDiscreteSquireValue));
@@ -232,7 +215,6 @@ public class PrintServiceTest {
         }
 
         checkExistsNotNullCorrectFileFormat(file);
-        logger.debug("end test");
 
     }
 

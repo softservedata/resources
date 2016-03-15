@@ -3,18 +3,13 @@ package org.registrator.community.service;
 import java.io.*;
 import java.util.Arrays;
 
-import org.slf4j.Logger;
 import org.registrator.community.config.LoggingConfig;
 import org.registrator.community.config.root.SpringRootConfig;
 import org.registrator.community.config.root.TestingConfiguration;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -28,12 +23,10 @@ public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTest
 
     private static final int META_INFORMATION_SIZE = 2300;// contains CreationDate in ms, can't compare different pdf files
 
-    private Logger logger = LoggerFactory.getLogger(PrintServiceIntegrationTest.class);
 
     @Test
     public void testPrintProcurationSaveCorrectData() throws IOException {
 
-        logger.debug("begin test");
         ByteArrayOutputStream bos = printServiceImpl.printProcuration(1);
 
         byte [] array = bos.toByteArray();
@@ -44,14 +37,12 @@ public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTest
         byte [] expected = readContentIntoByteArray(file);
 
         assertEquals(actual, expected);
-        logger.debug("end test");
 
     }
 
     @Test
     public void testPrintExtractSaveCorrectData() throws IOException {
 
-        logger.debug("begin test");
         ByteArrayOutputStream bos = printServiceImpl.printExtract(1);
 
         byte [] array = bos.toByteArray();
@@ -62,14 +53,12 @@ public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTest
         byte [] expected = readContentIntoByteArray(file);
 
         assertEquals(actual, expected);
-        logger.debug("end test");
 
     }
 
     @Test
     public void testPrintProcurationOnSubmitInfoSaveCorrectData() throws IOException {
 
-        logger.debug("begin test");
         ByteArrayOutputStream bos = printServiceImpl.printProcurationOnSubmitInfo(2);
 
         byte [] array = bos.toByteArray();
@@ -80,7 +69,6 @@ public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTest
         byte [] expected = readContentIntoByteArray(file);
 
         assertEquals(actual, expected);
-        logger.debug("end test");
 
     }
 

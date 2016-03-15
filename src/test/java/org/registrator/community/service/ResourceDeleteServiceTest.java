@@ -41,19 +41,19 @@ public class ResourceDeleteServiceTest {
 
     @Test
     public void testDeleteResourceRetrieveResourceByCorrectIdentifier() throws Exception {
-        logger.debug("begin test");
+
         resourceDeleteService.deleteResource(ID);
         verify(resourceRepository).findByIdentifier(ID);
-        logger.debug("end test");
+
     }
 
     @Test
     public void testDeleteResourceDeleteCorrectResource() throws Exception {
-        logger.debug("begin test");
+
         Resource persistedResource = new Resource();
         when(resourceRepository.findByIdentifier(ID)).thenReturn(persistedResource);
         resourceDeleteService.deleteResource(ID);
         verify(resourceRepository).delete(persistedResource);
-        logger.debug("end test");
+
     }
 }
