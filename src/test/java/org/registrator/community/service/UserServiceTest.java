@@ -50,9 +50,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserServiceTest {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
-	
-	private static final String START = "Start";
-	private static final String END = "End";
 
 	@InjectMocks
 	private UserService userService = new UserServiceImpl();
@@ -286,10 +283,8 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerLogin")
 	public void login(String login, String password, boolean isPositive) {
-		log.debug(START);
 		log.debug(String.format("credentials: Log:'%s' Pass:'%s'",login,password));
 		Assert.assertEquals(userService.login(login, password), isPositive);// correct
-		log.debug(END);
 	}
 	
 	/**
@@ -300,7 +295,6 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetUserByLogin")
 	public void getUserByLogin(String login, User expected,  boolean isPositive) {
-		log.debug(START);
 		log.debug(String.format("login: %s [%s]", login, isPositive));
 		if(isPositive){
 			User actual = userService.getUserByLogin(login);
@@ -309,7 +303,6 @@ public class UserServiceTest {
 		}else{
 			Assert.assertNull(userService.getUserByLogin(login));// incorrect data
 		}
-		log.debug(END);
 	}
 	
 	/**
@@ -320,7 +313,6 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetUserByLogin")
 	public void findUserByLogin(String login, User expected,  boolean isPositive) {
-		log.debug(START);
 		log.debug(String.format("login: %s [%s]", login, isPositive));
 		if(isPositive){
 			User actual = userService.findUserByLogin(login);
@@ -329,7 +321,6 @@ public class UserServiceTest {
 		}else{
 			Assert.assertNull(userService.getUserByLogin(login));// incorrect data
 		}
-		log.debug(END);
 	}
 
 	/**
@@ -339,12 +330,10 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider = "providerChangeUserStatus", dependsOnMethods={"findUserByLogin"})
 	public void changeUserStatus(String login, UserStatus status) {
-		log.debug(START);
 		UserStatusJson userStatusJson = new UserStatusJson(login, status.toString());
 		log.debug(String.format("login: '%s', status: '%s'", login, status.toString()));
 		userService.changeUserStatus(userStatusJson);
 		Assert.assertEquals(userService.findUserByLogin(login).getStatus(), status);// correct data
-		log.debug(END);
 	}
 	
 	/**
@@ -354,10 +343,8 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider = "providerChangeUserRole", dependsOnMethods = { "findUserByLogin" })
 	public void changeUserRole(String login, RoleType roleType) {
-		log.debug(START);
 		userService.changeUserRole(login, roleType.ordinal());
 		Assert.assertEquals(userService.findUserByLogin(login).getRole().getType(), roleType);
-		log.debug(END);
 	}
 	
 	/**
@@ -365,7 +352,6 @@ public class UserServiceTest {
 	 */
 	@Test(dependsOnMethods = { "findUserByLogin" })
 	public void editUserInformation() {
-		log.debug(START);
 		// test data
 		final UserDTO expected = new UserDTO("Петро", "Замоканий", "Афанасійович", RoleType.REGISTRATOR.toString(),
 				"user","petro@gmail.com", UserStatus.BLOCK.toString(), 
@@ -378,7 +364,6 @@ public class UserServiceTest {
 		//negative
 		Mockito.when(userRepository.findUserByLogin("user")).thenReturn(null);
 		Assert.assertNull(userService.editUserInformation(expected), "Saved null user");//
-		log.debug(END);
 	}
 	
 	/**
@@ -387,13 +372,11 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void fillInUserStatusforRegistratedUsers() {
-		log.debug(START);
 		// test data
 		final List<UserStatus> expected = Arrays.asList(UserStatus.ACTIVE, UserStatus.BLOCK);
 		// test action
 		List<UserStatus> actual = userService.fillInUserStatusforRegistratedUsers();
 		Assert.assertTrue(actual.containsAll(expected) && expected.containsAll(actual));
-		log.debug(END);
 	}
 	
 	/**
@@ -402,13 +385,11 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void fillInUserStatusforInactiveUsers() {
-		log.debug(START);
 		// test data
 		final List<UserStatus> expected = Arrays.asList(UserStatus.ACTIVE, UserStatus.BLOCK, UserStatus.INACTIVE);
 		// test action
 		List<UserStatus> actual = userService.fillInUserStatusforInactiveUsers();
 		Assert.assertTrue(actual.containsAll(expected) && expected.containsAll(actual));
-		log.debug(END);
 	}
 
 	/**
@@ -416,7 +397,6 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void getUserDtoList() {
-		log.debug(START);
 		//create expected result
 		List<UserDTO> expected = new ArrayList<UserDTO>();
 		for(int i=0;i<fakeUserRepository.size();i++){
@@ -434,7 +414,6 @@ public class UserServiceTest {
 				}
 			}
 		}
-		log.debug(END);
 	}
 	
 	/**
@@ -444,7 +423,6 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetUserDto" ,dependsOnMethods = { "getUserByLogin" })
 	public void getUserDto(String login, boolean isPositive) {
-		log.debug(START);
 		boolean exception = false;
 		UserDTO expected = createUserDto(login);
 		if(isPositive)
@@ -466,7 +444,6 @@ public class UserServiceTest {
 			Mockito.when(tomeRepository.findTomeByRegistrator(Mockito.any(User.class))).thenReturn(tom);
 			Mockito.when(resourceNumberRepository.findResourceNumberByUser(Mockito.any())).thenReturn(resourceNumber);
 			Assert.assertNotNull(userService.getUserDto("user"));
-			log.debug(END);
 		}catch(NullPointerException e){
 			//for negative test we wait for exception
 			exception = true;
@@ -480,7 +457,6 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetAllUsers", dependsOnMethods = { "findUserByLogin", "fillInUserStatusforRegistratedUsers" })
 	public void getAllRegistratedUsers(List<String> logins) {
-		log.debug(START);
 		// prepare test data
 		for(String login: logins)
 			userService.findUserByLogin(login).setStatus(UserStatus.INACTIVE);
@@ -501,7 +477,6 @@ public class UserServiceTest {
 				if (actualDto.getLogin() == expectedDto.getLogin())
 					assertEqualsUsersDto(actualDto, expectedDto);
 		}
-		log.debug(END);
 	}
 	
 	/**
@@ -510,7 +485,6 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetAllUsers", dependsOnMethods = { "getUserDtoList" })
 	public void getAllInactiveUsers(List<String> logins) {
-		log.debug(START);
 		// prepare test data
 		for(String login: logins){
 			userService.findUserByLogin(login).setStatus(UserStatus.INACTIVE);
@@ -531,7 +505,6 @@ public class UserServiceTest {
 				if (actualDto.getLogin() == expectedDto.getLogin())
 					assertEqualsUsersDto(actualDto, expectedDto);
 		}
-		log.debug(END);
 	}
 	
 	/**
@@ -541,9 +514,7 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetUserDto")
 	public void checkUsernameNotExistInDB(String login, boolean isExist) {
-		log.debug(START);
 		Assert.assertEquals(userService.checkUsernameNotExistInDB(login),!isExist,"");
-		log.debug(END);
 	}
 	
 	/**
@@ -553,7 +524,6 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetUserBySearchTag", dependsOnMethods = { "getUserByLogin" })
 	public void getUserBySearchTag(User registrator, String searchTag) {
-		log.debug(START);
 		// prepare expected
 		List<UserDTO> expected = new ArrayList<UserDTO>();
 		for(User user: fakeUserRepository)
@@ -579,7 +549,6 @@ public class UserServiceTest {
 			}
 		}
 		Assert.assertEquals(expected.isEmpty(), true);
-		log.debug(END);
 	}
 	
 	/**
@@ -590,13 +559,11 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerGetUserByEmail")
 	public void findUserByEmail(User expected, String login, boolean isPositive) {
-		log.debug(START);
 		User actual = userService.findUserByEmail(login);
 		if(isPositive)
 			assertEqualsUsers(actual, expected);
 		else
 			Assert.assertEquals(actual, expected);
-		log.debug(END);
 	}
 
 	/**
@@ -604,7 +571,6 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void updateFailAttempts() {
-		log.debug(START);
 		// test data
 		User user = fakeUserRepository.get(0);
 		int expected = user.getAttempts()+1;
@@ -616,7 +582,6 @@ public class UserServiceTest {
 		user.setAttempts(expected-1);
 		userService.updateFailAttempts(user.getLogin());
 		Assert.assertEquals(user.getAttempts(), expected);
-		log.debug(END);
 	}
 	
 	/**
@@ -624,7 +589,6 @@ public class UserServiceTest {
 	 */
 	@Test(dataProvider="providerResetFailAttempts")
 	public void resetFailAttempts(String login, int attempts) {
-		log.debug(START);
 		// test data, we will change data directly in fake repo
 		User testUser = null;
 		for(User user: fakeUserRepository){
@@ -638,7 +602,6 @@ public class UserServiceTest {
 		// test action
 		userService.resetFailAttempts(login);
 		Assert.assertEquals(testUser.getAttempts(), expected);
-		log.debug(END);
 	}
 
 	/**
@@ -646,7 +609,6 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void resetAllFailAttempts() {
-		log.debug(START);
 		// test data
 		final int expected = 0;
 		for(int i=0;i<fakeUserRepository.size();i++)
@@ -655,7 +617,6 @@ public class UserServiceTest {
 		userService.resetAllFailAttempts();
 		for(int i=0;i<fakeUserRepository.size();i++)
 			Assert.assertEquals(fakeUserRepository.get(i).getAttempts(), expected, String.format("Fail attempts not reseted in user '%s'", fakeUserRepository.get(i).getLogin()));
-		log.debug(END);
 	}
 
 	/**
@@ -663,7 +624,6 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void registerUser() {
-		log.debug(START);
 		// test data
 		UserRegistrationDTO registrationForm = new UserRegistrationDTO();
 		registrationForm.setAddress(new AddressDTO("06060","Львівська","Галицький","Львів","Вітовського",
@@ -718,7 +678,6 @@ public class UserServiceTest {
 		}
 		Assert.assertTrue(isAddressOk,"Address not saved");
 		Assert.assertTrue(isPassportOk,"Passport not saved");
-		log.debug(END);
 	}
 
 
@@ -727,7 +686,6 @@ public class UserServiceTest {
 	 */
 	@Test
 	public void CreateTomeAndRecourceNumber() {
-		log.debug(START);
 		// test data
 		UserDTO userDto = new UserDTO(fakeUserRepository.get(0).getFirstName(), fakeUserRepository.get(0).getLastName(), fakeUserRepository.get(0).getMiddleName(),
 				fakeUserRepository.get(0).getRole().getType().toString(), fakeUserRepository.get(0).getLogin(), fakeUserRepository.get(0).getEmail(), fakeUserRepository.get(0).getStatus().toString(),
@@ -758,7 +716,6 @@ public class UserServiceTest {
 		userService.CreateTomeAndRecourceNumber(userDto);// exception
 		Assert.assertTrue(fakeTomeRepository.isEmpty());
 		*/
-		log.debug(END);
 	}
 
 
