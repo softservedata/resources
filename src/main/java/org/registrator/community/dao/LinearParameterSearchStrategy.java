@@ -35,11 +35,12 @@ public class LinearParameterSearchStrategy implements ResourceSearchStrategy{
      * @param selection root selection of Resource.class
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void addCriteriaRestriction(List<ResourceSearchParameterJson> parameters,
                                        CriteriaQuery<Resource> selection) {
 
 
-        Root<?> criteriaRoot = selection.getRoots().iterator().next();
+        Root<Resource> criteriaRoot = (Root<Resource>) selection.getRoots().iterator().next();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
         for (ResourceSearchParameterJson parameter : parameters) {
