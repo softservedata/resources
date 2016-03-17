@@ -3,6 +3,7 @@ package org.registrator.community.service;
 import java.io.*;
 import java.util.Arrays;
 
+import com.itextpdf.text.DocumentException;
 import org.registrator.community.config.LoggingConfig;
 import org.registrator.community.config.root.SpringRootConfig;
 import org.registrator.community.config.root.TestingConfiguration;
@@ -25,7 +26,7 @@ public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTest
 
 
     @Test
-    public void testPrintProcurationSaveCorrectData() throws IOException {
+    public void testPrintProcurationSaveCorrectData() throws IOException, DocumentException {
 
         ByteArrayOutputStream bos = printServiceImpl.printProcuration(1);
 
@@ -41,7 +42,7 @@ public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTest
     }
 
     @Test
-    public void testPrintExtractSaveCorrectData() throws IOException {
+    public void testPrintExtractSaveCorrectData() throws IOException, DocumentException {
 
         ByteArrayOutputStream bos = printServiceImpl.printExtract(1);
 
@@ -57,7 +58,7 @@ public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTest
     }
 
     @Test
-    public void testPrintProcurationOnSubmitInfoSaveCorrectData() throws IOException {
+    public void testPrintProcurationOnSubmitInfoSaveCorrectData() throws IOException, DocumentException {
 
         ByteArrayOutputStream bos = printServiceImpl.printProcurationOnSubmitInfo(2);
 
