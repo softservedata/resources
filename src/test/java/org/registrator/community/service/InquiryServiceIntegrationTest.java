@@ -8,7 +8,6 @@ import org.registrator.community.config.root.SpringRootConfig;
 import org.registrator.community.config.root.TestingConfiguration;
 import org.registrator.community.dao.InquiryRepository;
 import org.registrator.community.entity.Inquiry;
-import org.registrator.community.service.InquiryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;

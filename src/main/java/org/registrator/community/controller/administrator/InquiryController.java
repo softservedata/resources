@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.itextpdf.text.DocumentException;
 import org.registrator.community.dto.InquiryListDTO;
 import org.registrator.community.dto.UserNameDTO;
 import org.registrator.community.enumeration.InquiryType;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Class controller works with procurations of entering data into the register
  * (input inquiry) and with procurations for an extract from register (output
  * inquiry).
- * 
+ *
  * @author Ann
  *
  */
@@ -55,7 +56,7 @@ public class InquiryController {
 	 * Method for showing form on UI to input the parameters for inquiry to get
 	 * the certificate aboute the resource (with existing registrators and
 	 * resources).
-	 * 
+	 *
 	 * @param model
 	 *            - the model
 	 * @return inquiryAddOut.jsp
@@ -90,7 +91,7 @@ public class InquiryController {
 
 	/**
 	 * Method for showing all output inquiries from logged user on UI.
-	 * 
+	 *
 	 * @param model
 	 *            - the model
 	 * @return listInqUserOut.jsp
@@ -109,7 +110,7 @@ public class InquiryController {
 
 	/**
 	 * Method for showing all input inquiries from logged user on UI.
-	 * 
+	 *
 	 * @param model
 	 *            - the model
 	 * @return listInquiryUserInput.jsp
@@ -125,7 +126,7 @@ public class InquiryController {
 
 	/**
 	 * Method for deleting chosen inquiry by Id.
-	 * 
+	 *
 	 * @param inquiryId
 	 *            - inquiry identifier.
 	 * @return listInqUserOut.jsp
@@ -142,14 +143,14 @@ public class InquiryController {
 	 * Method for generating pdf document "mandate to extract" on button
 	 * pressing
 	 * </p>
-	 * 
+	 *
 	 * @author Vitalii Horban
 	 */
 
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_USER')")
 	@RequestMapping(value = "/printOutput/{inquiryId}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> downloadFile(HttpServletResponse response,
-			@PathVariable("inquiryId") Integer inquiryId) throws IOException {
+											   @PathVariable("inquiryId") Integer inquiryId) {
 
 		ResponseEntity<byte[]> responseContent = null;
 		try {
@@ -165,7 +166,7 @@ public class InquiryController {
 			responseContent = new ResponseEntity<byte[]>(array, headers, HttpStatus.OK);
 			logger.info(
 					"finish controller: InquiryController.downloadFile(HttpServletResponse response,Integer inquiryId)");
-		} catch (Exception e) {
+		} catch (IOException | DocumentException e) {
 			logger.error(
 					"Failed to finish controller: InquiryController.downloadFile(HttpServletResponse response,Integer inquiryId)"
 							+ e.toString());
@@ -177,13 +178,13 @@ public class InquiryController {
 	 * <p>
 	 * Method for generating pdf document "extract" on button pressing
 	 * </p>
-	 * 
+	 *
 	 * @author Vitalii Horban
 	 */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/printExtract/{inquiryId}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> downloadExtractFile(HttpServletResponse response,
-			@PathVariable("inquiryId") Integer inquiryId) throws IOException {
+													  @PathVariable("inquiryId") Integer inquiryId) {
 
 		ResponseEntity<byte[]> responseContent = null;
 		try {
@@ -199,7 +200,7 @@ public class InquiryController {
 			responseContent = new ResponseEntity<byte[]>(array, headers, HttpStatus.OK);
 			logger.info(
 					"finish controller: InquiryController.downloadExtractFile(HttpServletResponse response,Integer inquiryId)");
-		} catch (Exception e) {
+		} catch (IOException | DocumentException e) {
 			logger.error(
 					"Failed to finish controller: InquiryController.downloadExtractFile(HttpServletResponse response,Integer inquiryId)"
 							+ e.toString());
@@ -211,13 +212,13 @@ public class InquiryController {
 	 * <p>
 	 * Method for generate pdf document "ProcurationOnSubmit" on button pressing
 	 * </p>
-	 * 
+	 *
 	 * @author Vitalii Horban
 	 */
 	@PreAuthorize("hasRole('ROLE_REGISTRATOR')")
 	@RequestMapping(value = "/printdata/{inquiryId}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> downloadInfoFile(HttpServletResponse response,
-			@PathVariable("inquiryId") Integer inquiryId) throws IOException {
+												   @PathVariable("inquiryId") Integer inquiryId) {
 
 		ResponseEntity<byte[]> responseContent = null;
 		try {
@@ -234,7 +235,7 @@ public class InquiryController {
 			responseContent = new ResponseEntity<byte[]>(array, headers, HttpStatus.OK);
 			logger.info(
 					"finish controller: InquiryController.downloadInfoFile(HttpServletResponse response,Integer inquiryId)");
-		} catch (Exception e) {
+		} catch (IOException | DocumentException e) {
 			logger.error(
 					"Failed to finish controller: InquiryController.downloadInfoFile(HttpServletResponse response,Integer inquiryId)"
 							+ e.toString());

@@ -1,5 +1,6 @@
 package org.registrator.community.security;
 
+import com.itextpdf.text.DocumentException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
@@ -18,6 +19,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.io.IOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("testing")
@@ -84,20 +87,20 @@ public	TestWatcher testWatcher = new TestWatcher() {
 
 	@Test
 	@WithMockUser(roles = { "USER", "REGISTRATOR" })
-	public void testFive() {
+	public void testFive() throws IOException, DocumentException {
 		printService.printProcuration(1);
 
 	}
 
 	@Test
 	@WithMockUser(roles = { "REGISTRATOR" })
-	public void testSix() {
+	public void testSix() throws IOException, DocumentException {
 		printService.printExtract(1);
 	}
 
 	@Test
 	@WithMockUser(roles = { "USER" })
-	public void testSeven() {
+	public void testSeven() throws IOException, DocumentException {
 		printService.printProcurationOnSubmitInfo(1);
 	}
 
