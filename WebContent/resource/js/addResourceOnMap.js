@@ -370,7 +370,7 @@ $("#gmaps-show-res").click(function () {
 //Add coordinates from map and verify them
 $("#addPointsFromMap").click(function () {
 
-    if (newPolygons.length > 0) {
+    if ((newPolygons.length!=undefined) && (newPolygons.length > 0)) {
         $("#dark_bg").show();
         var infoBoxMessage = "";
 
