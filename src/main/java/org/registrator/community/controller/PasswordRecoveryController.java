@@ -3,11 +3,17 @@ package org.registrator.community.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.registrator.community.dto.PasswordRecoveryDTO;
+import org.registrator.community.entity.User;
 import org.registrator.community.service.PasswordRecoveryService;
+import org.registrator.community.service.UserService;
 import org.registrator.community.service.VerificationTokenService;
 import org.registrator.community.validator.PasswordRecoveryValidator;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +28,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PasswordRecoveryController {
 
     @Autowired
+    Logger logger;
+
+    @Autowired
     private PasswordRecoveryService passwordRecoveryService;
     
     @Autowired
@@ -29,6 +38,12 @@ public class PasswordRecoveryController {
     
     @Autowired
     private PasswordRecoveryValidator passwordRecoveryValidator;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder userPasswordEncoder;
 
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/forgot_password", method = RequestMethod.GET)
@@ -75,4 +90,51 @@ public class PasswordRecoveryController {
     	}
     	return "redirect:"+request.getHeader("Referer");
     }
+
+	@RequestMapping(value = "/change_password", method = RequestMethod.GET)
+	public String getChangePasswordPage() {
+		return "change_password";
+	}
+
+	@RequestMapping(value = "/change_password", method = RequestMethod.POST)
+	public String handleChangePassword(@RequestParam("password") String password, HttpServletRequest request, Model model) {
+		//String baseLink = (request.getRequestURL()).toString().split("forgot_password")[0];
+		//passwordRecoveryService.sendRecoverPasswordEmail(email,baseLink);
+		//model.addAttribute("msg",true);
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.getUserByLogin(auth.getCredentials().toString());
+		logger.info("user.password " + user.getPassword());
+
+		logger.info( "passwword.matches " + userPasswordEncoder.matches(password, user.getPassword()));
+
+        model.addAttribute("msg",true);
+		return "change_password";
+	}
+
+	/*@RequestMapping(value = "/change_password", method = RequestMethod.GET)
+	public String changePassword(Model model, HttpSession session) {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		User user = userService.getUserByLogin(auth.getCredentials().toString());
+		logger.info("user.password " + user.getPassword());
+		String actual = "amykyttc";
+		logger.info( "passwword.matches " + userPasswordEncoder.matches(actual, user.getPassword()));
+
+		if (!model.containsAttribute("passwordRecoveryDTO")) {
+			model.addAttribute("passwordRecoveryDTO", new PasswordRecoveryDTO());
+		}
+
+
+		/*if (("anonymousUser").equals(auth.getName())) {
+			logger.info("end: incorrect credentials");
+			return "redirect:/login";
+		}
+		session.setAttribute("registrationMethod", adminSettings.getRegistrationMethod());
+		logger.info("end: correct credentials");
+		return "change_password";
+	}*/
+
+
 }
