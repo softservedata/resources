@@ -4,11 +4,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<c:set var="newresource" value="${newresource}" scope="session" />
-<c:set var="firstPoint" value="${newresource.resourceArea.poligons[0].points[0].latitudeDegrees}"/>
+<c:set var="newresource" value="${resource}" scope="session" />
+<c:set var="firstPoint" value="${resource.resourceArea.poligons[0].points[0].latitudeDegrees}"/>
 
-<c:if test="${!empty newresource.date}">
-	<fmt:formatDate value="${newresource.date}" pattern="dd.MM.yyyy"
+<c:if test="${!empty resource.date}">
+	<fmt:formatDate value="${resource.date}" pattern="dd.MM.yyyy"
 		var="FormatedDate" />
 </c:if>
 
@@ -16,8 +16,8 @@
 	<h2>
 		<spring:message code="label.resource.add" />
 	</h2>
-	<form:form id="addResource" method="POST" action="addresource"
-		modelAttribute="newresource" class="form-horizontal">
+	<form:form id="addResource" method="POST"
+		modelAttribute="resource" class="form-horizontal">
 
 		<!-- select co-owner -->
 		<div class="form-group">
@@ -43,7 +43,7 @@
 					code="label.resource.description" />:</label>
 			<div class="col-md-3">
 				<input class="form-control" name="description" id="w-input-search"
-					value="${newresource.description}">
+					value="${resource.description}">
 				<div class="control-group error">
 					<form:errors path="description" cssClass="error" style="color:red" />
 				</div>
@@ -57,17 +57,20 @@
 			<div class="col-md-3">
 				<select id="resourcesTypeSelect" name="resourceType"
 					class="form-control" required>
-					<c:if test="${!empty newresource.resourceType}">
-						<option value="${newresource.resourceType}">${newresource.resourceType}
+					<c:if test="${!empty resource.resourceType}">
+						<option value="${resource.resourceType}">${resource.resourceType}
 						</option>
 					</c:if>
-					<c:if test="${empty newresource.resourceType}">
+                    <c:set var="actualResourceType" value="${resource.resourceType}" scope="page"/>
+					<c:if test="${empty resource.resourceType}">
 						<option value=""><spring:message
 								code="label.resource.selectType" />:
 						</option>
 					</c:if>
 					<c:forEach items="${listOfResourceType}" var="restype">
-						<option value="${restype.typeName}">${restype.typeName}</option>
+                        <c:if test="${actualResourceType != restype.typeName}">
+						    <option value="${restype.typeName}">${restype.typeName}</option>
+                        </c:if>
 					</c:forEach>
 				</select>
 				<div class="control-group error">
@@ -85,7 +88,7 @@
 					code="label.resource.identifier" />:</label>
 			<div class="col-md-3">
 				<input class="form-control" name="identifier" id="identifier"
-					value="${newresource.identifier}" readonly>
+					value="${resource.identifier}" readonly>
 				<div class="control-group error">
 					<form:errors path="identifier" cssClass="error" style="color:red" />
 				</div>
@@ -104,7 +107,7 @@
 					code="label.resource.reasonInclusion" />:</label>
 			<div class="col-md-3">
 				<textarea id="reasonInclusion" class="form-control" rows="5"
-					name="reasonInclusion">${newresource.reasonInclusion}</textarea>
+					name="reasonInclusion">${resource.reasonInclusion}</textarea>
 				<div class="control-group error">
 					<form:errors path="reasonInclusion" cssClass="error"
 						style="color:red" />
@@ -220,7 +223,7 @@
             </div>
 
             <c:if test="${firstPoint != 0}">
-                <c:forEach items="${newresource.resourceArea.poligons}" var="polygon" varStatus="polygonStatus">
+                <c:forEach items="${resource.resourceArea.poligons}" var="polygon" varStatus="polygonStatus">
                     <c:set value="${polygonStatus.count -1}" var="polygonIndex"/>
                     <div id="polygon_${polygonIndex+1}">
                         <h4>

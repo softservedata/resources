@@ -21,10 +21,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -105,6 +104,29 @@ public class ResourceServiceImpl implements ResourceService {
         if(resourceEntity.getIdentifier().equals(getRegistrationNumber(registrator.getLogin()))){           
             incrementRegistrationNumber(registrator.getLogin());
         }
+        return findByIdentifier(resourceEntity.getIdentifier());
+    }
+
+
+    /**
+     * Method parse the resourceDTO into entity objects and save them into
+     * database
+     *
+     * @param resourceDTO
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResourceDTO saveResource(ResourceDTO resourceDTO) {
+
+        /* form the resource entity and save in into database */
+        Resource resourceEntity = resourceRepository.findByIdentifier(resourceDTO.getIdentifier());
+        parseToResourseEntity(resourceDTO, resourceEntity);
+        resourceEntity = resourceRepository.save(resourceEntity);
+
+        /* sava all additional parameters of given resource */
+        saveResourceParameters(resourceDTO, resourceEntity);
+
         return findByIdentifier(resourceEntity.getIdentifier());
     }
 
@@ -248,16 +270,22 @@ public class ResourceServiceImpl implements ResourceService {
 
     private Resource parseToResourseEntity(ResourceDTO resourceDTO, User registrator) {
         Resource resourceEntity = new Resource();
+        resourceEntity.setRegistrator(registrator);
+        resourceEntity.setTome(tomeRepository.findTomeByRegistrator(registrator));
+
+        parseToResourseEntity(resourceDTO, resourceEntity);
+
+        return resourceEntity;
+    }
+
+    private void parseToResourseEntity(ResourceDTO resourceDTO, Resource resourceEntity) {
         resourceEntity.setIdentifier(resourceDTO.getIdentifier());
         resourceEntity.setDescription(resourceDTO.getDescription());
         resourceEntity.setReasonInclusion(resourceDTO.getReasonInclusion());
-        resourceEntity.setTome(tomeRepository.findTomeByRegistrator(registrator));
-        resourceEntity.setRegistrator(registrator);
         resourceEntity.setStatus(ResourceStatus.ACTIVE);
         ResourceType resourceType = resourceTypeRepository.findByName(resourceDTO.getResourceType());
         resourceEntity.setType(resourceType);
         resourceEntity.setDate(resourceDTO.getDate());
-        return resourceEntity;
     }
 
     /**
@@ -268,26 +296,34 @@ public class ResourceServiceImpl implements ResourceService {
      */
     private void saveResourceParameters(ResourceDTO resourceDTO, Resource resourceEntity) {
         /* save list of area points */
+        List<Polygon> polygons = new ArrayList<>();
         for (PoligonAreaDTO poligonAreaDTO : resourceDTO.getResourceArea().getPoligons()) {
 
             Polygon polygonEntity = getPolygonEntity(resourceEntity, poligonAreaDTO);
             polygonEntity.setCoordinates(createCoordinatesJson(poligonAreaDTO));
             polygonEntity = polygonRepository.save(polygonEntity);
+            polygons.add(polygonEntity);
         }
+        resourceEntity.setPolygons(polygons);
 
         /* save list of resource linear values if exist */
+        List<ResourceLinearValue> resourceLinearValues = new ArrayList<>();
         if (!resourceDTO.getResourceLinear().isEmpty()) {
             logger.info("save linear values of resource");
-            List<ResourceLinearValue> resourceLinearValues = parseToLinearValueList(resourceDTO, resourceEntity);
+            resourceLinearValues = parseToLinearValueList(resourceDTO, resourceEntity);
             linearValueRepository.save(resourceLinearValues);
         }
+        resourceEntity.setResourceLinearValues(resourceLinearValues);
 
         /* save list of resource discrete values if exist */
+        List<ResourceDiscreteValue> resourceDiscreteValues = new ArrayList<>();
         if (!resourceDTO.getResourceDiscrete().isEmpty()) {
             logger.info("save discrete values of resource");
-            List<ResourceDiscreteValue> resourceDiscreteValues = parseToDiscreteValueList(resourceDTO, resourceEntity);
+            resourceDiscreteValues = parseToDiscreteValueList(resourceDTO, resourceEntity);
             discreteValueRepository.save(resourceDiscreteValues);
         }
+        resourceEntity.setResourceDiscreteValues(resourceDiscreteValues);
+        resourceRepository.save(resourceEntity);
     }
 
     /**
@@ -578,5 +614,26 @@ public class ResourceServiceImpl implements ResourceService {
         return count;
     }
 
+    @Override
+    public boolean isResourceEditable(String identifier, String login) {
+        Resource resourceEntity = resourceRepository.findByIdentifier(identifier);
+        User user = userRepository.findUserByLogin(login);
+        if (user == null) {
+            return false;
+        }
 
+        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("EET"));
+
+        return user.equals(resourceEntity.getRegistrator()) && calendarEqualsWithoutTime(today, resourceEntity.getCreatedAt());
+    }
+
+    private boolean calendarEqualsWithoutTime(Calendar first, Calendar second) {
+        if ((first == null) || (second == null)) {
+            return false;
+        }
+
+        return (first.get(Calendar.YEAR) == second.get(Calendar.YEAR))
+                && (first.get(Calendar.MONTH) == first.get(Calendar.MONTH))
+                && (first.get(Calendar.DATE) == first.get(Calendar.DATE));
+    }
 }

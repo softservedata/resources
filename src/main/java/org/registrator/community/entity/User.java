@@ -346,4 +346,29 @@ public class User implements Serializable {
         this.dateOfAccession = dateOfAccession;
     }
 
+    @Override
+    public int hashCode() {
+        if (userId == null) {
+            return super.hashCode();
+        }
+        return userId.hashCode();
+    }
+
+    /**
+     * Equality for User is dependent on database identity. It means that two different instances of User.class will be
+     * equal only if their id's in database are equal.
+     * @param obj the object to compare with.
+     * @return true if objects are equal,
+     *         false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof User))
+            return false;
+        User that = (User) obj;
+        if ((this.getUserId() == null) || (that.getUserId() == null)) return false;
+        return this.getUserId().equals(that.getUserId());
+    }
 }

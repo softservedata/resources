@@ -71,13 +71,13 @@ public class ResourceController {
     /**
      * Method for loading form for input the parameter of resource (with
      * existing resource types)
-     * 
+     *
      * @param model
      * @return addResource.jsp
      */
     @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
-    @RequestMapping(value = "/addresource", method = RequestMethod.GET)
-    public String addResourceForm(Model model) {
+    @RequestMapping(value = "/addresource", method = RequestMethod.GET, params = {})
+    public String addResourceForm( Model model) {
 
         /* load list of resource types on UI form */
         List<ResourceType> listOfResourceType = resourceTypeService.findAll();
@@ -91,13 +91,38 @@ public class ResourceController {
          */
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         newresource.setIdentifier(resourceService.getRegistrationNumber(auth.getName()));
-        model.addAttribute("newresource", newresource);
+        model.addAttribute("resource", newresource);
+        return "addResource";
+    }
+
+    /**
+     * Method for loading form for input the parameter of resource (with
+     * existing resource types)
+     *
+     * @param model
+     * @return addResource.jsp
+     */
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
+    @RequestMapping(value = "/addresource", method = RequestMethod.GET, params = {"mode", "id"})
+    public String addResourceForm(@RequestParam(value = "mode") String mode, @RequestParam("id") String id, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!resourceService.isResourceEditable(id, auth.getName())) {
+            return "accessDenied";
+        }
+
+        ResourceDTO resource = resourceService.findByIdentifier(id);
+        model.addAttribute("resource", resource);
+
+        List<ResourceType> listOfResourceType = resourceTypeService.findAll();
+        model.addAttribute("listOfResourceType", listOfResourceType);
+
         return "addResource";
     }
 
     /**
      * Method save the resource with all parameters from UI in database
-     * 
+     *
      * @param resourceDTO
      * @param result
      * @param model
@@ -105,8 +130,8 @@ public class ResourceController {
      * @return showResource.jsp (addResource.jsp page if resource not valid)
      */
     @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
-    @RequestMapping(value = "/addresource", method = RequestMethod.POST)
-    public String addResource(@Valid @ModelAttribute("newresource") ResourceDTO resourceDTO, BindingResult result,
+    @RequestMapping(value = "/addresource", method = RequestMethod.POST, params = {})
+    public String addResource(@Valid @ModelAttribute("resource") ResourceDTO resourceDTO, BindingResult result,
             Model model, String ownerLogin) {
 
         logger.info("The ownerLogin is " + ownerLogin);
@@ -115,7 +140,7 @@ public class ResourceController {
         validator.validate(resourceDTO, result);
         if (result.hasErrors()) {
             logger.info("The resoursrDTO is not valid");
-            model.addAttribute("newresource", resourceDTO);
+            model.addAttribute("resource", resourceDTO);
             model.addAttribute("ownerLogin", ownerLogin);
             return "addResource";
         }
@@ -133,8 +158,33 @@ public class ResourceController {
     }
 
     /**
+     * Method save the resource with all parameters from UI in database
+     *
+     * @param resourceDTO
+     * @param result
+     * @param model
+     * @param ownerLogin
+     * @return showResource.jsp (addResource.jsp page if resource not valid)
+     */
+    @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
+    @RequestMapping(value = "/addresource", method = RequestMethod.POST, params = {"mode", "id"})
+    public String addResource(@RequestParam(value = "mode") String mode,
+                              @Valid @ModelAttribute("resource") ResourceDTO resourceDTO, BindingResult result,
+                              Model model, String ownerLogin) {
+
+        logger.info("The ownerLogin is " + ownerLogin);
+
+        /* save resourceDTO on service layer and inquiry */
+        resourceDTO = resourceService.saveResource(resourceDTO);
+        logger.info("Resource was successfully saved");
+        model.addAttribute("resource", resourceDTO);
+        return "showResource";
+
+    }
+
+    /**
      * Show the information about resource by identifier
-     * 
+     *
      * @param identifier
      * @param model
      * @return
@@ -149,7 +199,7 @@ public class ResourceController {
 
     /**
      * Load the list of all resource parameters of selected resource type
-     * 
+     *
      * @param typeName
      * @param model
      * @return resourceValues.jsp
@@ -172,7 +222,7 @@ public class ResourceController {
     /**
      * Depending on chosen resource type store all parameters and send them to
      * view at the page Resource search by parameters
-     * 
+     *
      * @param i
      *            - Resource type, received from view
      * @param model
@@ -193,7 +243,7 @@ public class ResourceController {
     /**
      * Depending on received parameters create List of resourceDTO and send them
      * to view
-     * 
+     *
      * @param json - search parameters in JSON format
      * @param model
      * @return
@@ -234,7 +284,7 @@ public class ResourceController {
     /**
      * Create the Set of resources identifiers depending on received parameters
      * and generate JSON response
-     * 
+     *
      * @param minLat
      *            - minimum latitude
      * @param maxLat
@@ -278,7 +328,7 @@ public class ResourceController {
     /**
      * Search on map by point Create set of resource identifiers depending on
      * received point coordinates
-     * 
+     *
      * @param lat
      *            - point latitude
      * @param lng
@@ -312,7 +362,7 @@ public class ResourceController {
 
     /**
      * View for the Search on map page
-     * 
+     *
      * @param model
      * @return
      */
@@ -326,7 +376,7 @@ public class ResourceController {
 
     /**
      * Find the list of owners with similar surname
-     * 
+     *
      * @param ownerDesc
      *            corresponds to first letters of surname
      * @return userList list of users
@@ -340,7 +390,7 @@ public class ResourceController {
 
     /**
      * Find the selected owner by login
-     * 
+     *
      * @param ownerLogin
      * @return owner
      */
@@ -369,7 +419,7 @@ public class ResourceController {
 
     /**
      * Method delete resource with given identifier.
-     * 
+     *
      * @param resourceIdentifier - identifier of the resource.
      * @return searchOnMap.jsp
      */

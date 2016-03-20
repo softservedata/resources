@@ -177,7 +177,9 @@ function getResources() {
         dataType: 'json',
         success: function (data) {
             for (var i = 0; i < data.polygons.length; i++) {
-
+                if (data.polygons[i].identifier === $("#identifier").val()) {
+                    continue;
+                }
                 var polygonPath = [];
                 var points = data.polygons[i].points;
                 for (var j = 0; j < points.length; j++) {

@@ -38,6 +38,9 @@ public interface ResourceService {
     Integer countAllByAreaLimits(Double minLat, Double maxLat, Double minLng, Double maxLng);
 
     Integer countAllByPoint(Double lat,Double lng);
-    
+
+    boolean isResourceEditable(String identifier, String login);
+
+    ResourceDTO saveResource(ResourceDTO resourceDTO);
 }
 
