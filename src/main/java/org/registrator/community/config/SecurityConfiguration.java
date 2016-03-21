@@ -34,7 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider);
-		auth.authenticationProvider(authenticationProvider).eraseCredentials(false);
 	}
 
 	@Override

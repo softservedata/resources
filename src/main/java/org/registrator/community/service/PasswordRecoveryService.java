@@ -6,4 +6,6 @@ public interface PasswordRecoveryService {
 	
 	public void sendRecoverPasswordEmail(String email, String baseLink);
 
+    boolean changePasswordByLogin(String password);
+
 }

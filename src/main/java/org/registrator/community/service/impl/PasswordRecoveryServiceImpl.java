@@ -8,8 +8,11 @@ import org.registrator.community.entity.VerificationToken;
 import org.registrator.community.enumeration.TokenType;
 import org.registrator.community.service.MailService;
 import org.registrator.community.service.PasswordRecoveryService;
+import org.registrator.community.service.UserService;
 import org.registrator.community.service.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,9 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
 	
 	@Autowired
 	private MailService mailService;
+
+    @Autowired
+    private UserService userService;
 	
 	@Autowired
 	private VerificationTokenService verificationTokenService;
@@ -51,4 +57,16 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
 			mailService.sendRecoveryPasswordMail(userEmail, user.getFirstName(),verifacationToken.getToken(),baseLink);
 		}	
 	}
+
+    @Override
+    public boolean changePasswordByLogin(String password) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByLogin(auth.getName());
+        if (user != null) {
+            user.setPassword(userPasswordEncoder.encode(password));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
 }
