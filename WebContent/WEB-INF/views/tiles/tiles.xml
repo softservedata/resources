@@ -220,5 +220,9 @@
 			value="/WEB-INF/views/templates/showAllCommunity.jsp" />
 	</definition>
 
+	<definition name="error" extends="homepage">
+		<put-attribute name="body" type="template"
+					   value="/WEB-INF/views/templates/error.jsp" />
+	</definition>
 
 </tiles-definitions>
