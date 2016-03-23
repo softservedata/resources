@@ -2,11 +2,7 @@ package org.registrator.community.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -370,5 +366,14 @@ public class User implements Serializable {
         User that = (User) obj;
         if ((this.getUserId() == null) || (that.getUserId() == null)) return false;
         return this.getUserId().equals(that.getUserId());
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(" ");
+        joiner.add(getFirstName());
+        joiner.add(getMiddleName());
+        joiner.add(getLastName());
+        return joiner.toString();
     }
 }

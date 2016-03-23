@@ -10,14 +10,15 @@ import org.registrator.community.dto.json.PolygonJson;
 import org.registrator.community.entity.Resource;
 import org.registrator.community.entity.ResourceType;
 import org.registrator.community.entity.User;
+import org.registrator.community.exceptions.ResourceEntityNotFound;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 
 public interface ResourceService {
 	
-	ResourceDTO addNewResource(ResourceDTO resourceDTO, String ownerLogin, User registrator);
-	
-	ResourceDTO findByIdentifier(String identifier);
+	ResourceDTO saveResource(ResourceDTO resourceDTO, User registrator);
+
+    ResourceDTO findByIdentifier(String identifier) throws ResourceEntityNotFound;
 
     List<Resource> findByType (ResourceType type);
     @PreAuthorize("hasRole('ROLE_REGISTRATOR') or hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER') or hasRole('ROLE_USER')")
@@ -39,8 +40,9 @@ public interface ResourceService {
 
     Integer countAllByPoint(Double lat,Double lng);
 
-    boolean isResourceEditable(String identifier, String login);
+    boolean userCanEditResource(ResourceDTO resourceDTO) throws ResourceEntityNotFound;
 
-    ResourceDTO saveResource(ResourceDTO resourceDTO);
+    ResourceDTO createNewResourceDTO();
+
 }
 

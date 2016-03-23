@@ -63,6 +63,8 @@ function initialize() {
         }
     });
 
+    // show polygons on edit page
+    addPointsToMap(true);
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('gmaps-input');
@@ -131,6 +133,8 @@ function initialize() {
         map.fitBounds(bounds);
     });
 
+
+
     //google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
     //    drawingManager.setDrawingMode(null);
     //    var polygon = event.overlay;
@@ -147,6 +151,7 @@ function initialize() {
 
 function getResources() {
     var resType = $("#resourcesTypeSelect").val();
+    if (map.getBounds() === undefined) return;
     var maxLat = map.getBounds().getNorthEast().lat();
     var minLat = map.getBounds().getSouthWest().lat();
     var maxLng = map.getBounds().getNorthEast().lng();
@@ -363,9 +368,9 @@ $("#gmaps-show-res").click(function () {
         bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         return false;
     }
-    $("#dark_bg").show();
+    //$("#dark_bg").show();
     getResources();
-    $("#dark_bg").hide();
+    //$("#dark_bg").hide();
     //console.log("Polygons: " + polygons.length)
 });
 
@@ -415,7 +420,12 @@ $("#addPointsFromMap").click(function () {
     }
 });
 
-$(document).on("click", "#addPointsToMap", function(){
+$(document).on("click", "#addPointsToMap", function () {
+    addPointsToMap(false)
+});
+
+function addPointsToMap(allowEmptyArea){
+
     var polygonsDiv = $('div[id^=polygon_]');
     var enoughPoints = true;
     var infoBoxMsg = "";
@@ -432,6 +442,10 @@ $(document).on("click", "#addPointsToMap", function(){
             enoughPoints = false;
         }
     });
+
+    if ((allowEmptyArea) && (!enoughPoints)) {
+        return;
+    }
 
     if (alertMsg.length > 0) {
         bootbox.alert(alertMsg);
@@ -480,7 +494,7 @@ $(document).on("click", "#addPointsToMap", function(){
         });
         $("#infoBox").html(infoBoxMsg);
     }
-});
+}
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
