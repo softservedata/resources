@@ -217,7 +217,7 @@ public class ResourceServiceTest   {
         
     }
 
-    @Test
+    @Test(expectedExceptions = ResourceEntityNotFound.class)
     public void findResourceByIdentifierNullId() throws Exception{
         
         ResourceDTO resourceDTO = resourceService.findByIdentifier(null);
@@ -241,7 +241,6 @@ public class ResourceServiceTest   {
 
         ResourceDTO result = resourceService.saveResource(validResourceDTO, registrator);
         assertEquals(result.getIdentifier(), validResourceDTO.getIdentifier(), "Creation of valid Resource should be successful");
-        verify(inquiryService, times(1)).addInputInquiry(same(ownerLogin), any(), same(registrator));
         
     }
 
