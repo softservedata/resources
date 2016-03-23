@@ -21,7 +21,7 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
 	
 	@Autowired
 	private MailService mailService;
-	
+
 	@Autowired
 	private VerificationTokenService verificationTokenService;
 	
@@ -51,4 +51,5 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
 			mailService.sendRecoveryPasswordMail(userEmail, user.getFirstName(),verifacationToken.getToken(),baseLink);
 		}	
 	}
+
 }

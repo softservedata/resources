@@ -47,7 +47,7 @@ public class SpringSecurityTest {
 	PrintService printService;
 
 	@Rule
-public	TestWatcher testWatcher = new TestWatcher() {
+    public	TestWatcher testWatcher = new TestWatcher() {
 
 		protected void succeeded(org.junit.runner.Description description) {
 			logger.info(description.getMethodName());
@@ -101,7 +101,7 @@ public	TestWatcher testWatcher = new TestWatcher() {
 	@Test
 	@WithMockUser(roles = { "USER" })
 	public void testSeven() throws IOException, DocumentException {
-		printService.printProcurationOnSubmitInfo(1);
+		printService.printProcurationOnSubmitInfo(2);
 	}
 
 }

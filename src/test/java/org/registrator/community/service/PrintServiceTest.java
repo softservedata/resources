@@ -96,6 +96,33 @@ public class PrintServiceTest {
 
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testPrintProcurationThrowsExceptionOnInvalidInquiryType() throws IOException, DocumentException{
+
+        when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryInput);
+
+        printService.printProcuration(OUTPUT_ID);
+
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testPrintExtractThrowsExceptionOnInvalidInquiryType() throws IOException, DocumentException {
+
+        when(inquiryRepository.getOne(OUTPUT_ID)).thenReturn(inquiryInput);
+
+        printService.printExtract(OUTPUT_ID);
+
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testPrintProcurationOnSubmitInfoThrowsExceptionOnInvalidInquiryType() throws IOException, DocumentException {
+
+        when(inquiryRepository.getOne(INPUT_ID)).thenReturn(inquiryOutput);
+
+        printService.printProcurationOnSubmitInfo(INPUT_ID);
+
+    }
+
     @Test
     public void testPrintProcurationInvokesEntitiesWithCorrectParameter() throws IOException, DocumentException {
 

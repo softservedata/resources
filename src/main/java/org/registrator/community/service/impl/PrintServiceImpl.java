@@ -90,6 +90,9 @@ public class PrintServiceImpl implements PrintService {
 			document = createMandatToExtractPdf(createMandatToExractDto(inquiryId), createMandateToExtractHeader());
 
 		}
+        else {
+            throw new IllegalArgumentException();
+        }
 		return document;
 	}
 
@@ -293,6 +296,9 @@ public class PrintServiceImpl implements PrintService {
 			document = createExtractPdf(createExractDto(inquiryId), createExtractHeader());
 
 		}
+        else {
+            throw new IllegalArgumentException();
+        }
 		return document;
 	}
 
@@ -979,7 +985,9 @@ public class PrintServiceImpl implements PrintService {
 			document = createInputPdf(createInputDto(inquiryId), createMandateToInputHeader());
 
 		}
-
+        else {
+            throw new IllegalArgumentException();
+        }
 		return document;
 	}
 

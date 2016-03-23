@@ -30,6 +30,7 @@ public class PasswordRecoveryController {
     @Autowired
     private PasswordRecoveryValidator passwordRecoveryValidator;
 
+
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/forgot_password", method = RequestMethod.GET)
     public String getForgotPasswordPage() {
@@ -75,4 +76,5 @@ public class PasswordRecoveryController {
     	}
     	return "redirect:"+request.getHeader("Referer");
     }
+
 }
