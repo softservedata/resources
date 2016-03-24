@@ -81,4 +81,9 @@ public class CommunityServiceImpl implements CommunityService{
         }
         return false;
     }
+    @Override
+    public List<TerritorialCommunity> getCommunityBySearchTag(String searchTag){
+        List<TerritorialCommunity> list = communityRepository.findCommunityLikeProposed(searchTag);
+        return list;
+    }
 }

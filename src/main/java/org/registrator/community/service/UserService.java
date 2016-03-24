@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.UserRegistrationDTO;
+import org.registrator.community.dto.json.CommunityParamJson;
+import org.registrator.community.dto.json.RoleTypeJson;
 import org.registrator.community.dto.json.UserStatusJson;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.UserStatus;
@@ -11,45 +13,51 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
 
-	void changeUserStatus(UserStatusJson userStatusDto);
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
-	List<UserDTO> getAllRegistratedUsers();
+    void changeUserStatus(UserStatusJson userStatusDto);
 
-	User getUserByLogin(String login);
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
+    List<UserDTO> getAllRegistratedUsers();
 
-	void changeUserRole(String login, Integer role_id);
+    User getUserByLogin(String login);
 
-	List<UserStatus> fillInUserStatusforRegistratedUsers();
+    void changeUserRole(String login, Integer role_id);
 
-	List<UserStatus> fillInUserStatusforInactiveUsers();
+    List<UserStatus> fillInUserStatusforRegistratedUsers();
 
-	List<UserDTO> getUserDtoList();
+    List<UserStatus> fillInUserStatusforInactiveUsers();
 
-	UserDTO getUserDto(String login);
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
-	List<UserDTO> getAllInactiveUsers();
+    List<UserDTO> getUserDtoList();
 
-	void registerUser(UserRegistrationDTO registrationForm);
+    UserDTO getUserDto(String login);
 
-	int updateUser(User user);
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
+    List<UserDTO> getAllInactiveUsers();
 
-	boolean login(String username, String password);
+    void registerUser(UserRegistrationDTO registrationForm);
 
-	boolean checkUsernameNotExistInDB(String username);
+    int updateUser(User user);
 
-	UserDTO editUserInformation(UserDTO userDto);
+    boolean login(String username, String password);
 
-	List<UserDTO> getUserBySearchTag(String searchTag);
-	
-	User findUserByEmail(String email);
-	
-	void CreateTomeAndRecourceNumber(UserDTO userDto);
+    boolean checkUsernameNotExistInDB(String username);
 
-	public void updateFailAttempts(String login);
-	
-	public void resetFailAttempts(String login);
-	
-	public User findUserByLogin(String login);
-	
-	public void resetAllFailAttempts();
+    UserDTO editUserInformation(UserDTO userDto);
+
+    List<UserDTO> getUserBySearchTag(String searchTag);
+
+    User findUserByEmail(String email);
+
+    void CreateTomeAndRecourceNumber(UserDTO userDto);
+
+    public void updateFailAttempts(String login);
+
+    public void resetFailAttempts(String login);
+
+    public User findUserByLogin(String login);
+
+    public void resetAllFailAttempts();
+
+    public String batchRoleChange(RoleTypeJson batch);
+
+    public String batchCommunityChange(CommunityParamJson batch);
 }
