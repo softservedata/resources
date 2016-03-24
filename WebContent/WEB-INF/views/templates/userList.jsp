@@ -35,6 +35,7 @@
       </c:forEach>
 
      </ul></li>
+     
     <li><a href="#" class="set-community"><spring:message
        code="label.modal.setCommunity" /></a></li>
    </ul>
@@ -65,7 +66,7 @@
        <td class="community">${user.territorialCommunity}</td>
        <td><a
         href="<c:url value='/administrator/users/edit-registrated-user/?login=${user.login}'/>"
-        class="btn btn-sm btn-primary" role="button">Profile</a></td>
+        class="btn btn-sm btn-primary" role="button">Профіль</a></td>
       </tr>
      </c:forEach>
     </c:if>
