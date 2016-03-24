@@ -12,6 +12,8 @@
                     <ul class="dropdown_menu">
                          <li><a href="<c:url value='/administrator/users/get-all-users'/>">
                              <spring:message code="label.registrated.pagename" /></a></li>
+                         <li><a href="<c:url value='/administrator/users/search'/>">
+                             <spring:message code="label.search.pagename" /></a></li></a></li>
                           <li><a href="<c:url value='/administrator/users/get-all-inactive-users'/>">
                               <spring:message code="label.inactive.pagename" /></a></li>
                     </ul>
@@ -20,9 +22,9 @@
                     <spring:message code="label.admin.settings"/></a></li>
                 <li><a href="<c:url value='/administrator/communities/show-all-communities'/>"><spring:message code="label.community.showall"/></a></li>
                 <li><a href="<c:url value='/manualregistration'/>"><spring:message
-								code="label.manualregister" /></a></li>
-								
-				<li><a href="#" id="unlockUsers" ><spring:message code="label.security.unblockall"/></a></li>									
+                                code="label.manualregister" /></a></li>
+                                
+                <li><a href="#" id="unlockUsers" ><spring:message code="label.security.unblockall"/></a></li>                                   
                 <li><a href="<c:url value='/administrator/users/search'/>" class="glyphicon glyphicon-search"></a></li>
             </ul>
         </div>
@@ -31,10 +33,10 @@
 
 
 <script>
-		$("#unlockUsers").click(function(e){
-			e.preventDefault();
-			 $.get("${pageContext.request.contextPath}/administrator/users/unlockusers", function(){
-			    });
-			 bootbox.alert(jQuery.i18n.prop('msg.unblockallusers'));
-		});
+        $("#unlockUsers").click(function(e){
+            e.preventDefault();
+             $.get("${pageContext.request.contextPath}/administrator/users/unlockusers", function(){
+                });
+             bootbox.alert(jQuery.i18n.prop('msg.unblockallusers'));
+        });
 </script>

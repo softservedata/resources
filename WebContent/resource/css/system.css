@@ -170,3 +170,8 @@ body {
     width: 110px;
     display: inline-block;
 }
+
+
+#datatable td {
+	vertical-align: middle;
+}

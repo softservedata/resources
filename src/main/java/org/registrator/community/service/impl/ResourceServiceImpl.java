@@ -1,13 +1,50 @@
 package org.registrator.community.service.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.registrator.community.dao.*;
-import org.registrator.community.dto.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
+
+import javax.transaction.Transactional;
+
+import org.registrator.community.dao.CommunityRepository;
+import org.registrator.community.dao.DiscreteParameterRepository;
+import org.registrator.community.dao.LinearParameterRepository;
+import org.registrator.community.dao.PolygonRepository;
+import org.registrator.community.dao.ResourceDiscreteValueRepository;
+import org.registrator.community.dao.ResourceFindByParams;
+import org.registrator.community.dao.ResourceLinearValueRepository;
+import org.registrator.community.dao.ResourceNumberRepository;
+import org.registrator.community.dao.ResourceRepository;
+import org.registrator.community.dao.ResourceTypeRepository;
+import org.registrator.community.dao.TomeRepository;
+import org.registrator.community.dao.UserRepository;
+import org.registrator.community.dto.ParameterSearchResultDTO;
+import org.registrator.community.dto.PointAreaDTO;
+import org.registrator.community.dto.PointDTO;
+import org.registrator.community.dto.PoligonAreaDTO;
+import org.registrator.community.dto.ResourceAreaDTO;
+import org.registrator.community.dto.ResourceDTO;
+import org.registrator.community.dto.ResourceDiscreteValueDTO;
+import org.registrator.community.dto.ResourceLinearValueDTO;
+import org.registrator.community.dto.SegmentLinearDTO;
+import org.registrator.community.dto.ValueDiscreteDTO;
 import org.registrator.community.dto.json.PointJson;
 import org.registrator.community.dto.json.PolygonJson;
 import org.registrator.community.dto.json.ResourceSearchJson;
-import org.registrator.community.entity.*;
+import org.registrator.community.entity.DiscreteParameter;
+import org.registrator.community.entity.LinearParameter;
+import org.registrator.community.entity.Polygon;
+import org.registrator.community.entity.Resource;
+import org.registrator.community.entity.ResourceDiscreteValue;
+import org.registrator.community.entity.ResourceLinearValue;
+import org.registrator.community.entity.ResourceNumber;
+import org.registrator.community.entity.ResourceType;
+import org.registrator.community.entity.TerritorialCommunity;
+import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.exceptions.ResourceEntityNotFound;
 import org.registrator.community.service.InquiryService;
@@ -20,9 +57,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -66,6 +102,9 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private ResourceFindByParams resourceFindByParams;
 
+    @Autowired
+    private CommunityRepository communityRepository;
+    
     @Override
     public ResourceDTO createNewResourceDTO() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -231,20 +270,25 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public String getRegistrationNumber(String login) {
-        final int MAXIMAL_NUMBER_LENGTH = 4;
         User user = userRepository.findUserByLogin(login);
+        TerritorialCommunity community = communityRepository.findOne(user.getTerritorialCommunity().getTerritorialCommunityId());
+        
         ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
+        String regObjectPre = (community.getRegistrationNumber() != null) ? community.getRegistrationNumber() : "0000000000000000";
+
         if (resourceNumber != null) {
             int numberOfDigits = resourceNumber.getNumber().toString().length();
             StringBuilder resourceNumberPattern = new StringBuilder();
-            for (int i = numberOfDigits; i < MAXIMAL_NUMBER_LENGTH; i++) {
-                resourceNumberPattern.append("0");
-            }
-            resourceNumberPattern.append(resourceNumber.getNumber());
 
-            return resourceNumber.getRegistratorNumber() + resourceNumberPattern.toString();
+            resourceNumberPattern.append(regObjectPre); // NEED THE MODIFIED TC
+            resourceNumberPattern.append("/");
+            resourceNumberPattern.append(resourceNumber.getRegistratorNumber());
+            resourceNumberPattern.append(":");
+            String incrementNumber = String.format("%04d", resourceNumber.getNumber());
+            resourceNumberPattern.append(incrementNumber);
+
+            return resourceNumberPattern.toString();
         }
-
         return null;
     }
 

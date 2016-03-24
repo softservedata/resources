@@ -63,8 +63,6 @@ function initialize() {
         }
     });
 
-    // show polygons on edit page
-    addPointsToMap(true);
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('gmaps-input');
@@ -133,8 +131,6 @@ function initialize() {
         map.fitBounds(bounds);
     });
 
-
-
     //google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
     //    drawingManager.setDrawingMode(null);
     //    var polygon = event.overlay;
@@ -151,7 +147,6 @@ function initialize() {
 
 function getResources() {
     var resType = $("#resourcesTypeSelect").val();
-    if (map.getBounds() === undefined) return;
     var maxLat = map.getBounds().getNorthEast().lat();
     var minLat = map.getBounds().getSouthWest().lat();
     var maxLng = map.getBounds().getNorthEast().lng();
@@ -182,9 +177,7 @@ function getResources() {
         dataType: 'json',
         success: function (data) {
             for (var i = 0; i < data.polygons.length; i++) {
-                if (data.polygons[i].identifier === $("#identifier").val()) {
-                    continue;
-                }
+
                 var polygonPath = [];
                 var points = data.polygons[i].points;
                 for (var j = 0; j < points.length; j++) {
@@ -368,16 +361,16 @@ $("#gmaps-show-res").click(function () {
         bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         return false;
     }
-    //$("#dark_bg").show();
+    $("#dark_bg").show();
     getResources();
-    //$("#dark_bg").hide();
+    $("#dark_bg").hide();
     //console.log("Polygons: " + polygons.length)
 });
 
 //Add coordinates from map and verify them
 $("#addPointsFromMap").click(function () {
 
-    if ((newPolygons.length!=undefined) && (newPolygons.length > 0)) {
+    if (newPolygons.length > 0) {
         $("#dark_bg").show();
         var infoBoxMessage = "";
 
@@ -420,12 +413,7 @@ $("#addPointsFromMap").click(function () {
     }
 });
 
-$(document).on("click", "#addPointsToMap", function () {
-    addPointsToMap(false)
-});
-
-function addPointsToMap(allowEmptyArea){
-
+$(document).on("click", "#addPointsToMap", function(){
     var polygonsDiv = $('div[id^=polygon_]');
     var enoughPoints = true;
     var infoBoxMsg = "";
@@ -442,10 +430,6 @@ function addPointsToMap(allowEmptyArea){
             enoughPoints = false;
         }
     });
-
-    if ((allowEmptyArea) && (!enoughPoints)) {
-        return;
-    }
 
     if (alertMsg.length > 0) {
         bootbox.alert(alertMsg);
@@ -494,7 +478,7 @@ function addPointsToMap(allowEmptyArea){
         });
         $("#infoBox").html(infoBoxMsg);
     }
-}
+});
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
