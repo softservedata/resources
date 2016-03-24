@@ -402,6 +402,7 @@ public class UserServiceTest {
 		for(int i=0;i<fakeUserRepository.size();i++){
 			UserDTO userDto = createUserDto(fakeUserRepository.get(i).getLogin());
 			expected.add(userDto);
+			
 		}
 		//receive function result and compare
 		List<UserDTO> actual = userService.getUserDtoList();
@@ -931,6 +932,7 @@ public class UserServiceTest {
 				AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(), address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
 				PassportDTO passportDto = new PassportDTO(passport.getSeria(),passport.getNumber(),passport.getPublishedByData());;
 				UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(), user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto, passportDto);
+				userDto.setTerritorialCommunity(user.getTerritorialCommunity().getName());
 				return userDto;
 			}
 		}
