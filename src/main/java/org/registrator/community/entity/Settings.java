@@ -22,6 +22,10 @@ public class Settings {
     @Column
     private TimeZone timeZone;
 
+    public Settings() {
+        id = 1;
+    }
+
     public Integer getId() {
         return id;
     }

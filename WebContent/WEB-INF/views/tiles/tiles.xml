@@ -111,6 +111,11 @@
 			value="/WEB-INF/views/templates/RegistratedUsers.jsp" />
 	</definition>
 
+    <definition name="userList" extends="homepage">
+        <put-attribute name="body" type="template"
+            value="/WEB-INF/views/templates/userList.jsp" />
+    </definition>
+
 	<definition name="allResourcesTypes" extends="homepage">
 		<put-attribute name="body" type="template"
 			value="/WEB-INF/views/templates/allResourcesTypes.jsp" />
