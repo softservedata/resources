@@ -114,6 +114,8 @@ public class ResourceServiceTest   {
             "{'lat':49.9024188855169,'lng':26.249633822590113}," +
             "{'lat':49.158718087297515,'lng':26.2177737057209}," +
             "{'lat':49.14506496754859,'lng':24.739013705402613}]";
+    private TerritorialCommunity community;
+    private String communityNumber;
 
     @BeforeMethod
     public void initMocks () throws IllegalAccessException {
@@ -186,6 +188,11 @@ public class ResourceServiceTest   {
 
         discreteValue = mock(ResourceDiscreteValue.class);
         when(discreteValue.getDiscreteParameter()).thenReturn(discreteParameter);
+
+        community = mock(TerritorialCommunity.class);
+        communityNumber = "0000000000000000";
+        when(registrator.getTerritorialCommunity()).thenReturn(community);
+        when(community.getRegistrationNumber()).thenReturn(communityNumber);
     }
     
     @Test
@@ -304,8 +311,7 @@ public class ResourceServiceTest   {
         ResourceDTO result = resourceService.saveResource(validResourceDTO, registrator);
         assertEquals(result.getIdentifier(), validResourceDTO.getIdentifier(), "Creation Resource with empty owner should be successful");
         verify(inquiryService, times(0)).addInputInquiry(same(ownerLogin), any(), same(registrator));
-        verify(resourceNumber, times(1)).setNumber(same(number + 1));
-        
+
     }
 
     @Test
@@ -330,7 +336,13 @@ public class ResourceServiceTest   {
 
         String result = resourceService.getRegistrationNumber(registratorLogin);
 
-        assertEquals(result, registarionNumber + numberRepresentaion);
+        StringBuilder sb = new StringBuilder();
+        sb.append(communityNumber);
+        sb.append("/");
+        sb.append(registarionNumber);
+        sb.append(":");
+        sb.append(numberRepresentaion);
+        assertEquals(result, sb.toString());
         
     }
 
