@@ -271,13 +271,12 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public String getRegistrationNumber(String login) {
         User user = userRepository.findUserByLogin(login);
-        TerritorialCommunity community = communityRepository.findOne(user.getTerritorialCommunity().getTerritorialCommunityId());
+        TerritorialCommunity community = user.getTerritorialCommunity();
         
         ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
         String regObjectPre = (community.getRegistrationNumber() != null) ? community.getRegistrationNumber() : "0000000000000000";
 
         if (resourceNumber != null) {
-            int numberOfDigits = resourceNumber.getNumber().toString().length();
             StringBuilder resourceNumberPattern = new StringBuilder();
 
             resourceNumberPattern.append(regObjectPre); // NEED THE MODIFIED TC
