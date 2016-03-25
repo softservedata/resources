@@ -53,9 +53,6 @@ public class UsersController {
 	private UserService userService;
 
 	@Autowired
-	private AdminSettings adminSettings;
-
-	@Autowired
 	private RoleService roleService;
 
 	@Autowired
@@ -183,39 +180,6 @@ public class UsersController {
 		return dto;
 	}
 
-	/**
-	 * Method for showing administrator settings in order to change registration
-	 * method
-	 * 
-	 * @param model
-	 * @return adminSettings.jsp
-	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-	public String showSettings(Model model) {
-		logger.info("begin: show admin settings");
-		model.addAttribute("regMethod", adminSettings.getRegistrationMethod());
-		logger.info("end: admin settings are shown");
-		return "adminSettings";
-	}
-
-	/**
-	 * Method for changing administrator settings for one of the possible
-	 * options
-	 * 
-	 * @param optratio
-	 *            - one of three possible option for changing registration
-	 *            method
-	 * @return adminSettings.jsp
-	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/settings", method = RequestMethod.POST)
-	public String changeSettings(@RequestParam String optradio) {
-		logger.info("start changing settings");
-		adminSettings.changeRegMethod(optradio);
-		logger.info("settings are successfully changed");
-		return "adminSettings";
-	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/unlockusers")

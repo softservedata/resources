@@ -16,7 +16,7 @@
                               <spring:message code="label.inactive.pagename" /></a></li>
                     </ul>
                 </li>
-                <li><a href="<c:url value='/administrator/users/settings'/>">
+                <li><a href="<c:url value='/administrator/settings'/>">
                     <spring:message code="label.admin.settings"/></a></li>
                 <li><a href="<c:url value='/administrator/communities/show-all-communities'/>"><spring:message code="label.community.showall"/></a></li>
                 <li><a href="<c:url value='/manualregistration'/>"><spring:message
