@@ -227,7 +227,7 @@ function intersectionCheck() {
     var resType = $("#resourcesTypeSelect").val();
     var bounds = new google.maps.LatLngBounds();
 
-    if (resType == "") {
+    if (resType == undefined) {
         $("#resourcesTypeSelect").focus();
         bootbox.alert(jQuery.i18n.prop('msg.selectType'));
         $("#dark_bg").hide();
@@ -442,7 +442,7 @@ $("#cp-wrap").on("click", "a", function () {
 
         if (action == 'new') {
             var resType = $("#resourcesTypeSelect").val();
-            if (resType === undefined) {
+            if (resType == undefined) {
                 bootbox.alert(jQuery.i18n.prop('msg.selectType'));
             } else {
                 PS.enable();
