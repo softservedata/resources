@@ -38,6 +38,8 @@
      
     <li><a href="#" class="set-community"><spring:message
        code="label.modal.setCommunity" /></a></li>
+    <li><a href="#" class="reset-password"><spring:message
+       code="label.modal.resetPassword"/></a></li>
    </ul>
   </div>
 
