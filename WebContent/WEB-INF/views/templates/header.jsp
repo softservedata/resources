@@ -22,7 +22,7 @@
 						<span class="caret"></span></button>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="${pageContext.request.contextPath}/change_password" class="forgot-password">
+							<a href="${pageContext.request.contextPath}/change_password" class="change-password">
 								<spring:message code="label.changePassword"/>
 							</a>
 						</li>

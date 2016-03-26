@@ -3,20 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<style>
-    input.error {
-        border-style: solid;
-        border-color: #ff0000;
-    }
-
-    span.error {
-        color: red;
-    }
-    h4{
-        text-align: center;
-    }
-</style>
-
 <div class="change_password_container">
     <fieldset id="change_password_fieldset">
 
@@ -39,7 +25,7 @@
                     <div class="col-md-4">
                         <input id="password" name="password" type="password" placeholder=""
                                class="form-control input-md" required="">
-                        <form:errors path="password" class="error" />
+                        <form:errors path="password" class="error" cssStyle="color:red" />
                     </div>
                 </div>
 
@@ -50,7 +36,7 @@
                     <div class="col-md-4">
                         <input id="newPassword" name="newPassword" type="password" placeholder=""
                                class="form-control input-md" required="">
-                        <form:errors path="newPassword" class="error" />
+                        <form:errors path="newPassword" class="error" cssStyle="color:red" />
                     </div>
                 </div>
 
@@ -61,7 +47,7 @@
                     <div class="col-md-4">
                         <input id="confirmNewPassword" name="confirmNewPassword" type="password" placeholder=""
                                class="form-control input-md" required="">
-                        <form:errors path="confirmNewPassword" class="error" />
+                        <form:errors path="confirmNewPassword" class="error" cssStyle="color:red" />
                     </div>
                 </div>
 
