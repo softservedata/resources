@@ -20,12 +20,12 @@ public class MainExceptionHandler {
 
     public static final String DEFAULT_ERROR_VIEW = "error";
 
-    @ExceptionHandler(RegistratorException.class)
+    @ExceptionHandler(Exception.class)
     public ModelAndView resourceNotFoundHandler(HttpServletRequest req, RegistratorException exception) {
         logger.error("Request: " + req.getRequestURL() + " raised " + exception);
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", exception);
-        mav.addObject("message", exception.getMessageKey());
+//        mav.addObject("message", exception.getMessageKey());
         mav.addObject("url", req.getRequestURL());
         mav.setViewName("error");
         return mav;

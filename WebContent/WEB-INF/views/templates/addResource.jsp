@@ -3,6 +3,8 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--/* Optional theme */--%>
+<%--@import url('//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css');--%>
 
 <style>
     .polygonId{display: none;}
@@ -71,7 +73,7 @@
                     </c:if>
                     <c:set var="actualResourceType" value="${resource.resourceType}" scope="page"/>
                     <c:if test="${empty resource.resourceType}">
-                        <option value=""><spring:message
+                        <option value="" disabled selected><spring:message
                                 code="label.resource.selectType"/>:
                         </option>
                     </c:if>
@@ -163,47 +165,48 @@
         </div> --%>
 
         <!-- Coordinates -->
-        <legend>
+        <ul class="nav nav-tabs" id="coordinates">
+            <li class="active"><a data-target="#map" data-toggle="tab">Map</a></li>
+            <li><a data-target="#points" data-toggle="tab">Points</a></li>
+        </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="map"><legend>
             <spring:message code="label.resource.coordinates"/>
         </legend>
 
-        <%--Container for Google map--%>
-        <div class="col-md-12" style="margin-bottom: 10px;">
-            <div class="col-md-12" id="mapManual">
-                <span class="glyphicon glyphicon-triangle-right"></span> <span
-                    class="glyphicon glyphicon-triangle-bottom hidden"></span> <span><spring:message
-                    code="label.howToUseMap"/></span>
+                <%--Container for Google map--%>
+            <div class="col-md-12" style="margin-bottom: 10px;">
+                <div class="col-md-12" id="mapManual">
+                    <span class="glyphicon glyphicon-triangle-right"></span> <span
+                        class="glyphicon glyphicon-triangle-bottom hidden"></span> <span><spring:message
+                        code="label.howToUseMap"/></span>
+                </div>
+                <div class="spoiler col-md-12">
+                    <spring:message code="label.resource.mapHelp"/>
+                </div>
             </div>
-            <div class="spoiler col-md-12">
-                <spring:message code="label.resource.mapHelp"/>
-            </div>
-        </div>
 
-        <div id="map_canvas" class="container"
-             style="height: 500px; padding: 20px 0px;"></div>
-        <div class="col-md-12">
-            <button id="addPointsFromMap" class="btn btn-primary" type="button"
-                    style="margin-top: 10px;">
-                <spring:message code="label.resource.coordinates.addFromMap"/>
-            </button>
-            <button id="addPointsToMap" class="btn btn-primary" type="button"
-                    style="margin-top: 10px;">
-                <spring:message code="label.resource.coordinates.addToMap"/>
-            </button>
-                <%--<button id="show_UA" class="btn btn-primary" type="button"--%>
-                <%--style="margin-top: 10px;">Show Ukraine</button>--%>
+            <div id="map_canvas" class="container"
+                 style="height: 500px; padding: 20px 0px;"></div>
+            <div class="col-md-12">
+                <%--<button id="addPointsFromMap" class="btn btn-primary" type="button"--%>
+                        <%--style="margin-top: 10px;">--%>
+                    <%--<spring:message code="label.resource.coordinates.addFromMap"/>--%>
+                <%--</button>--%>
+
+                    <%--<button id="show_UA" class="btn btn-primary" type="button"--%>
+                    <%--style="margin-top: 10px;">Show Ukraine</button>--%>
 			<span id="infoBox" class="col-md-5"><spring:message
                     code="label.resource.infoBox"/></span>
-        </div>
+            </div>
 
-        <div class="col-md-12">
-            <input type="checkbox" id="allUkraine"
-                   <c:if test="${firstPoint == 200}">checked</c:if>>
-            <label for="allUkraine"><spring:message code="label.resource.allUkraine"/></label>
-        </div>
-
-        <div id="latLngAdd"
-             <c:if test="${firstPoint == 200}">style="display: none;" </c:if>
+            <div class="col-md-12">
+                <input type="checkbox" id="allUkraine"
+                       <c:if test="${firstPoint == 200}">checked</c:if>>
+                <label for="allUkraine"><spring:message code="label.resource.allUkraine"/></label>
+            </div></div>
+        <div class="tab-pane" id="points"><div id="latLngAdd"
+                                               <c:if test="${firstPoint == 200}">style="display: none;" </c:if>
         >
             <div class="form-group">
                 <label class="control-label col-md-1"><spring:message
@@ -229,7 +232,7 @@
                             <div id="areaInput1" class="form-group clonedAreaInput">
                                 <div class="col-md-1" style="width: 130px; height: 34px">
                                     <input id="pointNumber" class="form-control"
-                                       name="resourceArea.poligons[${polygonIndex}].points[${pointIndex}].orderNumber" value="${point.orderNumber}"
+                                           name="resourceArea.poligons[${polygonIndex}].points[${pointIndex}].orderNumber" value="${point.orderNumber}"
                                            readonly>
                                 </div>
                                 <div class="col-md-1" style="width: 130px; height: 34px">
@@ -393,6 +396,9 @@
             </c:if>
 
             <div id="mybuttontype">
+                <button id="addPointsToMap" class="btn btn-primary" type="button">
+                    <spring:message code="label.resource.coordinates.addToMap"/>
+                </button>
                 <button class="btn btn-primary" id="btnAddAreaPoint" type="button">
                     <spring:message code="label.resource.coordinates.addPoint"/>
                 </button>
@@ -410,7 +416,11 @@
                 </button>
             </div>
             <br/>
-        </div>
+        </div></div>
+    </div>
+
+
+
         <div class="button">
             <input id="submitForm" type="submit" class="btn btn-success"
                    value=<spring:message code="label.save"/>>
@@ -484,13 +494,14 @@
         src="<c:url value='/resource/js/lib/jquery-ui.datepscker.min.js'/>"></script>
 <script
         src="<c:url value='/resource/js/lib/jquery.autocomplete.min.js'/>"></script>
+<script src="<c:url value='/resource/js/lib/jquery.matchHeight.js'/>"></script>
 <script src="<c:url value='/resource/js/descriptionAutocomplete.js'/>"></script>
 <script src="<c:url value='/resource/js/ownerControl.js'/>"></script>
 <script src="<c:url value='/resource/js/addArea.js'/>"></script>
+
 <link rel="stylesheet" type="text/css"
       href="<c:url value='/resource/css/suggestion.css'/>">
 <link rel="stylesheet" type="text/css"
       href="<c:url value='/resource/css/cssload.css'/>">
 <link rel="stylesheet"
       href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-
