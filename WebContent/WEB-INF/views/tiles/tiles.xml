@@ -42,6 +42,14 @@
 		<put-attribute name="body" type="template"
             value="/WEB-INF/views/change_password.jsp"/>
 	</definition>
+	
+	<!-- Confirm e-mail Page -->
+	<definition name="confirm_email" extends="base">
+		<put-attribute name="login_header" type="template"
+			value="/WEB-INF/views/templates/header.jsp" />
+		<put-attribute name="login_body" type="template"
+			value="/WEB-INF/views/confirm_email.jsp" />
+	</definition>
 
 	<!-- Register Page -->
 	<definition name="register" extends="base">

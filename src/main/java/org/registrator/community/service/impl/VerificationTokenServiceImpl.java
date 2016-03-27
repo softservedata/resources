@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class VerificationTokenServiceImpl implements VerificationTokenService{
 	
 	public static final int PASSWORD_TOKEN_EXPIRY_TIME = 1000*60*60*24;
+	public static final int EMAIL_TOKEN_EXPIRY_TIME = 1000*60*60*24*7;
 	
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
@@ -36,6 +37,16 @@ public class VerificationTokenServiceImpl implements VerificationTokenService{
 		deletePasswordVerificationTokenByEmail(userEmail);
 		verificationTokenRepository.save(passwordVerificationToken);
 		return passwordVerificationToken;
+	}
+	
+	@Override
+	public VerificationToken saveEmailConfirmationToken(String userEmail, Date nowTime) {
+		String token = createHashForPasswordToken();
+		nowTime.setTime(nowTime.getTime()+EMAIL_TOKEN_EXPIRY_TIME);
+		VerificationToken emailVerificationToken = new VerificationToken(token,userEmail,nowTime,TokenType.CONFIRM_EMAIL);
+		deletePasswordVerificationTokenByEmail(userEmail);
+		verificationTokenRepository.save(emailVerificationToken);
+		return emailVerificationToken;
 	}
 
 	@Override
