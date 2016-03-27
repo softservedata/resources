@@ -26,7 +26,14 @@
 	   <label class="control-label col-sm-2"><spring:message
 				code="label.community.titleNumber" />:</label>
 	   <div class="col-sm-3">
-			<input class="form-control" name="registrationNumber" value="${community.registrationNumber}">
+            <c:choose>
+                <c:when test="${empty community.registrationNumber}">
+                    <input class="form-control" name="registrationNumber" placeholder=<spring:message code="label.community.enterNumber"/>>
+                </c:when>
+                <c:otherwise>
+                    <input class="form-control" name="registrationNumber" value="${community.registrationNumber}">
+                </c:otherwise>
+            </c:choose>
 	   </div>
 	</div>
 	<br />

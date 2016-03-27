@@ -70,7 +70,7 @@ function isInsideUkraine(polygon){
 	isInside = isPolygonInsidePolygon(polygon, UA_polygon_outside);
 	if (!isInside){
 		console.log("polygon is not inside Ukraine");
-		bootbox.alert(jQuery.i18n.prop('msg.poligonNotInsideUkranie'));
+		bootbox.alert(jQuery.i18n.prop('msg.poligonNotInsideUkraine'));
 		return false;
 	}
 	// else near the border of Ukraine	

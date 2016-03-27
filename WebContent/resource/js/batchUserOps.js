@@ -84,6 +84,12 @@ jQuery(document)
 						start_community_search();
 					});
 
+                    $('.reset-password').click(function() {
+                        if (!gather_data())
+                            return;
+                        confirm_passwordreset();
+                    });
+
 					/* **************************** */
 
 					function confirm_rolechange() {
@@ -242,6 +248,32 @@ jQuery(document)
 												});
 
 									});
+
+                    function confirm_passwordreset() {
+                        var json = {
+                            "login" : selected.toString()
+                        };
+
+                        $
+                            .ajax({
+                                type : "POST",
+                                url : "get-all-users/batch-password-reset",
+                                dataType : "text",
+                                data : JSON.stringify(json),
+                                contentType : 'application/json; charset=utf-8',
+                                mimeType : 'application/json',
+                                success : function(data) {
+									bootbox.alert(jQuery.i18n.prop(data));
+                                    return false;
+								},
+                                error : function(xhr, status, error) {
+                                    bootbox
+                                        .alert("<h3>Error performing Password reset operation</h3>"
+                                            + xhr.responseText);
+                                    return "";
+                                }
+                            });
+                    }
 
 					/* **************************** */
 				});

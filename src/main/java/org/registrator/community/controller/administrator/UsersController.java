@@ -171,7 +171,7 @@ public class UsersController {
 
     /**
      * Controller for get all registrated users
-     * 
+     *
      */
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
@@ -207,7 +207,7 @@ public class UsersController {
     @RequestMapping(value = "/get-all-users/batch-role-change", method = RequestMethod.POST)
     public @ResponseBody String setRoleForUsers(@RequestBody RoleTypeJson roleTypeJson) {
         String msg = userService.batchRoleChange(roleTypeJson);
-        
+
         return msg;
     }
 
@@ -215,7 +215,7 @@ public class UsersController {
     @RequestMapping(value = "/get-all-users/batch-community-change", method = RequestMethod.POST)
     public @ResponseBody String setCommunityForUsers(@RequestBody CommunityParamJson communityParamJson) {
         String msg = userService.batchCommunityChange(communityParamJson);
-    
+
         return msg;
     }
 
@@ -226,7 +226,7 @@ public class UsersController {
         List<TerritorialCommunity> territorialCommunities = communityService.getCommunityBySearchTag(communityDesc);
         return territorialCommunities;
     }
-    
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @ResponseBody
     @RequestMapping(value = "/get-all-users/get-community", method = RequestMethod.POST)
@@ -238,7 +238,7 @@ public class UsersController {
     /**
      * Method for showing administrator settings in order to change registration
      * method
-     * 
+     *
      * @param model
      * @return adminSettings.jsp
      */
@@ -254,7 +254,7 @@ public class UsersController {
     /**
      * Method for changing administrator settings for one of the possible
      * options
-     * 
+     *
      * @param optratio
      *            - one of three possible option for changing registration
      *            method

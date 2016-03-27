@@ -10,8 +10,10 @@ function checkIntersectionAllPolygons(polygon, Polygons){
 	var intersect = false;
 		
 	console.log("polygons.length = " + Polygons.length);
-	for (var i = 0; i<Polygons.length; i++)	{	
-		intersect = checkEdgeOfFirstOnSecond(Polygons[i], polygon)  || checkEdgeOfFirstOnSecond(polygon, Polygons[i]);
+	for (var i = 0; i<Polygons.length; i++)	{
+		if (polygon != Polygons[i]) {
+			intersect = checkEdgeOfFirstOnSecond(Polygons[i], polygon) || checkEdgeOfFirstOnSecond(polygon, Polygons[i]);
+		}
 		if (intersect) {
 			return intersect;
 		}

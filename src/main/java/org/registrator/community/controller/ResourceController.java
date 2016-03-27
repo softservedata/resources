@@ -65,7 +65,7 @@ public class ResourceController {
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
     public String addResourceForm(@RequestParam(value = "mode", defaultValue = "add") String mode,
                                   @RequestParam(value = "id", defaultValue = "") String identifier,
-                                  Model model) {
+                                  Model model) throws ResourceEntityNotFound, BadRequest{
 
 
 
