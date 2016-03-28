@@ -37,6 +37,8 @@ public class RegisterUserSearchImpl extends AbstractSearchService<User,UserRepos
 				map.put("1", user.getLastName());
 				map.put("2", user.getLogin());
 				map.put("3", user.getTerritorialCommunity().getName());
+				map.put("4", user.getEmail());
+				map.put("5", user.getRole().toString());
 
 				personList.add(map);	
 			}

@@ -4,7 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script src="<c:url value='/resource/js/move.js'/>"></script>
-<script src="<c:url value='/resource/js/changeRole.js'/>"></script>
 <script src="<c:url value='/resource/js/editingUser.js'/>"></script>
 <script src="<c:url value='/resource/js/userValidate.js'/>"></script>
 <script src="<c:url value='/resource/js/checkResourceNumber.js'/>"></script>
@@ -298,54 +297,43 @@
 							</select>
 						</div>
 					</div>
+
+                    <c:if test="${userDto.role == 'REGISTRATOR'}">
 					<div class="form-group">
-						<label class="col-lg-4 control-label" for="textinput">Реєстраційний
-							номер об'єкту</label>
+						<label class="col-lg-4 control-label" for="textinput">Номер запису</label>
 						<div class="col-lg-8">
-							<input id="resourceNumber" class="form-control input-md"
+							<input id="registratorNumber" class="form-control input-md readonly"
 								type="text" name="resourceNumberJson.resource_number"
 								value="${userDto.resourceNumberJson.resource_number}"
 								readonly>
-						</div>
-						<div class="control-group error">
-							<form:errors path="resourceNumberJson.resource_number"
-								cssClass="error" style="color:black" />
+							<div class="control-group error">
+								<form:errors path="resourceNumberJson.resource_number"
+									cssClass="error" style="color:black" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-4 control-label" for="textinput">Номер
-							реєстратора</label>
+						<label class="col-lg-4 control-label" for="textinput">Номер тому</label>
 						<div class="col-lg-8">
-							<input id="registratorNumber" class="form-control input-md"
+							<input id="identifierNumber" class="form-control input-md readonly"
 								type="text" name="resourceNumberJson.registrator_number"
-								value="${userDto.resourceNumberJson.registrator_number}"
-								readonly>
+								value="${userDto.resourceNumberJson.registrator_number}" readonly>
 							<div class="control-group error">
 								<form:errors path="resourceNumberJson.registrator_number"
 									cssClass="error" style="color:black" />
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-lg-4 control-label" for="textinput">Номер
-							тому</label>
-						<div class="col-lg-8">
-							<input id="identifierNumber" class="form-control input-md"
-								type="text" name="resourceNumberJson.identifier"
-								value="${userDto.resourceNumberJson.identifier}" readonly>
-							<div class="control-group error">
-								<form:errors path="resourceNumberJson.identifier"
-									cssClass="error" style="color:black" />
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-lg-8">
-							<input id="key" class="form-control input-md" type="text"
-								name="resourceNumberJson.login" value="0"
-								style="display: none">
-						</div>
-					</div>
+     
+                    <div class="form-group">
+                        <div class="col-lg-8">
+                            <input id="key" class="form-control input-md" type="hidden"
+                                name="resourceNumberJson.login" value="${userDto.login}">
+                        </div>
+                    </div>
+     
+                    </c:if>       
+					
 				</div>
 			</div>
 			<div class="wrapper" style="text-align: center">
@@ -361,7 +349,7 @@
 	</form:form>
 </div>
 
-<div class="container">
+<%-- <div class="container">
 	<form:form id="modalWindow" modelAttribute="resourceNumberDtoJson"
 		method="post" action="modal-window" class="form-horizontal">
 		<div id="myModal" class="modal fade" role="dialog">
@@ -413,4 +401,4 @@
 			</div>
 		</div>
 	</form:form>
-</div>
+</div> --%>
