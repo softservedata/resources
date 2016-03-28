@@ -12,13 +12,11 @@
                     <ul class="dropdown_menu">
                          <li><a href="<c:url value='/administrator/users/get-all-users'/>">
                              <spring:message code="label.registrated.pagename" /></a></li>
-                         <li><a href="<c:url value='/administrator/users/search'/>">
-                             <spring:message code="label.search.pagename" /></a></li></a></li>
-                          <li><a href="<c:url value='/administrator/users/get-all-inactive-users'/>">
+                         <li><a href="<c:url value='/administrator/users/get-all-inactive-users'/>">
                               <spring:message code="label.inactive.pagename" /></a></li>
                     </ul>
                 </li>
-                <li><a href="<c:url value='/administrator/users/settings'/>">
+                <li><a href="<c:url value='/administrator/settings'/>">
                     <spring:message code="label.admin.settings"/></a></li>
                 <li><a href="<c:url value='/administrator/communities/show-all-communities'/>"><spring:message code="label.community.showall"/></a></li>
                 <li><a href="<c:url value='/manualregistration'/>"><spring:message
@@ -40,3 +38,4 @@
              bootbox.alert(jQuery.i18n.prop('msg.unblockallusers'));
         });
 </script>
+
