@@ -29,3 +29,4 @@ public class RoleTypeJson {
 		return "RoleTypeJson [login=" + login + ", role=" + role + "]";
 	}
 }
+
