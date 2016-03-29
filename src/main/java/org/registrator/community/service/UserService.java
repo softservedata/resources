@@ -35,7 +35,7 @@ public interface UserService {
 
     void registerUser(UserRegistrationDTO registrationForm);
 
-    int updateUser(User user);
+    void updateUser(User user);
 
     boolean login(String username, String password);
 
