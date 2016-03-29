@@ -33,6 +33,12 @@ jQuery(document).ready(function($) {
 	    if (!gather_data()) return;
 	    start_community_search();
 	});
+
+	$('.reset-password').click(function() {
+		if (!gather_data())
+			return;
+		confirm_passwordreset();
+	});
 	/* **************************** */
 	function gather_data() {
 	    selected = [];
