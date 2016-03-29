@@ -74,18 +74,15 @@ public class UsersController {
      */
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
-    public String fillInEditWindow(@RequestParam("login") String login,
-            Model model) {
+    public String fillInEditWindow(@RequestParam("login") String login, Model model) {
         logger.info("begin");
         UserDTO userDto = userService.getUserDto(login);
         model.addAttribute("userDto", userDto);
         List<Role> roleList = roleService.getAllRole();
         model.addAttribute("roleList", roleList);
-        List<UserStatus> userStatusList = userService
-                .fillInUserStatusforRegistratedUsers();
+        List<UserStatus> userStatusList = userService.fillInUserStatusforRegistratedUsers();
         model.addAttribute("userStatusList", userStatusList);
-        List<TerritorialCommunity> territorialCommunities = communityService
-                .findAll();
+        List<TerritorialCommunity> territorialCommunities = communityService.findAll();
         model.addAttribute("territorialCommunities", territorialCommunities);
         logger.info("end");
         return "editWindow";
@@ -98,20 +95,22 @@ public class UsersController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @RequestMapping(value = "/edit-registrated-user", method = RequestMethod.POST)
-    public String editRegistratedUser(
-            @Valid @ModelAttribute("userDTO") UserDTO userDto,
-            BindingResult result, Model model,
-            RedirectAttributes redirectAttributes) {
+    public String editRegistratedUser(@Valid @ModelAttribute("userDTO") UserDTO userDto, BindingResult result,
+            Model model, RedirectAttributes redirectAttributes) {
+            ResourceNumberJson resNumJson = userDto.getResourceNumberJson();
+            if(resNumJson != null){
+                resourceNumberValidator.validate(resNumJson, result);
+            }
+
         if (result.hasErrors()) {
             return fillInEditWindow(userDto.getLogin(), model);
         } else {
             logger.info("begin");
-            userService.CreateTomeAndRecourceNumber(userDto);
+            userService.createTomeAndRecourceNumber(userDto);
             UserDTO editUserDto = userService.editUserInformation(userDto);
             model.addAttribute("userDto", editUserDto);
             logger.info("end");
-            redirectAttributes.addFlashAttribute("tableSetting",
-                    tableSettingsFactory.getTableSetting("registerUser"));
+            redirectAttributes.addFlashAttribute("tableSetting", tableSettingsFactory.getTableSetting("registerUser"));
             return "redirect:/administrator/users/get-all-users";
         }
     }
@@ -126,8 +125,7 @@ public class UsersController {
         logger.info("begin");
         List<UserDTO> inactiveUsers = userService.getAllInactiveUsers();
         model.addAttribute("unregistatedUsers", inactiveUsers);
-        List<UserStatus> userStatusList = userService
-                .fillInUserStatusforInactiveUsers();
+        List<UserStatus> userStatusList = userService.fillInUserStatusforInactiveUsers();
         model.addAttribute("userStatusList", userStatusList);
         List<Role> roleList = roleService.getAllRole();
         model.addAttribute("roleList", roleList);
@@ -156,8 +154,7 @@ public class UsersController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @ResponseBody
     @RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.POST)
-    public ResponseEntity<String> showModalWindow(
-            @Valid @RequestBody ResourceNumberJson resourceNumberDtoJson,
+    public ResponseEntity<String> showModalWindow(@Valid @RequestBody ResourceNumberJson resourceNumberDtoJson,
             BindingResult result) {
         logger.info("begin");
         resourceNumberValidator.validate(resourceNumberDtoJson, result);
@@ -171,14 +168,18 @@ public class UsersController {
 
     /**
      * Controller for get all registrated users
-     *
+     * 
      */
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
     public String getAllUsers(Model model) {
         logger.info("begin");
         model.addAttribute("tableSetting", tableSettingsFactory.getTableSetting("registerUser"));
+        List<UserDTO> userDtoList = userService.getUserDtoList();
+        model.addAttribute("userList", userDtoList);
+        List<Role> roleTypes = roleService.getAllRole();
+        model.addAttribute("roleTypes", roleTypes);
         logger.info("end");
         return "searchTableTemplate";
     }
@@ -191,20 +192,8 @@ public class UsersController {
         return dto;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/get-all-users", method = RequestMethod.GET)
-    public String getUserList(Model model) {
-        List<UserDTO> userDtoList = userService.getUserDtoList();
-        model.addAttribute("userList", userDtoList);
-        List<Role> roleTypes = roleService.getAllRole();
-        model.addAttribute("roleTypes", roleTypes);
-
-        System.out.println(userDtoList.size() + " \n" + userDtoList);
-        return "userList";
-    }
-
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
-    @RequestMapping(value = "/get-all-users/batch-role-change", method = RequestMethod.POST)
+    @RequestMapping(value = "batch-role-change", method = RequestMethod.POST)
     public @ResponseBody String setRoleForUsers(@RequestBody RoleTypeJson roleTypeJson) {
         String msg = userService.batchRoleChange(roleTypeJson);
 
@@ -212,7 +201,7 @@ public class UsersController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
-    @RequestMapping(value = "/get-all-users/batch-community-change", method = RequestMethod.POST)
+    @RequestMapping(value = "batch-community-change", method = RequestMethod.POST)
     public @ResponseBody String setCommunityForUsers(@RequestBody CommunityParamJson communityParamJson) {
         String msg = userService.batchCommunityChange(communityParamJson);
 
@@ -221,7 +210,7 @@ public class UsersController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @ResponseBody
-    @RequestMapping(value = "/get-all-users/communities", method = RequestMethod.POST)
+    @RequestMapping(value = "communities", method = RequestMethod.POST)
     public List<TerritorialCommunity> getCommunityList(@RequestParam("communityDesc") String communityDesc) {
         List<TerritorialCommunity> territorialCommunities = communityService.getCommunityBySearchTag(communityDesc);
         return territorialCommunities;
@@ -229,7 +218,7 @@ public class UsersController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @ResponseBody
-    @RequestMapping(value = "/get-all-users/get-community", method = RequestMethod.POST)
+    @RequestMapping(value = "get-community", method = RequestMethod.POST)
     public TerritorialCommunity getCommunity(@RequestBody String communityName) {
         TerritorialCommunity territorialCommunity = communityService.findByName(communityName);
         return territorialCommunity;
@@ -238,7 +227,7 @@ public class UsersController {
     /**
      * Method for showing administrator settings in order to change registration
      * method
-     *
+     * 
      * @param model
      * @return adminSettings.jsp
      */
@@ -254,7 +243,7 @@ public class UsersController {
     /**
      * Method for changing administrator settings for one of the possible
      * options
-     *
+     * 
      * @param optratio
      *            - one of three possible option for changing registration
      *            method

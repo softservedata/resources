@@ -709,7 +709,7 @@ public class UserServiceTest {
 		resourceNumberDtoJson = Mockito.spy(resourceNumberDtoJson);
 		userDto.setResourceNumberJson(resourceNumberDtoJson);
 		// test action
-		userService.CreateTomeAndRecourceNumber(userDto);// entered
+		userService.createTomeAndRecourceNumber(userDto);// entered
 		Assert.assertNotNull(fakeTomeRepository.get(0));
 		Assert.assertEquals(fakeTomeRepository.get(0).getIdentifier(), expected);
 		Assert.assertEquals(fakeTomeRepository.get(0).getRegistrator().getLogin(), expectedLogin);
@@ -941,3 +941,4 @@ public class UserServiceTest {
 
 
 }
+

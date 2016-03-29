@@ -69,51 +69,48 @@
 					<type>search</type>
 					<title>label.tableTitle.column1.registerUser</title>
 					<data>firstName</data>
-					<searchOperation>
-						<operationType>equal</operationType>
-						<operationType>like</operationType>
-					</searchOperation>
 				</column>
 				
 				<column>
 					<type>search</type>
 					<title>label.tableTitle.column2.registerUser</title>
 					<data>lastName</data>
-					<searchOperation>
-						<operationType>equal</operationType>
-						<operationType>like</operationType>
-					</searchOperation>
 				</column>
 				
 				<column>
 					<type>search</type>
 					<title>label.tableTitle.column3.registerUser</title>
 					<data>login</data>
-					<searchOperation>
-						<operationType>equal</operationType>
-						<operationType>like</operationType>
-					</searchOperation>
 				</column>
 				
 				<column>
 					<type>search</type>
 					<title>label.community.name</title>
 					<data>territorialCommunity_name</data>
+				</column>
+    
+                <column>
+                    <type>search</type>
+                    <title>label.user.email</title>
+                    <data>email</data>
+                </column>
+    
+                <column>
+                    <type>label</type>
+                    <title>label.user.role</title>
+                    <data>role_type</data>
+                </column>
+    
+			
+			<!-- <column>
+					<type>search</type>
+					<title>label.tableTitle.column5.registerUser</title>
+					<data>address_street</data>
 					<searchOperation>
 						<operationType>equal</operationType>
 						<operationType>like</operationType>
 					</searchOperation>
-				</column>
-				
-<!-- 				<column> -->
-<!-- 					<type>search</type> -->
-<!-- 					<title>label.tableTitle.column5.registerUser</title> -->
-<!-- 					<data>address_street</data> -->
-<!-- 					<searchOperation> -->
-<!-- 						<operationType>equal</operationType> -->
-<!-- 						<operationType>like</operationType> -->
-<!-- 					</searchOperation> -->
-<!-- 				</column> -->
+				</column> -->
 				
 <!-- 				<column> -->
 <!-- 					<type>search</type> -->
