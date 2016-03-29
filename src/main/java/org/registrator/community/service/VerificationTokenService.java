@@ -19,4 +19,6 @@ public interface VerificationTokenService {
 	
 	public boolean isExistValidVerificationToken(String token);
 
+	VerificationToken saveEmailConfirmationToken(String userEmail, Date nowTime);
+
 }
