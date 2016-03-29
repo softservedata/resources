@@ -66,19 +66,6 @@
         class="form-control input-md" value="${userDto.login}" readonly>
       </div>
      </div>
-     <!-- 					<div class="form-group"> -->
-     <%-- 						<label class="col-lg-4 control-label" for="textinput"><spring:message --%>
-     <%-- 								code="label.password" /></label> --%>
-     <!-- 						<div class="col-lg-8"> -->
-     <!-- 							<input id="password" name="password" placeholder="" -->
-     <!-- 								class="form-control input-md readonly" type="text" -->
-     <%-- 								value="${userDto.password}" readonly> --%>
-     <!-- 							<div class="control-group error"> -->
-     <%-- 								<form:errors path="password" cssClass="error" --%>
-     <%-- 									style="color:black" /> --%>
-     <!-- 							</div> -->
-     <!-- 						</div> -->
-     <!-- 					</div> -->
      <div class="form-group">
       <label class="col-lg-4 control-label" for="textinput"><spring:message
         code="label.user.email" />* </label>
@@ -301,22 +288,7 @@
 
      <c:if test="${userDto.role == 'REGISTRATOR'}">
       <div class="form-group">
-       <label class="col-lg-4 control-label" for="textinput">Номер
-        запису</label>
-       <div class="col-lg-8">
-        <input id="registratorNumber"
-         class="form-control input-md readonly" type="text"
-         name="resourceNumberJson.resource_number"
-         value="${userDto.resourceNumberJson.resource_number}" readonly>
-        <div class="control-group error">
-         <form:errors path="resourceNumberJson.resource_number"
-          cssClass="error" style="color:black" />
-        </div>
-       </div>
-      </div>
-      <div class="form-group">
-       <label class="col-lg-4 control-label" for="textinput">Номер
-        тому</label>
+       <label class="col-lg-4 control-label" for="textinput"><spring:message code="label.registrator.registratorNumber"/></label>
        <div class="col-lg-8">
         <input id="identifierNumber"
          class="form-control input-md readonly" type="text"
@@ -325,6 +297,20 @@
          readonly>
         <div class="control-group error">
          <form:errors path="resourceNumberJson.registrator_number"
+          cssClass="error" style="color:black" />
+        </div>
+       </div>
+      </div>
+      
+      <div class="form-group">
+       <label class="col-lg-4 control-label" for="textinput"><spring:message code="label.registrator.incrementNumber"/></label>
+       <div class="col-lg-8">
+        <input id="registratorNumber"
+         class="form-control input-md readonly" type="text"
+         name="resourceNumberJson.resource_number"
+         value="${userDto.resourceNumberJson.resource_number}" readonly>
+        <div class="control-group error">
+         <form:errors path="resourceNumberJson.resource_number"
           cssClass="error" style="color:black" />
         </div>
        </div>
@@ -354,56 +340,3 @@
  </form:form>
 </div>
 
-<%-- <div class="container">
-	<form:form id="modalWindow" modelAttribute="resourceNumberDtoJson"
-		method="post" action="modal-window" class="form-horizontal">
-		<div id="myModal" class="modal fade" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">
-							<spring:message code="label.registrator.enterData" />
-						</h4>
-						<h5>
-							<label class="control-label">Реєстраційни номер -
-								804:23:17:026:79000,</label> <label class="control-label">Номер
-								ресурсу - :0212,</label> <label class="control-label">Номер тому
-								- *79000/**1</label>
-						</h5>
-					</div>
-					<div class="modal-body">
-
-						<label class="control-label"><spring:message
-								code="label.registrator.tomeNumber" /></label> <input id="identifier"
-							name="identifier" class="form-control input-md" type="text">
-						<div class="control-group error">
-							<form:errors path="identifier" cssClass="error"
-								style="color:black" />
-						</div>
-						<label class="control-label"><spring:message
-								code="label.registrator.registratorNumber" /></label> <input
-							id="registrator_number" name="registrator_number"
-							class="form-control input-md" type="text">
-						<div class="control-group error">
-							<form:errors path="registrator_number" cssClass="error"
-								style="color:black" />
-						</div>
-						<label class="control-label"><spring:message
-								code="label.registrator.objectIdentifier" /></label> <input
-							id="resource_number" name="resource_number"
-							class="form-control input-md" type="text">
-					</div>
-					<div class="control-group error">
-						<form:errors path="resource_number" cssClass="error"
-							style="color:black" />
-					</div>
-					<div class="modal-footer">
-						<input type="submit" id="submit" class="btn btn-primary"
-							value="Ok">
-					</div>
-				</div>
-			</div>
-		</div>
-	</form:form>
-</div> --%>
