@@ -1,7 +1,5 @@
 package org.registrator.community.controller;
 
-import org.registrator.community.exceptions.RegistratorException;
-import org.registrator.community.exceptions.ResourceEntityNotFound;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,11 +19,10 @@ public class MainExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";
 
     @ExceptionHandler(Exception.class)
-    public ModelAndView resourceNotFoundHandler(HttpServletRequest req, RegistratorException exception) {
+    public ModelAndView resourceNotFoundHandler(HttpServletRequest req, Exception exception) {
         logger.error("Request: " + req.getRequestURL() + " raised " + exception);
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", exception);
-//        mav.addObject("message", exception.getMessageKey());
         mav.addObject("url", req.getRequestURL());
         mav.setViewName("error");
         return mav;
