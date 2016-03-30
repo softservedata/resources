@@ -1,17 +1,17 @@
 package org.registrator.community.entity;
 
+import org.registrator.community.components.ResourceListener;
+import org.registrator.community.enumeration.ResourceStatus;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-
-import javax.persistence.*;
-
-import org.registrator.community.enumeration.ResourceStatus;
 
 @Entity
 @Table(name = "list_of_resouces")
+@EntityListeners(ResourceListener.class)
 public class Resource implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -81,11 +81,6 @@ public class Resource implements Serializable {
         this.status = ResourceStatus.valueOf(status.toUpperCase());
         this.tome = tome;
         this.reasonInclusion = reasonInclusion;
-    }
-
-    @PrePersist
-    private void onPrePersist() {
-        createdAt = Calendar.getInstance(TimeZone.getTimeZone("EET"));
     }
 
     public Integer getResourcesId() {
@@ -205,6 +200,10 @@ public class Resource implements Serializable {
         return createdAt;
     }
 
+    public void setCreatedAt(Calendar createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public List<Polygon> getPolygons() {
         return polygons;
     }
@@ -228,6 +227,7 @@ public class Resource implements Serializable {
     public void setResourceLinearValues(List<ResourceLinearValue> resourceLinearValues) {
         this.resourceLinearValues = resourceLinearValues;
     }
+
 }
 
 

@@ -1,54 +1,19 @@
 package org.registrator.community.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
-
-import javax.transaction.Transactional;
-
-import org.registrator.community.dao.CommunityRepository;
-import org.registrator.community.dao.DiscreteParameterRepository;
-import org.registrator.community.dao.LinearParameterRepository;
-import org.registrator.community.dao.PolygonRepository;
-import org.registrator.community.dao.ResourceDiscreteValueRepository;
-import org.registrator.community.dao.ResourceFindByParams;
-import org.registrator.community.dao.ResourceLinearValueRepository;
-import org.registrator.community.dao.ResourceNumberRepository;
-import org.registrator.community.dao.ResourceRepository;
-import org.registrator.community.dao.ResourceTypeRepository;
-import org.registrator.community.dao.TomeRepository;
-import org.registrator.community.dao.UserRepository;
-import org.registrator.community.dto.ParameterSearchResultDTO;
-import org.registrator.community.dto.PointAreaDTO;
-import org.registrator.community.dto.PointDTO;
-import org.registrator.community.dto.PoligonAreaDTO;
-import org.registrator.community.dto.ResourceAreaDTO;
-import org.registrator.community.dto.ResourceDTO;
-import org.registrator.community.dto.ResourceDiscreteValueDTO;
-import org.registrator.community.dto.ResourceLinearValueDTO;
-import org.registrator.community.dto.SegmentLinearDTO;
-import org.registrator.community.dto.ValueDiscreteDTO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.registrator.community.dao.*;
+import org.registrator.community.dto.*;
 import org.registrator.community.dto.json.PointJson;
 import org.registrator.community.dto.json.PolygonJson;
 import org.registrator.community.dto.json.ResourceSearchJson;
-import org.registrator.community.entity.DiscreteParameter;
-import org.registrator.community.entity.LinearParameter;
-import org.registrator.community.entity.Polygon;
-import org.registrator.community.entity.Resource;
-import org.registrator.community.entity.ResourceDiscreteValue;
-import org.registrator.community.entity.ResourceLinearValue;
-import org.registrator.community.entity.ResourceNumber;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.TerritorialCommunity;
-import org.registrator.community.entity.User;
+import org.registrator.community.entity.*;
+import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.enumeration.ResourceStatus;
 import org.registrator.community.exceptions.ResourceEntityNotFound;
 import org.registrator.community.service.InquiryService;
 import org.registrator.community.service.ResourceService;
+import org.registrator.community.service.SettingsService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -57,8 +22,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -103,8 +69,8 @@ public class ResourceServiceImpl implements ResourceService {
     private ResourceFindByParams resourceFindByParams;
 
     @Autowired
-    private CommunityRepository communityRepository;
-    
+    private SettingsService settingsService;
+
     @Override
     public ResourceDTO createNewResourceDTO() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -664,7 +630,7 @@ public class ResourceServiceImpl implements ResourceService {
             return false;
         }
 
-        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("EET"));
+        Calendar today = Calendar.getInstance(settingsService.getPropertyValue(ApplicationProperty.TIME_ZONE, TimeZone.class));
         Calendar createdAt = resourceEntity.getCreatedAt();
 
         boolean sameDate =  ((today != null) && (createdAt != null)
