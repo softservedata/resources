@@ -2,6 +2,7 @@ package org.registrator.community.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.registrator.community.dao.AddressRepository;
@@ -13,7 +14,6 @@ import org.registrator.community.dao.UserRepository;
 import org.registrator.community.dto.AddressDTO;
 import org.registrator.community.dto.PassportDTO;
 import org.registrator.community.dto.ResourceNumberDTO;
-import org.registrator.community.dto.TomeDTO;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.UserRegistrationDTO;
 import org.registrator.community.dto.WillDocumentDTO;
@@ -46,8 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger log = LoggerFactory
-            .getLogger(UserServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private static final int MAX_ATTEMPTS = 2;
 
@@ -111,8 +110,7 @@ public class UserServiceImpl implements UserService {
                 logger.info("set user status to" + UserStatus.ACTIVE);
                 user.setStatus(UserStatus.ACTIVE);
             } else {
-                if (userStatusJson.getStatus().equals(
-                        UserStatus.INACTIVE.toString())) {
+                if (userStatusJson.getStatus().equals(UserStatus.INACTIVE.toString())) {
                     logger.info("set user status to" + UserStatus.INACTIVE);
                     user.setStatus(UserStatus.INACTIVE);
                 }
@@ -136,8 +134,7 @@ public class UserServiceImpl implements UserService {
             List<UserDTO> userList = getUserDtoList();
             List<UserDTO> registratedUsers = new ArrayList<UserDTO>();
             for (UserDTO user : userList) {
-                if (user.getStatus().toString() != UserStatus.INACTIVE
-                        .toString()) {
+                if (user.getStatus().toString() != UserStatus.INACTIVE.toString()) {
                     logger.info("User is registrated");
                     registratedUsers.add(user);
                 }
@@ -210,27 +207,21 @@ public class UserServiceImpl implements UserService {
             user.setEmail(userDto.getEmail());
             user.setRole(checkRole(userDto.getRole()));
             user.setStatus(checkUserStatus(userDto.getStatus()));
-            TerritorialCommunity territorialCommunity = communityService
-                    .findByName(userDto.getTerritorialCommunity());
+            TerritorialCommunity territorialCommunity = communityService.findByName(userDto.getTerritorialCommunity());
             user.setTerritorialCommunity(territorialCommunity);
             logger.info("edit user in data base");
-            PassportInfo passport = new PassportInfo(user, userDto
-                    .getPassport().getSeria(), userDto.getPassport()
-                    .getNumber(), userDto.getPassport().getPublished_by_data());
-            Address address = new Address(user, userDto.getAddress()
-                    .getPostcode(), userDto.getAddress().getRegion(), userDto
-                    .getAddress().getDistrict(),
-                    userDto.getAddress().getCity(), userDto.getAddress()
-                            .getStreet(), userDto.getAddress().getBuilding(),
+            PassportInfo passport = new PassportInfo(user, userDto.getPassport().getSeria(),
+                    userDto.getPassport().getNumber(), userDto.getPassport().getPublished_by_data());
+            Address address = new Address(user, userDto.getAddress().getPostcode(), userDto.getAddress().getRegion(),
+                    userDto.getAddress().getDistrict(), userDto.getAddress().getCity(),
+                    userDto.getAddress().getStreet(), userDto.getAddress().getBuilding(),
                     userDto.getAddress().getFlat());
-            int result = user.getAddress().get(user.getAddress().size() - 1)
-                    .compareTo(address);
+            int result = user.getAddress().get(user.getAddress().size() - 1).compareTo(address);
             if (result != 0) {
                 logger.info("save address");
                 addressRepository.save(address);
             }
-            result = user.getPassport().get(user.getPassport().size() - 1)
-                    .compareTo(passport);
+            result = user.getPassport().get(user.getPassport().size() - 1).compareTo(passport);
             if (result != 0) {
                 logger.info("save passport");
                 passportRepository.save(passport);
@@ -287,23 +278,16 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> userDtoList = new ArrayList<UserDTO>();
         List<User> userList = userRepository.findAll();
         for (User user : userList) {
-            PassportInfo passportInfo = user.getPassport().get(
-                    user.getPassport().size() - 1);
-            PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(),
-                    passportInfo.getNumber().toString(),
+            PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+            PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber().toString(),
                     passportInfo.getPublishedByData());
-            Address address = user.getAddress().get(
-                    user.getAddress().size() - 1);
-            AddressDTO addressDto = new AddressDTO(address.getPostCode(),
-                    address.getRegion(), address.getDistrict(),
-                    address.getCity(), address.getStreet(),
-                    address.getBuilding(), address.getFlat());
-            UserDTO userDto = new UserDTO(user.getFirstName(),
-                    user.getLastName(), user.getMiddleName(), user.getRole()
-                            .toString(), user.getLogin(), user.getEmail(), user
-                            .getStatus().toString(), addressDto, passportDto);
-            userDto.setTerritorialCommunity(user.getTerritorialCommunity()
-                    .getName());
+            Address address = user.getAddress().get(user.getAddress().size() - 1);
+            AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+                    address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+            UserDTO userDto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+                    user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(),
+                    addressDto, passportDto);
+            userDto.setTerritorialCommunity(user.getTerritorialCommunity().getName());
             userDtoList.add(userDto);
         }
         return userDtoList;
@@ -320,25 +304,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserDto(String login) {
         User user = getUserByLogin(login);
-        PassportInfo passportInfo = user.getPassport().get(
-                user.getPassport().size() - 1);
-        PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(),
-                passportInfo.getNumber().toString(),
+        PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+        PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber().toString(),
                 passportInfo.getPublishedByData());
         if (passportInfo.getComment() != null) {
             passportDto.setComment(passportInfo.getComment());
         }
         Address address = user.getAddress().get(user.getAddress().size() - 1);
-        AddressDTO addressDto = new AddressDTO(address.getPostCode(),
-                address.getRegion(), address.getDistrict(), address.getCity(),
-                address.getStreet(), address.getBuilding(), address.getFlat());
-        ResourceNumber resourceNumber = resourceNumberRepository
-                .findResourceNumberByUser(user);
+        AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+                address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+        ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
         Tome tome = tomeRepository.findTomeByRegistrator(user);
         ResourceNumberJson resourceNumberJson = null;
         if ((tome != null) && (resourceNumber != null)) {
-            resourceNumberJson = new ResourceNumberJson(resourceNumber
-                    .getNumber().toString(),
+            resourceNumberJson = new ResourceNumberJson(resourceNumber.getNumber().toString(),
                     resourceNumber.getRegistratorNumber(), tome.getIdentifier());
         } else {
             resourceNumberJson = new ResourceNumberJson();
@@ -346,14 +325,11 @@ public class UserServiceImpl implements UserService {
             resourceNumberJson.setRegistrator_number("0");
             resourceNumberJson.setIdentifier("0");
         }
-        UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(),
-                user.getMiddleName(), user.getRole().toString(),
-                user.getLogin(), user.getEmail(), user.getStatus().toString(),
-                addressDto, passportDto, user.getTerritorialCommunity()
-                        .getName(), resourceNumberJson);
+        UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+                user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
+                passportDto, user.getTerritorialCommunity().getName(), resourceNumberJson);
         if (!user.getWillDocument().isEmpty()) {
-            WillDocument willDocument = user.getWillDocument().get(
-                    user.getWillDocument().size() - 1);
+            WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
             WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
             willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
             if (willDocument.getComment() != null) {
@@ -374,8 +350,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public int updateUser(User user) {
-        return 0;
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 
     @Transactional
@@ -442,21 +418,20 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setLogin(registrationForm.getLogin());
         user.setEmail(registrationForm.getEmail());
-        user.setPasswordHash(userPasswordEncoder.encode(registrationForm
-                .getPassword()));
+        user.setPasswordHash(userPasswordEncoder.encode(registrationForm.getPassword()));
         user.setFirstName(registrationForm.getFirstName());
         user.setLastName(registrationForm.getLastName());
         user.setMiddleName(registrationForm.getMiddleName());
         user.setPhoneNumber(registrationForm.getPhoneNumber());
         user.setRole(roleRepository.findRoleByType(RoleType.USER));
         user.setStatus(UserStatus.INACTIVE);
+        //user.setStatus(UserStatus.NOTCOMFIRMED);
         user.setPhoneNumber(registrationForm.getPhoneNumber());
         user.setDateOfAccession(registrationForm.getDateOfAccession());
         user.setTerritorialCommunity(territorialCommunity);
 
         userRepository.save(user);
-        log.info("Inserted new user data into 'users' table: user_id = "
-                + user.getUserId());
+        log.info("Inserted new user data into 'users' table: user_id = " + user.getUserId());
 
         if (userRepository.findUserByLogin(user.getLogin()) != null) {
             // insert user's passport data into "passport_data" table
@@ -469,8 +444,8 @@ public class UserServiceImpl implements UserService {
             passport.setComment(passportDTO.getComment());
 
             passportRepository.save(passport);
-            log.info("Inserted passport data for user with passport_data_id",
-                    user.getLogin(), passport.getPassportId());
+            log.info("Inserted passport data for user with passport_data_id", user.getLogin(),
+                    passport.getPassportId());
 
             // insert user's address records into "address" table
             AddressDTO addressDTO = registrationForm.getAddress();
@@ -485,8 +460,7 @@ public class UserServiceImpl implements UserService {
             address.setPostCode(addressDTO.getPostcode());
 
             addressRepository.save(address);
-            log.info("Inserted address data for user with address_id",
-                    user.getLogin(), address.getAddressId());
+            log.info("Inserted address data for user with address_id", user.getLogin(), address.getAddressId());
         }
 
     }
@@ -511,8 +485,8 @@ public class UserServiceImpl implements UserService {
      * user.setDateOfAccession(registrationForm.getDateOfAccession());
      * user.setTerritorialCommunity(territorialCommunity);
      * 
-     * userRepository.save(user);
-     * log.info("Inserted new user data into 'users' table: user_id = " +
+     * userRepository.save(user); log.info(
+     * "Inserted new user data into 'users' table: user_id = " +
      * user.getUserId());
      * 
      * if (userRepository.findUserByLogin(user.getLogin()) != null) { // insert
@@ -522,9 +496,9 @@ public class UserServiceImpl implements UserService {
      * passport.setNumber((registrationForm.getNumber()));
      * passport.setPublishedByData(registrationForm.getPublishedByData());
      * 
-     * passportRepository.save(passport);
-     * log.info("Inserted passport data for user with passport_data_id",
-     * user.getLogin(), passport.getPassportId());
+     * passportRepository.save(passport); log.info(
+     * "Inserted passport data for user with passport_data_id", user.getLogin(),
+     * passport.getPassportId());
      * 
      * // insert user's address records into "address" table Address address =
      * new Address(); address.setUser(user);
@@ -536,9 +510,9 @@ public class UserServiceImpl implements UserService {
      * address.setFlat(registrationForm.getFlat());
      * address.setPostCode(registrationForm.getPostcode());
      * 
-     * addressRepository.save(address);
-     * log.info("Inserted address data for user with address_id",
-     * user.getLogin(), address.getAddressId()); }
+     * addressRepository.save(address); log.info(
+     * "Inserted address data for user with address_id", user.getLogin(),
+     * address.getAddressId()); }
      * 
      * }
      */
@@ -555,11 +529,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getUserBySearchTag(String searchTag) {
-        Authentication auth = SecurityContextHolder.getContext()
-                .getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User registrator = getUserByLogin(auth.getName());
-        List<User> usersList = userRepository.findOwnersLikeProposed(
-                registrator.getTerritorialCommunity(), searchTag);
+        List<User> usersList = userRepository.findOwnersLikeProposed(registrator.getTerritorialCommunity(), searchTag);
         List<UserDTO> userDtos = new ArrayList<UserDTO>();
         for (User user : usersList) {
             UserDTO userdto = new UserDTO();
@@ -573,25 +545,20 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDTO formUserDTO(User user) {
-        PassportInfo passportInfo = user.getPassport().get(
-                user.getPassport().size() - 1);
-        PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(),
-                passportInfo.getNumber().toString(),
+        PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
+        PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber().toString(),
                 passportInfo.getPublishedByData());
         if (passportInfo.getComment() != null) {
             passportDto.setComment(passportInfo.getComment());
         }
         Address address = user.getAddress().get(user.getAddress().size() - 1);
-        AddressDTO addressDto = new AddressDTO(address.getPostCode(),
-                address.getRegion(), address.getDistrict(), address.getCity(),
-                address.getStreet(), address.getBuilding(), address.getFlat());
-        ResourceNumber resourceNumber = resourceNumberRepository
-                .findResourceNumberByUser(user);
+        AddressDTO addressDto = new AddressDTO(address.getPostCode(), address.getRegion(), address.getDistrict(),
+                address.getCity(), address.getStreet(), address.getBuilding(), address.getFlat());
+        ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
         Tome tome = tomeRepository.findTomeByRegistrator(user);
         ResourceNumberJson resourceNumberJson = null;
         if ((tome != null) && (resourceNumber != null)) {
-            resourceNumberJson = new ResourceNumberJson(resourceNumber
-                    .getNumber().toString(),
+            resourceNumberJson = new ResourceNumberJson(resourceNumber.getNumber().toString(),
                     resourceNumber.getRegistratorNumber(), tome.getIdentifier());
         } else {
             resourceNumberJson = new ResourceNumberJson();
@@ -600,14 +567,11 @@ public class UserServiceImpl implements UserService {
             resourceNumberJson.setRegistrator_number("0");
             resourceNumberJson.setIdentifier("0");
         }
-        UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(),
-                user.getMiddleName(), user.getRole().toString(),
-                user.getLogin(), user.getEmail(), user.getStatus().toString(),
-                addressDto, passportDto, user.getTerritorialCommunity()
-                        .getName(), resourceNumberJson);
+        UserDTO userdto = new UserDTO(user.getFirstName(), user.getLastName(), user.getMiddleName(),
+                user.getRole().toString(), user.getLogin(), user.getEmail(), user.getStatus().toString(), addressDto,
+                passportDto, user.getTerritorialCommunity().getName(), resourceNumberJson);
         if (!user.getWillDocument().isEmpty()) {
-            WillDocument willDocument = user.getWillDocument().get(
-                    user.getWillDocument().size() - 1);
+            WillDocument willDocument = user.getWillDocument().get(user.getWillDocument().size() - 1);
             WillDocumentDTO willDocumentDTO = new WillDocumentDTO();
             willDocumentDTO.setAccessionDate(willDocument.getAccessionDate());
             if (willDocument.getComment() != null) {
@@ -641,32 +605,91 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public void CreateTomeAndRecourceNumber(UserDTO userDto) {
-        try {
-            if (!userDto.getResourceNumberJson().getLogin().equals("0")) {
-                System.out.println("3");
-                User user = userRepository.findUserByLogin(userDto
-                        .getResourceNumberJson().getLogin());
-                TomeDTO tomeDto = new TomeDTO(userDto.getResourceNumberJson()
-                        .getIdentifier(), user.getFirstName(),
-                        user.getLastName(), user.getMiddleName());
-                ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
-                        Integer.parseInt(userDto.getResourceNumberJson()
-                                .getResource_number()), userDto
-                                .getResourceNumberJson()
-                                .getRegistrator_number());
-                ResourceNumber resourceNumber = new ResourceNumber(
-                        resourseNumberDto.getNumber(),
-                        resourseNumberDto.getRegistratorNumber(), user);
-                Tome tome = new Tome(user, tomeDto.getTomeIdentifier());
-                tomeRepository.save(tome);
-                resourceNumberRepository.save(resourceNumber);
+    public void createTomeAndRecourceNumber(UserDTO userDto) {
+        User user = userRepository.findUserByLogin(userDto.getLogin());
+        Tome tome = tomeRepository.findTomeByRegistrator(user);
+        ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
+
+        if (tome != null && resourceNumber != null && userDto.getResourceNumberJson() != null) {
+           ResourceNumberJson resourceNumberJson = userDto.getResourceNumberJson();
+           if(resourceNumberJson.getRegistrator_number() == null || resourceNumberJson.getResource_number() == null){
+               logger.error("Bad ResourceNumberJson data");
+               return;
+           }
+        
+            ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
+                    Integer.parseInt(resourceNumberJson.getResource_number()),
+                    resourceNumberJson.getRegistrator_number());
+
+            resourceNumber.setRegistratorNumber(resourseNumberDto.getRegistratorNumber());
+            resourceNumber.setNumber(resourseNumberDto.getNumber());
+
+            resourceNumberRepository.save(resourceNumber);
+        } else {
+            List<User> userList = Collections.singletonList(user);
+            batchCreateTomeAndResourceNumber(userList);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void batchCreateTomeAndResourceNumber(List<User> users) {
+        if (users.size() == 0)
+            return;
+
+        List<Tome> tomeList = tomeRepository.findAll();
+        Integer tomeNumber = 0;
+        if (tomeList.size() != 0) {
+            Tome tempTome = tomeList.get(tomeList.size() - 1);
+            String lastTomeNum = tempTome.getIdentifier();
+            tomeNumber = Integer.parseInt(lastTomeNum);
+        }
+
+        List<ResourceNumber> resourceNumberList = resourceNumberRepository
+                .findResourceNumbersByCommunity(users.get(0).getTerritorialCommunity());
+        Integer registratorNumber = 0;
+        Integer registratorStartIncrement = 1;
+        for (ResourceNumber res : resourceNumberList) {
+            Integer tmpNumber = Integer.parseInt(res.getRegistratorNumber());
+            registratorNumber = (tmpNumber > registratorNumber) ? tmpNumber : registratorNumber;
+        }
+
+        for (User user : users) {
+            Tome userTome = tomeRepository.findTomeByRegistrator(user);
+            if (userTome == null) {
+                tomeNumber++;
+                String newTomeId = tomeNumber.toString();
+                Tome newUserTome = new Tome(user, newTomeId);
+                tomeRepository.save(newUserTome);
             }
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            log.error("Format is incorrect");
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
+
+            ResourceNumber userResourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
+
+            if (userResourceNumber == null) {
+                registratorNumber++;
+                ResourceNumber newResourceNumber = new ResourceNumber(registratorStartIncrement,
+                        registratorNumber.toString(), user);
+                resourceNumberRepository.save(newResourceNumber);
+            } else {
+                String foundRegistratorNumber = userResourceNumber.getRegistratorNumber();
+                ResourceNumber registratorWithSameNumber = null;
+
+                for (ResourceNumber resNum : resourceNumberList) {
+                    if (resNum.getRegistratorNumber().equals(foundRegistratorNumber)) {
+                        if (registratorWithSameNumber == null) {
+                            registratorWithSameNumber = resNum;
+                        }
+                    }
+                }
+
+                if (registratorWithSameNumber != null
+                        && !registratorWithSameNumber.getUser().equals(userResourceNumber.getUser())) {
+
+                    registratorNumber++;
+                    userResourceNumber.setRegistratorNumber(registratorNumber.toString());
+                    resourceNumberRepository.save(userResourceNumber);
+                }
+            }
         }
 
     }
@@ -771,21 +794,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public String batchRoleChange(RoleTypeJson batch) {
         logger.info("Recieved package: " + batch);
-        List<User> userList = new ArrayList<User>();
-
-        for (String users : batch.getLogin().split(",")) {
-            User tmp = userRepository.findUserByLogin(users);
-            if (tmp != null) {
-                userList.add(tmp);
-                logger.info("found user: {" + tmp.getUserId() + ":"
-                        + tmp.getLogin() + "}");
-            }
+        if(batch.getLogin() == null || batch.getRole() == null){
+            logger.error("Empty RoleTypeJson batch file");
+            return "msg.batchops.wrongInput";
         }
+
+        List<String> givenUsers = new ArrayList<String>();
+        Collections.addAll(givenUsers, batch.getLogin().split(","));
+
+        List<User> userList = userRepository.findUsersByLoginList(givenUsers);
+
         if (userList.size() == 0)
             return "msg.batchops.wrongInput";
 
-        Authentication auth = SecurityContextHolder.getContext()
-                .getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String auth_user = auth.getName();
         logger.info("Performed by: " + auth_user);
 
@@ -807,8 +829,7 @@ public class UserServiceImpl implements UserService {
         int territorialCommunityId = -1;
         if (role.getType() == RoleType.REGISTRATOR) {
             for (User user : userList) {
-                int tmp = user.getTerritorialCommunity()
-                        .getTerritorialCommunityId();
+                int tmp = user.getTerritorialCommunity().getTerritorialCommunityId();
                 if (territorialCommunityId == -1) {
                     territorialCommunityId = tmp;
                 } else {
@@ -819,8 +840,6 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        TerritorialCommunity community = userList.get(0)
-                .getTerritorialCommunity();
         logger.info("Performing Change Role operations");
 
         for (User user : userList) {
@@ -829,46 +848,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (role.getType() == RoleType.REGISTRATOR) {
-            List<Tome> tomeList = tomeRepository.findAll();
-            Integer latestTomeIdent = 0;
-            if (tomeList.size() > 0) {
-                Tome tome = tomeList.get(tomeList.size() - 1);
-                latestTomeIdent = tome.getTomeId();
-            }
-
-            Integer maxResourceNumber = 0;
-
-            List<ResourceNumber> resourceNumbers = resourceNumberRepository
-                    .findResourceNumbersByCommunity(community);
-            for (ResourceNumber resnum : resourceNumbers) {
-                Integer tempNum = Integer.parseInt(resnum
-                        .getRegistratorNumber());
-                maxResourceNumber = (tempNum > maxResourceNumber) ? tempNum
-                        : maxResourceNumber;
-            }
-
-            Integer startPointer = new Integer(1);
-            for (User user : userList) {
-                Tome userTome = tomeRepository.findTomeByRegistrator(user);
-                if (userTome == null) {
-                    Tome newTome = new Tome(user,
-                            String.valueOf(++latestTomeIdent));
-                    tomeRepository.save(newTome);
-                }
-
-                ResourceNumber userResourceNumber = resourceNumberRepository
-                        .findResourceNumberByUser(user);
-
-                if (userResourceNumber == null) {
-                    maxResourceNumber++;
-                    ResourceNumber newResourceNumber = new ResourceNumber(
-                            startPointer, maxResourceNumber.toString(), user);
-                    resourceNumberRepository.save(newResourceNumber);
-                } else {
-                    userResourceNumber.setNumber(startPointer);
-                    resourceNumberRepository.save(userResourceNumber);
-                }
-            }
+            batchCreateTomeAndResourceNumber(userList);
         }
 
         return "msg.batchops.changesaccepted";
@@ -890,21 +870,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public String batchCommunityChange(CommunityParamJson batch) {
         logger.info("Recieved package: " + batch);
-        List<User> userList = new ArrayList<User>();
 
-        for (String users : batch.getLogin().split(",")) {
-            User tmp = userRepository.findUserByLogin(users);
-            if (tmp != null) {
-                userList.add(tmp);
-                logger.info("found user: {" + tmp.getUserId() + ":"
-                        + tmp.getLogin() + "}");
-            }
+        if (batch.getLogin() == null || batch.getCommunityId() == null){
+            logger.error("Empty CommunityParamJson batch file");
+            return "msg.batchops.wrongInput";
         }
+        
+        List<String> givenUsers = new ArrayList<String>();
+        Collections.addAll(givenUsers, batch.getLogin().split(","));
+
+        List<User> userList = userRepository.findUsersByLoginList(givenUsers);
+        
         if (userList.size() == 0)
             return "msg.batchops.wrongInput";
 
-        Authentication auth = SecurityContextHolder.getContext()
-                .getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String auth_user = auth.getName();
         logger.info("Performed by: " + auth_user);
 

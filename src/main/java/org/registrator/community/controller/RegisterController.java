@@ -11,6 +11,7 @@ import org.registrator.community.dto.UserRegistrationDTO;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.enumeration.RegistrationMethod;
 import org.registrator.community.service.CommunityService;
+import org.registrator.community.service.EmailConfirmService;
 import org.registrator.community.service.UserService;
 import org.registrator.community.validator.UserDataValidator;
 import org.slf4j.Logger;
@@ -39,6 +40,9 @@ public class RegisterController {
     private CommunityService communityService;
     
     @Autowired
+    private EmailConfirmService emailConfirmService;
+    
+    @Autowired
     UserDataValidator validator;
 
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
@@ -56,7 +60,7 @@ public class RegisterController {
 
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processNewUserData(@Valid UserRegistrationDTO registrationForm, BindingResult result, Model model) {
+    public String processNewUserData(@Valid UserRegistrationDTO registrationForm, BindingResult result, Model model, HttpServletRequest request) {
         validator.validate(registrationForm, result);
         if (result.hasErrors()) {
             List<TerritorialCommunity> territorialCommunities = communityService.findAllByAsc();
@@ -67,6 +71,9 @@ public class RegisterController {
             return "register";
         }
         userService.registerUser(registrationForm);
+        String baseLink = (request.getRequestURL()).toString().split("confirm_email")[0];
+        emailConfirmService.sendConfirmEmail(registrationForm.getLogin(), baseLink);
+
 
         log.info("Successfully registered new user: " + registrationForm.getLogin());
         return "thanks-for-registration";

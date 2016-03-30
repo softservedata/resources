@@ -35,7 +35,7 @@ public interface UserService {
 
     void registerUser(UserRegistrationDTO registrationForm);
 
-    int updateUser(User user);
+    void updateUser(User user);
 
     boolean login(String username, String password);
 
@@ -46,8 +46,10 @@ public interface UserService {
     List<UserDTO> getUserBySearchTag(String searchTag);
 
     User findUserByEmail(String email);
+    
+    void batchCreateTomeAndResourceNumber(List<User> users);
 
-    void CreateTomeAndRecourceNumber(UserDTO userDto);
+    void createTomeAndRecourceNumber(UserDTO userDto);
 
     public void updateFailAttempts(String login);
 

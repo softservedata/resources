@@ -3,7 +3,6 @@ package org.registrator.community.controller;
 import org.registrator.community.dto.PasswordChangeDTO;
 import org.registrator.community.service.PasswordChangeService;
 import org.registrator.community.validator.PasswordChangeValidator;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class PasswordChangeController {
-
-    @Autowired
-    Logger logger;
 
     @Autowired
     private PasswordChangeService passwordChangeService;
