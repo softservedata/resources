@@ -19,7 +19,7 @@ public class ResourceListener{
     public void prePersist(Resource resource) {
         SettingsService settingsService = SpringApplicationContext.getBean(SettingsService.class);
         if (resource.getResourcesId() == null){
-            TimeZone timeZone = settingsService.getPropertyValue(ApplicationProperty.TIME_ZONE, TimeZone.class);
+            TimeZone timeZone = settingsService.getTimeZone();
             resource.setCreatedAt(Calendar.getInstance(timeZone));
         }
     }

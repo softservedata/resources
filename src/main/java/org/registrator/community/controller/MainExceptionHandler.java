@@ -18,9 +18,9 @@ public class MainExceptionHandler {
 
     public static final String DEFAULT_ERROR_VIEW = "error";
 
-    @ExceptionHandler(Exception.class)
+//    @ExceptionHandler(Exception.class)
     public ModelAndView resourceNotFoundHandler(HttpServletRequest req, Exception exception) {
-        logger.error("Request: " + req.getRequestURL() + " raised " + exception);
+        logger.error("Request: " + req.getRequestURL() + " raised " + exception.getMessage());
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", exception);
         mav.addObject("url", req.getRequestURL());
