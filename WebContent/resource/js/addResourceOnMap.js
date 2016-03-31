@@ -278,14 +278,17 @@ function checkWithTolerance(value1, value2, tolerance) {
 function calculateAreaPerimeter(polygon, i) {
     i = i || 0;
     //Calculation of area and perimeter of all new polygons.
-    area = Number(google.maps.geometry.spherical.computeArea(polygon.getPath()));
+    area = Number(google.maps.geometry.spherical.computeArea(polygon.getPath())) / 10000;
     perimeter = Number(google.maps.geometry.spherical.computeLength(polygon.getPath()));
+
+    area = Math.round(area * 100) / 100;
+    perimeter = Math.round(perimeter * 100) / 100;
 
     //Generate html
     return "<div>" +
         "<label>" + jQuery.i18n.prop('msg.Polygon') + " " + (i + 1) + ": </label> " +
         "<span>" + jQuery.i18n.prop('msg.Area') + " "
-        + (area / 10000).toFixed(5) + " " + jQuery.i18n.prop('msg.Area.units') + "; </span>" +
+        + (area).toFixed(5) + " " + jQuery.i18n.prop('msg.Area.units') + "; </span>" +
         "<span>" + jQuery.i18n.prop('msg.Perimeter') + " "
         + (perimeter).toFixed(1) + " " + jQuery.i18n.prop('msg.Perimeter.units') + " </span>" +
         "</div>";
@@ -460,11 +463,28 @@ $("#cp-wrap").on("click", "a", function () {
             if (activePolygon.getPath().length > 2) {
 
                 if (isInsideUkraine(activePolygon)) {
-                    activePolygon.setEditable(false);
                     if (intersectionCheck()) {
                         bootbox.alert(jQuery.i18n.prop('msg.resoursesIntersect'));
                     } else {
+                        activePolygon.setEditable(false);
                         PS.save();
+
+                        try {
+
+                            //TODO Refactor this
+                            var perimeterParam = $("div[data-calculated='PERIMETER']");
+                            if (perimeterParam.length > 0) {
+                                var id = perimeterParam[0].attributes.getNamedItem("data-calculatedId").value;
+                                $("input[name='resourceDiscrete[" + id + "].valueDiscretes[" + (newPolygons.length - 1) + "].value']").val(perimeter);
+                            }
+
+                            perimeterParam = $("div[data-calculated='AREA']");
+                            if (perimeterParam.length > 0) {
+                                var id = perimeterParam[0].attributes.getNamedItem("data-calculatedId").value;
+                                $("input[name='resourceDiscrete[" + id + "].valueDiscretes[" + (newPolygons.length - 1) + "].value']").val(area);
+                            }
+                        } finally {};
+
                         activePolygon = null;
                         $(this).closest(".toggle").removeClass("active");
                         $(this).closest(".toggle").siblings("span").addClass("active");
