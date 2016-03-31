@@ -1,4 +1,4 @@
-package org.registrator.community.service.integrtests;
+package org.registrator.community.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +23,7 @@ import org.testng.annotations.Test;
 
 @ActiveProfiles("testing")
 @ContextConfiguration(classes = { TestingConfiguration.class, LoggingConfig.class, SpringRootConfig.class })
-public class VerificationTokenServiceImplTest extends AbstractTestNGSpringContextTests {
+public class VerificationTokenServiceIT extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
 	@Autowired

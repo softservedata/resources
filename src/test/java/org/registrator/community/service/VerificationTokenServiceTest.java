@@ -1,4 +1,4 @@
-package org.registrator.community.service.unittests;
+package org.registrator.community.service;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -27,7 +27,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class VerificationTokenServiceImplTest {
+public class VerificationTokenServiceTest {
 	@Mock
 	private VerificationTokenRepository verificationTokenRepository;
 	
