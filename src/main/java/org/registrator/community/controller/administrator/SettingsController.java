@@ -38,9 +38,8 @@ public class SettingsController {
 		logger.info("begin: show admin settings");
         // put all settings in Model, all properties will be available with the name of ApplicationProperty
         // ex REGISTRATION_METHOD
-        for (Map.Entry<String, String> property: settingsService.getAllPropertiesDTO().entrySet()) {
-            model.addAttribute(property.getKey(), property.getValue());
-        }
+		model.addAttribute("REGISTRATION_METHOD", settingsService.getRegistrationMethod().toString());
+		model.addAttribute("TIME_ZONE", settingsService.getTimeZone().getID());
 		logger.info("end: admin settings are shown");
 		return "adminSettings";
 	}
@@ -59,8 +58,8 @@ public class SettingsController {
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String changeSettings(@RequestParam String optradio, @RequestParam String timeZone) {
 		logger.info("start changing settings");
-        settingsService.savePropertyValue(ApplicationProperty.REGISTRATION_METHOD, RegistrationMethod.valueOf(optradio));
-        settingsService.savePropertyValue(ApplicationProperty.TIME_ZONE, TimeZone.getTimeZone(timeZone));
+		settingsService.setRegistrationMethod(RegistrationMethod.valueOf(optradio));
+        settingsService.setTimeZone(TimeZone.getTimeZone(timeZone));
 		logger.info("settings are successfully changed");
 		return "adminSettings";
 	}

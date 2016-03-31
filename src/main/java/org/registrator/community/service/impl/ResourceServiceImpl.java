@@ -630,7 +630,7 @@ public class ResourceServiceImpl implements ResourceService {
             return false;
         }
 
-        Calendar today = Calendar.getInstance(settingsService.getPropertyValue(ApplicationProperty.TIME_ZONE, TimeZone.class));
+        Calendar today = Calendar.getInstance(settingsService.getTimeZone());
         Calendar createdAt = resourceEntity.getCreatedAt();
 
         boolean sameDate =  ((today != null) && (createdAt != null)

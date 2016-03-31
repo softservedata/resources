@@ -52,7 +52,7 @@ public class RegisterController {
         model.addAttribute("territorialCommunities", territorialCommunities);
         model.addAttribute("registrationForm", new UserRegistrationDTO());
         log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
-        if (settingsService.getPropertyValue(ApplicationProperty.REGISTRATION_METHOD).equals(RegistrationMethod.MANUAL)){
+        if (settingsService.getRegistrationMethod() == RegistrationMethod.MANUAL){
             return "redirect:/";
         }
         return "register";
@@ -81,7 +81,7 @@ public class RegisterController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(Model model) {
-        model.addAttribute("registrationMethod", settingsService.getPropertyValue(ApplicationProperty.REGISTRATION_METHOD));
+        model.addAttribute("registrationMethod", settingsService.getRegistrationMethod());
         return "login";
     }
 
