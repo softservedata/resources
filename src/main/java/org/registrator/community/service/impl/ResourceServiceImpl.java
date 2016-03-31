@@ -531,7 +531,7 @@ public class ResourceServiceImpl implements ResourceService {
             ResourceDiscreteValueDTO resDisDTO = new ResourceDiscreteValueDTO();
             resDisDTO.setDiscreteParameterDescription(dp.getDescription());
             resDisDTO.setDiscreteParameterUnit(dp.getUnitName());
-
+            resDisDTO.setCalculatedParameter(dp.getCalculatedParameter());
             List<ValueDiscreteDTO> valuediscretes = new ArrayList<>();
             for (ResourceDiscreteValue dv : discreteValues) {
                 if (dv.getDiscreteParameter().getDiscreteParameterId().equals(dp.getDiscreteParameterId())) {
