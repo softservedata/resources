@@ -424,8 +424,8 @@ public class UserServiceImpl implements UserService {
         user.setMiddleName(registrationForm.getMiddleName());
         user.setPhoneNumber(registrationForm.getPhoneNumber());
         user.setRole(roleRepository.findRoleByType(RoleType.USER));
-        user.setStatus(UserStatus.INACTIVE);
-        //user.setStatus(UserStatus.NOTCOMFIRMED);
+        //user.setStatus(UserStatus.INACTIVE);
+        user.setStatus(UserStatus.NOTCOMFIRMED);
         user.setPhoneNumber(registrationForm.getPhoneNumber());
         user.setDateOfAccession(registrationForm.getDateOfAccession());
         user.setTerritorialCommunity(territorialCommunity);
