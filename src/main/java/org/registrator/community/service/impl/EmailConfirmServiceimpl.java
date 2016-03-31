@@ -43,7 +43,7 @@ public class EmailConfirmServiceimpl implements EmailConfirmService {
 	@Transactional
 	@Override
 	public Boolean confirmEmail(String token){
-		try{
+		
 			VerificationToken verToken = verificationTokenService.findVerificationTokenByTokenAndTokenType(token, TokenType.CONFIRM_EMAIL);
 			if (verToken == null) return false;
 			User user = userService.findUserByEmail(verToken.getUserEmail());
@@ -52,12 +52,7 @@ public class EmailConfirmServiceimpl implements EmailConfirmService {
 			userService.updateUser(user);
 			verificationTokenService.deleteVerificationToken(verToken);
 			return true;
-		}
-		catch(Exception e){
-			return false;
-		}
-		
-		
+
 	}
 
 }

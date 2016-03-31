@@ -17,8 +17,8 @@
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 				<div class="btn-group" style="float:right">
-					<button class="btn btn-primary btn-sm">${pageContext.request.userPrincipal.name}</button>
-					<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+					<button class="btn btn-primary btn-sm" style="margin:0;">${pageContext.request.userPrincipal.name}</button>
+					<button class="btn btn-primary btn-sm dropdown-toggle" style="margin:0;" data-toggle="dropdown">
 						<span class="caret"></span></button>
 					<ul class="dropdown-menu">
 						<li>
