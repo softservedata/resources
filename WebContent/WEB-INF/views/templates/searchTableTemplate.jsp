@@ -2,8 +2,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link rel="stylesheet" type="text/css"
- href="<c:url value='/resource/css/suggestion.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/suggestion.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/cssload.css'/>">
 <script
  src="<c:url value='/resource/js/lib/jquery.autocomplete.min.js'/>"></script>
 <c:if test="${not empty tableSetting.script}">
@@ -138,6 +138,26 @@
  </div>
 </div>
 
+<%--AJAX Loader for the dark display--%>
+<div id="dark_bg">
+    <div class="windows8">
+        <div class="wBall" id="wBall_1">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_2">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_3">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_4">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_5">
+            <div class="wInnerBall"></div>
+        </div>
+    </div>
+</div>
 
 <script>
 var table;
