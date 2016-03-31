@@ -1,4 +1,4 @@
-package org.registrator.community.service.unittests;
+package org.registrator.community.service;
 
 import java.util.ArrayList;
 import java.util.Collection;

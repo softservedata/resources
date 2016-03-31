@@ -17,7 +17,7 @@ import static org.testng.Assert.assertEquals;
 
 @ActiveProfiles("testing")
 @ContextConfiguration(classes={TestingConfiguration.class,LoggingConfig.class,SpringRootConfig.class})
-public class PrintServiceIntegrationTest extends AbstractTestNGSpringContextTests {
+public class PrintServiceIT extends AbstractTestNGSpringContextTests {
 
     @Autowired
     PrintService printServiceImpl;
