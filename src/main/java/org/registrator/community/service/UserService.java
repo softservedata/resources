@@ -62,4 +62,6 @@ public interface UserService {
     public String batchRoleChange(RoleTypeJson batch);
 
     public String batchCommunityChange(CommunityParamJson batch);
+
+    void deleteNotConfirmedUser(User user);
 }

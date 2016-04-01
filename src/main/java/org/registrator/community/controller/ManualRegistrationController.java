@@ -74,7 +74,7 @@ public class ManualRegistrationController {
         }
         userService.registerUser(registrationForm);
         String baseLink = (request.getRequestURL()).toString().split("confirm_email")[0];
-        emailConfirmService.sendConfirmEmail(registrationForm.getLogin(), baseLink);
+        emailConfirmService.sendConfirmEmailFirstTime(registrationForm.getLogin(), baseLink);
 
         logger.info("Successfully registered new commissioner/user: " + registrationForm.getLogin());
         return "redirect:/administrator/users/get-all-inactive-users";
