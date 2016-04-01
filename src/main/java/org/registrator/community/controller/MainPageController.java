@@ -36,7 +36,7 @@ public class MainPageController {
             logger.info("end: incorrect credentials");
             return "redirect:/login";
         }
-        session.setAttribute("registrationMethod", settingsService.getPropertyValue(ApplicationProperty.REGISTRATION_METHOD));
+        session.setAttribute("registrationMethod", settingsService.getRegistrationMethod());
         logger.info("end: correct credentials");
         return "homepage";
     }

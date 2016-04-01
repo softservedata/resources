@@ -12,14 +12,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.registrator.community.components.SpringApplicationContext;
 import org.registrator.community.dao.DiscreteParameterRepository;
-import org.registrator.community.entity.Address;
-import org.registrator.community.entity.DiscreteParameter;
-import org.registrator.community.entity.LinearParameter;
-import org.registrator.community.entity.PassportInfo;
-import org.registrator.community.entity.ResourceType;
-import org.registrator.community.entity.Role;
-import org.registrator.community.entity.TerritorialCommunity;
-import org.registrator.community.entity.User;
+import org.registrator.community.dao.SettingsRepository;
+import org.registrator.community.entity.*;
 import org.registrator.community.enumeration.CalculatedParameter;
 import org.registrator.community.enumeration.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +96,10 @@ public class FirstTimeDeploy {
             session.persist(discreteParameter4);
             session.persist(linearParameter1);
             parameterForResourceTypeTransaction.commit();
+
+            Settings settings = new Settings();
+            session.persist(settings);
+
         }
 
         // check if calculated parameters filled
@@ -125,6 +123,15 @@ public class FirstTimeDeploy {
             }
 
         }
+        discreteParameterRepository.save(discreteParameterList);
+
+        SettingsRepository settingsRepository = SpringApplicationContext.getBean(SettingsRepository.class);
+        Settings settings = settingsRepository.getAllSettings();
+        if (settings == null) {
+            settings = new Settings();
+            settingsRepository.save(settings);
+        }
+
     }
 
 

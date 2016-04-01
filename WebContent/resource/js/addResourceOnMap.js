@@ -426,7 +426,7 @@ function addPointsToMap(allowEmptyArea) {
             });
 
             //intersectionCheck(polygonFromCoordinates);
-            polygonsFromCoordinates.push(polygonFromCoordinates);
+            newPolygons.push(polygonFromCoordinates);
             infoBoxMsg += calculateAreaPerimeter(polygonFromCoordinates, index);
         });
         $("#infoBox").html(infoBoxMsg);
