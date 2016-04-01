@@ -72,7 +72,7 @@ public class RegisterController {
         }
         userService.registerUser(registrationForm);
         String baseLink = (request.getRequestURL()).toString().split("confirm_email")[0];
-        emailConfirmService.sendConfirmEmail(registrationForm.getLogin(), baseLink);
+        emailConfirmService.sendConfirmEmailFirstTime(registrationForm.getLogin(), baseLink);
 
 
         log.info("Successfully registered new user: " + registrationForm.getLogin());

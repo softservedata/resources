@@ -33,13 +33,23 @@ public class EmailConfirmServiceimpl implements EmailConfirmService {
 	private PasswordEncoder  userPasswordEncoder;*/
 	
 	@Override
-	public void sendConfirmEmail(String login, String baseLink) {
+	public void sendConfirmEmailFirstTime(String login, String baseLink) {
 		User user = userService.findUserByLogin(login);
 		if(user != null){
-			VerificationToken verifacationToken = verificationTokenService.saveEmailConfirmationToken(user.getEmail(), new Date());
+			VerificationToken verifacationToken = verificationTokenService.saveEmailConfirmationToken(user.getLogin(), user.getEmail(), new Date(), baseLink);
 			mailService.sendComfirmEMail(user.getEmail(), user.getFirstName(),verifacationToken.getToken(),baseLink);
 		}	
 	}
+	
+	@Override
+    public void sendConfirmEmailAgain(String login) {
+        User user = userService.findUserByLogin(login);
+        if(user != null){
+            VerificationToken verifacationToken = verificationTokenService.findVerificationTokenByLoginAndTokenType(login, TokenType.CONFIRM_EMAIL);
+            mailService.sendComfirmEMail(user.getEmail(), user.getFirstName(),verifacationToken.getToken(),verifacationToken.getBaseLink());
+        }   
+    }
+	
 	@Transactional
 	@Override
 	public Boolean confirmEmail(String token){

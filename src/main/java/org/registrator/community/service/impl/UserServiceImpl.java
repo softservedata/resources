@@ -353,6 +353,29 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         userRepository.save(user);
     }
+    
+    /**
+     * Method, which delete user only if user status = NOTCOMFIRMED
+     * 
+     * @return List<UserDTO>
+     * 
+     */
+    @Transactional
+    @Override
+    public void deleteNotConfirmedUser(User user) {
+        user = userRepository.getOne(user.getUserId());
+        if (user.getStatus() == UserStatus.NOTCOMFIRMED){
+            List<PassportInfo> passportInfoList = user.getPassport();
+            for(PassportInfo passportInfo : passportInfoList){
+                passportRepository.delete(passportInfo);
+            }
+            List<Address> addressList = user.getAddress();
+            for(Address address : addressList){
+                addressRepository.delete(address);
+            }
+            userRepository.delete(user);
+        }
+    }
 
     @Transactional
     @Override
