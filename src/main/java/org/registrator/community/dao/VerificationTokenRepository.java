@@ -7,15 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Long>{
-	
-	@Query("select t from VerificationToken t where t.userEmail =:userEmail")
-	public VerificationToken findTokenByEmail(@Param("userEmail") String userEmail);
-	
-	@Query("select t from VerificationToken t where t.token =:token")
-	public VerificationToken findVerificationTokenByToken(@Param("token") String token);
 
-	@Query("select t from VerificationToken t where t.token =:token and t.tokenType=:tokenType")
-	public VerificationToken findVerificationTokenByTokenAndTokenType(
-			@Param("token") String token, @Param("tokenType") TokenType tokenType);
-	
+    @Query("select t from VerificationToken t where t.userEmail =:userEmail")
+    public VerificationToken findTokenByEmail(@Param("userEmail") String userEmail);
+
+    @Query("select t from VerificationToken t where t.token =:token")
+    public VerificationToken findVerificationTokenByToken(@Param("token") String token);
+
+    @Query("select t from VerificationToken t where t.token =:token and t.tokenType=:tokenType")
+    public VerificationToken findVerificationTokenByTokenAndTokenType(
+            @Param("token") String token, @Param("tokenType") TokenType tokenType);
+
 }

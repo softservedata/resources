@@ -1,6 +1,5 @@
 package org.registrator.community.controller;
 
-import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.service.SettingsService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

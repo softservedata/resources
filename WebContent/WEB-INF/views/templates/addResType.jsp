@@ -20,7 +20,8 @@
 		<div class="col-sm-2">
 			<input class="form-control" name="typeName" value="${typeName}"
 				placeholder=<spring:message
-                    code="label.restupe.enterName" /> required>
+                    code="label.restupe.enterName" />
+				required>
 		</div>
 
 	</div>

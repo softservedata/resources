@@ -48,7 +48,7 @@
 <!-- JQuery lib-->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script 
+<script
 	src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 
 <!-- DataTables lib -->
@@ -61,20 +61,20 @@
 
 </head>
 <body>
-		<div class="container">
-			<div class="row">
-				<div id="header">
-					<tiles:insertAttribute name="header" />
-				</div>
-			</div>
-			<div>
-				<div id="body">
-					<tiles:insertAttribute name="body" />
-				</div>
+	<div class="container">
+		<div class="row">
+			<div id="header">
+				<tiles:insertAttribute name="header" />
 			</div>
 		</div>
+		<div>
+			<div id="body">
+				<tiles:insertAttribute name="body" />
+			</div>
+		</div>
+	</div>
 
-		<!--<div style="margin-top: 91px">
+	<!--<div style="margin-top: 91px">
 			<p style="text-align: center">&copy;2016<spring:message code="label.copyright" /></p>
 			<p><a href="/registrator/faq">Допомога </a> <a href="/registrator/help"> Зворотній зв'язок</a></p>
 		</div>-->

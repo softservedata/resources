@@ -40,41 +40,41 @@ public class PasswordRecoveryController {
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/forgot_password", method = RequestMethod.POST)
     public String handleForgotPasswordEmail(@RequestParam("email") String email, HttpServletRequest request, Model model) {
-    	String baseLink = (request.getRequestURL()).toString().split("forgot_password")[0];
-    	passwordRecoveryService.sendRecoverPasswordEmail(email,baseLink);
-    	model.addAttribute("msg",true);
-    	return "forgot_password";
+        String baseLink = (request.getRequestURL()).toString().split("forgot_password")[0];
+        passwordRecoveryService.sendRecoverPasswordEmail(email,baseLink);
+        model.addAttribute("msg",true);
+        return "forgot_password";
     }   
    
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/password_recovery/{hash}", method = RequestMethod.GET)
     public String getPasswordRecoveryPage(@PathVariable("hash")String hash,Model model){
-    	if(verificationTokenService.isExistValidVerificationToken(hash)){
-    		model.addAttribute("hash", hash);
-    		if (!model.containsAttribute("passwordRecoveryDTO")) {
-    	        model.addAttribute("passwordRecoveryDTO", new PasswordRecoveryDTO());
-    	    }
-    		return "password_recovery";
-    	}
-    	return "redirect:/";
+        if(verificationTokenService.isExistValidVerificationToken(hash)){
+            model.addAttribute("hash", hash);
+            if (!model.containsAttribute("passwordRecoveryDTO")) {
+                model.addAttribute("passwordRecoveryDTO", new PasswordRecoveryDTO());
+            }
+            return "password_recovery";
+        }
+        return "redirect:/";
     }
     
     @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/password_recovery", method = RequestMethod.POST)
     public String handlePasswordRecoveryForm(@ModelAttribute("passwordRecoveryDTO") PasswordRecoveryDTO passwordRecoveryDTO, BindingResult bindingResult,Model model,
-    		RedirectAttributes attr,HttpServletRequest request){
-    	passwordRecoveryValidator.validate(passwordRecoveryDTO, bindingResult);
-    	if(bindingResult.hasErrors()){
-    		attr.addFlashAttribute("org.springframework.validation.BindingResult.passwordRecoveryDTO", bindingResult);
-    		attr.addFlashAttribute("passwordRecoveryDTO", passwordRecoveryDTO);
-    		return "redirect:"+request.getHeader("Referer");
-    	}
-    	boolean changePasswordResult=passwordRecoveryService.recoverPasswordByEmailLink(passwordRecoveryDTO.getHash(), passwordRecoveryDTO.getPassword());
-    	if(changePasswordResult){
-    		model.addAttribute("msg",true);
-    		return "password_recovery";
-    	}
-    	return "redirect:"+request.getHeader("Referer");
+            RedirectAttributes attr,HttpServletRequest request){
+        passwordRecoveryValidator.validate(passwordRecoveryDTO, bindingResult);
+        if(bindingResult.hasErrors()){
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.passwordRecoveryDTO", bindingResult);
+            attr.addFlashAttribute("passwordRecoveryDTO", passwordRecoveryDTO);
+            return "redirect:"+request.getHeader("Referer");
+        }
+        boolean changePasswordResult=passwordRecoveryService.recoverPasswordByEmailLink(passwordRecoveryDTO.getHash(), passwordRecoveryDTO.getPassword());
+        if(changePasswordResult){
+            model.addAttribute("msg",true);
+            return "password_recovery";
+        }
+        return "redirect:"+request.getHeader("Referer");
     }
 
 }

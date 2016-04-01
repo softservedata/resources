@@ -15,11 +15,13 @@
 			<input type="hidden"
 				name="resourceDiscrete[${param_i.index}].discreteParameterDescription"
 				value="${parameter.description}">
-			<div data-calculatedID ="${param_i.index}" data-calculated = "${parameter.calculatedParameter}"/>
+			<div data-calculatedID="${param_i.index}"
+				data-calculated="${parameter.calculatedParameter}" />
 			<div class="col-sm-3">
 				<input id="discreteValue" class="form-control"
 					name="resourceDiscrete[${param_i.index}].valueDiscretes[0].value"
-					value="${newresource.resourceDiscrete[param_i.index].valueDiscretes[0].value}" required>
+					value="${newresource.resourceDiscrete[param_i.index].valueDiscretes[0].value}"
+					required>
 				<div class="control-group error">
 					<form:errors
 						path="resourceDiscrete[${param_i.index}].valueDiscretes[0].value"

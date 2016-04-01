@@ -11,7 +11,8 @@
 	</h4>
 </div>
 
-<table id="datatable" class="table table-striped table-bordered table-hover">
+<table id="datatable"
+	class="table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
 			<th><spring:message code="label.user.secondname" /></th>
@@ -30,9 +31,9 @@
 				<td>${user.firstName}</td>
 				<td>${user.middleName}</td>
 				<td>${user.email}</td>
-				<td>${user.address.city} ${user.address.street},
+				<td>${user.address.city}${user.address.street},
 					${user.address.building} ${user.address.flat}</td>
-				<td>${user.passport.seria} ${user.passport.number},
+				<td>${user.passport.seria}${user.passport.number},
 					${user.passport.published_by_data}</td>
 				<td><a
 					href="<c:url value='/administrator/users/edit-registrated-user/?login=${user.login}'/>"

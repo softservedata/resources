@@ -18,35 +18,36 @@
 		<div class="col-md-7">
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
-				<div class="btn-group" style="float:right">
-					<button class="btn btn-primary btn-sm" style="margin:0;">${pageContext.request.userPrincipal.name}</button>
-					<button class="btn btn-primary btn-sm dropdown-toggle" style="margin:0;" data-toggle="dropdown">
-						<span class="caret"></span></button>
+				<div class="btn-group" style="float: right">
+					<button class="btn btn-primary btn-sm" style="margin: 0;">${pageContext.request.userPrincipal.name}</button>
+					<button class="btn btn-primary btn-sm dropdown-toggle"
+						style="margin: 0;" data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
 					<ul class="dropdown-menu">
-						<li>
-							<a href="${pageContext.request.contextPath}/change_password" class="change-password">
-								<spring:message code="label.changePassword"/>
-							</a>
-						</li>
-						<li>
-                            <a href="${pageContext.request.contextPath}/reset_password" class="reset-my-password">
-                                <spring:message code="label.resetPassword"/>
-                            </a>
-						</li>
+						<li><a
+							href="${pageContext.request.contextPath}/change_password"
+							class="change-password"> <spring:message
+									code="label.changePassword" />
+						</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/reset_password"
+							class="reset-my-password"> <spring:message
+									code="label.resetPassword" />
+						</a></li>
 						<li class="divider"></li>
-						<li>
-							<a href="<c:url value="/logout"/>"><spring:message code="label.signOut"/></a>
-						</li>
+						<li><a href="<c:url value="/logout"/>"><spring:message
+									code="label.signOut" /></a></li>
 					</ul>
 				</div>
 			</c:if>
 		</div>
 		<div class="col-md-5">
-		<select id="changeLanguage" class="form-control">
-			<option value="ua">українська</option>
-			<option value="ru">русский</option>
-			<option value="en">english</option>
-		</select>
+			<select id="changeLanguage" class="form-control">
+				<option value="ua">українська</option>
+				<option value="ru">русский</option>
+				<option value="en">english</option>
+			</select>
 		</div>
 	</div>
 </div>
@@ -72,7 +73,8 @@
     </div>
 </div>--%>
 
-<script	src="<c:url value='/resource/js/lib/jquery.i18n.properties.js'/>"></script>
+<script
+	src="<c:url value='/resource/js/lib/jquery.i18n.properties.js'/>"></script>
 <script src="<c:url value='/resource/js/lib/jquery.cookie.js'/>"></script>
 <%--<script src="<c:url value='/resource/js/passwordReset.js'/>"></script>--%>
 
