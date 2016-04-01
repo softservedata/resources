@@ -19,6 +19,8 @@ public interface VerificationTokenService {
 	
 	public boolean isExistValidVerificationToken(String token);
 
-	VerificationToken saveEmailConfirmationToken(String userEmail, Date nowTime);
+    VerificationToken saveEmailConfirmationToken(String login, String userEmail, Date nowTime, String baseLink);
+
+    VerificationToken findVerificationTokenByLoginAndTokenType(String login, TokenType type);
 
 }

@@ -40,10 +40,10 @@ public class VerificationTokenServiceImpl implements VerificationTokenService{
 	}
 	
 	@Override
-	public VerificationToken saveEmailConfirmationToken(String userEmail, Date nowTime) {
+	public VerificationToken saveEmailConfirmationToken(String login, String userEmail, Date nowTime, String baseLink) {
 		String token = createHashForPasswordToken();
 		nowTime.setTime(nowTime.getTime()+EMAIL_TOKEN_EXPIRY_TIME);
-		VerificationToken emailVerificationToken = new VerificationToken(token,userEmail,nowTime,TokenType.CONFIRM_EMAIL);
+		VerificationToken emailVerificationToken = new VerificationToken(token, login, userEmail,nowTime,TokenType.CONFIRM_EMAIL, baseLink);
 		deletePasswordVerificationTokenByEmail(userEmail);
 		verificationTokenRepository.save(emailVerificationToken);
 		return emailVerificationToken;
@@ -60,6 +60,13 @@ public class VerificationTokenServiceImpl implements VerificationTokenService{
 			TokenType type) {
 		return verificationTokenRepository.findVerificationTokenByTokenAndTokenType(token, type);
 	}
+	
+	
+	
+	@Override
+    public VerificationToken findVerificationTokenByLoginAndTokenType(String login, TokenType type) {
+        return verificationTokenRepository.findVerificationTokenByLoginAndTokenType(login, type);
+    }
 
 	@Override
 	public boolean isExistValidVerificationToken(String token) {
