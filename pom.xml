@@ -466,7 +466,7 @@
 							<warName>resources</warName>
 						</configuration>
 					</plugin>
-					<!-- <plugin> <groupId>com.mysema.maven</groupId> <artifactId>apt-maven-plugin</artifactId> 
+					<!-- <plugin> <groupId>com.mysema.maven</groupId> <artifactId>apt-maven-plugin</artifactId>
 						<version>1.0.9</version> <executions> <execution> <phase>generate-sources</phase> 
 						<goals> <goal>process</goal> <goal>test-process</goal> </goals> <configuration> 
 						<outputDirectory>target/generated-sources/java</outputDirectory> <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor> 

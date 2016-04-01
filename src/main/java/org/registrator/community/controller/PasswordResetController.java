@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/administrator/users/")
+//@RequestMapping(value = "/administrator/users/")
 public class PasswordResetController {
 
     @Autowired
@@ -23,5 +23,16 @@ public class PasswordResetController {
         String msg = passwordResetService.batchPasswordReset(passwordResetJson);
 
         return msg;
+    }
+
+    @RequestMapping(value = "/reset_password", method = RequestMethod.GET)
+    public @ResponseBody String resetUserPassword() {
+        //String msg = passwordResetService.passwordReset();
+
+        //return msg;
+        System.out.println("hello I'm in controller");
+
+        //return "msg.batchops.passwordResetSuccess";
+        return "change_password";
     }
 }
