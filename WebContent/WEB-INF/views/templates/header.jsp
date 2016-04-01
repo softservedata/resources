@@ -2,6 +2,8 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 
+<%--<link rel="stylesheet" type="text/css" href="<c:url value='/resource/css/cssload.css'/>">--%>
+
 <div class="container-fluid" id="header">
 
 	<div class="col-md-7">
@@ -26,6 +28,11 @@
 								<spring:message code="label.changePassword"/>
 							</a>
 						</li>
+						<li>
+                            <a href="${pageContext.request.contextPath}/reset_password" class="reset-my-password">
+                                <spring:message code="label.resetPassword"/>
+                            </a>
+						</li>
 						<li class="divider"></li>
 						<li>
 							<a href="<c:url value="/logout"/>"><spring:message code="label.signOut"/></a>
@@ -44,9 +51,30 @@
 	</div>
 </div>
 
-<script
-	src="<c:url value='/resource/js/lib/jquery.i18n.properties.js'/>"></script>
+<%--AJAX Loader for the dark display--%>
+<%--<div id="dark_bg">
+    <div class="windows8">
+        <div class="wBall" id="wBall_1">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_2">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_3">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_4">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_5">
+            <div class="wInnerBall"></div>
+        </div>
+    </div>
+</div>--%>
+
+<script	src="<c:url value='/resource/js/lib/jquery.i18n.properties.js'/>"></script>
 <script src="<c:url value='/resource/js/lib/jquery.cookie.js'/>"></script>
+<%--<script src="<c:url value='/resource/js/passwordReset.js'/>"></script>--%>
 
 <!-- define the page language and load massages -->
 <script>
