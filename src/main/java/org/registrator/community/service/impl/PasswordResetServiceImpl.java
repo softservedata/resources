@@ -44,7 +44,7 @@ public class PasswordResetServiceImpl implements PasswordResetService{
                         + tmp.getLogin() + "}");
             }
         }
-        if (userList.size() == 0)
+        if (userList.isEmpty())
             return "msg.batchops.wrongInput";
 
         String password;
