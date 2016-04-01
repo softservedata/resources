@@ -1,17 +1,13 @@
 package org.registrator.community.controller;
 
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.registrator.community.components.AdminSettings;
 import org.registrator.community.dto.UserRegistrationDTO;
 import org.registrator.community.entity.TerritorialCommunity;
+import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.enumeration.RegistrationMethod;
 import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.EmailConfirmService;
+import org.registrator.community.service.SettingsService;
 import org.registrator.community.service.UserService;
 import org.registrator.community.validator.UserDataValidator;
 import org.slf4j.Logger;
@@ -25,6 +21,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
+
 
 @Controller
 public class RegisterController {
@@ -34,7 +34,7 @@ public class RegisterController {
     private UserService userService;
 
     @Autowired
-    private AdminSettings adminSettings;
+    private SettingsService settingsService;
     
     @Autowired
     private CommunityService communityService;
@@ -52,7 +52,7 @@ public class RegisterController {
         model.addAttribute("territorialCommunities", territorialCommunities);
         model.addAttribute("registrationForm", new UserRegistrationDTO());
         log.info("Loaded 'New user registration form' " + request.getRemoteAddr());
-        if ((adminSettings.getRegistrationMethod() == RegistrationMethod.MANUAL)){
+        if (settingsService.getRegistrationMethod() == RegistrationMethod.MANUAL){
             return "redirect:/";
         }
         return "register";
@@ -81,7 +81,7 @@ public class RegisterController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(Model model) {
-        model.addAttribute("registrationMethod", adminSettings.getRegistrationMethod()); 
+        model.addAttribute("registrationMethod", settingsService.getRegistrationMethod());
         return "login";
     }
 

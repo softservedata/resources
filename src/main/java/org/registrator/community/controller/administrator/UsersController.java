@@ -1,10 +1,5 @@
 package org.registrator.community.controller.administrator;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.registrator.community.components.AdminSettings;
 import org.registrator.community.components.TableSettingsFactory;
 import org.registrator.community.dto.UserDTO;
 import org.registrator.community.dto.json.CommunityParamJson;
@@ -31,13 +26,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/administrator/users/")
@@ -51,9 +44,6 @@ public class UsersController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AdminSettings adminSettings;
 
     @Autowired
     private RoleService roleService;
@@ -222,40 +212,6 @@ public class UsersController {
     public TerritorialCommunity getCommunity(@RequestBody String communityName) {
         TerritorialCommunity territorialCommunity = communityService.findByName(communityName);
         return territorialCommunity;
-    }
-
-    /**
-     * Method for showing administrator settings in order to change registration
-     * method
-     * 
-     * @param model
-     * @return adminSettings.jsp
-     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/settings", method = RequestMethod.GET)
-    public String showSettings(Model model) {
-        logger.info("begin: show admin settings");
-        model.addAttribute("regMethod", adminSettings.getRegistrationMethod());
-        logger.info("end: admin settings are shown");
-        return "adminSettings";
-    }
-
-    /**
-     * Method for changing administrator settings for one of the possible
-     * options
-     * 
-     * @param optratio
-     *            - one of three possible option for changing registration
-     *            method
-     * @return adminSettings.jsp
-     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/settings", method = RequestMethod.POST)
-    public String changeSettings(@RequestParam String optradio) {
-        logger.info("start changing settings");
-        adminSettings.changeRegMethod(optradio);
-        logger.info("settings are successfully changed");
-        return "adminSettings";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -15,7 +15,8 @@
 			<input type="hidden"
 				name="resourceDiscrete[${param_i.index}].discreteParameterDescription"
 				value="${parameter.description}">
-			<div class="col-sm-3 ">
+			<div data-calculatedID ="${param_i.index}" data-calculated = "${parameter.calculatedParameter}"/>
+			<div class="col-sm-3">
 				<input id="discreteValue" class="form-control"
 					name="resourceDiscrete[${param_i.index}].valueDiscretes[0].value"
 					value="${newresource.resourceDiscrete[param_i.index].valueDiscretes[0].value}" required>

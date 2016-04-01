@@ -13,9 +13,9 @@ public enum ApplicationProperty {
     REGISTRATION_METHOD(new RegistrationMethodPropertyConverter()),
     TIME_ZONE(new TimeZonePropertyConverter());
 
-    private final PropertyConverter<?> propertyConverter;
+    private final PropertyConverter propertyConverter;
 
-    ApplicationProperty(PropertyConverter<?> propertyConverter) {
+    ApplicationProperty(PropertyConverter propertyConverter) {
         this.propertyConverter = propertyConverter;
     }
 

@@ -1,4 +1,4 @@
-package org.registrator.community.service.integrtests;
+package org.registrator.community.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 @ActiveProfiles("testing")
 @ContextConfiguration(classes = { TestingConfiguration.class, LoggingConfig.class, SpringRootConfig.class })
-public class ResourceTypeServiceImplTest extends AbstractTestNGSpringContextTests {
+public class ResourceTypeServiceIT extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private Logger logger;
 	@Autowired
