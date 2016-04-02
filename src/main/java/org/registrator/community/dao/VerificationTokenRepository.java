@@ -18,7 +18,7 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 	public VerificationToken findVerificationTokenByTokenAndTokenType(
 			@Param("token") String token, @Param("tokenType") TokenType tokenType);
 	
-	@Query("select t from VerificationToken t where t.userlogin =:login and t.tokenType=:tokenType")
+	@Query("select t from VerificationToken t where t.userLogin =:login and t.tokenType=:tokenType")
     public VerificationToken findVerificationTokenByLoginAndTokenType(
             @Param("login") String token, @Param("tokenType") TokenType tokenType);
 	
