@@ -7,8 +7,8 @@
 <h2>Стрес-тестування</h2>
 
 <form:form method="POST" action="post" modelAttribute="newrestype"
-	class="form-horizontal">
+  class="form-horizontal">
 
 
-	<button type="submit">Почати</button>
+  <button type="submit">Почати</button>
 </form:form>

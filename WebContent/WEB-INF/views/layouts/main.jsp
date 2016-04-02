@@ -15,18 +15,18 @@
 
 <!-- fav-icon -->
 <link rel="Shortcut Icon"
-	href="<c:url value='/resource/img/maple_leaf.ico'/>"
-	type="image/x-icon" />
+  href="<c:url value='/resource/img/maple_leaf.ico'/>"
+  type="image/x-icon" />
 <title><tiles:getAsString name="title" /></title>
 
 <!-- JQuery lib-->
 <script src="<c:url value='/resource/js/lib/jquery-1.12.0.min.js'/>"></script>
 <script
-	src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+  src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 
 <!-- Bootstrap -->
 <link rel="stylesheet"
-	href="<c:url value='/resource/css/bootstrap.css'/>">
+  href="<c:url value='/resource/css/bootstrap.css'/>">
 <script src="<c:url value='/resource/js/lib/bootstrap.min.js'/>"></script>
 
 <!-- Bootbox -->
@@ -37,7 +37,7 @@
 <%--<script src="<c:url value='/resource/js/lib/dataTables.bootstrap.js'/>"></script>--%>
 <!-- DataTables CSS-->
 <link rel="stylesheet"
-	href="<c:url value='/resource/css/jquery.dataTables.min.css'/>">
+  href="<c:url value='/resource/css/jquery.dataTables.min.css'/>">
 <%--<link rel="stylesheet" href="<c:url value='/resource/css/dataTables.bootstrap.css'/>">--%>
 
 <!-- Our JavaScript-->
@@ -48,50 +48,50 @@
 </head>
 <body>
 
-	<c:if test="${pageContext.request.userPrincipal.name != null}">
+  <c:if test="${pageContext.request.userPrincipal.name != null}">
 
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12" id="header">
-					<tiles:insertAttribute name="header" />
-				</div>
-			</div>
-			<div class="row">
-				<div id="menu">
-					<div class="col-md-12" id="menuForAdmin">
-						<tiles:insertAttribute name="menuForAdmin" role="ADMIN" />
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12" id="header">
+          <tiles:insertAttribute name="header" />
+        </div>
+      </div>
+      <div class="row">
+        <div id="menu">
+          <div class="col-md-12" id="menuForAdmin">
+            <tiles:insertAttribute name="menuForAdmin" role="ADMIN" />
 
-					</div>
-					<div class="col-md-12" id="menuForRegistrator">
-						<tiles:insertAttribute name="menuForRegistrator"
-							role="REGISTRATOR" />
+          </div>
+          <div class="col-md-12" id="menuForRegistrator">
+            <tiles:insertAttribute name="menuForRegistrator"
+              role="REGISTRATOR" />
 
-					</div>
-					<div class="col-md-12" id="menuForUser">
-						<tiles:insertAttribute name="menuForUser" role="USER" />
+          </div>
+          <div class="col-md-12" id="menuForUser">
+            <tiles:insertAttribute name="menuForUser" role="USER" />
 
-					</div>
-					<div class="col-md-12" id="menuForCommissioner">
-						<tiles:insertAttribute name="menuForCommissioner"
-							role="COMMISSIONER" />
+          </div>
+          <div class="col-md-12" id="menuForCommissioner">
+            <tiles:insertAttribute name="menuForCommissioner"
+              role="COMMISSIONER" />
 
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div id="body">
-					<tiles:insertAttribute name="body" />
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12" id="footer">
-					<tiles:insertAttribute name="footer" />
-				</div>
-			</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div id="body">
+          <tiles:insertAttribute name="body" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" id="footer">
+          <tiles:insertAttribute name="footer" />
+        </div>
+      </div>
 
-		</div>
+    </div>
 
-		<div id="baseurl" class="hidden">
-			<c:url value="/" />
-		</div>
-	</c:if>
+    <div id="baseurl" class="hidden">
+      <c:url value="/" />
+    </div>
+  </c:if>

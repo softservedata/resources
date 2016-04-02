@@ -5,24 +5,24 @@
 <title>Thanks for registration</title>
 <style>
 body {
-	background-color: #e3e3e3;
-	font: "Verdana";
+  background-color: #e3e3e3;
+  font: "Verdana";
 }
 </style>
 </head>
 <body>
 
-	<a href="${pageContext.request.contextPath}/login"
-		class="btn btn-success" role="button">Повернутись на головну</a>
-	<div>
-		<p>
-		<p>Вітаємо - реєстрація майже завершина.
-		<p>
-		<p>
-			Для завершення реєстрації Вам потрібно пройти по посиланню яке було
-			відправлено на Ваш e-mail
-			<!-- <p> * * * * *
+  <a href="${pageContext.request.contextPath}/login"
+    class="btn btn-success" role="button">Повернутись на головну</a>
+  <div>
+    <p>
+    <p>Вітаємо - реєстрація майже завершина.
+    <p>
+    <p>
+      Для завершення реєстрації Вам потрібно пройти по посиланню яке
+      було відправлено на Ваш e-mail
+      <!-- <p> * * * * *
 <p>Ваші дані в процесі опрацювання.
 <p>Дякуємо за реєстрацію! -->
-	</div>
+  </div>
 </body>
