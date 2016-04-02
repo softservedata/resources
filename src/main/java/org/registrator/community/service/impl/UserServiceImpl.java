@@ -37,7 +37,9 @@ import org.registrator.community.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -79,10 +81,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which returns user from database by login
-     * 
-     * @param login
+     *
      * @return User
-     * 
      */
     @Transactional
     @Override
@@ -92,10 +92,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which changes user status
-     * 
-     * @param userStatusJson
+     *
      * @return void
-     * 
      */
     @Transactional
     @Override
@@ -122,9 +120,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which retruns all registrated users
-     * 
+     *
      * @return List<UserDTO>
-     * 
      */
 
     @Transactional
@@ -147,9 +144,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which retruns all inactive users
-     * 
+     *
      * @return List<UserDTO>
-     * 
      */
     @Transactional
     @Override
@@ -172,11 +168,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which changes user role
-     * 
-     * @param login
-     *            ,role_id
+     *
+     * @param login ,role_id
      * @return void
-     * 
      */
     @Transactional
     @Override
@@ -191,10 +185,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which edits information about user
-     * 
-     * @param userDto
+     *
      * @return userDTO
-     * 
      */
     @Transactional
     @Override
@@ -237,9 +229,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which fill in user status for registrateds users
-     * 
+     *
      * @return List<UserStatus>
-     * 
      */
     @Transactional
     @Override
@@ -252,9 +243,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which fill in user status for inactives users
-     * 
+     *
      * @return List<UserStatus>
-     * 
      */
     @Transactional
     @Override
@@ -268,9 +258,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which gets user list userDto from database
-     * 
+     *
      * @return userDTO
-     * 
      */
     @Transactional
     @Override
@@ -295,10 +284,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which gets user userDto from database
-     * 
-     * @param login
+     *
      * @return userDTO
-     * 
      */
     @Transactional
     @Override
@@ -343,9 +330,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which gets all inactives users
-     * 
+     *
      * @return List<UserDTO>
-     * 
      */
 
     @Transactional
@@ -353,24 +339,23 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         userRepository.save(user);
     }
-    
+
     /**
      * Method, which delete user only if user status = NOTCOMFIRMED
-     * 
+     *
      * @return List<UserDTO>
-     * 
      */
     @Transactional
     @Override
     public void deleteNotConfirmedUser(User user) {
         user = userRepository.getOne(user.getUserId());
-        if (user.getStatus() == UserStatus.NOTCOMFIRMED){
+        if (user.getStatus() == UserStatus.NOTCOMFIRMED) {
             List<PassportInfo> passportInfoList = user.getPassport();
-            for(PassportInfo passportInfo : passportInfoList){
+            for (PassportInfo passportInfo : passportInfoList) {
                 passportRepository.delete(passportInfo);
             }
             List<Address> addressList = user.getAddress();
-            for(Address address : addressList){
+            for (Address address : addressList) {
                 addressRepository.delete(address);
             }
             userRepository.delete(user);
@@ -389,10 +374,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which checks user status
-     * 
-     * @param status
+     *
      * @return UserStatus
-     * 
      */
     private UserStatus checkUserStatus(String status) {
         if (status.equals(UserStatus.BLOCK.name())) {
@@ -406,32 +389,27 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which checks user role
-     * 
-     * @param role
+     *
      * @return Role
-     * 
      */
     private Role checkRole(String role) {
         List<Role> roleList = roleRepository.findAll();
         switch (role) {
-        case "USER":
-            return roleList.get(2);
-        case "REGISTRATOR":
-            return roleList.get(1);
-        case "COMMISSIONER":
-            return roleList.get(3);
-        default:
-            return roleList.get(0);
+            case "USER":
+                return roleList.get(2);
+            case "REGISTRATOR":
+                return roleList.get(1);
+            case "COMMISSIONER":
+                return roleList.get(3);
+            default:
+                return roleList.get(0);
         }
     }
 
     /**
-     * register user service: accepts 'registrationForm' with fields, needed to
-     * store data in Users, Address and Passport_Data tables By default, every
-     * new user is given role "User" and status "Inactive" until it's changed by
-     * Admin
-     * 
-     * @param registrationForm
+     * register user service: accepts 'registrationForm' with fields, needed to store data in Users,
+     * Address and Passport_Data tables By default, every new user is given role "User" and status
+     * "Inactive" until it's changed by Admin
      */
     @Override
     @Transactional
@@ -621,10 +599,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Method, which creates tome and number of resource
-     * 
-     * @param userDto
+     *
      * @return void
-     * 
      */
     @Transactional
     @Override
@@ -634,12 +610,12 @@ public class UserServiceImpl implements UserService {
         ResourceNumber resourceNumber = resourceNumberRepository.findResourceNumberByUser(user);
 
         if (tome != null && resourceNumber != null && userDto.getResourceNumberJson() != null) {
-           ResourceNumberJson resourceNumberJson = userDto.getResourceNumberJson();
-           if(resourceNumberJson.getRegistrator_number() == null || resourceNumberJson.getResource_number() == null){
-               logger.error("Bad ResourceNumberJson data");
-               return;
-           }
-        
+            ResourceNumberJson resourceNumberJson = userDto.getResourceNumberJson();
+            if (resourceNumberJson.getRegistrator_number() == null || resourceNumberJson.getResource_number() == null) {
+                logger.error("Bad ResourceNumberJson data");
+                return;
+            }
+
             ResourceNumberDTO resourseNumberDto = new ResourceNumberDTO(
                     Integer.parseInt(resourceNumberJson.getResource_number()),
                     resourceNumberJson.getRegistrator_number());
@@ -718,16 +694,11 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * <p>
-     * Method, which make updates in user entity for preventing brute force
-     * attacks
-     * </p>
-     * 
-     * @author Vitalii Horban
-     * @param String
-     *            login
+     * <p> Method, which make updates in user entity for preventing brute force attacks </p>
+     *
+     * @param String login
      * @return void
-     * 
+     * @author Vitalii Horban
      */
 
     @Transactional
@@ -755,17 +726,11 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * <p>
-     * Method, which reset user attempts to zero after authentifacation
-     * </p>
-     * 
-     * @author Vitalii Horban
-     * 
-     * @param String
-     *            login
-     * 
+     * <p> Method, which reset user attempts to zero after authentifacation </p>
+     *
+     * @param String login
      * @return void
-     * 
+     * @author Vitalii Horban
      */
     @Transactional
     @Override
@@ -801,23 +766,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /* Batch Role change */
+
     /**
-     * Method to provide batch operation over users to perform "from the list"
-     * mass role assignment.
-     * 
-     * @param batch
-     *            RoleTypeJson - holds JSON data of type {users logins(comma
-     *            separator), role type and info, needed to setup
-     *            RoleType.REGISTRATOR}
-     * @return String message, which is passed to the controller to return a
-     *         decent HTTP status with info.
+     * Method to provide batch operation over users to perform "from the list" mass role
+     * assignment.
+     *
+     * @param batch RoleTypeJson - holds JSON data of type {users logins(comma separator), role type
+     *              and info, needed to setup RoleType.REGISTRATOR}
+     * @return String message, which is passed to the controller to return a decent HTTP status with
+     * info.
      * @author ATsyhanenko
      */
     @Transactional
     @Override
     public String batchRoleChange(RoleTypeJson batch) {
         logger.info("Recieved package: " + batch);
-        if(batch.getLogin() == null || batch.getRole() == null){
+        if (batch.getLogin() == null || batch.getRole() == null) {
             logger.error("Empty RoleTypeJson batch file");
             return "msg.batchops.wrongInput";
         }
@@ -878,15 +842,15 @@ public class UserServiceImpl implements UserService {
     }
 
     /* Batch Community change */
+
     /**
-     * Method to provide batch operation over users to perform "from the list"
-     * mass comunity assignment.
-     * 
-     * @param batch
-     *            CommunityParamJson - holds JSON data of type {users
-     *            logins(comma separator), communityId}
-     * @return String message, which is passed to the controller to return a
-     *         decent HTTP status with info.
+     * Method to provide batch operation over users to perform "from the list" mass comunity
+     * assignment.
+     *
+     * @param batch CommunityParamJson - holds JSON data of type {users logins(comma separator),
+     *              communityId}
+     * @return String message, which is passed to the controller to return a decent HTTP status with
+     * info.
      * @author ATsyhanenko
      */
     @Transactional
@@ -894,16 +858,16 @@ public class UserServiceImpl implements UserService {
     public String batchCommunityChange(CommunityParamJson batch) {
         logger.info("Recieved package: " + batch);
 
-        if (batch.getLogin() == null || batch.getCommunityId() == null){
+        if (batch.getLogin() == null || batch.getCommunityId() == null) {
             logger.error("Empty CommunityParamJson batch file");
             return "msg.batchops.wrongInput";
         }
-        
+
         List<String> givenUsers = new ArrayList<String>();
         Collections.addAll(givenUsers, batch.getLogin().split(","));
 
         List<User> userList = userRepository.findUsersByLoginList(givenUsers);
-        
+
         if (userList.size() == 0)
             return "msg.batchops.wrongInput";
 
@@ -939,6 +903,14 @@ public class UserServiceImpl implements UserService {
         }
 
         return "msg.batchops.changesaccepted";
-    };
+    }
 
+
+    @Override
+    public boolean isAuthenticated() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null &&
+               auth.isAuthenticated() &&
+               !(auth instanceof AnonymousAuthenticationToken);
+    }
 }

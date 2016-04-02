@@ -3,7 +3,6 @@ package org.registrator.community.controller;
 
 import org.registrator.community.dto.UserRegistrationDTO;
 import org.registrator.community.entity.TerritorialCommunity;
-import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.enumeration.RegistrationMethod;
 import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.EmailConfirmService;
@@ -81,6 +80,9 @@ public class RegisterController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(Model model) {
+        if (userService.isAuthenticated()) {
+            return "redirect:/";
+        }
         model.addAttribute("registrationMethod", settingsService.getRegistrationMethod());
         return "login";
     }
