@@ -11,12 +11,12 @@ import javax.persistence.*;
 public class DiscreteParameter  implements ResourceParameter, Serializable{
 
     @Override
-	public String toString() {
-		return "DiscreteParameter [discreteParameterId=" + discreteParameterId + ", resourceType=" + resourceType
-				+ ", description=" + description + ", unitName=" + unitName + "]";
-	}
+    public String toString() {
+        return "DiscreteParameter [discreteParameterId=" + discreteParameterId + ", resourceType=" + resourceType
+                + ", description=" + description + ", unitName=" + unitName + "]";
+    }
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 
     @Id

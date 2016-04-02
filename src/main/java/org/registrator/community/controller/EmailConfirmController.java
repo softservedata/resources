@@ -12,23 +12,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class EmailConfirmController {
-	
-	        
-	    @Autowired
-	    private VerificationTokenService verificationTokenService;
-	    @Autowired
-	    EmailConfirmService emailConfirmService;
-	    
-	    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
-	    @RequestMapping(value = {"/manualregistration/confirm_email/{hash}", "/register/confirm_email/{hash}"}, method = RequestMethod.GET)
-	    public String getConfirmEmailPage(@PathVariable("hash")String hash,Model model){
-	    	if(verificationTokenService.isExistValidVerificationToken(hash)){
-	    		emailConfirmService.confirmEmail(hash);
-	    		model.addAttribute("msg",true);
-	    	}
-	    	return "confirm_email";
-	    }
-	    
-	    
+
+
+    @Autowired
+    private VerificationTokenService verificationTokenService;
+    @Autowired
+    EmailConfirmService emailConfirmService;
+
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
+    @RequestMapping(value = {"/manualregistration/confirm_email/{hash}", "/register/confirm_email/{hash}"}, method = RequestMethod.GET)
+    public String getConfirmEmailPage(@PathVariable("hash") String hash, Model model) {
+        if (verificationTokenService.isExistValidVerificationToken(hash)) {
+            emailConfirmService.confirmEmail(hash);
+            model.addAttribute("msg", true);
+        }
+        return "confirm_email";
+    }
+
 
 }

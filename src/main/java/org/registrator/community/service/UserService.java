@@ -62,4 +62,12 @@ public interface UserService {
     public String batchRoleChange(RoleTypeJson batch);
 
     public String batchCommunityChange(CommunityParamJson batch);
+
+    void deleteNotConfirmedUser(User user);
+
+    /**
+     * Checks if user is authenticated in application
+     * @return true if current user is authenticated, false otherwise
+     */
+    boolean isAuthenticated();
 }
