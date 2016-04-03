@@ -29,7 +29,6 @@ public class AdditionalAppConfig {
         sender.setDefaultEncoding("UTF-8");
         sender.setHost("smtp.gmail.com");
         sender.setProtocol("smtps");
-//        sender.setPort(587);
         sender.setPort(465);
         sender.setUsername("resources.registrator@gmail.com");
         sender.setPassword("m@!RljNg");

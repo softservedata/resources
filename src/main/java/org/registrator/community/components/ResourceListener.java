@@ -1,12 +1,12 @@
 package org.registrator.community.components;
 
 import org.registrator.community.entity.Resource;
-import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.service.SettingsService;
 
-import javax.persistence.PrePersist;
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import javax.persistence.PrePersist;
 
 /**
  * Persistent listener for Resource entity. Used to set 'created at' property on persist.

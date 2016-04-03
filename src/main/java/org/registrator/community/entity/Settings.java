@@ -1,7 +1,5 @@
 package org.registrator.community.entity;
 
-import org.registrator.community.entity.converter.PropertyConverter;
-import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.enumeration.RegistrationMethod;
 
 import javax.persistence.*;

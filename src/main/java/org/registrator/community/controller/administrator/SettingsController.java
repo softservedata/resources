@@ -1,6 +1,5 @@
 package org.registrator.community.controller.administrator;
 
-import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.enumeration.RegistrationMethod;
 import org.registrator.community.service.SettingsService;
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Map;
 import java.util.TimeZone;
 
 @Controller
@@ -36,8 +34,6 @@ public class SettingsController {
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
     public String showSettings(Model model) {
         logger.info("begin: show admin settings");
-        // put all settings in Model, all properties will be available with the name of ApplicationProperty
-        // ex REGISTRATION_METHOD
         model.addAttribute("REGISTRATION_METHOD", settingsService.getRegistrationMethod().toString());
         model.addAttribute("TIME_ZONE", settingsService.getTimeZone().getID());
         logger.info("end: admin settings are shown");

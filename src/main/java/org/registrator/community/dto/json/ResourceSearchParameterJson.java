@@ -38,7 +38,7 @@ public class ResourceSearchParameterJson {
 
     //used to deserialize from json, do not delete :-)
     public void setCompare(String compareString) {
-        this.compare = ParameterValueCompare.from(compareString);
+        this.compare = ParameterValueCompare.valueOf(compareString.toUpperCase());
     }
 
     public void setValue(Double value) {

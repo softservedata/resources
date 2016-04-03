@@ -40,7 +40,7 @@ public interface ResourceService {
 
     Integer countAllByPoint(Double lat,Double lng);
 
-    boolean userCanEditResource(ResourceDTO resourceDTO) throws ResourceEntityNotFound;
+    boolean userCanEditResource(ResourceDTO resourceDTO);
 
     ResourceDTO createNewResourceDTO();
 
