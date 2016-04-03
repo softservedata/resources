@@ -41,6 +41,14 @@ public class ResourceNumberJSONDTOValidator implements Validator {
                 .findResourceNumbersByCommunity(user.getTerritorialCommunity());
 
         ResourceNumber tmpNumber = null;
+        String matchPattern = "^\\d+$";
+        if(!resourceNumberJson.getRegistrator_number().matches(matchPattern)){
+            errors.rejectValue("resourceNumberJson.registrator_number", "msg.registration.registratornumber.patterError");
+        }
+        if(!resourceNumberJson.getResource_number().matches(matchPattern)){
+            errors.rejectValue("resourceNumberJson.resource_number", "msg.registration.registratornumber.patterError");
+        }
+        
         for (ResourceNumber num : resNumList) {
             if (num.getRegistratorNumber().equals(newResourceNumber.getRegistratorNumber())) {
                 tmpNumber = num;
