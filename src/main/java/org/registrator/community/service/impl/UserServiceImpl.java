@@ -787,7 +787,7 @@ public class UserServiceImpl implements UserService {
     public String batchRoleChange(RoleTypeJson batch) {
         logger.info("Recieved package: " + batch);
         if (batch.getLogin() == null || batch.getRole() == null) {
-            logger.error("Empty RoleTypeJson batch file");
+            logger.warn("Empty RoleTypeJson batch file");
             return "msg.batchops.wrongInput";
         }
 
@@ -830,7 +830,7 @@ public class UserServiceImpl implements UserService {
         logger.info("Recieved package: " + batch);
 
         if (batch.getLogin() == null || batch.getCommunityId() == null) {
-            logger.error("Empty CommunityParamJson batch file");
+            logger.warn("Empty CommunityParamJson batch file");
             return "msg.batchops.wrongInput";
         }
 
@@ -842,7 +842,7 @@ public class UserServiceImpl implements UserService {
         Integer commumityId = Integer.parseInt(batch.getCommunityId());
         TerritorialCommunity community = communityService.findById(commumityId);
         if (community == null) {
-            logger.error("Incorrect community id");
+            logger.warn("Incorrect community id");
             return "msg.batchops.wrongInput";
         }
         
