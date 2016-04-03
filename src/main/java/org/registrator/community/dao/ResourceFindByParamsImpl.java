@@ -5,7 +5,6 @@ import org.registrator.community.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,7 +19,6 @@ import java.util.List;
  * Implements search of resources by parameters. Adds additional behavior to ResourceRepository
  */
 @Repository
-@Transactional(readOnly = true)
 public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializable {
     @PersistenceContext
     private EntityManager entityManager;
@@ -46,6 +44,7 @@ public class ResourceFindByParamsImpl implements ResourceFindByParams, Serializa
      * @param parameters resource parameters and values for searching
      * @return List of resources
      */
+    @Override
     public List<Resource> findByParams(ResourceSearchJson parameters) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Resource> criteria = criteriaBuilder.createQuery(Resource.class);

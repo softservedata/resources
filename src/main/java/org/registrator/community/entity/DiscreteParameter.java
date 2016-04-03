@@ -10,15 +10,6 @@ import javax.persistence.*;
 @Table(name = "discrete_parameters")
 public class DiscreteParameter  implements ResourceParameter, Serializable{
 
-    @Override
-    public String toString() {
-        return "DiscreteParameter [discreteParameterId=" + discreteParameterId + ", resourceType=" + resourceType
-                + ", description=" + description + ", unitName=" + unitName + "]";
-    }
-
-    private static final long serialVersionUID = 1L;
-
-
     @Id
     @Column(name = "discrete_parameter_id")
     @GeneratedValue

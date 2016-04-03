@@ -65,24 +65,25 @@ public class ResourceController {
     @RequestMapping(value = "/addresource", method = RequestMethod.GET)
     public String addResourceForm(@RequestParam(value = "mode", defaultValue = "add") String mode,
                                   @RequestParam(value = "id", defaultValue = "") String identifier,
-                                  Model model) throws ResourceEntityNotFound, BadRequest{
-
+                                  Model model) throws BadRequest {
 
 
         ResourceDTO resourceDTO = null;
-        switch (mode) {
-            case "add":
+        if ("add".equalsIgnoreCase(mode)) {
                 resourceDTO = resourceService.createNewResourceDTO();
-                break;
-            case "edit":
+        } else if ("edit".equalsIgnoreCase(mode)) {
+            try {
                 resourceDTO = resourceService.findByIdentifier(identifier);
+            } catch (ResourceEntityNotFound resourceEntityNotFound) {
+                model.addAttribute("identifier", identifier);
+                return "noResourceEntity";
+            }
                 if (!resourceService.userCanEditResource(resourceDTO)) {
                     model.addAttribute("noEdit", true);
                     model.addAttribute("identifier", resourceDTO.getIdentifier());
                     return "redirect:get/{identifier}";
                 }
-                break;
-            default:
+        } else {
                 throw new BadRequest();
         }
 
@@ -106,8 +107,7 @@ public class ResourceController {
      */
     @PreAuthorize("hasRole('ROLE_REGISTRATOR')")
     @RequestMapping(value = "/addresource", method = RequestMethod.POST)
-    public String addResource(@RequestParam(value = "mode", defaultValue = "add") String mode,
-                              @Valid @ModelAttribute("resource") ResourceDTO resourceDTO,
+    public String addResource(@Valid @ModelAttribute("resource") ResourceDTO resourceDTO,
                               BindingResult result,
                               Model model) {
 
