@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -291,6 +290,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserDto(String login) {
         User user = getUserByLogin(login);
+        logger.info("user "+user);
         PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
         PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber().toString(),
                 passportInfo.getPublishedByData());
@@ -649,8 +649,12 @@ public class UserServiceImpl implements UserService {
         Integer registratorNumber = 0;
         Integer registratorStartIncrement = 1;
         for (ResourceNumber res : resourceNumberList) {
-            Integer tmpNumber = Integer.parseInt(res.getRegistratorNumber());
-            registratorNumber = (tmpNumber > registratorNumber) ? tmpNumber : registratorNumber;
+            try{
+                Integer tmpNumber = Integer.parseInt(res.getRegistratorNumber());
+                registratorNumber = (tmpNumber > registratorNumber) ? tmpNumber : registratorNumber;
+            }catch(Exception e){
+                logger.error("Resource number of user "+res.getUser().getLogin()+" is in incorrect format: "+res.getRegistratorNumber()+". Only Integer allowed");
+            }
         }
 
         for (User user : users) {

@@ -12,8 +12,8 @@ jQuery(document).ready(function($) {
   });
 
   $('#example').on('click', '#edit', function() {
-    var data = table.row($(this).parents('tr')).data();
-    login = data[2];
+    var data = $(this).parent().parent();
+    login = $(".login", data).text();
     window.location.href = "edit-registrated-user/?login=" + login;
   });
 
