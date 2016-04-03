@@ -19,13 +19,14 @@
 
   <div style="text-align: center;">
    <h4>
-    <spring:message code="label.registrated.pagename.${statusType}" /> <spring:message code="label.registrated.pagename.users" />
+    <spring:message code="label.registrated.pagename.${statusType}" />
+    <spring:message code="label.registrated.pagename.users" />
    </h4>
   </div>
 
   <div class="dataTable_wrapper">
    <tiles:insertAttribute name="baseActionsMenu" />
-  
+
    <table id="example"
     class="table table-striped table-bordered table-hover">
     <thead>
@@ -51,22 +52,30 @@
          </div>
         </th>
        </c:if>
-       <c:if test="${entry.value.type eq 'hidden'}">
+       <c:if test="${entry.value.type eq 'status'}">
         <th>
          <div class="form-group">
           <div class="col-md-12" style="padding: 0">
            <input type="hidden" id="searchTypeIndex${entry.key}"
             name="category" value="statusType" /> <input maxlength="50"
-            id="inputIndex${entry.key}" class="form-control" type="hidden"     
-            value="${statusType}" />
+            id="inputIndex${entry.key}" class="form-control"
+            type="hidden" value="${statusType}" />
           </div>
          </div>
         </th>
        </c:if>
-       <c:if test="${entry.value.type eq 'label'}">
+       <c:if test="${entry.value.type eq 'role'}">
         <th>
          <div class="form-group">
-          <div class="col-md-12" style="padding: 0"></div>
+            <input type="hidden" id="searchTypeIndex${entry.key}"
+            name="category" value="roleType" /> 
+           <select class="form-control col-sm-3" name="role" >
+             <option value="null" selected>---</option>
+           <c:forEach items="${roleTypes}" var="role">
+           <option value="${role.type}">
+             <spring:message code="label.admin.userlist.role_${role.type}" /></option>
+           </c:forEach>
+           </select>
          </div>
         </th>
        </c:if>
@@ -128,18 +137,17 @@ jQuery(document).ready(function($) {
                        "defaultContent": '<button  class="btn btn-sm btn-primary" id="${entry.value.buttonId}">Профiль</button>'               
                       },
                   </c:if>
-                  <c:if test="${entry.value.type eq 'label'}">
+                  <c:if test="${entry.value.type eq 'role'}">
                       {
                         "sTitle" : "<spring:message code="${entry.value.title}" />",
                         "mData" : '${entry.key}',
-                        "bSortable": false,
                         "sClass": "${entry.value.data}",
                         "mRender": function ( data, type, full ) {
                             return  jQuery.i18n.prop("msg.role."+data);
                          }
                       },
                  </c:if>
-                      <c:if test="${entry.value.type eq 'hidden'}">
+                      <c:if test="${entry.value.type eq 'status'}">
                       {
                         "sTitle" : "",
                         "mData" : '${entry.key}',

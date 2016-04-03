@@ -52,6 +52,9 @@ public class BaseSpecification<T> implements Specification<T> {
         else if (searchType.equalsIgnoreCase("statusType")){
           return statusTypeBuilder(root, builder);
         }
+        else if (searchType.equalsIgnoreCase("roleType")){
+            return statusTypeBuilder(root, builder);
+          }
         
 //        else if (criteria.getSearch().getCompareSign().equalsIgnoreCase("equal")){
 //        	return equalBuilder(root, builder);
@@ -104,12 +107,9 @@ public class BaseSpecification<T> implements Specification<T> {
   
   private Predicate statusTypeBuilder(Root<T> root, CriteriaBuilder builder) {
       UserStatus status = UserStatus.ACTIVE;
-      System.out.println("> > >  . . >");
       try{
           status = UserStatus.valueOf(searchValue.toUpperCase());
-      }catch(Exception e){
-          System.out.println(">>>>> exception should be caught");
-      }
+      }catch(Exception e){}
     return builder.equal(getPathFromRoot(root), status);
   }
 
