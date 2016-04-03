@@ -4,7 +4,9 @@ jQuery(document).ready(function($) {
   var tc_name;
   var selected;
   var role;
-
+  
+  var communityModal = $("#userCommunitySelectModal");
+  
   $('#example').on('click', 'tr', function() {
     $(this).toggleClass('selected');
   });

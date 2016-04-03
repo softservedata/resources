@@ -12,7 +12,6 @@
  src="<c:url value='/resource/js/lib/jquery.autocomplete.min.js'/>"></script>
 <c:if test="${not empty tableSetting.script}">
  <script src="<c:url value='/resource/js/${tableSetting.script}.js'/>"></script>
- <script src="<c:url value='/resource/js/batchUserOps.js'/>"></script>
 </c:if>
 <div class="container">
 
@@ -20,38 +19,13 @@
 
   <div style="text-align: center;">
    <h4>
-    <spring:message code="${tableSetting.tableTitle}" />
+    <spring:message code="label.registrated.pagename.${statusType}" /> <spring:message code="label.registrated.pagename.users" />
    </h4>
   </div>
 
   <div class="dataTable_wrapper">
    <tiles:insertAttribute name="baseActionsMenu" />
   
-   <div class="dropdown" id="actionList"
-    style="float: Left; margin-right: 5px;">
-    <a id="dLabel" role="button" data-toggle="dropdown"
-     class="btn btn-xs btn-primary" data-target="#" href="#"><spring:message
-      code="label.modal.actions" /> <span class="caret"></span> </a>
-    <ul class="dropdown-menu multi-level" role="menu"
-     aria-labelledby="dropdownMenu">
-     <li class="dropdown-submenu"><a href="#"><spring:message
-        code="label.modal.setRole" /></a>
-      <ul class="dropdown-menu">
-       <c:forEach items="${roleTypes}" var="role">
-        <li><a class="set-role" href="#${role.type}"
-         val="${role.type}"><spring:message
-           code="label.admin.userlist.role_${role.type}" /></a></li>
-       </c:forEach>
-
-      </ul></li>
-
-     <li><a href="#" class="set-community"><spring:message
-        code="label.modal.setCommunity" /></a></li>
-     <li><a href="#" class="reset-password"><spring:message
-        code="label.modal.resetPassword" /></a></li>
-    </ul>
-   </div>
-
    <table id="example"
     class="table table-striped table-bordered table-hover">
     <thead>
@@ -109,58 +83,8 @@
 
 </div>
 
-
-<div id="modalWindow" class="form-horizontal">
- <div id="userCommunitySelectModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-   <div class="modal-content">
-    <div class="modal-header">
-     <button type="button" class="close" data-dismiss="modal">&times;</button>
-     <h4 class="modal-title">
-      <spring:message code="label.registrator.enterData" />
-     </h4>
-     <label class="control-label"><spring:message
-       code="label.community.title" />: </label> <input id="tc_search"
-      class="form-control input-md" type="text">
-    </div>
-    <div class="control-group error"></div>
-    <div class="modal-footer">
-     <button class="btn btn-info" data-dismiss="modal">
-      <spring:message code="label.modal.cancel" />
-     </button>
-     <button class="submit btn btn-success">
-      <spring:message code="label.modal.confirm" />
-     </button>
-    </div>
-   </div>
-  </div>
- </div>
-</div>
-
-<%--AJAX Loader for the dark display--%>
-<div id="dark_bg">
- <div class="windows8">
-  <div class="wBall" id="wBall_1">
-   <div class="wInnerBall"></div>
-  </div>
-  <div class="wBall" id="wBall_2">
-   <div class="wInnerBall"></div>
-  </div>
-  <div class="wBall" id="wBall_3">
-   <div class="wInnerBall"></div>
-  </div>
-  <div class="wBall" id="wBall_4">
-   <div class="wInnerBall"></div>
-  </div>
-  <div class="wBall" id="wBall_5">
-   <div class="wInnerBall"></div>
-  </div>
- </div>
-</div>
-
 <script>
 var table;
-var communityModal = $("#userCommunitySelectModal");
 var actions = $("#actionList");
 
 jQuery(document).ready(function($) {
@@ -168,7 +92,7 @@ jQuery(document).ready(function($) {
          "searching": false,
          "bSort" : true,
          "bDestroy": true,
-         "order": [[ 2, "asc" ]],
+         "order": [[ 3, "asc" ]],
          "oLanguage" : {
              "sEmptyTable" : jQuery.i18n.prop('dataTable.sEmptyTable'),
              "sInfo" : jQuery.i18n.prop('dataTable.sInfo'),

@@ -1,5 +1,7 @@
 package org.registrator.community.dao.specification;
 
+import java.util.EnumSet;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -101,7 +103,14 @@ public class BaseSpecification<T> implements Specification<T> {
   }
   
   private Predicate statusTypeBuilder(Root<T> root, CriteriaBuilder builder) {
-    return builder.equal(getPathFromRoot(root), UserStatus.valueOf(searchValue.toUpperCase()));
+      UserStatus status = UserStatus.ACTIVE;
+      System.out.println("> > >  . . >");
+      try{
+          status = UserStatus.valueOf(searchValue.toUpperCase());
+      }catch(Exception e){
+          System.out.println(">>>>> exception should be caught");
+      }
+    return builder.equal(getPathFromRoot(root), status);
   }
 
   // private Predicate greaterThanOrEqualToBuilder(Root<T> root,

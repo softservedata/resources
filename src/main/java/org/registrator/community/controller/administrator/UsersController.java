@@ -173,14 +173,19 @@ public class UsersController {
         model.addAttribute("roleTypes", roleTypes);
         UserStatus userStatus = UserStatus.ACTIVE;
         if (statusType != null) {
-            statusType = statusType.toUpperCase();
-            userStatus = UserStatus.valueOf(statusType);
+            try{
+                statusType = statusType.toUpperCase();
+                userStatus = UserStatus.valueOf(statusType);
+            }catch(Exception e){
+                logger.error("Incorrect input of statusType variable: "+statusType);
+                return "redirect:/administrator/users/get-all-users";
+            }
         }
         String userStatusString = userStatus.toString();
         model.addAttribute("statusType", userStatusString);
 
         logger.info("end");
-        return "activeUsersList";
+        return "searchTableTemplate";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
