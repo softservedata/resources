@@ -9,17 +9,20 @@ import javax.persistence.criteria.Root;
 import org.registrator.community.dto.search.SearchColumn;
 import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
+
 
 public class BaseSpecification<T> implements Specification<T> {
 
-  private String searchField;
+  private final String searchField;
 
-  private String searchValue;
+  private final String searchValue;
 
-  private String searchType;
-
-  public BaseSpecification() {}
+  private final String searchType;
+  
+  private Logger logger = LoggerFactory.getLogger(BaseSpecification.class);
 
   public BaseSpecification(String searchField, String searchValue, String searchType) {
     this.searchField = searchField;
@@ -108,7 +111,9 @@ public class BaseSpecification<T> implements Specification<T> {
       UserStatus status = UserStatus.ACTIVE;
       try{
           status = UserStatus.valueOf(searchValue.toUpperCase());
-      }catch(Exception e){}
+      }catch(IllegalArgumentException e){
+          logger.error("Bad user status argument: "+searchValue);
+      }
     return builder.equal(getPathFromRoot(root), status);
   }
   
@@ -116,7 +121,9 @@ public class BaseSpecification<T> implements Specification<T> {
       RoleType roleType = RoleType.USER;
       try{
           roleType = RoleType.valueOf(searchValue.toUpperCase());
-      }catch(Exception e){}
+      }catch(IllegalArgumentException e){
+          logger.error("Bad user role argument: "+searchValue);
+      }
     return builder.equal(getPathFromRoot(root), roleType);
   }
 
