@@ -25,7 +25,8 @@
   </div>
 
   <div class="dataTable_wrapper">
-   
+   <tiles:insertAttribute name="baseActionsMenu" />
+  
    <div class="dropdown" id="actionList"
     style="float: Left; margin-right: 5px;">
     <a id="dLabel" role="button" data-toggle="dropdown"
