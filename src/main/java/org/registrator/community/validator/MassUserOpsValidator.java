@@ -52,31 +52,31 @@ public class MassUserOpsValidator implements Validator {
 
             if (communityParamBatch.getLogin() == null
                     || communityParamBatch.getCommunityId() == null) {
-                logger.error("Empty RoleTypeJson batch file");
+                logger.warn("Empty RoleTypeJson batch file");
                 errors.reject(WRONG_INPUT);
                 return;
             }
             
             if(!checkIfUsersExist(communityParamBatch.getLogin())){
-                logger.error("Bad login list");
+                logger.warn("Bad login list");
                 errors.reject(WRONG_INPUT);
                 return;
             }
             
             if(!checkIfIsSelf()){
-                logger.error("Tried to change self's role");
+                logger.warn("Tried to change self's role");
                 errors.reject(CANT_CHANGE_SELF);
                 return;
             }     
              
             if(!checkIfIsAdmin()){
-                logger.error("Cant change admins");
+                logger.warn("Cant change admins");
                 errors.reject(IS_ADMIN);
                 return;
             }
             
             if(!checkIfCommunityExists(communityParamBatch.getCommunityId())){
-                logger.error("Community with id# \""+communityParamBatch.getCommunityId()+"\" doesnt exist");
+                logger.warn("Community with id# \""+communityParamBatch.getCommunityId()+"\" doesnt exist");
                 errors.reject(WRONG_INPUT);
                 return;
             }
@@ -85,37 +85,37 @@ public class MassUserOpsValidator implements Validator {
             RoleTypeJson roleTypeParamBatch = (RoleTypeJson) target;
 
             if (roleTypeParamBatch.getLogin() == null || roleTypeParamBatch.getRole() == null) {
-                logger.error("Empty RoleTypeJson batch file");
+                logger.warn("Empty RoleTypeJson batch file");
                 errors.reject(WRONG_INPUT);
                 return;
             }
             
             if(!checkIfUsersExist(roleTypeParamBatch.getLogin())){
-                logger.error("Bad login list");
+                logger.warn("Bad login list");
                 errors.reject(WRONG_INPUT);
                 return;
             }
             
             if(!checkIfIsSelf()){
-                logger.error("Tried to change self's role");
+                logger.warn("Tried to change self's role");
                 errors.reject(CANT_CHANGE_SELF);
                 return;
             }
                      
             if(!checkIfIsAdmin()){
-                logger.error("Cant change admins");
+                logger.warn("Cant change admins");
                 errors.reject(IS_ADMIN);
                 return;
             }
             
             if(!checkIfIsFromSameCommunity()){
-                logger.error("Cant select users with diffirent communities");
+                logger.warn("Cant select users with diffirent communities");
                 errors.reject(DIFFIRENT_TCS);
                 return;
             }
 
             if(!checkIfRoleExists(roleTypeParamBatch.getRole())){
-                logger.error("Role \""+roleTypeParamBatch.getRole()+"\" doesnt exist");
+                logger.warn("Role \""+roleTypeParamBatch.getRole()+"\" doesnt exist");
                 errors.reject(WRONG_INPUT);
                 return;
             }
@@ -147,7 +147,6 @@ public class MassUserOpsValidator implements Validator {
 
         for (User user : userList) {
             if (user.getLogin().equals(autherizedUser)) {
-                logger.error("Tried to change self's role");
                 return false;
             }
         }

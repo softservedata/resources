@@ -29,6 +29,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -184,8 +185,8 @@ public class UsersController {
             try{
                 statusType = statusType.toUpperCase();
                 userStatus = UserStatus.valueOf(statusType);
-            }catch(Exception e){
-                logger.error("Incorrect input of statusType variable: "+statusType);
+            }catch(IllegalArgumentException e){
+                logger.warn("Incorrect input of statusType variable: "+statusType);
                 return "redirect:/administrator/users/get-all-users";
             }
         }
@@ -212,12 +213,9 @@ public class UsersController {
         massUserOpsValidator.validate(roleTypeJson, result);
         
         if (result.hasErrors()) {
-            String error = "empty";
-            try{
-                error = result.getGlobalError().getCodes()[1];
-            }catch(Exception e){
-                logger.debug("Bad error array");
-            }
+            ObjectError objectError = result.getGlobalError();  
+            String error = objectError.getCode();
+            
             logger.info("end");
             return error;
         }else{
@@ -236,12 +234,9 @@ public class UsersController {
         massUserOpsValidator.validate(communityParamJson, result);
         
         if (result.hasErrors()) {
-            String error = "empty";
-            try{
-                error = result.getGlobalError().getCodes()[1];
-            }catch(Exception e){
-                logger.debug("Bad error array");
-            }
+            ObjectError objectError = result.getGlobalError();  
+            String error = objectError.getCode();
+            
             logger.info("end");
             return error;
         }else{
