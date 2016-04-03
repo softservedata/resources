@@ -20,10 +20,10 @@
               href="<c:url value='/administrator/users/get-all-users?statusType=block'/>">
                 <spring:message code="label.registrated.pagename.BLOCK" />
             </a></li>
-            <li><a
+           <%--  <li><a
               href="<c:url value='/administrator/users/get-all-users?statusType=inactive'/>">
                 <spring:message code="label.registrated.pagename.INACTIVE" />
-            </a></li>
+            </a></li> --%>
             <li><a
               href="<c:url value='/administrator/users/get-all-users?statusType=notcomfirmed'/>">
                 <spring:message code="label.registrated.pagename.NOTCOMFIRMED" />

@@ -32,13 +32,13 @@
  </ul>
  </c:if>
  
- <c:if test="${statusType eq 'INACTIVE'}">
+ <c:if test="${statusType eq 'BLOCK'}">
      <a id="dLabel" role="button" data-toggle="dropdown"
   class="btn btn-xs btn-primary" data-target="#" href="#"><spring:message
    code="label.modal.actions" /> <span class="caret"></span> </a>
  <ul class="dropdown-menu multi-level" role="menu"
   aria-labelledby="dropdownMenu">
-    <li><a href="#">Активувати</a></li>
+    <li><a href="#">Розблокувати</a></li>
  </ul>
  </c:if>
  </div>

@@ -193,7 +193,7 @@ public class UsersController {
         model.addAttribute("statusType", userStatusString);
 
         logger.info("end");
-        return "searchTableTemplate";
+        return "usersList";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")

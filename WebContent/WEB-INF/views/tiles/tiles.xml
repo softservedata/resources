@@ -204,22 +204,23 @@
    value="/WEB-INF/views/templates/adminSettings.jsp" />
  </definition>
 
- <definition name="searchTableTemplate" extends="homepage">
+<!--  <definition name="searchTableTemplate" extends="homepage">
   <put-attribute name="body">
    <definition template="/WEB-INF/views/templates/searchTableTemplate.jsp">
         <put-attribute name="baseActionsMenu" value="/WEB-INF/views/templates/menus/userListActions.jsp" />
    </definition>
   </put-attribute>
  </definition>
-
- <definition name="activeUsersList" extends="searchTableTemplate">
-   <put-attribute name="body">
-   <definition template="/WEB-INF/views/templates/searchTableTemplate.jsp">
-        <put-attribute name="baseActionsMenu" value="/WEB-INF/views/templates/menus/inactiveListMenu.jsp" />
+ -->
+ 
+ <definition name="usersList" extends="homepage">
+  <put-attribute name="body">
+   <definition template="/WEB-INF/views/templates/userList.jsp">
+        <put-attribute name="baseActionsMenu" value="/WEB-INF/views/templates/menus/userListActions.jsp" />
    </definition>
   </put-attribute>
  </definition>
-
+ 
  <definition name="accessDenied" template="/WEB-INF/views/accessDenied.jsp">
  </definition>
 
