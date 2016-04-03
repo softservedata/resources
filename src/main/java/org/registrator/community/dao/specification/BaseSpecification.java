@@ -1,7 +1,5 @@
 package org.registrator.community.dao.specification;
 
-import java.util.EnumSet;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -9,6 +7,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.registrator.community.dto.search.SearchColumn;
+import org.registrator.community.enumeration.RoleType;
 import org.registrator.community.enumeration.UserStatus;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -53,7 +52,7 @@ public class BaseSpecification<T> implements Specification<T> {
           return statusTypeBuilder(root, builder);
         }
         else if (searchType.equalsIgnoreCase("roleType")){
-            return statusTypeBuilder(root, builder);
+            return roleTypeBuilder(root, builder);
           }
         
 //        else if (criteria.getSearch().getCompareSign().equalsIgnoreCase("equal")){
@@ -111,6 +110,14 @@ public class BaseSpecification<T> implements Specification<T> {
           status = UserStatus.valueOf(searchValue.toUpperCase());
       }catch(Exception e){}
     return builder.equal(getPathFromRoot(root), status);
+  }
+  
+  private Predicate roleTypeBuilder(Root<T> root, CriteriaBuilder builder) {
+      RoleType roleType = RoleType.USER;
+      try{
+          roleType = RoleType.valueOf(searchValue.toUpperCase());
+      }catch(Exception e){}
+    return builder.equal(getPathFromRoot(root), roleType);
   }
 
   // private Predicate greaterThanOrEqualToBuilder(Root<T> root,

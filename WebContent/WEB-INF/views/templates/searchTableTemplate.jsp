@@ -57,7 +57,9 @@
          <div class="form-group">
           <div class="col-md-12" style="padding: 0">
            <input type="hidden" id="searchTypeIndex${entry.key}"
-            name="category" value="statusType" /> <input maxlength="50"
+            name="category" value="statusType" /> 
+            
+            <input maxlength="50"
             id="inputIndex${entry.key}" class="form-control"
             type="hidden" value="${statusType}" />
           </div>
@@ -69,8 +71,10 @@
          <div class="form-group">
             <input type="hidden" id="searchTypeIndex${entry.key}"
             name="category" value="roleType" /> 
-           <select class="form-control col-sm-3" name="role" >
-             <option value="null" selected>---</option>
+            
+            
+           <select class="form-control col-sm-3" name="role_type" id="inputIndex${entry.key}">
+             <option value="" selected>---</option>
            <c:forEach items="${roleTypes}" var="role">
            <option value="${role.type}">
              <spring:message code="label.admin.userlist.role_${role.type}" /></option>
