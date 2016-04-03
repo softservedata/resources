@@ -401,8 +401,10 @@ public class UserServiceImpl implements UserService {
                 return roleList.get(1);
             case "COMMISSIONER":
                 return roleList.get(3);
-            default:
+            case "ADMIN":
                 return roleList.get(0);
+            default:
+                return roleList.get(2);
         }
     }
 
@@ -633,12 +635,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void batchCreateTomeAndResourceNumber(List<User> users) {
-        if (users.size() == 0)
-            return;
+        if (users.isEmpty())return;
 
         List<Tome> tomeList = tomeRepository.findAll();
         Integer tomeNumber = 0;
-        if (tomeList.size() != 0) {
+        if (!tomeList.isEmpty()) {
             Tome tempTome = tomeList.get(tomeList.size() - 1);
             String lastTomeNum = tempTome.getIdentifier();
             tomeNumber = Integer.parseInt(lastTomeNum);
@@ -653,7 +654,7 @@ public class UserServiceImpl implements UserService {
                 Integer tmpNumber = Integer.parseInt(res.getRegistratorNumber());
                 registratorNumber = (tmpNumber > registratorNumber) ? tmpNumber : registratorNumber;
             }catch(Exception e){
-                logger.error("Resource number of user "+res.getUser().getLogin()+" is in incorrect format: "+res.getRegistratorNumber()+". Only Integer allowed");
+                logger.error("Resource number of user \""+res.getUser().getLogin()+"\" is in a incorrect format: "+res.getRegistratorNumber()+". Only decimals allowed.");
             }
         }
 
@@ -795,42 +796,8 @@ public class UserServiceImpl implements UserService {
 
         List<User> userList = userRepository.findUsersByLoginList(givenUsers);
 
-        if (userList.size() == 0)
-            return "msg.batchops.wrongInput";
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String auth_user = auth.getName();
-        logger.info("Performed by: " + auth_user);
-
-        for (User user : userList) {
-            if (user.getLogin().equals(auth_user)) {
-                logger.info("Tried to change self's role");
-                return "msg.batchops.cantChangeOwnState";
-            }
-
-            if (user.getRole().getType() == RoleType.ADMIN) {
-                logger.info("Restriction: Batch op's dont allow to change Administrators!");
-                return "msg.batchops.cantChangeAdmins";
-            }
-        }
-
         Role role = checkRole(batch.getRole());
         logger.info("Selected role: " + role);
-
-        int territorialCommunityId = -1;
-        if (role.getType() == RoleType.REGISTRATOR) {
-            for (User user : userList) {
-                int tmp = user.getTerritorialCommunity().getTerritorialCommunityId();
-                if (territorialCommunityId == -1) {
-                    territorialCommunityId = tmp;
-                } else {
-                    if (territorialCommunityId != tmp) {
-                        logger.info("Tried to change roles for diffirent TC's");
-                        return "msg.batchops.moreThenOneTC";
-                    }
-                }
-            }
-        }
         logger.info("Performing Change Role operations");
 
         for (User user : userList) {
@@ -872,31 +839,13 @@ public class UserServiceImpl implements UserService {
 
         List<User> userList = userRepository.findUsersByLoginList(givenUsers);
 
-        if (userList.size() == 0)
-            return "msg.batchops.wrongInput";
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String auth_user = auth.getName();
-        logger.info("Performed by: " + auth_user);
-
-        for (User user : userList) {
-            if (user.getLogin().equals(auth_user)) {
-                logger.info("Tried to change self's role");
-                return "msg.batchops.cantChangeOwnState";
-            }
-
-            if (user.getRole().getType() == RoleType.ADMIN) {
-                logger.info("Restriction: Batch op's dont allow to change Administrators!");
-                return "msg.batchops.cantChangeAdmins";
-            }
-        }
-
         Integer commumityId = Integer.parseInt(batch.getCommunityId());
         TerritorialCommunity community = communityService.findById(commumityId);
         if (community == null) {
-            logger.info("Incorrect community id");
+            logger.error("Incorrect community id");
             return "msg.batchops.wrongInput";
         }
+        
         logger.info("Selected Community: " + community.getName());
 
         Role role = checkRole("USER");
