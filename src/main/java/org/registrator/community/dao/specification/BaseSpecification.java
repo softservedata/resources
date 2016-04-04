@@ -110,7 +110,7 @@ public class BaseSpecification<T> implements Specification<T> {
   private Predicate statusTypeBuilder(Root<T> root, CriteriaBuilder builder) {
       UserStatus status = UserStatus.ACTIVE;
       try{
-          status = UserStatus.valueOf(searchValue.toUpperCase());
+          status = UserStatus.valueOf(searchValue);
       }catch(IllegalArgumentException e){
           logger.warn("Bad user status argument: "+searchValue);
       }
@@ -120,7 +120,7 @@ public class BaseSpecification<T> implements Specification<T> {
   private Predicate roleTypeBuilder(Root<T> root, CriteriaBuilder builder) {
       RoleType roleType = RoleType.USER;
       try{
-          roleType = RoleType.valueOf(searchValue.toUpperCase());
+          roleType = RoleType.valueOf(searchValue);
       }catch(IllegalArgumentException e){
           logger.warn("Bad user role argument: "+searchValue);
       }
