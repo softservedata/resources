@@ -176,8 +176,8 @@
 
     <!-- Coordinates -->
     <ul class="nav nav-tabs" id="coordinates">
-      <li class="active"><a data-target="#map" data-toggle="tab">Map</a></li>
-      <li><a data-target="#points" data-toggle="tab">Points</a></li>
+      <li class="active"><a data-target="#map" data-toggle="tab"><spring:message code="label.resource.map"/></a></li>
+      <li><a data-target="#points" data-toggle="tab"><spring:message code="label.resource.points"/></a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="map">
@@ -200,13 +200,6 @@
         <div id="map_canvas" class="container"
           style="height: 500px; padding: 20px 0px;"></div>
         <div class="col-md-12">
-          <%--<button id="addPointsFromMap" class="btn btn-primary" type="button"--%>
-          <%--style="margin-top: 10px;">--%>
-          <%--<spring:message code="label.resource.coordinates.addFromMap"/>--%>
-          <%--</button>--%>
-
-          <%--<button id="show_UA" class="btn btn-primary" type="button"--%>
-          <%--style="margin-top: 10px;">Show Ukraine</button>--%>
           <span id="infoBox" class="col-md-5"><spring:message
               code="label.resource.infoBox" /></span>
         </div>
