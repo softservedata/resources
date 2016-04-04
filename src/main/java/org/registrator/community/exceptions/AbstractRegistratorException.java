@@ -22,14 +22,18 @@ public abstract class AbstractRegistratorException extends Exception  {
 
     @Override
     public String getLocalizedMessage() {
+
         String messageKey = getLocalizedMessageKey();
         if ((messageKey == null) || (messageKey.isEmpty())) {
             return "";
         }
 
         MessageSource messageSource = SpringApplicationContext.getMessageSource();
-
         Locale locale = LocaleContextHolder.getLocale();
-        return messageSource.getMessage(messageKey, getMessageParameters(), locale);
+        if (messageSource != null) {
+            return messageSource.getMessage(messageKey, getMessageParameters(), locale);
+        } else {
+            return super.getLocalizedMessage();
+        }
     }
 }
