@@ -653,7 +653,7 @@ public class UserServiceImpl implements UserService {
             try{
                 Integer tmpNumber = Integer.parseInt(res.getRegistratorNumber());
                 registratorNumber = (tmpNumber > registratorNumber) ? tmpNumber : registratorNumber;
-            }catch(Exception e){
+            }catch(NumberFormatException e){
                 logger.error("Resource number of user \""+res.getUser().getLogin()+"\" is in a incorrect format: "+res.getRegistratorNumber()+". Only decimals allowed.");
             }
         }
