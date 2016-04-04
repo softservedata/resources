@@ -24,18 +24,18 @@ public class MassUserOpsValidator implements Validator {
 
     @Autowired
     private CommunityService communityService;
-    
+
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private Logger logger;
-    
+
     private List<User> userList = new ArrayList<User>();
     private static final String WRONG_INPUT = "msg.batchops.wrongInput",
-                                IS_ADMIN = "msg.batchops.cantChangeAdmins",
-                                CANT_CHANGE_SELF = "msg.batchops.cantChangeOwnState",
-                                DIFFIRENT_TCS = "msg.batchops.moreThenOneTC";
+            IS_ADMIN = "msg.batchops.cantChangeAdmins",
+            CANT_CHANGE_SELF = "msg.batchops.cantChangeOwnState",
+            DIFFIRENT_TCS = "msg.batchops.moreThenOneTC";
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -56,27 +56,23 @@ public class MassUserOpsValidator implements Validator {
                 errors.reject(WRONG_INPUT);
                 return;
             }
-            
-            if(!checkIfUsersExist(communityParamBatch.getLogin())){
-                logger.warn("Bad login list");
+
+            if (!checkIfUsersExist(communityParamBatch.getLogin())) {
                 errors.reject(WRONG_INPUT);
                 return;
             }
-            
-            if(!checkIfIsSelf()){
-                logger.warn("Tried to change self's role");
+
+            if (!checkIfIsSelf()) {
                 errors.reject(CANT_CHANGE_SELF);
                 return;
-            }     
-             
-            if(!checkIfIsAdmin()){
-                logger.warn("Cant change admins");
+            }
+
+            if (!checkIfIsAdmin()) {
                 errors.reject(IS_ADMIN);
                 return;
             }
-            
-            if(!checkIfCommunityExists(communityParamBatch.getCommunityId())){
-                logger.warn("Community with id# \""+communityParamBatch.getCommunityId()+"\" doesnt exist");
+
+            if (!checkIfCommunityExists(communityParamBatch.getCommunityId())) {
                 errors.reject(WRONG_INPUT);
                 return;
             }
@@ -89,50 +85,51 @@ public class MassUserOpsValidator implements Validator {
                 errors.reject(WRONG_INPUT);
                 return;
             }
-            
-            if(!checkIfUsersExist(roleTypeParamBatch.getLogin())){
-                logger.warn("Bad login list");
+
+            if (!checkIfUsersExist(roleTypeParamBatch.getLogin())) {
                 errors.reject(WRONG_INPUT);
                 return;
             }
-            
-            if(!checkIfIsSelf()){
-                logger.warn("Tried to change self's role");
+
+            if (!checkIfIsSelf()) {
                 errors.reject(CANT_CHANGE_SELF);
                 return;
             }
-                     
-            if(!checkIfIsAdmin()){
-                logger.warn("Cant change admins");
+
+            if (!checkIfIsAdmin()) {
                 errors.reject(IS_ADMIN);
                 return;
             }
-            
-            if(!checkIfIsFromSameCommunity()){
-                logger.warn("Cant select users with diffirent communities");
+
+            if (!checkIfIsFromSameCommunity()) {
                 errors.reject(DIFFIRENT_TCS);
                 return;
             }
 
-            if(!checkIfRoleExists(roleTypeParamBatch.getRole())){
-                logger.warn("Role \""+roleTypeParamBatch.getRole()+"\" doesnt exist");
+            if (!checkIfRoleExists(roleTypeParamBatch.getRole())) {
                 errors.reject(WRONG_INPUT);
                 return;
             }
         }
     }
 
-    private boolean checkIfUsersExist(String userLogins){
+    private boolean checkIfUsersExist(String userLogins) {
         List<String> givenUsers = new ArrayList<String>();
         Collections.addAll(givenUsers, userLogins.split(","));
-        
+
         userList = userRepository.findUsersByLoginList(givenUsers);
-        return !userList.isEmpty();
+        logger.warn("Bad login list");
+        boolean testSuccessfull = !userList.isEmpty();
+        if (!testSuccessfull) {
+            logger.warn("Bad login list");
+        }
+        return testSuccessfull;
     }
-    
+
     private boolean checkIfIsAdmin() {
         for (User user : userList) {
             if (user.getRole().getType() == RoleType.ADMIN) {
+                logger.warn("Cant change admins");
                 return false;
             }
         }
@@ -147,6 +144,7 @@ public class MassUserOpsValidator implements Validator {
 
         for (User user : userList) {
             if (user.getLogin().equals(autherizedUser)) {
+                logger.warn("Tried to change self's role");
                 return false;
             }
         }
@@ -161,6 +159,7 @@ public class MassUserOpsValidator implements Validator {
                 territorialCommunityId = tmp;
             } else {
                 if (territorialCommunityId != tmp) {
+                    logger.warn("Cant select users with diffirent communities");
                     return false;
                 }
             }
@@ -169,9 +168,10 @@ public class MassUserOpsValidator implements Validator {
     }
 
     private boolean checkIfRoleExists(String roleName) {
-        try{
+        try {
             RoleType.valueOf(roleName);
-        }catch(Exception e){
+        } catch (IllegalArgumentException e) {
+            logger.warn("Role \"" + roleName + "\" doesnt exist");
             return false;
         }
         return true;
@@ -179,12 +179,17 @@ public class MassUserOpsValidator implements Validator {
 
     private boolean checkIfCommunityExists(String communityId) {
         Integer parsedCommunityId = new Integer(-1);
-        try{
+        try {
             parsedCommunityId = Integer.parseInt(communityId);
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
         TerritorialCommunity community = communityService.findById(parsedCommunityId);
+        boolean testSuccessfull = (community != null);
+        if (!testSuccessfull) {
+            logger.warn("Community with id# " + communityId + " doesnt exist");
+        }
         return (community != null);
     }
 }
+
