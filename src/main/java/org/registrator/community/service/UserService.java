@@ -70,4 +70,9 @@ public interface UserService {
      * @return true if current user is authenticated, false otherwise
      */
     boolean isAuthenticated();
+
+    /**
+     * @return current logged user, if user is not logged in then null is returned
+     */
+    User getLoggedUser();
 }

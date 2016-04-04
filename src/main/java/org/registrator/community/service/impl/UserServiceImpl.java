@@ -866,4 +866,14 @@ public class UserServiceImpl implements UserService {
                auth.isAuthenticated() &&
                !(auth instanceof AnonymousAuthenticationToken);
     }
+
+    @Override
+    public User getLoggedUser() {
+        if (!isAuthenticated()) {
+            return null;
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return getUserByLogin(auth.getName());
+    }
 }
