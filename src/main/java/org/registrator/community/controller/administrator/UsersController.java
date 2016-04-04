@@ -73,7 +73,7 @@ public class UsersController {
      */
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @RequestMapping(value = "/edit-registrated-user", method = RequestMethod.GET)
-    public String fillInEditWindow(@RequestParam("login") String login, Model model) {
+    public String fillInEditWindow(@RequestParam("login") String login, Model model, boolean failEdit) {
         logger.info("begin");
         UserDTO userDto = userService.getUserDto(login);
         model.addAttribute("userDto", userDto);
@@ -83,6 +83,7 @@ public class UsersController {
         model.addAttribute("userStatusList", userStatusList);
         List<TerritorialCommunity> territorialCommunities = communityService.findAll();
         model.addAttribute("territorialCommunities", territorialCommunities);
+        model.addAttribute("failEdit", failEdit);
         logger.info("end");
         return "editWindow";
     }
@@ -102,7 +103,7 @@ public class UsersController {
         }
 
         if (result.hasErrors()) {
-            return fillInEditWindow(userDto.getLogin(), model);
+            return fillInEditWindow(userDto.getLogin(), model, true);
         } else {
             logger.info("begin");
             userService.createTomeAndRecourceNumber(userDto);
