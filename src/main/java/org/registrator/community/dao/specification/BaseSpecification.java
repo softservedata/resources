@@ -113,6 +113,8 @@ public class BaseSpecification<T> implements Specification<T> {
           status = UserStatus.valueOf(searchValue.toUpperCase());
       }catch(IllegalArgumentException e){
           logger.warn("Bad user status argument: "+searchValue);
+      }catch(NullPointerException e){
+          logger.warn("Empty search value");
       }
     return builder.equal(getPathFromRoot(root), status);
   }
@@ -123,6 +125,8 @@ public class BaseSpecification<T> implements Specification<T> {
           roleType = RoleType.valueOf(searchValue.toUpperCase());
       }catch(IllegalArgumentException e){
           logger.warn("Bad user role argument: "+searchValue);
+      }catch(NullPointerException e){
+          logger.warn("Empty search value");
       }
     return builder.equal(getPathFromRoot(root), roleType);
   }
