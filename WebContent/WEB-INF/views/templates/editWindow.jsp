@@ -25,7 +25,7 @@
             <div class="col-lg-8">
               <input id="firstName" name="firstName" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.firstName}" readonly>
+                value="${userDto.firstName}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="firstName" cssClass="error"
                   style="color:black" />
@@ -38,7 +38,7 @@
             <div class="col-lg-8">
               <input id="lastname" name="lastName" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.lastName}" readonly>
+                value="${userDto.lastName}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="lastName" cssClass="error"
                   style="color:black" />
@@ -51,7 +51,7 @@
             <div class="col-lg-8">
               <input id="middlename" name="middleName" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.middleName}" readonly>
+                value="${userDto.middleName}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="middleName" cssClass="black"
                   style="color:black" />
@@ -73,7 +73,7 @@
             <div class="col-lg-8">
               <input id="email" name="email" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.email}" readonly>
+                value="${userDto.email}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="email" cssClass="error"
                   style="color:black" />
@@ -85,7 +85,7 @@
                 code="label.user.role" /></label>
             <div class="col-lg-8">
               <select id="roleId" name="role" class="form-control"
-                style="width: 230px; height: 34px" disabled>
+                style="width: 230px; height: 34px" <c:if test="${not failEdit}">disabled</c:if> >
                 <c:forEach items="${roleList}" var="role">
                   <c:choose>
                     <c:when test="${userDto.role == role.type}">
@@ -109,7 +109,7 @@
             <div class="col-lg-8">
               <select id="userStatusId" name="status"
                 class="form-control" style="width: 230px; height: 34px"
-                disabled>
+                <c:if test="${not failEdit}">disabled</c:if> >
                 <c:forEach items="${userStatusList}" var="userStatus">
                   <c:choose>
                     <c:when test="${userDto.status == userStatus}">
@@ -138,7 +138,7 @@
             <div class="col-lg-8">
               <input id="region" name="address.region" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.address.region}" readonly>
+                value="${userDto.address.region}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="address.region" cssClass="error"
                   style="color:black" />
@@ -151,7 +151,7 @@
             <div class="col-lg-8">
               <input id="city" name="address.city" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.address.city}" readonly>
+                value="${userDto.address.city}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="address.city" cssClass="error"
                   style="color:black" />
@@ -164,7 +164,7 @@
             <div class="col-lg-8">
               <input id="district" name="address.district"
                 placeholder="" class="form-control input-md readonly"
-                type="text" value="${userDto.address.district}" readonly>
+                type="text" value="${userDto.address.district}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="address.district" cssClass="error"
                   style="color:black" />
@@ -177,7 +177,7 @@
             <div class="col-lg-8">
               <input id="street" name="address.street" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.address.street}" readonly>
+                value="${userDto.address.street}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="address.street" cssClass="error"
                   style="color:black" />
@@ -190,7 +190,7 @@
             <div class="col-lg-8">
               <input id="building" name="address.building"
                 placeholder="" class="form-control input-md readonly"
-                type="text" value="${userDto.address.building}" readonly>
+                type="text" value="${userDto.address.building}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="address.building" cssClass="error"
                   style="color:black" />
@@ -203,7 +203,7 @@
             <div class="col-lg-8">
               <input id="flat" name="address.flat" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.address.flat}" readonly>
+                value="${userDto.address.flat}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="address.building" cssClass="error"
                   style="color:black" />
@@ -216,7 +216,7 @@
             <div class="col-lg-8">
               <input id="postcode" name="address.postcode"
                 placeholder="" class="form-control input-md readonly"
-                type="text" value="${userDto.address.postcode}" readonly>
+                type="text" value="${userDto.address.postcode}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="address.postcode" cssClass="error"
                   style="color:black" />
@@ -234,7 +234,7 @@
             <div class="col-lg-8">
               <input id="seria" name="passport.seria" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.passport.seria}" readonly>
+                value="${userDto.passport.seria}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="passport.seria" cssClass="error"
                   style="color:black" />
@@ -247,7 +247,7 @@
             <div class="col-lg-8">
               <input id="number" name="passport.number" placeholder=""
                 class="form-control input-md readonly" type="text"
-                value="${userDto.passport.number}" readonly>
+                value="${userDto.passport.number}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="passport.number" cssClass="error"
                   style="color:black" />
@@ -261,7 +261,7 @@
               <input id="published" name="passport.published_by_data"
                 placeholder="" class="form-control input-md readonly"
                 type="text"
-                value="${userDto.passport.published_by_data}" readonly>
+                value="${userDto.passport.published_by_data}" <c:if test="${not failEdit}">readonly</c:if> >
               <div class="control-group error">
                 <form:errors path="passport.published_by_data"
                   cssClass="error" style="color:black" />
@@ -274,7 +274,7 @@
             <div class="col-lg-8">
               <select id="community" name="territorialCommunity"
                 class="form-control" style="width: 230px; height: 34px"
-                disabled>
+                <c:if test="${not failEdit}">disabled</c:if> >
                 <c:forEach items="${territorialCommunities}"
                   var="communities">
                   <c:choose>
@@ -300,7 +300,7 @@
                   class="form-control input-md readonly" type="text"
                   name="resourceNumberJson.registrator_number"
                   value="${userDto.resourceNumberJson.registrator_number}"
-                  readonly>
+                  <c:if test="${not failEdit}">readonly</c:if> >
                 <div class="control-group error">
                   <form:errors
                     path="resourceNumberJson.registrator_number"
@@ -317,7 +317,7 @@
                   class="form-control input-md readonly" type="text"
                   name="resourceNumberJson.resource_number"
                   value="${userDto.resourceNumberJson.resource_number}"
-                  readonly>
+                  <c:if test="${not failEdit}">readonly</c:if> >
                 <div class="control-group error">
                   <form:errors path="resourceNumberJson.resource_number"
                     cssClass="error" style="color:black" />
@@ -338,12 +338,14 @@
         </div>
       </div>
       <div class="wrapper" style="text-align: center">
-        <button type="button" id="edit" class="btn btn-primary">
-          <spring:message code="label.restype.edit"></spring:message>
-        </button>
+        <c:if test="${not failEdit}">
+          <button type="button" id="edit" class="btn btn-primary">
+            <spring:message code="label.restype.edit"></spring:message>
+          </button>
+        </c:if>
         <input type="submit" id="ok"
           value=<spring:message code="label.user.button"/>
-          class="btn btn-primary btn-sm" style="display: none">
+          class="btn btn-primary btn-sm" <c:if test="${not failEdit}">style="display: none"</c:if> >
       </div>
     </fieldset>
     <spring:message code="label.msg.required" />
