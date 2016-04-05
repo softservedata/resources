@@ -347,19 +347,38 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public void deleteNotConfirmedUser(User user) {
-        user = userRepository.getOne(user.getUserId());
-        if (user.getStatus() == UserStatus.NOTCOMFIRMED) {
-            List<PassportInfo> passportInfoList = user.getPassport();
-            for (PassportInfo passportInfo : passportInfoList) {
-                passportRepository.delete(passportInfo);
-            }
-            List<Address> addressList = user.getAddress();
-            for (Address address : addressList) {
-                addressRepository.delete(address);
-            }
-            userRepository.delete(user);
+    public String deleteNotConfirmedUser(String logins) {
+        
+        List<PassportInfo> passportInfoList = new ArrayList<PassportInfo>();
+        List<Address> addressList = new ArrayList<Address>();
+        List<String> users = new ArrayList<String>();
+
+        Collections.addAll(users, logins.split(","));
+        
+        List<User> userList = userRepository.findUsersByLoginList(users);
+        
+        for (User user: userList){
+            if (user.getStatus() == UserStatus.NOTCOMFIRMED) {
+                passportInfoList.addAll(user.getPassport());
+                addressList.addAll(user.getAddress());
+            }else{
+                logger.info("Try to delete users wich are not in status NOTCOMFIRMED");
+                return "only NOTCOMFIRMED alowed to delete";
+                }
         }
+        
+        logger.info("start delete operations");
+        
+        passportRepository.delete(passportInfoList);
+        logger.info("pasports deleted");
+        
+        addressRepository.delete(addressList);
+        logger.info("addresses deleted");
+        
+        userRepository.delete(userList);
+        logger.info("users deleted");
+        
+        return "sucsesfuly deleted";
     }
 
     @Transactional

@@ -63,7 +63,7 @@ public interface UserService {
 
     public String batchCommunityChange(CommunityParamJson batch);
 
-    void deleteNotConfirmedUser(User user);
+    public String deleteNotConfirmedUser(String logins);
 
     /**
      * Checks if user is authenticated in application
