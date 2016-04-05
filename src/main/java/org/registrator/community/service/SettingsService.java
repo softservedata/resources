@@ -1,9 +1,7 @@
 package org.registrator.community.service;
 
-import org.registrator.community.enumeration.ApplicationProperty;
 import org.registrator.community.enumeration.RegistrationMethod;
 
-import java.util.Map;
 import java.util.TimeZone;
 
 /**

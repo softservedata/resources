@@ -14,7 +14,19 @@
           <ul class="dropdown_menu">
             <li><a
               href="<c:url value='/administrator/users/get-all-users'/>">
-                <spring:message code="label.registrated.pagename" />
+                <spring:message code="label.registrated.pagename.ACTIVE" />
+            </a></li>
+            <li><a
+              href="<c:url value='/administrator/users/get-all-users?statusType=block'/>">
+                <spring:message code="label.registrated.pagename.BLOCK" />
+            </a></li>
+           <%--  <li><a
+              href="<c:url value='/administrator/users/get-all-users?statusType=inactive'/>">
+                <spring:message code="label.registrated.pagename.INACTIVE" />
+            </a></li> --%>
+            <li><a
+              href="<c:url value='/administrator/users/get-all-users?statusType=notcomfirmed'/>">
+                <spring:message code="label.registrated.pagename.NOTCOMFIRMED" />
             </a></li>
             <li><a
               href="<c:url value='/administrator/users/get-all-inactive-users'/>">
@@ -32,8 +44,10 @@
 
         <li><a href="#" id="unlockUsers"><spring:message
               code="label.security.unblockall" /></a></li>
-        <li><a href="<c:url value='/administrator/users/search'/>"
-          class="glyphicon glyphicon-search"></a></li>
+              
+<%--         <li><a href="<c:url value='/administrator/users/search'/>" --%>
+<!--           class="glyphicon glyphicon-search"></a></li> -->
+          
       </ul>
     </div>
   </div>

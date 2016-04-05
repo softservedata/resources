@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -291,6 +290,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserDto(String login) {
         User user = getUserByLogin(login);
+        logger.info("user "+user);
         PassportInfo passportInfo = user.getPassport().get(user.getPassport().size() - 1);
         PassportDTO passportDto = new PassportDTO(passportInfo.getSeria(), passportInfo.getNumber().toString(),
                 passportInfo.getPublishedByData());
@@ -347,19 +347,38 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public void deleteNotConfirmedUser(User user) {
-        user = userRepository.getOne(user.getUserId());
-        if (user.getStatus() == UserStatus.NOTCOMFIRMED) {
-            List<PassportInfo> passportInfoList = user.getPassport();
-            for (PassportInfo passportInfo : passportInfoList) {
-                passportRepository.delete(passportInfo);
-            }
-            List<Address> addressList = user.getAddress();
-            for (Address address : addressList) {
-                addressRepository.delete(address);
-            }
-            userRepository.delete(user);
+    public String deleteNotConfirmedUser(String logins) {
+        
+        List<PassportInfo> passportInfoList = new ArrayList<PassportInfo>();
+        List<Address> addressList = new ArrayList<Address>();
+        List<String> users = new ArrayList<String>();
+
+        Collections.addAll(users, logins.split(","));
+        
+        List<User> userList = userRepository.findUsersByLoginList(users);
+        
+        for (User user: userList){
+            if (user.getStatus() == UserStatus.NOTCOMFIRMED) {
+                passportInfoList.addAll(user.getPassport());
+                addressList.addAll(user.getAddress());
+            }else{
+                logger.info("Try to delete users wich are not in status NOTCOMFIRMED");
+                return "only NOTCOMFIRMED alowed to delete";
+                }
         }
+        
+        logger.info("start delete operations");
+        
+        passportRepository.delete(passportInfoList);
+        logger.info("pasports deleted");
+        
+        addressRepository.delete(addressList);
+        logger.info("addresses deleted");
+        
+        userRepository.delete(userList);
+        logger.info("users deleted");
+        
+        return "sucsesfuly deleted";
     }
 
     @Transactional
@@ -401,8 +420,10 @@ public class UserServiceImpl implements UserService {
                 return roleList.get(1);
             case "COMMISSIONER":
                 return roleList.get(3);
-            default:
+            case "ADMIN":
                 return roleList.get(0);
+            default:
+                return roleList.get(2);
         }
     }
 
@@ -633,12 +654,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void batchCreateTomeAndResourceNumber(List<User> users) {
-        if (users.size() == 0)
-            return;
+        if (users.isEmpty())return;
 
         List<Tome> tomeList = tomeRepository.findAll();
         Integer tomeNumber = 0;
-        if (tomeList.size() != 0) {
+        if (!tomeList.isEmpty()) {
             Tome tempTome = tomeList.get(tomeList.size() - 1);
             String lastTomeNum = tempTome.getIdentifier();
             tomeNumber = Integer.parseInt(lastTomeNum);
@@ -649,8 +669,12 @@ public class UserServiceImpl implements UserService {
         Integer registratorNumber = 0;
         Integer registratorStartIncrement = 1;
         for (ResourceNumber res : resourceNumberList) {
-            Integer tmpNumber = Integer.parseInt(res.getRegistratorNumber());
-            registratorNumber = (tmpNumber > registratorNumber) ? tmpNumber : registratorNumber;
+            try{
+                Integer tmpNumber = Integer.parseInt(res.getRegistratorNumber());
+                registratorNumber = (tmpNumber > registratorNumber) ? tmpNumber : registratorNumber;
+            }catch(NumberFormatException e){
+                logger.warn("Resource number of user \""+res.getUser().getLogin()+"\" is in a incorrect format: "+res.getRegistratorNumber()+". Only decimals allowed.");
+            }
         }
 
         for (User user : users) {
@@ -782,7 +806,7 @@ public class UserServiceImpl implements UserService {
     public String batchRoleChange(RoleTypeJson batch) {
         logger.info("Recieved package: " + batch);
         if (batch.getLogin() == null || batch.getRole() == null) {
-            logger.error("Empty RoleTypeJson batch file");
+            logger.warn("Empty RoleTypeJson batch file");
             return "msg.batchops.wrongInput";
         }
 
@@ -791,42 +815,8 @@ public class UserServiceImpl implements UserService {
 
         List<User> userList = userRepository.findUsersByLoginList(givenUsers);
 
-        if (userList.size() == 0)
-            return "msg.batchops.wrongInput";
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String auth_user = auth.getName();
-        logger.info("Performed by: " + auth_user);
-
-        for (User user : userList) {
-            if (user.getLogin().equals(auth_user)) {
-                logger.info("Tried to change self's role");
-                return "msg.batchops.cantChangeOwnState";
-            }
-
-            if (user.getRole().getType() == RoleType.ADMIN) {
-                logger.info("Restriction: Batch op's dont allow to change Administrators!");
-                return "msg.batchops.cantChangeAdmins";
-            }
-        }
-
         Role role = checkRole(batch.getRole());
         logger.info("Selected role: " + role);
-
-        int territorialCommunityId = -1;
-        if (role.getType() == RoleType.REGISTRATOR) {
-            for (User user : userList) {
-                int tmp = user.getTerritorialCommunity().getTerritorialCommunityId();
-                if (territorialCommunityId == -1) {
-                    territorialCommunityId = tmp;
-                } else {
-                    if (territorialCommunityId != tmp) {
-                        logger.info("Tried to change roles for diffirent TC's");
-                        return "msg.batchops.moreThenOneTC";
-                    }
-                }
-            }
-        }
         logger.info("Performing Change Role operations");
 
         for (User user : userList) {
@@ -859,7 +849,7 @@ public class UserServiceImpl implements UserService {
         logger.info("Recieved package: " + batch);
 
         if (batch.getLogin() == null || batch.getCommunityId() == null) {
-            logger.error("Empty CommunityParamJson batch file");
+            logger.warn("Empty CommunityParamJson batch file");
             return "msg.batchops.wrongInput";
         }
 
@@ -868,31 +858,13 @@ public class UserServiceImpl implements UserService {
 
         List<User> userList = userRepository.findUsersByLoginList(givenUsers);
 
-        if (userList.size() == 0)
-            return "msg.batchops.wrongInput";
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String auth_user = auth.getName();
-        logger.info("Performed by: " + auth_user);
-
-        for (User user : userList) {
-            if (user.getLogin().equals(auth_user)) {
-                logger.info("Tried to change self's role");
-                return "msg.batchops.cantChangeOwnState";
-            }
-
-            if (user.getRole().getType() == RoleType.ADMIN) {
-                logger.info("Restriction: Batch op's dont allow to change Administrators!");
-                return "msg.batchops.cantChangeAdmins";
-            }
-        }
-
         Integer commumityId = Integer.parseInt(batch.getCommunityId());
         TerritorialCommunity community = communityService.findById(commumityId);
         if (community == null) {
-            logger.info("Incorrect community id");
+            logger.warn("Incorrect community id");
             return "msg.batchops.wrongInput";
         }
+        
         logger.info("Selected Community: " + community.getName());
 
         Role role = checkRole("USER");
@@ -912,5 +884,15 @@ public class UserServiceImpl implements UserService {
         return auth != null &&
                auth.isAuthenticated() &&
                !(auth instanceof AnonymousAuthenticationToken);
+    }
+
+    @Override
+    public User getLoggedUser() {
+        if (!isAuthenticated()) {
+            return null;
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return getUserByLogin(auth.getName());
     }
 }

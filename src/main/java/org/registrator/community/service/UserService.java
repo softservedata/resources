@@ -63,11 +63,16 @@ public interface UserService {
 
     public String batchCommunityChange(CommunityParamJson batch);
 
-    void deleteNotConfirmedUser(User user);
+    public String deleteNotConfirmedUser(String logins);
 
     /**
      * Checks if user is authenticated in application
      * @return true if current user is authenticated, false otherwise
      */
     boolean isAuthenticated();
+
+    /**
+     * @return current logged user, if user is not logged in then null is returned
+     */
+    User getLoggedUser();
 }
