@@ -519,7 +519,7 @@
     src="<c:url value='/resource/js/isInsideUkraine.js'/>"></script>
 </div>
 <script
-  src="http://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false"></script>
+  src="http://maps.googleapis.com/maps/api/js?libraries=drawing,places,geometry&sensor=false"></script>
 <script
   src="<c:url value='/resource/js/lib/jquery-ui.datepscker.min.js'/>"></script>
 <script
