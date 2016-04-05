@@ -209,6 +209,7 @@ jQuery(document).ready(function($) {
             },
             error : function(xhr, status, error) {
                 bootbox.alert("<h3>Error performing Password reset operation</h3>" + xhr.responseText);
+                $("#dark_bg").hide();
                 return "";
             }
         });
