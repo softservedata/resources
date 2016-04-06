@@ -101,6 +101,8 @@ jQuery(document).ready(function($) {
     /* **************************** */
     function start_community_search() {
         communityModal.modal('show');
+        tc_id = -1;
+        $("#tc_search").val("");
     }
     $('#tc_search').autocomplete({
         serviceUrl : 'communities',
@@ -144,7 +146,7 @@ jQuery(document).ready(function($) {
     });
 
     $('.submit', communityModal).click(function() {
-        if (tc_id == null) {
+        if (tc_id == null || tc_id == -1) {
             bootbox.alert("TC cant be empty");
             return;
         }

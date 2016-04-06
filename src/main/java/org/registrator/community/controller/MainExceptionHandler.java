@@ -1,9 +1,12 @@
 package org.registrator.community.controller;
 
+import org.registrator.community.exceptions.BadInputDataException;
+import org.registrator.community.validator.MassUserOpsValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,4 +30,12 @@ public class MainExceptionHandler {
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
     }
+    
+    @ExceptionHandler(BadInputDataException.class)
+    @ResponseBody
+    public String handleCustomException(BadInputDataException ex) {
+          return MassUserOpsValidator.WRONG_INPUT;
+
+    }
+
 }
