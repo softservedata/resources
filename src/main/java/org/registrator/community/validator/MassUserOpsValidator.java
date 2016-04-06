@@ -32,10 +32,12 @@ public class MassUserOpsValidator implements Validator {
     private Logger logger;
 
     private List<User> userList = new ArrayList<User>();
-    private static final String WRONG_INPUT = "msg.batchops.wrongInput",
+
+    public static final String WRONG_INPUT = "msg.batchops.wrongInput",
             IS_ADMIN = "msg.batchops.cantChangeAdmins",
             CANT_CHANGE_SELF = "msg.batchops.cantChangeOwnState",
-            DIFFIRENT_TCS = "msg.batchops.moreThenOneTC";
+            DIFFIRENT_TCS = "msg.batchops.moreThenOneTC",
+            OK = "msg.batchops.changesaccepted";
 
     @Override
     public boolean supports(Class<?> clazz) {

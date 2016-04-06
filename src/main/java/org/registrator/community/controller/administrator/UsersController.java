@@ -149,25 +149,6 @@ public class UsersController {
     }
 
     /**
-     * Controller for showing modal window
-     *
-     */
-/*    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
-    @ResponseBody
-    @RequestMapping(value = "/edit-registrated-user/modal-window", method = RequestMethod.POST)
-    public ResponseEntity<String> showModalWindow(
-            @Valid @RequestBody ResourceNumberJson resourceNumberDtoJson, BindingResult result) {
-        logger.info("begin");
-        resourceNumberValidator.validate(resourceNumberDtoJson, result);
-        if (result.hasErrors()) {
-            return new ResponseEntity<String>(HttpStatus.CONFLICT);
-        } else {
-            logger.info("end");
-            return new ResponseEntity<String>(HttpStatus.OK);
-        }
-    }
-*/
-    /**
      * Controller for get all registrated users
      * 
      */
@@ -209,10 +190,10 @@ public class UsersController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @RequestMapping(value = "batch-role-change", method = RequestMethod.POST)
-    public @ResponseBody String setRoleForUsers(@RequestBody RoleTypeJson roleTypeJson, BindingResult result) {
+    public @ResponseBody String setRoleForUsers(@Valid @RequestBody RoleTypeJson roleTypeJson, BindingResult result) {
         logger.info("begin");
         massUserOpsValidator.validate(roleTypeJson, result);
-        
+
         if (result.hasErrors()) {
             ObjectError objectError = result.getGlobalError();  
             String error = objectError.getCode();
@@ -220,16 +201,16 @@ public class UsersController {
             logger.info("end");
             return error;
         }else{
-            String msg = userService.batchRoleChange(roleTypeJson);
+            userService.setUsersRole(roleTypeJson);
             logger.info("end");
-            return msg;
+            return MassUserOpsValidator.OK;
         }
     }
-
+    
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_COMMISSIONER')")
     @RequestMapping(value = "batch-community-change", method = RequestMethod.POST)
     public @ResponseBody String setCommunityForUsers(
-            @RequestBody CommunityParamJson communityParamJson, BindingResult result) {
+           @Valid @RequestBody CommunityParamJson communityParamJson, BindingResult result) {
         
         logger.info("begin");
         massUserOpsValidator.validate(communityParamJson, result);
@@ -241,9 +222,9 @@ public class UsersController {
             logger.info("end");
             return error;
         }else{
-            String msg = userService.batchCommunityChange(communityParamJson);
+            userService.setUsersCommun(communityParamJson);
             logger.info("end");
-            return msg;
+            return MassUserOpsValidator.OK;
         }
     }
 

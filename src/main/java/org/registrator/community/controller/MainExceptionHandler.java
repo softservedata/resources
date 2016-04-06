@@ -1,13 +1,16 @@
 package org.registrator.community.controller;
 
-import org.registrator.community.exceptions.AbstractRegistratorException;
+import javax.servlet.http.HttpServletRequest;
+import org.registrator.community.exceptions.BadInputDataException;
 import org.registrator.community.exceptions.ResourceEntityNotFound;
 import org.registrator.community.utils.HttpUtils;
+import org.registrator.community.validator.MassUserOpsValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +33,12 @@ public class MainExceptionHandler {
         mav.setViewName("resourceEntityNotFound");
         return mav;
     }
-
+    
+    @ExceptionHandler(BadInputDataException.class)
+    @ResponseBody
+    public String handleCustomException(BadInputDataException ex) {
+          return MassUserOpsValidator.WRONG_INPUT;
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDenied(HttpServletRequest request, Exception exception) {
