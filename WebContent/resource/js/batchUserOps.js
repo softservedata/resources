@@ -43,10 +43,11 @@ jQuery(document).ready(function($) {
         confirm_passwordreset();
     });
     
-    $('.delete-notcomfirmrd-user').click(function() {
+    $('.notcomfirmrd-user').click(function() {
         if (!gather_data())
             return;
-        delete_notcomfirmrduser("DELETE");
+        
+        action_notcomfirmrduser( $(this).attr('id'));
     });
         
     /* **************************** */
@@ -215,7 +216,7 @@ jQuery(document).ready(function($) {
         });
     }
     
-    function delete_notcomfirmrduser(action){
+    function action_notcomfirmrduser(action){
         
         console.log(selected.toString());
         
@@ -233,11 +234,10 @@ jQuery(document).ready(function($) {
             mimeType : 'application/json',
             success : function(data) {
                 bootbox.alert(jQuery.i18n.prop(data));
-                $("#dark_bg").hide();
                 return false;
             },
             error : function(xhr, status, error) {
-                bootbox.alert("<h3>Error performing Password reset operation</h3>" + xhr.responseText);
+                bootbox.alert("<h3>"+jQuery.i18n.prop("msg.error")+"</h3>" + xhr.responseText);
                 return "";
             }
         });

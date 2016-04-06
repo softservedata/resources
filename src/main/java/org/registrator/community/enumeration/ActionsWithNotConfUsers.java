@@ -2,8 +2,7 @@ package org.registrator.community.enumeration;
 
 public enum ActionsWithNotConfUsers {
     DELETE("DELETE"),
-    SENDEMAILAGAIN("SENDEMAILAGAIN"),
-    CHANGEEMAIL("CHANGEEMAIL");
+    SENDEMAILAGAIN("SENDEMAILAGAIN");
     
     private final String ACTIONS;
 
