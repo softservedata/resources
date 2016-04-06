@@ -34,23 +34,17 @@
         <h4>
           <spring:message code="label.admin.settings.timeZone" />
         </h4>
+        <p>
+          <spring:message code="label.admin.settings.timeZoneInput" />
+        </p>
       </div>
       <div class="row control-group">
         <div class="col-md-3">
-          <input class="form-control col-md-3" name="timeZone"
-            value="${TIME_ZONE}">
-        </div>
-      </div>
-      <div class="row control-group">
-        <div class="col-md-3">
-          <input id = "time_search" class="form-control col-md-3"
-                 value="${TIME_ZONE}">
-        </div>
-        <div class="col-md-4">
-          <input id = "time_id" class="form-control col-md-3"
+          <input id = "time_id" class="form-control col-md-4" name="timeZone"
                  value="${TIME_ZONE}">
         </div>
       </div>
+
       <%--workaround to add vertical blank space--%>
       <div class="row">
         <h4></h4>

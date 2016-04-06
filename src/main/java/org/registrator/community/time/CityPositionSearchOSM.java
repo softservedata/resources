@@ -2,6 +2,8 @@ package org.registrator.community.time;
 
 import org.registrator.community.exceptions.ExternalApiCallException;
 import org.registrator.community.time.osm.WrapperOSM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,6 +14,7 @@ import java.util.Locale;
 
 public class CityPositionSearchOSM implements CityPositionSearch {
     private static final String queryTemplate = "node[place=city]['name:%s'~'^%s'];out;";
+    private static final Logger LOGGER = LoggerFactory.getLogger(CityPositionSearchOSM.class);
 
     private final String cityName;
     private final Locale locale;
@@ -32,6 +35,7 @@ public class CityPositionSearchOSM implements CityPositionSearch {
             throw new ExternalApiCallException("Couldn't execute OpenStreetMap query", ex);
         }
 
+        LOGGER.info(String.format("City points search by name '%s', found %s", cityName, nodesOSM));
         return nodesOSM;
     }
 }

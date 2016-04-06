@@ -4,6 +4,8 @@ import org.registrator.community.dto.TimeZoneDTO;
 import org.registrator.community.exceptions.ExternalApiCallException;
 import org.registrator.community.service.TimeZoneService;
 import org.registrator.community.time.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,6 +13,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class TimeZoneServiceImpl implements TimeZoneService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeZoneServiceImpl.class);
+
     @Override
     public List<TimeZoneDTO> findByName(String searchValue) {
 
@@ -26,20 +31,27 @@ public class TimeZoneServiceImpl implements TimeZoneService {
 
     @Override
     public List<TimeZoneDTO> findByCity(String searchValue, Locale locale) throws ExternalApiCallException {
+        if ("ua".equals(locale.getLanguage())) {
+            locale = Locale.forLanguageTag("uk");
+        }
         CityPositionSearch cityPositionSearch = new CityPositionSearchOSM(searchValue, locale);
         List<CityPosition> points = cityPositionSearch.findCities();
         List<TimeZoneDTO> result = new ArrayList<>();
 
         for (CityPosition cityPosition: points ) {
-            TimeZoneSearch timeZoneSearch = new TimeZoneSearchTimeDB(cityPosition);
+            TimeZoneSearch timeZoneSearch = new TimeZoneSearchGeoNames(cityPosition);
             TimeZone timeZone = timeZoneSearch.findTimeZoneByPosition();
-            result.add(new TimeZoneDTO(timeZone.getID(), timeZone.getID(), cityPosition.getName(locale.getLanguage())));
+            String desctiption = cityPosition.getName(locale.getLanguage()) + "(" + timeZone.getID() + ")";
+            result.add(new TimeZoneDTO(timeZone.getID(), timeZone.getID(), desctiption));
         }
         return result;
     }
 
     @Override
-    public List<TimeZoneDTO> findByNameOrCity(String searchValue, Locale locale) throws Exception {
+    public List<TimeZoneDTO> findByNameOrCity(String searchValue, Locale locale) throws ExternalApiCallException {
+
+        LOGGER.info(String.format("Time zone search by value '%s'", searchValue));
+
         List<TimeZoneDTO> result = findByName(searchValue);
         if (result.size() > 0) {
             return result;

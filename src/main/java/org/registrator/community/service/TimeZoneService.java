@@ -26,7 +26,7 @@ public interface TimeZoneService {
      * @param searchValue name of the city
      * @return list of suitable time zones
      */
-    List<TimeZoneDTO> findByCity(String searchValue, Locale locale) throws ExternalApiCallException, Exception;
+    List<TimeZoneDTO> findByCity(String searchValue, Locale locale) throws ExternalApiCallException;
 
     /**
      * Find the list of suitable time zones by name or by city
@@ -35,5 +35,5 @@ public interface TimeZoneService {
      *                    name of the city must be in current locale of the user
      * @return list of suitable time zones
      */
-    List<TimeZoneDTO> findByNameOrCity(String searchValue, Locale locale) throws Exception;
+    List<TimeZoneDTO> findByNameOrCity(String searchValue, Locale locale) throws ExternalApiCallException;
 }

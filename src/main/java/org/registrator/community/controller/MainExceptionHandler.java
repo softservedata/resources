@@ -38,6 +38,12 @@ public class MainExceptionHandler {
         return "accessDenied";
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView handleRuntimeExceptions(HttpServletRequest request, RuntimeException exception) {
+
+        return handleUncaughtExceptions(request, exception);
+    }
+
     @ExceptionHandler(Exception.class)
     public ModelAndView handleUncaughtExceptions(HttpServletRequest request, Exception exception) {
 
