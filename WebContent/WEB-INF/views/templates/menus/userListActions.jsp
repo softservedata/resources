@@ -39,8 +39,8 @@
  <ul class="dropdown-menu multi-level" role="menu"
   aria-labelledby="dropdownMenu">
 
-  <li><a href="#" class="delete-notcomfirmrd-user">Видалити</a></li>
-  <li><a href="#" class="send-email-again">Надіслати email щераз</a></li>
+  <li><a href="#" class="notcomfirmrd-user" id = "DELETE">Видалити</a></li>
+  <li><a href="#" class="notcomfirmrd-user" id = "SENDEMAILAGAIN">Надіслати email щераз</a></li>
  </ul>
  </c:if>
  

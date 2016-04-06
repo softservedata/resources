@@ -31,6 +31,9 @@ public class EmailConfirmServiceimpl implements EmailConfirmService {
 	
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+    private UserRepository userRepository;
 
 	@Autowired
 	private VerificationTokenService verificationTokenService;
@@ -50,12 +53,36 @@ public class EmailConfirmServiceimpl implements EmailConfirmService {
 	}
 	
 	@Override
-    public void sendConfirmEmailAgain(String login) {
-        User user = userService.findUserByLogin(login);
-        if(user != null){
-            VerificationToken verifacationToken = verificationTokenService.findVerificationTokenByLoginAndTokenType(login, TokenType.CONFIRM_EMAIL);
-            mailService.sendComfirmEMail(user.getEmail(), user.getFirstName(),verifacationToken.getToken(),verifacationToken.getBaseLink());
-        }   
+    public String sendConfirmEmailAgain(String logins) {
+	    List<String> users = new ArrayList<String>();
+	    Collections.addAll(users, logins.split(","));
+        logger.info("Loking for users with logins: "+logins);
+        List<User> userList = userRepository.findUsersByLoginList(users);
+        if (userList.isEmpty()){
+            logger.info("no such users found in database");
+            return "No such users found";
+        }
+        logger.info("users found");
+        	    
+        for (User user: userList){
+            if (user.getStatus() != UserStatus.NOTCOMFIRMED) {
+                logger.info("Try to send email users wich are not in status NOTCOMFIRMED");
+                return "only NOTCOMFIRMED alowed to send email for confirmation";
+            }
+        }
+        for (User user: userList){
+            
+            VerificationToken verifacationToken = verificationTokenService.findVerificationTokenByLoginAndTokenType(user.getLogin(), TokenType.CONFIRM_EMAIL);
+            if (verifacationToken!=null){
+                logger.info("Send email to "+ user.getEmail());
+                mailService.sendComfirmEMail(user.getEmail(), user.getFirstName(),verifacationToken.getToken(),verifacationToken.getBaseLink());
+            }else{
+                logger.warn("no verifacationToken found");
+                return "not ok";
+            }
+
+        }
+        return "ok";              
     }
 	
 	@Transactional
@@ -70,15 +97,13 @@ public class EmailConfirmServiceimpl implements EmailConfirmService {
         switch(usersDataNotConfJson.getActions()){
         case DELETE:
             logger.info("Run Action DELETE");
-            return userService.deleteNotConfirmedUser(usersDataNotConfJson.getLogins());
+            return userService.deleteNotConfirmedUsers(usersDataNotConfJson.getLogins());
         case SENDEMAILAGAIN:
-            sendConfirmEmailAgain(usersDataNotConfJson.getLogins());
-        default:
-            break;
-        
+            logger.info("Run Action SENDEMAILAGAIN");
+            return sendConfirmEmailAgain(usersDataNotConfJson.getLogins());
         }
 	        
-	    return null;
+	    return  "msg.batchops.wrongInput";
 	}
 	
 	@Transactional

@@ -4,6 +4,7 @@ import org.registrator.community.dto.json.PasswordResetJson;
 import org.registrator.community.dto.json.UsersDataNotConfJson;
 import org.registrator.community.service.EmailConfirmService;
 import org.registrator.community.service.VerificationTokenService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class EmailConfirmController {
 
 
+    @Autowired
+    private Logger logger;
     @Autowired
     private VerificationTokenService verificationTokenService;
     @Autowired
@@ -34,12 +37,10 @@ public class EmailConfirmController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_COMMISSIONER')")
     @RequestMapping(value = "/administrator/users/get-all-users/delete-notcomfirmrd-user", method = RequestMethod.POST)
     public @ResponseBody String actionsWithNotConfirmedUsers(@RequestBody UsersDataNotConfJson usersDataNotConfJson) {
-       System.out.println("UsersDataNotConfJson.getActions "+ usersDataNotConfJson.getActions());
-       System.out.println(usersDataNotConfJson.getLogins());
-
+        logger.info("Recieve JSON: "+ usersDataNotConfJson);
         return emailConfirmService.actionsWithNotConfirmedUsers(usersDataNotConfJson);
     }
 
