@@ -15,6 +15,7 @@ import org.registrator.community.dto.search.TableSearchResponseDTO;
 import org.registrator.community.entity.Role;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.User;
+import org.registrator.community.enumeration.UIMessages;
 import org.registrator.community.enumeration.UserStatus;
 import org.registrator.community.service.CommunityService;
 import org.registrator.community.service.RoleService;
@@ -203,7 +204,7 @@ public class UsersController {
         }else{
             userService.setUsersRole(roleTypeJson);
             logger.info("end");
-            return MassUserOpsValidator.OK;
+            return UIMessages.CHANGES_ACCEPTED.toString();
         }
     }
     
@@ -224,7 +225,7 @@ public class UsersController {
         }else{
             userService.setUsersCommun(communityParamJson);
             logger.info("end");
-            return MassUserOpsValidator.OK;
+            return UIMessages.CHANGES_ACCEPTED.toString();
         }
     }
 

@@ -10,6 +10,7 @@ import org.registrator.community.dto.json.RoleTypeJson;
 import org.registrator.community.entity.TerritorialCommunity;
 import org.registrator.community.entity.User;
 import org.registrator.community.enumeration.RoleType;
+import org.registrator.community.enumeration.UIMessages;
 import org.registrator.community.service.CommunityService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,6 @@ public class MassUserOpsValidator implements Validator {
 
     private List<User> userList = new ArrayList<User>();
 
-    public static final String WRONG_INPUT = "msg.batchops.wrongInput",
-            IS_ADMIN = "msg.batchops.cantChangeAdmins",
-            CANT_CHANGE_SELF = "msg.batchops.cantChangeOwnState",
-            DIFFIRENT_TCS = "msg.batchops.moreThenOneTC",
-            OK = "msg.batchops.changesaccepted";
-
     @Override
     public boolean supports(Class<?> clazz) {
         boolean supports = false;
@@ -55,27 +50,27 @@ public class MassUserOpsValidator implements Validator {
             if (communityParamBatch.getLogin() == null
                     || communityParamBatch.getCommunityId() == null) {
                 logger.warn("Empty RoleTypeJson batch file");
-                errors.reject(WRONG_INPUT);
+                errors.reject(UIMessages.WRONG_INPUT.toString());
                 return;
             }
 
             if (!checkIfUsersExist(communityParamBatch.getLogin())) {
-                errors.reject(WRONG_INPUT);
+                errors.reject(UIMessages.WRONG_INPUT.toString());
                 return;
             }
 
             if (!checkIfIsSelf()) {
-                errors.reject(CANT_CHANGE_SELF);
+                errors.reject(UIMessages.CANT_CHANGE_SELF.toString());
                 return;
             }
 
             if (!checkIfIsAdmin()) {
-                errors.reject(IS_ADMIN);
+                errors.reject(UIMessages.IS_ADMIN.toString());
                 return;
             }
 
             if (!checkIfCommunityExists(communityParamBatch.getCommunityId())) {
-                errors.reject(WRONG_INPUT);
+                errors.reject(UIMessages.WRONG_INPUT.toString());
                 return;
             }
 
@@ -84,32 +79,32 @@ public class MassUserOpsValidator implements Validator {
 
             if (roleTypeParamBatch.getLogin() == null || roleTypeParamBatch.getRole() == null) {
                 logger.warn("Empty RoleTypeJson batch file");
-                errors.reject(WRONG_INPUT);
+                errors.reject(UIMessages.WRONG_INPUT.toString());
                 return;
             }
 
             if (!checkIfUsersExist(roleTypeParamBatch.getLogin())) {
-                errors.reject(WRONG_INPUT);
+                errors.reject(UIMessages.WRONG_INPUT.toString());
                 return;
             }
 
             if (!checkIfIsSelf()) {
-                errors.reject(CANT_CHANGE_SELF);
+                errors.reject(UIMessages.CANT_CHANGE_SELF.toString());
                 return;
             }
 
             if (!checkIfIsAdmin()) {
-                errors.reject(IS_ADMIN);
+                errors.reject(UIMessages.IS_ADMIN.toString());
                 return;
             }
 
             if (!checkIfIsFromSameCommunity()) {
-                errors.reject(DIFFIRENT_TCS);
+                errors.reject(UIMessages.DIFFIRENT_TCS.toString());
                 return;
             }
 
             if (!checkIfRoleExists(roleTypeParamBatch.getRole())) {
-                errors.reject(WRONG_INPUT);
+                errors.reject(UIMessages.WRONG_INPUT.toString());
                 return;
             }
         }
