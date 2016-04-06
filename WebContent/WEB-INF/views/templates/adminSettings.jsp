@@ -2,7 +2,6 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<script src="<c:url value='/resource/js/adminSettings.js'/>"></script>
 
 <div class="container">
   <form:form id="сhangeReg" method="post" modelAttribute="settings"
@@ -42,7 +41,17 @@
             value="${TIME_ZONE}">
         </div>
       </div>
-      <%--smelly workaround to add vertical blank space--%>
+      <div class="row control-group">
+        <div class="col-md-3">
+          <input id = "time_search" class="form-control col-md-3"
+                 value="${TIME_ZONE}">
+        </div>
+        <div class="col-md-4">
+          <input id = "time_id" class="form-control col-md-3"
+                 value="${TIME_ZONE}">
+        </div>
+      </div>
+      <%--workaround to add vertical blank space--%>
       <div class="row">
         <h4></h4>
       </div>
@@ -52,3 +61,10 @@
       class="btn btn-primary" />
   </form:form>
 </div>
+
+<link rel="stylesheet" type="text/css"
+      href="<c:url value='/resource/css/suggestion.css'/>">
+
+<script src="<c:url value='/resource/js/adminSettings.js'/>"></script>
+<script src="<c:url value='/resource/js/lib/jquery.autocomplete.min.js'/>"></script>
+<script src="<c:url value='/resource/js/timeZoneSuggestions.js'/>"></script>
