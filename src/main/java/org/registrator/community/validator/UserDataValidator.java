@@ -54,7 +54,7 @@ public class UserDataValidator implements Validator {
         if(passport.getNumber().isEmpty() == passport.getSeria().isEmpty()){
             return "";
         }
-        if(registrationForm.getPassport().getNumber().isEmpty()){
+        if(passport.getNumber().isEmpty()){
             return "passport.number";
         }
         return "passport.seria";
